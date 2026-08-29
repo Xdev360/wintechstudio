@@ -82,55 +82,6 @@ const WORK = [
     built: 'Four local analysis passes over the project folder, with nothing uploaded anywhere. The result is an app map, a prioritised fix queue, and one ready-to-paste prompt per finding.',
     outcome: 'Live at cybersweep.vercel.app. A Wintech Studio product.'
   },
-  {
-    id: 'wintech-ai',
-    n: 'Wintech AI',
-    img: 'wintech-ai',
-    dept: 'Automation & AI',
-    year: '2026',
-    live: 'quote.html',
-    status: 'Live',
-    one: 'The studio’s own estimator, built on the same stack we sell.',
-    problem: 'Most studios hide the number until a sales call. Founders comparing options want a starting range before they commit half an hour to anyone.',
-    built: 'A short structured brief, a small set of questions that actually change the answer, and a starting range the call either confirms or corrects.',
-    outcome: 'Running on this site under Estimate.'
-  },
-  {
-    id: 'real-bonus',
-    n: 'Real Bonus',
-    img: 'real-bonus',
-    dept: 'Product',
-    year: '2026',
-    status: 'In build',
-    one: 'Bonus tracking and payouts in one product, replacing a spreadsheet trail.',
-    problem: 'Bonus schemes lived across chats and sheets. Nobody could see what they were owed without asking, and payouts lagged behind the work.',
-    built: 'A single surface for balances, the rules that generate them, and the payouts that clear them.',
-    outcome: 'In build.'
-  },
-  {
-    id: 'lume',
-    n: 'LUME Arena',
-    img: 'lume-arena',
-    dept: 'Product',
-    year: '2026',
-    status: 'In build',
-    one: 'A tournament platform holding brackets, entries, and payouts in one place.',
-    problem: 'Competitions ran on group chats and spreadsheets. Entries went missing and prize money moved slowly.',
-    built: 'Brackets, entry management, and payouts inside one product.',
-    outcome: 'In build.'
-  },
-  {
-    id: 'goalden',
-    n: 'Goalden',
-    img: 'goalden',
-    dept: 'Product',
-    year: '2026',
-    status: 'In build',
-    one: 'Goal-setting rebuilt as a system with review loops instead of a list.',
-    problem: 'Checklists do not change behaviour. People set goals in January and never open the page again.',
-    built: 'Structure, scheduled review loops, and progress rendered so it is visible without hunting for it.',
-    outcome: 'In build.'
-  }
 ];
 
 const byId = (id) => WORK.find((w) => w.id === id);
@@ -761,3 +712,357 @@ if (form) {
 })();
 
 paint();
+
+/* ─── Booking-button labels ─────────────────────────────────────
+   One place decides whether it says 25-min, 30-min, or nothing.
+   ────────────────────────────────────────────────────────────── */
+
+(function callLength() {
+  const m = CFG.CALL_MINUTES;
+  if (!m) return;
+  $$('[data-cal-label]').forEach((el) => { el.textContent = `Book a ${m}-min call`; });
+  $$('[data-cal-mins]').forEach((el) => { el.textContent = String(m); });
+})();
+
+/* ─── Wintech AI ────────────────────────────────────────────────
+   A launcher on every page plus an inline panel where a page
+   embeds one. Runs on CFG.AI_ENDPOINT when set, and on the
+   scripted answers in config until then.
+   ────────────────────────────────────────────────────────────── */
+
+const AI = (() => {
+  const state = { messages: [], busy: false, opened: false };
+
+  const SUGGESTIONS = [
+    'What would this cost?',
+    'How long does it take?',
+    'What can the AI actually do?',
+    'Show me something you built'
+  ];
+
+  function scripted(text) {
+    const q = text.toLowerCase();
+    const table = CFG.AI_ANSWERS || [];
+    let best = null, bestHits = 0;
+    table.forEach(([keys, reply]) => {
+      const hits = keys.filter((k) => q.includes(k)).length;
+      if (hits > bestHits) { bestHits = hits; best = reply; }
+    });
+    if (best) return best;
+    return 'I can talk through pricing, timelines, what the AI layer does, or the five products we have live.\n\nFor anything specific to your business, a call is faster than I am. Book one below and you will get a real scope either way.';
+  }
+
+  async function ask(text) {
+    state.messages.push({ role: 'user', content: text });
+    render();
+    state.busy = true;
+    render();
+
+    if (!CFG.AI_ENDPOINT) {
+      await new Promise((r) => setTimeout(r, 260));
+      state.messages.push({ role: 'assistant', content: scripted(text) });
+      state.busy = false;
+      render();
+      return;
+    }
+
+    try {
+      const res = await fetch(CFG.AI_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: state.messages })
+      });
+      if (!res.ok) throw new Error(res.status);
+
+      const type = res.headers.get('content-type') || '';
+      if (type.includes('application/json')) {
+        const data = await res.json();
+        state.messages.push({ role: 'assistant', content: data.reply || '' });
+        state.busy = false;
+        render();
+      } else {
+        const reader = res.body.getReader();
+        const dec = new TextDecoder();
+        const msg = { role: 'assistant', content: '' };
+        state.messages.push(msg);
+        state.busy = false;
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          msg.content += dec.decode(value, { stream: true });
+          render();
+        }
+        render();
+      }
+    } catch (err) {
+      state.busy = false;
+      state.messages.push({
+        role: 'assistant',
+        content: 'I could not reach the model just then. Book a call and you will get a straight answer from a person instead.'
+      });
+      render();
+    }
+  }
+
+  const esc = (s) => String(s).replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
+  const para = (s) => esc(s).split('\n\n').map((p) => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+
+  function render() {
+    $$('[data-ai-log]').forEach((log) => {
+      log.innerHTML = state.messages.map((m) => `
+        <div class="ai__msg ai__msg--${m.role}">
+          ${m.role === 'assistant' ? '<span class="ai__av" aria-hidden="true">W</span>' : ''}
+          <div class="ai__bubble">${para(m.content)}</div>
+        </div>`).join('')
+        + (state.busy ? `
+        <div class="ai__msg ai__msg--assistant">
+          <span class="ai__av" aria-hidden="true">W</span>
+          <div class="ai__bubble ai__bubble--wait"><i></i><i></i><i></i></div>
+        </div>` : '');
+      log.scrollTop = log.scrollHeight;
+    });
+    $$('[data-ai-suggest]').forEach((el) => {
+      el.hidden = state.messages.length > 0;
+    });
+    $$('[data-ai-send]').forEach((b) => { b.disabled = state.busy; });
+  }
+
+  function shell(variant) {
+    return `
+      <div class="ai__head">
+        <span class="ai__av ai__av--lg" aria-hidden="true">W</span>
+        <div>
+          <p class="ai__name">${esc(CFG.AI_NAME || 'Wintech AI')}</p>
+          <p class="ai__status"><span class="dot"></span>${CFG.AI_ENDPOINT ? 'Online' : 'Answering the common ones'}</p>
+        </div>
+        ${variant === 'dock' ? '<button class="ai__x" data-ai-close aria-label="Close assistant"><i data-lucide="x"></i></button>' : ''}
+      </div>
+      <div class="ai__log" data-ai-log role="log" aria-live="polite"></div>
+      <div class="ai__suggest" data-ai-suggest>
+        <p class="ai__greet">${esc(CFG.AI_GREETING || '')}</p>
+        ${SUGGESTIONS.map((s) => `<button class="ai__chip" data-ai-q="${esc(s)}">${esc(s)}</button>`).join('')}
+      </div>
+      <form class="ai__bar" data-ai-form>
+        <input class="ai__input" data-ai-input placeholder="Ask about scope, price, or timeline" aria-label="Message ${esc(CFG.AI_NAME || 'Wintech AI')}" autocomplete="off">
+        <button class="ai__send" type="submit" data-ai-send aria-label="Send"><i data-lucide="arrow-up-right"></i></button>
+      </form>
+      <p class="ai__foot">Straight answers beat a sales call. <a data-cal href="${CFG.CALENDLY || 'contact.html'}"${CFG.CALENDLY ? ' target="_blank" rel="noopener"' : ''}>Book one anyway</a></p>`;
+  }
+
+  function wire(root) {
+    const form = $('[data-ai-form]', root);
+    const input = $('[data-ai-input]', root);
+    form && form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = input.value.trim();
+      if (!v || state.busy) return;
+      input.value = '';
+      ask(v);
+    });
+    $$('[data-ai-q]', root).forEach((b) => {
+      b.addEventListener('click', () => { if (!state.busy) ask(b.dataset.aiQ); });
+    });
+    paint(root);
+  }
+
+  function mountInline() {
+    const host = $('[data-ai-inline]');
+    if (!host) return;
+    host.innerHTML = shell('inline');
+    host.classList.add('ai');
+    wire(host);
+  }
+
+  function mountDock() {
+    if ($('#ai-dock')) return;
+
+    const launcher = document.createElement('button');
+    launcher.className = 'ai-launch';
+    launcher.id = 'ai-launch';
+    launcher.type = 'button';
+    launcher.setAttribute('aria-label', `Open ${CFG.AI_NAME || 'Wintech AI'}`);
+    launcher.innerHTML = `<span class="ai-launch__mark" aria-hidden="true">W</span><span class="ai-launch__txt">Ask ${esc(CFG.AI_NAME || 'Wintech AI')}</span>`;
+
+    const dock = document.createElement('div');
+    dock.className = 'ai ai--dock';
+    dock.id = 'ai-dock';
+    dock.hidden = true;
+    dock.innerHTML = shell('dock');
+
+    document.body.append(launcher, dock);
+    wire(dock);
+
+    const toggle = (open) => {
+      dock.hidden = !open;
+      launcher.classList.toggle('is-hidden', open);
+      if (open) {
+        state.opened = true;
+        requestAnimationFrame(() => $('[data-ai-input]', dock).focus());
+      }
+    };
+    launcher.addEventListener('click', () => toggle(true));
+    $('[data-ai-close]', dock).addEventListener('click', () => { toggle(false); launcher.focus(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !dock.hidden) { toggle(false); launcher.focus(); }
+    });
+  }
+
+  return { mountInline, mountDock, ask, render };
+})();
+
+AI.mountInline();
+AI.mountDock();
+AI.render();
+
+/* Re-point any Calendly links the assistant injected. */
+$$('[data-cal]').forEach((el) => {
+  if (!CFG.CALENDLY) return;
+  el.setAttribute('href', CFG.CALENDLY);
+  el.setAttribute('target', '_blank');
+  el.setAttribute('rel', 'noopener');
+});
+
+/* ─── Hero: the operation running ───────────────────────────────
+   A loop of the thing we sell. An enquiry arrives, the AI reads
+   it, qualifies it, answers, and an order lands. Shows the offer
+   instead of describing it.
+   ────────────────────────────────────────────────────────────── */
+
+(function heroLoop() {
+  const stage = $('[data-op]');
+  if (!stage) return;
+
+  const SCENES = [
+    {
+      t: '11:47pm', ch: 'Instagram DM',
+      msg: 'do you have anything for sleep that isn’t harsh?',
+      steps: ['Reading intent', 'Matching catalogue', 'Checking stock'],
+      out: { kind: 'reply', label: 'Answered in 4s',
+             body: 'The Magnesium Night blend is the gentle one. In stock, ships tomorrow.' }
+    },
+    {
+      t: '2:14am', ch: 'Website chat',
+      msg: 'do you deliver to Abuja and how much',
+      steps: ['Reading intent', 'Delivery matrix', 'Quoting'],
+      out: { kind: 'reply', label: 'Answered in 3s',
+             body: 'Abuja is ₦3,500, two to three days. Free over ₦50,000.' }
+    },
+    {
+      t: '9:02am', ch: 'Enquiry form',
+      msg: 'we run 4 clinics, want this across all of them',
+      steps: ['Reading intent', 'Scoring fit', 'Routing to human'],
+      out: { kind: 'route', label: 'Escalated to you',
+             body: 'Multi-site buyer. Booked into your calendar for 2pm.' }
+    },
+    {
+      t: '9:41am', ch: 'Telegram',
+      msg: 'what’s pending today?',
+      steps: ['Reading intent', 'Querying orders', 'Summarising'],
+      out: { kind: 'admin', label: 'Owner briefed',
+             body: '6 orders pending, 2 awaiting stock, ₦412k cleared this week.' }
+    }
+  ];
+
+  const log = $('[data-op-log]', stage);
+  const meter = $('[data-op-meter]', stage);
+  let i = 0, timers = [];
+  const clear = () => { timers.forEach(clearTimeout); timers = []; };
+  const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+
+  function row(html, cls) {
+    const el = document.createElement('div');
+    el.className = `op__row ${cls || ''}`;
+    el.innerHTML = html;
+    log.appendChild(el);
+    requestAnimationFrame(() => el.classList.add('in'));
+    while (log.children.length > 6) log.removeChild(log.firstChild);
+    return el;
+  }
+
+  function scene() {
+    const s = SCENES[i % SCENES.length];
+    clear();
+    log.innerHTML = '';
+
+    row(`<span class="op__chan">${s.ch}</span><span class="op__time">${s.t}</span>`, 'op__row--meta');
+    at(180, () => row(`<span class="op__who">Customer</span><p>${s.msg}</p>`, 'op__row--in'));
+
+    s.steps.forEach((step, n) => {
+      at(700 + n * 480, () => {
+        const r = row(`<span class="op__spin" aria-hidden="true"></span><span class="op__step">${step}</span>`, 'op__row--step');
+        at(700 + n * 480 + 440, () => {
+          r.classList.add('done');
+          const sp = $('.op__spin', r);
+          if (sp) sp.outerHTML = '<span class="op__tick" aria-hidden="true"></span>';
+        });
+      });
+    });
+
+    const end = 700 + s.steps.length * 480 + 240;
+    at(end, () => {
+      row(`<span class="op__badge op__badge--${s.out.kind}">${s.out.label}</span><p>${s.out.body}</p>`, 'op__row--out');
+      if (meter) {
+        meter.classList.remove('tick');
+        void meter.offsetWidth;
+        meter.classList.add('tick');
+      }
+    });
+
+    at(end + 2600, () => { i += 1; scene(); });
+  }
+
+  /* Only run while it is on screen. */
+  if ('IntersectionObserver' in window && !REDUCED) {
+    let running = false;
+    new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting && !running) { running = true; scene(); }
+      else if (!e.isIntersecting && running) { running = false; clear(); }
+    }), { threshold: 0.15 }).observe(stage);
+  } else {
+    const s = SCENES[0];
+    log.innerHTML = '';
+    row(`<span class="op__chan">${s.ch}</span><span class="op__time">${s.t}</span>`, 'op__row--meta');
+    row(`<span class="op__who">Customer</span><p>${s.msg}</p>`, 'op__row--in');
+    row(`<span class="op__badge op__badge--reply">${s.out.label}</span><p>${s.out.body}</p>`, 'op__row--out');
+  }
+})();
+
+/* ─── Section 2: the three explainers, drawn not described ────── */
+
+(function explainers() {
+  const hosts = $$('[data-viz]');
+  if (!hosts.length) return;
+
+  const play = (el) => {
+    el.classList.add('go');
+    if (el.dataset.viz === 'leak') {
+      const bars = $$('.viz-flow__fill', el);
+      bars.forEach((b, n) => setTimeout(() => b.classList.add('go'), 180 + n * 260));
+    }
+    if (el.dataset.viz === 'shift') {
+      const lines = $$('.viz-chat__line', el);
+      lines.forEach((l, n) => setTimeout(() => l.classList.add('go'), 200 + n * 620));
+    }
+    if (el.dataset.viz === 'earn') {
+      const n = $('[data-count]', el);
+      if (!n) return;
+      const target = Number(n.dataset.count);
+      const t0 = performance.now();
+      const step = (now) => {
+        const p = Math.min(1, (now - t0) / 1200);
+        const eased = 1 - Math.pow(1 - p, 3);
+        n.textContent = Math.round(target * eased);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+  };
+
+  if (!('IntersectionObserver' in window) || REDUCED) { hosts.forEach(play); return; }
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    play(e.target);
+    io.unobserve(e.target);
+  }), { threshold: 0.4 });
+  hosts.forEach((h) => io.observe(h));
+})();

@@ -65,7 +65,7 @@
         <a class="nav__link" href="quote.html">Estimate</a>
         <div class="nav__sheet">
           <p>One studio for the system, the software, and the story.</p>
-          <a class="btn" data-cal href="#">Book a 30-min call</a>
+          <a class="btn" data-cal href="#" data-cal-label>Book a 25-min call</a>
         </div>
       </div>
     </nav>
@@ -89,25 +89,23 @@
 
       <div class="hero__copy">
         <p class="kicker">Lagos · AI, product, and brand</p>
-        <h1 class="t-xl">Systems that make serious businesses move faster.</h1>
-        <p class="t-lead">We study how your business actually makes money, then build the software and AI around that. Most of the time it replaces the hire you were about to make.</p>
+        <h1 class="t-xl">Your best salesperson should not need to sleep.</h1>
+        <p class="t-lead">We study how your business actually makes money, then build the AI and software that carries the load around it. Most of the time it replaces the hire you were about to make.</p>
         <div class="hero__actions">
-          <a class="btn btn--lg" data-cal href="#"><span>Book a 30-min call</span><i data-lucide="arrow-up-right"></i></a>
+          <a class="btn btn--lg" data-cal href="#"><span data-cal-label>Book a 25-min call</span><i data-lucide="arrow-up-right"></i></a>
           <a class="btn btn--ghost btn--lg" href="quote.html"><span>See a price range</span></a>
         </div>
         <p class="slot" data-slot><span class="dot"></span><span data-slot-text>Next start: November</span></p>
       </div>
 
       <div class="hero__stage">
-        <div class="hero__shot">
-          <img src="images/opt/viral-wellness-1600.webp"
-               srcset="images/opt/viral-wellness-1000.webp 1000w, images/opt/viral-wellness-1600.webp 1600w"
-               sizes="(max-width:1000px) 100vw, 940px"
-               alt="Virelle Wellness Hub: the live storefront, brand system, and AI support layer we built"
-               width="1600" height="1000" fetchpriority="high" decoding="async">
-          <a class="hero__live" href="https://www.virellewellnesshub.com/" target="_blank" rel="noopener">
-            <span class="dot"></span> Live · virellewellnesshub.com <i data-lucide="arrow-up-right"></i>
-          </a>
+        <div class="op" data-op>
+          <div class="op__top">
+            <span class="op__mark" aria-hidden="true">W</span>
+            <p class="op__title">The layer we build, running live</p>
+            <span class="op__meter" data-op-meter>handled <b>24/7</b></span>
+          </div>
+          <div class="op__log" data-op-log aria-live="off"></div>
         </div>
       </div>
     </div>
@@ -125,29 +123,39 @@
           <p class="feature__n">01</p>
           <h3>We map where the money moves</h3>
           <p>Before anything gets designed we sit inside the operation: where demand arrives, what happens to it next, and which step quietly loses people. That map decides what gets built, and in what order.</p>
-          <div class="mini" aria-hidden="true">
-            <span class="chip">Operation map</span>
-            <div class="mini__row"><span>Demand</span><span>Fulfilment</span><span>Follow-up</span></div>
-            <div class="mini__bar" style="--w:46%"><i></i></div>
+          <div class="viz" data-viz="leak" aria-hidden="true">
+            <div class="viz-flow">
+              <div class="viz-flow__row"><span class="viz-flow__lbl">Demand</span><span class="viz-flow__track"><i class="viz-flow__fill" style="--w:92%"></i></span></div>
+              <div class="viz-flow__row viz-flow__row--leak"><span class="viz-flow__lbl">Reply</span><span class="viz-flow__track"><i class="viz-flow__fill" style="--w:34%"></i></span><span class="viz-flow__tag">leak</span></div>
+              <div class="viz-flow__row"><span class="viz-flow__lbl">Order</span><span class="viz-flow__track"><i class="viz-flow__fill" style="--w:29%"></i></span></div>
+            </div>
           </div>
         </article>
         <article class="card feature">
           <p class="feature__n">02</p>
           <h3>The AI carries a real shift</h3>
           <p>Support, recommendations, and qualification, trained on your actual range and written in your tone. It answers the hundred repeat questions so a person is free for the ten that need judgement.</p>
-          <div class="mini" aria-hidden="true">
-            <span class="chip">Customer</span>
-            <p>Need something for sleep that isn’t harsh.</p>
-            <span class="chip" style="align-self:flex-end">Recommended · in stock</span>
+          <div class="viz" data-viz="shift" aria-hidden="true">
+            <div class="viz-chat">
+              <p class="viz-chat__meta">2:14am</p>
+              <span class="viz-chat__line viz-chat__line--them">something for sleep that isn’t harsh?</span>
+              <span class="viz-chat__line viz-chat__line--ai">Magnesium Night. Gentle, in stock, ships tomorrow.</span>
+              <span class="viz-chat__line viz-chat__line--them">perfect, I’ll take two</span>
+            </div>
           </div>
         </article>
         <article class="card feature">
           <p class="feature__n">03</p>
           <h3>It is built to earn</h3>
           <p>Search can find it. A visitor reaches a conversation in one step. Everything is measured after launch, and when speed is the real constraint, a fast MVP proves the idea before the full build.</p>
-          <div class="mini" aria-hidden="true">
-            <div class="mini__row"><b>Impact</b><span>without extra headcount</span></div>
-            <div class="mini__bar" style="--w:78%"><i></i></div>
+          <div class="viz" data-viz="earn" aria-hidden="true">
+            <div class="viz-earn">
+              <p class="viz-earn__big"><span data-count="24">0</span><span>/7</span></p>
+              <p class="viz-earn__cap">Answering, qualifying, and closing while you sleep.</p>
+              <div class="viz-earn__bars">
+                <i style="--h:26%"></i><i style="--h:38%"></i><i style="--h:34%"></i><i style="--h:56%"></i><i style="--h:72%"></i><i style="--h:100%"></i>
+              </div>
+            </div>
           </div>
         </article>
       </div>
@@ -234,8 +242,8 @@
     <div class="wrap">
       <div class="sec__head">
         <span class="pill">Selected work</span>
-        <h2 class="t-lg">Nine products built. Six are live.</h2>
-        <p class="t-lead">Open any of them for the problem it solved, what we built, and where it stands today.</p>
+        <h2 class="t-lg">Five products. All five are live.</h2>
+        <p class="t-lead">Open any of them for the problem it solved and what we built against it. Every one has a working URL.</p>
       </div>
       <div class="work-grid">
         <button class="work" type="button" data-project="virelle">
@@ -279,7 +287,43 @@
           <p class="dept">Product · 2025</p>
         </button>
       </div>
-      <a class="more" href="work.html">See all nine projects <i data-lucide="arrow-right"></i></a>
+      <a class="more" href="work.html">See all five projects <i data-lucide="arrow-right"></i></a>
+    </div>
+  </section>
+
+  <section class="sec sec--soft" id="wintech-ai">
+    <div class="wrap ai-split">
+      <div class="ai-split__copy">
+        <span class="pill">Wintech AI</span>
+        <h2 class="t-lg">The thing we sell you, answering for us.</h2>
+        <p class="t-body">This is the same layer we build for clients, pointed at our own business. It knows what we charge, how long things take, and what we would recommend for a given situation. Ask it something awkward.</p>
+        <p class="t-body">If it cannot help, it says so and hands you a real slot rather than looping. That is the standard we hold the ones we build for you to as well.</p>
+        <ul class="ai-split__pts">
+          <li><i data-lucide="check"></i> Trained on the actual offer, not a generic script</li>
+          <li><i data-lucide="check"></i> Escalates instead of stalling</li>
+          <li><i data-lucide="check"></i> Runs on the site, in the DMs, or on Telegram</li>
+        </ul>
+        <a class="btn" href="automation.html"><span>See what we can build you</span><i data-lucide="arrow-right"></i></a>
+      </div>
+      <div data-ai-inline></div>
+    </div>
+  </section>
+
+  <section class="sec sec--soft" id="wintech-ai">
+    <div class="wrap ai-split">
+      <div class="ai-split__copy">
+        <span class="pill">Wintech AI</span>
+        <h2 class="t-lg">The thing we sell you, answering for us.</h2>
+        <p class="t-body">This is the same layer we build for clients, pointed at our own business. It knows what we charge, how long things take, and what we would recommend for a given situation. Ask it something awkward.</p>
+        <p class="t-body">When it cannot help, it says so and hands you a real slot rather than looping. That is the standard we hold the ones we build for you to as well.</p>
+        <ul class="ai-split__pts">
+          <li><i data-lucide="check"></i><span>Trained on the actual offer, not a generic script</span></li>
+          <li><i data-lucide="check"></i><span>Escalates to a human instead of stalling</span></li>
+          <li><i data-lucide="check"></i><span>Runs on a site, in the DMs, or on Telegram</span></li>
+        </ul>
+        <a class="btn" href="automation.html"><span>See what we can build you</span><i data-lucide="arrow-right"></i></a>
+      </div>
+      <div data-ai-inline></div>
     </div>
   </section>
 
@@ -290,8 +334,8 @@
         <h2 class="t-lg">Questions we get asked most.</h2>
         <div class="faq-cta">
           <p class="faq-cta__title">Yours not here?</p>
-          <p>Thirty minutes is usually enough to answer it properly.</p>
-          <a class="btn btn--accent" data-cal href="#"><span>Book a 30-min call</span></a>
+          <p>Twenty-five minutes is usually enough to answer it properly.</p>
+          <a class="btn btn--accent" data-cal href="#"><span data-cal-label>Book a 25-min call</span></a>
           <a class="faq-cta__alt" href="contact.html">Or send a written brief</a>
         </div>
       </div>
@@ -335,9 +379,9 @@
     <div class="wrap">
       <p class="kicker">Next step</p>
       <h2>Tell us what’s slowing you down.</h2>
-      <p class="t-lead">Thirty minutes on a call. We map the scope, the order things get built in, and what it costs. You leave with a plan either way.</p>
+      <p class="t-lead">Twenty-five minutes on a call. We map the scope, the order things get built in, and what it costs. You leave with a plan either way.</p>
       <div class="foot__actions">
-        <a class="btn btn--accent" data-cal href="#">Book a 30-min call</a>
+        <a class="btn btn--accent" data-cal href="#" data-cal-label>Book a 25-min call</a>
         <a class="foot__alt" href="contact.html">Or send a written brief</a>
       </div>
     </div>
