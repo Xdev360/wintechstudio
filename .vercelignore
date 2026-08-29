@@ -6,3 +6,7 @@ images/*.png
 partials/
 tools/
 README-ESTIMATOR.md
+
+# Trial-licensed font builds must never reach the CDN.
+fonts/*.woff2
+fonts/*.woff
