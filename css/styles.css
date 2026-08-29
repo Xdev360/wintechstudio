@@ -29,8 +29,8 @@
 
   --page:#FFFFFF;
   --ink:#0A0E17;
-  --mute:rgba(10,14,23,.58);
-  --mute-2:rgba(10,14,23,.42);
+  --mute:rgba(10,14,23,.66);
+  --mute-2:rgba(10,14,23,.58);
   --line:rgba(10,14,23,.09);
   --line-2:rgba(10,14,23,.16);
   --accent:#3B5BFF;
@@ -55,8 +55,8 @@
   :root{
     --page:#0B0F16;
     --ink:#F2F4F8;
-    --mute:rgba(242,244,248,.68);
-    --mute-2:rgba(242,244,248,.46);
+    --mute:rgba(242,244,248,.78);
+    --mute-2:rgba(242,244,248,.62);
     --line:rgba(255,255,255,.10);
     --line-2:rgba(255,255,255,.18);
     --accent:#8AA0FF;
@@ -418,7 +418,7 @@ a.card:hover,.card--int:hover{transform:translateY(-4px);box-shadow:var(--shadow
   font-family:var(--font-display);font-size:.8rem;font-weight:var(--w-display);color:var(--accent);
   letter-spacing:.02em;margin:0 0 2px;
 }
-.feature h3{font-size:1.05rem;font-weight:var(--w-display);letter-spacing:-.02em}
+.feature h2,.feature h3{font-size:1.05rem;font-weight:var(--w-display);letter-spacing:-.02em}
 .feature p{margin:0;color:var(--mute);font-size:.885rem;line-height:1.58}
 
 /* Visual mini-panels inside cards */
@@ -451,11 +451,11 @@ a.svc-tile:hover .svc-tile__go{gap:11px}
 .svc-tile__go svg{width:14px;height:14px}
 .svc-tile--lead{
   grid-row:1 / span 2;background:var(--ink);border-color:var(--ink);
-  color:color-mix(in srgb,var(--page) 78%,transparent);
+  color:color-mix(in srgb,var(--page) 86%,transparent);
 }
-.svc-tile--lead .kicker{color:color-mix(in srgb,var(--page) 48%,transparent)}
+.svc-tile--lead .kicker{color:color-mix(in srgb,var(--page) 68%,transparent)}
 .svc-tile--lead h3{color:var(--page);font-size:1.25rem}
-.svc-tile--lead p{color:color-mix(in srgb,var(--page) 70%,transparent)}
+.svc-tile--lead p{color:color-mix(in srgb,var(--page) 80%,transparent)}
 .svc-tile--lead .btn{background:var(--page);color:var(--ink);border-color:var(--page);margin-top:auto;align-self:flex-start}
 .svc-tile--lead .btn:hover{background:color-mix(in srgb,var(--page) 88%,var(--ink));border-color:transparent}
 
@@ -1384,4 +1384,219 @@ html.is-leaving body{opacity:0;transition:opacity .22s ease}
 @media (prefers-reduced-motion:reduce){
   .ill .draw{stroke-dashoffset:0}
   .ill .pop,.ill .rise{opacity:1;transform:none}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   18. CASE STUDY PAGES
+   ══════════════════════════════════════════════════════════════ */
+
+.cs-hero{padding:56px 0 0}
+.cs-hero__top{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:18px}
+.cs-hero h1{font-size:clamp(2rem,4.4vw,3.1rem);line-height:1.06;letter-spacing:-.026em;max-width:18ch}
+.cs-hero .t-lead{max-width:52ch;margin-top:14px}
+.cs-hero__actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+
+.cs-facts{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  margin-top:44px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--page);overflow:hidden;
+}
+.cs-fact{padding:20px 22px;border-right:1px solid var(--line)}
+.cs-fact:last-child{border-right:0}
+.cs-fact dt{
+  font-size:.68rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--mute-2);margin-bottom:7px;
+}
+.cs-fact dd{margin:0;font-family:var(--font-display);font-weight:var(--w-display);font-size:.98rem;letter-spacing:-.015em}
+
+.cs-shot{
+  margin:44px 0 0;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--line);background:var(--soft);box-shadow:var(--shadow-2);
+}
+.cs-shot img{width:100%;height:auto;display:block}
+.cs-shot figcaption{
+  padding:13px 18px;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--mute-2);background:var(--page);
+}
+
+.cs-body{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:24px 56px;align-items:start}
+.cs-body + .cs-body{margin-top:56px}
+.cs-body__label{
+  font-family:var(--font);font-weight:600;
+  font-size:.68rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--mute-2);position:sticky;top:100px;
+}
+.cs-body__text .t-body{font-size:1.02rem}
+.cs-body__text h3{font-size:1.15rem;margin:26px 0 10px;letter-spacing:-.02em}
+.cs-body__text h3:first-child{margin-top:0}
+
+.cs-list{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.cs-list li{position:relative;padding-left:26px;color:var(--mute);font-size:.98rem;line-height:1.6}
+.cs-list li::before{
+  content:"";position:absolute;left:0;top:.52em;width:14px;height:14px;border-radius:50%;
+  background:color-mix(in srgb,var(--accent) 18%,transparent);
+}
+.cs-list li::after{
+  content:"";position:absolute;left:4.5px;top:calc(.52em + 4px);width:5px;height:5px;
+  border-radius:50%;background:var(--accent);
+}
+.cs-list b{color:var(--ink);font-weight:500}
+
+.cs-quote{
+  margin:0;padding:32px;border-radius:var(--r);background:var(--soft);
+  display:flex;flex-direction:column;gap:16px;
+}
+.cs-quote p{
+  margin:0;font-family:var(--font-display);font-weight:var(--w-display);
+  font-size:clamp(1.15rem,2.2vw,1.45rem);line-height:1.4;letter-spacing:-.02em;color:var(--ink);
+}
+.cs-quote footer{display:flex;align-items:center;gap:12px;font-size:.88rem;color:var(--mute)}
+.cs-quote .avatar{width:38px;height:38px;font-size:.78rem}
+.cs-quote--empty{border:1px dashed var(--line-2);background:transparent}
+.cs-quote--empty p{color:var(--mute-2);font-family:var(--font);font-weight:400;font-size:.95rem;letter-spacing:0}
+
+.cs-next{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+.cs-next a{
+  display:flex;flex-direction:column;gap:8px;padding:24px;
+  border:1px solid var(--line);border-radius:var(--r);background:var(--page);
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .3s ease;
+}
+.cs-next a:hover{transform:translateY(-3px);box-shadow:var(--shadow-2);border-color:var(--line-2)}
+.cs-next .kicker{margin-bottom:2px}
+.cs-next b{font-family:var(--font-display);font-weight:var(--w-display);font-size:1.08rem;letter-spacing:-.02em}
+.cs-next small{color:var(--mute);font-size:.88rem;line-height:1.5}
+
+@media (max-width:960px){
+  .cs-facts{grid-template-columns:1fr 1fr}
+  .cs-fact:nth-child(2){border-right:0}
+  .cs-fact:nth-child(1),.cs-fact:nth-child(2){border-bottom:1px solid var(--line)}
+  .cs-body{grid-template-columns:1fr;gap:12px}
+  .cs-body__label{position:static}
+  .cs-next{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+  .cs-hero{padding-top:36px}
+  .cs-facts{grid-template-columns:1fr}
+  .cs-fact{border-right:0;border-bottom:1px solid var(--line)}
+  .cs-fact:last-child{border-bottom:0}
+  .cs-quote{padding:24px}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   19. PROOF STRIP
+   ══════════════════════════════════════════════════════════════ */
+
+.proof{padding-block:56px}
+.proof__grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.proof__item{padding:28px 26px;border-right:1px solid var(--line)}
+.proof__item:last-child{border-right:0}
+.proof__n{
+  margin:0 0 6px;font-family:var(--font-display);font-weight:var(--w-display);
+  font-size:2.1rem;line-height:1;letter-spacing:-.03em;color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.proof__lbl{margin:0 0 6px;font-size:.92rem;font-weight:500;color:var(--ink);line-height:1.4}
+.proof__sub{margin:0;font-size:.82rem;color:var(--mute);line-height:1.5}
+.proof__cases{margin:26px 0 0;font-size:.92rem;color:var(--mute);text-align:center}
+
+.hero__alt{margin:2px 0 0;font-size:.88rem;color:var(--mute)}
+
+@media (max-width:960px){
+  .proof__grid{grid-template-columns:1fr 1fr}
+  .proof__item:nth-child(2){border-right:0}
+  .proof__item:nth-child(1),.proof__item:nth-child(2){border-bottom:1px solid var(--line)}
+}
+@media (max-width:600px){
+  .proof{padding-block:40px}
+  .proof__grid{grid-template-columns:1fr}
+  .proof__item{border-right:0;border-bottom:1px solid var(--line);padding:22px 0}
+  .proof__item:last-child{border-bottom:0}
+  .proof__n{font-size:1.8rem}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   20. MOBILE AS THE PRIMARY SURFACE
+   An 8px base unit, 48px minimum touch targets, and no element
+   that needs a horizontal fight to read.
+   ══════════════════════════════════════════════════════════════ */
+
+@media (max-width:720px){
+  :root{
+    --gutter:20px;--edge:20px;
+    --r:16px;--r-in:12px;
+  }
+
+  /* Vertical rhythm: one scale, applied everywhere. */
+  .sec{padding-block:56px}
+  .sec--tight{padding-block:40px}
+  #faq.sec{padding-block:56px 64px}
+  .sec__head{margin-bottom:28px;gap:10px}
+  .hero{padding:8px var(--edge) 40px}
+  .hero__frame{padding:40px 20px 44px;border-radius:20px}
+  .hero__copy{gap:16px}
+  .hero h1{max-width:none}
+  .hero .t-lead{font-size:1rem;line-height:1.55}
+
+  /* Every tap target clears 48px. */
+  .btn{min-height:50px;height:auto;padding:14px 22px}
+  .btn--lg{min-height:54px;padding:16px 26px}
+  .hero__actions{width:100%}
+  .hero__actions .btn{width:100%}
+  .nav__link{min-height:52px}
+  .faq__q{min-height:56px;padding:16px 18px}
+  .opt span,.check span{min-height:44px;display:inline-flex;align-items:center}
+  .index__row{min-height:64px}
+  .ai__chip{min-height:44px;display:inline-flex;align-items:center}
+  .foot__col a{min-height:44px;display:inline-flex;align-items:center}
+  .nav__burger{width:48px;height:48px;margin-right:-10px}
+  .ai__send{width:46px;height:46px;flex:0 0 46px}
+  .more{min-height:48px;display:inline-flex;align-items:center}
+  .brand{min-height:48px}
+  .mega__all,.nav__acc a{min-height:44px}
+  .faq-cta__alt,.foot__alt{min-height:44px;display:inline-flex;align-items:center}
+  .strip__card{min-height:44px}
+  .sheet__close{width:44px;height:44px}
+
+  /* The hero strip stacks instead of sliding sideways. */
+  .strip{margin-top:22px;overflow:visible}
+  .strip::before,.strip::after{display:none}
+  .strip__track{
+    animation:none;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  }
+  .strip__track > .strip__card:nth-child(n+6){display:none}
+  .strip__card{width:auto}
+  .strip__name{font-size:.82rem}
+  .strip__dept{display:none}
+  .strip__cap{margin-top:16px;font-size:.84rem}
+
+  /* Work cards: full width, everything visible without pinching. */
+  .work-grid{grid-template-columns:1fr;gap:14px}
+  .work{padding:8px 8px 16px}
+  .work__head{margin:12px 6px 4px}
+  .work h3{font-size:1.05rem}
+  .work > p{font-size:.9rem;margin:0 6px}
+  .work .dept{margin:8px 6px 0}
+  .work__open{opacity:1;transform:none;right:10px;bottom:10px;height:32px;font-size:.76rem}
+  .work__veil{opacity:1;background:linear-gradient(0deg,rgba(10,14,23,.42),transparent 48%)}
+
+  /* Long-form text gets room to breathe. */
+  .t-body{font-size:.98rem;line-height:1.7}
+  .offer-head{margin-bottom:28px;gap:12px}
+  .offer li{padding:18px;gap:12px}
+  .cs-body__text .t-body{font-size:.98rem}
+  .cs-hero .t-lead{font-size:1rem}
+
+  /* Dock sits clear of the thumb zone and the footer CTA. */
+  .ai-launch{bottom:16px;right:16px}
+}
+
+/* Small phones */
+@media (max-width:400px){
+  :root{--gutter:16px;--edge:16px}
+  .strip__track{grid-template-columns:1fr}
+  .strip__track > .strip__card:nth-child(n+4){display:none}
+  .strip__dept{display:block}
 }

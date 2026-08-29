@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Cleartext: translating wallet signing requests · Wintech Studio</title>
+<meta name="description" content="How Wintech Studio built Cleartext, a decoder and Chrome extension that translates a wallet signing request before you approve it.">
+<meta property="og:title" content="Cleartext · Wintech Studio case study">
+<meta property="og:description" content="How Wintech Studio built Cleartext, a decoder and Chrome extension that translates a wallet signing request before you approve it.">
+<meta property="og:type" content="article">
+<!--#head-->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C1018" media="(prefers-color-scheme: dark)">
+<script>if('IntersectionObserver' in window)document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=switzer@400,500,600&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<!--#/head-->
+</head>
+<body data-page="work">
+
+<!--#nav-->
+<header class="nav" id="site-nav">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="nav__bar">
+    <a class="brand" href="index.html"><span class="brand__mark">W</span>Wintech Studio</a>
+    <nav class="nav__links" id="navlinks" aria-label="Main">
+      <div class="nav__drop">
+        <a class="nav__link" href="work.html" data-nav="work">Work <i data-lucide="chevron-down"></i></a>
+        <div class="mega mega--work">
+          <a class="mega__proj" href="work.html#virelle"><img src="images/live/virelle-640.webp" alt="" width="52" height="33" loading="lazy" decoding="async"><span><b>Virelle Wellness Hub</b><small>Website, brand and AI</small></span></a>
+          <a class="mega__proj" href="work.html#mylo"><img src="images/live/mylo-640.webp" alt="" width="52" height="33" loading="lazy" decoding="async"><span><b>Mylo</b><small>Product and AI</small></span></a>
+          <a class="mega__proj" href="work.html#lets-hang"><img src="images/live/letshang-640.webp" alt="" width="52" height="33" loading="lazy" decoding="async"><span><b>Let’s Hang</b><small>Product</small></span></a>
+          <a class="mega__proj" href="work.html#cybersweep"><img src="images/live/cybersweep-640.webp" alt="" width="52" height="33" loading="lazy" decoding="async"><span><b>Cyber Sweep</b><small>Product</small></span></a>
+          <a class="mega__all" href="work.html">All nine projects <i data-lucide="arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="nav__drop">
+        <a class="nav__link" href="services.html" data-nav="services">Services <i data-lucide="chevron-down"></i></a>
+        <div class="mega mega--svc">
+          <a class="mega__item" href="automation.html"><span class="mega__ico"><i data-lucide="bot"></i></span><span><b>Automation &amp; AI</b><small>Support, CRM, and workflows</small></span></a>
+          <a class="mega__item" href="product.html"><span class="mega__ico"><i data-lucide="app-window"></i></span><span><b>Product &amp; apps</b><small>Software built around your operation</small></span></a>
+          <a class="mega__item" href="websites.html"><span class="mega__ico"><i data-lucide="monitor"></i></span><span><b>Websites</b><small>Story, SEO, and a path to order</small></span></a>
+          <a class="mega__item" href="brand.html"><span class="mega__ico"><i data-lucide="palette"></i></span><span><b>Brand systems</b><small>An identity you can charge with</small></span></a>
+          <a class="mega__item" href="growth.html"><span class="mega__ico"><i data-lucide="trending-up"></i></span><span><b>Growth &amp; content</b><small>A publishing rhythm that holds</small></span></a>
+          <a class="mega__item" href="mvp.html"><span class="mega__ico"><i data-lucide="zap"></i></span><span><b>Fast MVP</b><small>A first version in weeks</small></span></a>
+        </div>
+      </div>
+      <div class="nav__drop">
+        <a class="nav__link" href="about.html" data-nav="about">About <i data-lucide="chevron-down"></i></a>
+        <div class="mega mega--about">
+          <a href="about.html">The studio</a>
+          <a href="about.html#approach">How we work</a>
+          <a href="about.html#fit">Who it’s for</a>
+        </div>
+      </div>
+      <div class="nav__mobile">
+        <a class="nav__link" href="contact.html">Contact</a>
+        <a class="nav__link" href="quote.html">Estimate</a>
+        <div class="nav__sheet">
+          <p>One studio for the system, the software, and the story.</p>
+          <a class="btn" data-cal href="#" data-cal-label>Book a 25-min call</a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav__end">
+      <a class="btn btn--ghost" href="quote.html">Estimate</a>
+      <a class="btn" data-cal href="#">Book a call</a>
+      <button class="nav__burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks"></button>
+    </div>
+  </div>
+</header>
+<!--#/nav-->
+
+<main id="main">
+  <section class="sec cs-hero">
+    <div class="wrap">
+      <div class="cs-hero__top">
+        <a class="text-link" href="work.html">Work</a>
+        <span class="dept">/</span>
+        <span class="tag tag--live">Live</span>
+      </div>
+      <h1 class="t-xl">Your wallet shows hex. Cleartext shows a sentence.</h1>
+      <p class="t-lead">People empty their own wallets by approving requests they cannot read. Cleartext intercepts the signing request, translates what it actually does into plain English, and lets you reject it before you click.</p>
+      <div class="cs-hero__actions">
+        <a class="btn" href="https://cleartextapp.vercel.app/" target="_blank" rel="noopener"><span>Open Cleartext</span><i data-lucide="arrow-up-right"></i></a>
+        <a class="btn btn--ghost" data-cal href="#"><span data-cal-label>Book a 25-min call</span></a>
+      </div>
+
+      <dl class="cs-facts"><div class="cs-fact"><dt>Scope</dt><dd>Product and extension</dd></div><div class="cs-fact"><dt>Surface</dt><dd>Web plus Chrome</dd></div><div class="cs-fact"><dt>Status</dt><dd>Live</dd></div><div class="cs-fact"><dt>Adds</dt><dd>0.4s to signing</dd></div></dl>
+
+      <figure class="cs-shot">
+        <img src="images/live/cleartext-1000.webp" srcset="images/live/cleartext-640.webp 640w, images/live/cleartext-1000.webp 1000w" sizes="(max-width:1200px) 100vw, 1100px" alt="Cleartext translating signing requests, including a high-risk one that moves funds out of the wallet" width="1440" height="900" fetchpriority="high" decoding="async">
+        <figcaption>Four real request types, translated. The third is the one that matters: a request presented as a claim that actually moves money out.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="cs-body">
+        <h2 class="cs-body__label">The problem</h2>
+        <div class="cs-body__text">
+          <p class="t-body">A wallet signing request is a wall of hexadecimal. The person approving it has no way to tell a routine swap from a contract that can drain the account with no time limit. Wallets do show a warning, but then they show the same two buttons as always, which leaves the decision exactly where it started.</p>
+          <p class="t-body">The loss is not discovered at the moment of signing. It is discovered weeks later.</p>
+        </div>
+      </div>
+
+      <div class="cs-body">
+        <h2 class="cs-body__label">The insight</h2>
+        <div class="cs-body__text">
+          <p class="t-body">The failure is not carelessness, it is legibility. People are being asked to make a security decision from data written for machines.</p>
+          <p class="t-body">Which meant the product could not be another warning layer. It had to <strong>do the reading and state the consequence in a sentence</strong>, with the risky case phrased as plainly as the harmless one. “This is not a claim. It moves $13,797 out of your wallet” is a decision. A red triangle is not.</p>
+          <p class="t-body">It also had to stay out of the way. Anything that replaced someone’s existing wallet would not get installed, so Cleartext sits in front of the one they already use and adds fractions of a second.</p>
+        </div>
+      </div>
+
+      <div class="cs-body">
+        <h2 class="cs-body__label">What we built</h2>
+        <div class="cs-body__text">
+          <h3>A decoder anyone can try</h3>
+          <p class="t-body">A web surface that translates a pasted request immediately, with no wallet connection and nothing to install, so the idea can be evaluated in seconds.</p>
+          <h3>A Chrome extension for real use</h3>
+          <p class="t-body">It intercepts the request, translates it, and offers reject or continue. Continue hands straight back to MetaMask, Rabby, Phantom, Coinbase Wallet, Trust, or Ledger.</p>
+          <h3>Honest failure states</h3>
+          <p class="t-body">When a request cannot be simulated, it says so and marks it unverified rather than guessing. A tool that quietly gets one wrong is worse than no tool.</p>
+          <ul class="cs-list">
+            <li><b>Nothing unusual:</b> stated plainly, no alarm</li>
+            <li><b>Check this:</b> unusual permissions, spelled out</li>
+            <li><b>High risk:</b> the actual amount leaving, in dollars</li>
+            <li><b>Could not verify:</b> admitted rather than assumed</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cs-body">
+        <h2 class="cs-body__label">Where it stands</h2>
+        <div class="cs-body__text">
+          <p class="t-body">Live at cleartextapp.vercel.app, working alongside the six wallets most people already use.</p>
+        <blockquote class="cs-quote cs-quote--empty">
+          <p>Client quote goes here. Ask for two sentences on what changed after launch, then replace this block. A named quote with a company beats an anonymous one, but an anonymous specific quote still beats nothing.</p>
+        </blockquote>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="sec sec--soft">
+    <div class="wrap">
+      <div class="sec__head"><span class="pill">Keep reading</span><h2 class="t-lg">Two more builds.</h2></div>
+      <div class="cs-next"><a href="case-virelle.html"><span class="kicker">Next project</span><b>Virelle Wellness Hub</b><small>A shop, a brand, and two AI systems replacing an Instagram inbox.</small></a><a href="case-cybersweep.html"><span class="kicker">Next project</span><b>Cyber Sweep</b><small>A pre-launch audit that reads an AI-built app in the browser.</small></a></div>
+    </div>
+  </section>
+
+</main>
+
+<!--#footer-->
+<footer class="foot">
+  <div class="foot__cta">
+    <div class="wrap">
+      <p class="kicker">Next step</p>
+      <h2>Tell us what’s slowing you down.</h2>
+      <p class="t-lead">Twenty-five minutes on a call. We map the scope, the order things get built in, and what it costs. You leave with a plan either way.</p>
+      <div class="foot__actions">
+        <a class="btn btn--accent" data-cal href="#" data-cal-label>Book a 25-min call</a>
+        <a class="foot__alt" href="contact.html">Or send a written brief</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot__grid">
+    <div class="foot__about">
+      <p class="foot__brand"><span class="brand__mark">W</span>Wintech Studio</p>
+      <p class="meta">A Lagos studio building the AI, product, and brand systems that serious businesses run on.</p>
+    </div>
+    <div class="foot__col">
+      <h3>Work</h3>
+      <a href="work.html#virelle">Virelle Wellness Hub</a>
+      <a href="work.html#mylo">Mylo</a>
+      <a href="work.html#lets-hang">Let’s Hang</a>
+      <a href="work.html">All projects</a>
+    </div>
+    <div class="foot__col">
+      <h3>Services</h3>
+      <a href="automation.html">Automation &amp; AI</a>
+      <a href="product.html">Product &amp; apps</a>
+      <a href="websites.html">Websites</a>
+      <a href="brand.html">Brand systems</a>
+      <a href="mvp.html">Fast MVP</a>
+    </div>
+    <div class="foot__col">
+      <h3>Studio</h3>
+      <a href="about.html">About</a>
+      <a href="quote.html">Estimate</a>
+      <a href="contact.html">Contact</a>
+      <a data-cal href="#">Book a call</a>
+    </div>
+  </div>
+  <div class="wrap foot__bar">
+    <span>&copy; <span data-year>2026</span> Wintech Studio · Lagos, Nigeria</span>
+    <span>Four projects at a time</span>
+  </div>
+</footer>
+<!--#/footer-->
+
+<!--#scripts-->
+<script src="js/config.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/main.js"></script>
+<!--#/scripts-->
+</body>
+</html>
