@@ -1,0 +1,8 @@
+# Source PNGs stay in the repo so tools/optimise-images.py can regenerate,
+# but nothing links them, so they never need to reach the CDN.
+images/*.png
+
+# Build-time only.
+partials/
+tools/
+README-ESTIMATOR.md
