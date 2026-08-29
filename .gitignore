@@ -6,4 +6,4 @@ assets/
 
 # Gellix preview builds are TRIAL / Personal-Use-Only. Never commit or deploy them.
 fonts/*.woff2
-fonts/*.woff
+

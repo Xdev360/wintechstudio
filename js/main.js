@@ -922,110 +922,6 @@ $$('[data-cal]').forEach((el) => {
   el.setAttribute('rel', 'noopener');
 });
 
-/* ─── Hero: the operation running ───────────────────────────────
-   A loop of the thing we sell. An enquiry arrives, the AI reads
-   it, qualifies it, answers, and an order lands. Shows the offer
-   instead of describing it.
-   ────────────────────────────────────────────────────────────── */
-
-(function heroLoop() {
-  const stage = $('[data-op]');
-  if (!stage) return;
-
-  const SCENES = [
-    {
-      t: '11:47pm', ch: 'Instagram DM',
-      msg: 'do you have anything for sleep that isn’t harsh?',
-      steps: ['Reading intent', 'Matching catalogue', 'Checking stock'],
-      out: { kind: 'reply', label: 'Answered in 4s',
-             body: 'The Magnesium Night blend is the gentle one. In stock, ships tomorrow.' }
-    },
-    {
-      t: '2:14am', ch: 'Website chat',
-      msg: 'do you deliver to Abuja and how much',
-      steps: ['Reading intent', 'Delivery matrix', 'Quoting'],
-      out: { kind: 'reply', label: 'Answered in 3s',
-             body: 'Abuja is ₦3,500, two to three days. Free over ₦50,000.' }
-    },
-    {
-      t: '9:02am', ch: 'Enquiry form',
-      msg: 'we run 4 clinics, want this across all of them',
-      steps: ['Reading intent', 'Scoring fit', 'Routing to human'],
-      out: { kind: 'route', label: 'Escalated to you',
-             body: 'Multi-site buyer. Booked into your calendar for 2pm.' }
-    },
-    {
-      t: '9:41am', ch: 'Telegram',
-      msg: 'what’s pending today?',
-      steps: ['Reading intent', 'Querying orders', 'Summarising'],
-      out: { kind: 'admin', label: 'Owner briefed',
-             body: '6 orders pending, 2 awaiting stock, ₦412k cleared this week.' }
-    }
-  ];
-
-  const log = $('[data-op-log]', stage);
-  const meter = $('[data-op-meter]', stage);
-  let i = 0, timers = [];
-  const clear = () => { timers.forEach(clearTimeout); timers = []; };
-  const at = (ms, fn) => timers.push(setTimeout(fn, ms));
-
-  function row(html, cls) {
-    const el = document.createElement('div');
-    el.className = `op__row ${cls || ''}`;
-    el.innerHTML = html;
-    log.appendChild(el);
-    requestAnimationFrame(() => el.classList.add('in'));
-    while (log.children.length > 6) log.removeChild(log.firstChild);
-    return el;
-  }
-
-  function scene() {
-    const s = SCENES[i % SCENES.length];
-    clear();
-    log.innerHTML = '';
-
-    row(`<span class="op__chan">${s.ch}</span><span class="op__time">${s.t}</span>`, 'op__row--meta');
-    at(180, () => row(`<span class="op__who">Customer</span><p>${s.msg}</p>`, 'op__row--in'));
-
-    s.steps.forEach((step, n) => {
-      at(700 + n * 480, () => {
-        const r = row(`<span class="op__spin" aria-hidden="true"></span><span class="op__step">${step}</span>`, 'op__row--step');
-        at(700 + n * 480 + 440, () => {
-          r.classList.add('done');
-          const sp = $('.op__spin', r);
-          if (sp) sp.outerHTML = '<span class="op__tick" aria-hidden="true"></span>';
-        });
-      });
-    });
-
-    const end = 700 + s.steps.length * 480 + 240;
-    at(end, () => {
-      row(`<span class="op__badge op__badge--${s.out.kind}">${s.out.label}</span><p>${s.out.body}</p>`, 'op__row--out');
-      if (meter) {
-        meter.classList.remove('tick');
-        void meter.offsetWidth;
-        meter.classList.add('tick');
-      }
-    });
-
-    at(end + 2600, () => { i += 1; scene(); });
-  }
-
-  /* Only run while it is on screen. */
-  if ('IntersectionObserver' in window && !REDUCED) {
-    let running = false;
-    new IntersectionObserver((es) => es.forEach((e) => {
-      if (e.isIntersecting && !running) { running = true; scene(); }
-      else if (!e.isIntersecting && running) { running = false; clear(); }
-    }), { threshold: 0.15 }).observe(stage);
-  } else {
-    const s = SCENES[0];
-    log.innerHTML = '';
-    row(`<span class="op__chan">${s.ch}</span><span class="op__time">${s.t}</span>`, 'op__row--meta');
-    row(`<span class="op__who">Customer</span><p>${s.msg}</p>`, 'op__row--in');
-    row(`<span class="op__badge op__badge--reply">${s.out.label}</span><p>${s.out.body}</p>`, 'op__row--out');
-  }
-})();
 
 /* ─── Section 2: the three explainers, drawn not described ────── */
 
@@ -1065,4 +961,100 @@ $$('[data-cal]').forEach((el) => {
     io.unobserve(e.target);
   }), { threshold: 0.4 });
   hosts.forEach((h) => io.observe(h));
+})();
+
+/* ─── Hero work strip ───────────────────────────────────────────
+   A slow, continuous marquee of the five live builds. Shows brand,
+   web, product and AI at once, and it never demands attention the
+   way a typing simulation does. Pauses on hover and on focus.
+   ────────────────────────────────────────────────────────────── */
+
+(function workStrip() {
+  const track = $('[data-strip-track]');
+  if (!track) return;
+
+  const card = (w) => `
+    <button class="strip__card" type="button" data-project="${w.id}" aria-label="${w.n}">
+      <span class="strip__shot">
+        <img src="images/opt/${w.img}-640.webp" alt="" width="640" height="400" loading="lazy" decoding="async">
+      </span>
+      <span class="strip__meta">
+        <span class="strip__name">${w.n}</span>
+        <span class="strip__dept">${w.dept}</span>
+      </span>
+    </button>`;
+
+  /* Two passes so the loop is seamless. */
+  const once = WORK.map(card).join('');
+  track.innerHTML = once + once;
+  track.setAttribute('aria-hidden', 'false');
+
+  /* Duration scales with content so speed stays constant. */
+  track.style.setProperty('--n', String(WORK.length));
+})();
+
+/* ─── Calendly inline embed ─────────────────────────────────────
+   Loads only on a page that asks for it, so no third-party script
+   runs anywhere else on the site.
+   ────────────────────────────────────────────────────────────── */
+
+(function calendlyEmbed() {
+  const host = $('[data-calendly]');
+  if (!host) return;
+
+  if (!CFG.CALENDLY) {
+    host.innerHTML = '<p class="meta">Booking link not configured yet.</p>';
+    return;
+  }
+
+  const url = new URL(CFG.CALENDLY);
+  url.searchParams.set('hide_gdpr_banner', '1');
+  url.searchParams.set('hide_landing_page_details', '1');
+  url.searchParams.set('hide_event_type_details', '1');
+
+  host.innerHTML = `
+    <div class="book__skel" data-cal-skel>
+      <span class="book__spin" aria-hidden="true"></span>
+      <p class="meta">Loading available times…</p>
+    </div>
+    <div class="calendly-inline-widget"
+         data-url="${url.toString()}"
+         style="min-width:320px;height:700px"></div>
+    <noscript><p class="meta">Enable JavaScript, or <a class="text-link" href="${CFG.CALENDLY}" target="_blank" rel="noopener">open the calendar in a new tab</a>.</p></noscript>`;
+
+  const css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = 'https://assets.calendly.com/assets/external/widget.css';
+  document.head.appendChild(css);
+
+  const s = document.createElement('script');
+  s.src = 'https://assets.calendly.com/assets/external/widget.js';
+  s.async = true;
+  s.onload = () => {
+    const skel = $('[data-cal-skel]', host);
+    /* Calendly paints into the div itself; give it a beat, then drop ours. */
+    setTimeout(() => skel && skel.remove(), 900);
+  };
+  s.onerror = () => {
+    host.innerHTML = `<div class="book__fallback">
+      <p class="meta">The calendar could not load here.</p>
+      <a class="btn" href="${CFG.CALENDLY}" target="_blank" rel="noopener"><span>Open the calendar</span><i data-lucide="arrow-up-right"></i></a>
+    </div>`;
+    paint(host);
+  };
+  document.head.appendChild(s);
+})();
+
+/* ─── Service illustrations: draw once, then rest ────────────── */
+
+(function illustrations() {
+  const els = $$('.ill');
+  if (!els.length) return;
+  if (!('IntersectionObserver' in window) || REDUCED) { els.forEach((e) => e.classList.add('go')); return; }
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('go');
+    io.unobserve(e.target);
+  }), { threshold: 0.35 });
+  els.forEach((e) => io.observe(e));
 })();
