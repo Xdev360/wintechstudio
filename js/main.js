@@ -261,7 +261,8 @@ navlinks && navlinks.addEventListener('click', (e) => {
 const GROUPS = [
   '.feature-grid > *', '.work-grid > *', '.how-grid > *', '.svc-bento > *',
   '.offer > li', '.svc-hub > a', '.team > *', '.faq__item', '.case',
-  '.index__row', '.split > *', '.beats > *'
+  '.index__row', '.split > *', '.beats > *',
+  '.proof__item', '.cs-body', '.cat__item', '.cs-next > a'
 ];
 
 (function reveals() {
@@ -299,6 +300,11 @@ const GROUPS = [
       if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('in');
     });
   });
+
+  /* Safety net. Content is hidden by default, so if the observer is
+     throttled, the tab is backgrounded, or anything else goes wrong,
+     everything becomes visible anyway. Nothing stays blank. */
+  setTimeout(() => targets.forEach((el) => el.classList.add('in')), 2500);
 })();
 
 /* ─── FAQ ───────────────────────────────────────────────────── */

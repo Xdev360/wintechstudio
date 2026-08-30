@@ -1,12 +1,3 @@
-/* ─── GELLIX ────────────────────────────────────────────────────
-   Drop the .woff2 files into fonts/ and Gellix takes over.
-   See fonts/README.md. Until then the site renders in Satoshi.
-   ────────────────────────────────────────────────────────────── */
-@font-face{font-family:'Gellix';src:url('../fonts/Gellix-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Gellix';src:url('../fonts/Gellix-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:'Gellix';src:url('../fonts/Gellix-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
-@font-face{font-family:'Gellix';src:url('../fonts/Gellix-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
-
 /* ══════════════════════════════════════════════════════════════
    Wintech Studio
    1. Tokens          6. Hero
@@ -24,7 +15,7 @@
   /* Gellix first; Satoshi is the fallback until the files land in fonts/. */
   --font-display:'Gellix','Satoshi',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   --font:'Gellix','Satoshi',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --w-display:600;   /* every heading. Never above 600. */
+  --w-display:500;   /* Satoshi has no 600; gellix.css lifts this to 600. */
   --w-mid:500;
 
   --page:#FFFFFF;
@@ -1599,4 +1590,45 @@ html.is-leaving body{opacity:0;transition:opacity .22s ease}
   .strip__track{grid-template-columns:1fr}
   .strip__track > .strip__card:nth-child(n+4){display:none}
   .strip__dept{display:block}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   21. MOBILE POLISH
+   ══════════════════════════════════════════════════════════════ */
+
+@media (max-width:720px){
+  /* More air between major sections */
+  .sec{padding-block:64px}
+  .sec--tight{padding-block:48px}
+
+  /* Hero stops feeling cramped */
+  .hero__frame{padding:48px 22px 52px}
+  .hero__copy{gap:20px}
+  .hero .t-lead{font-size:1.05rem;line-height:1.6}
+
+  /* Primary CTA full width and comfortable */
+  .hero__actions .btn{width:100%;min-height:54px;font-size:1.05rem}
+
+  /* Strip cards */
+  .strip__track{gap:12px}
+  .strip__card{border-radius:14px}
+
+  /* Easier tap rows */
+  .index__row{min-height:72px;padding-block:18px}
+  .faq__q{min-height:60px;padding:18px 20px}
+}
+
+/* Strip cards read as clickable */
+.strip__card{transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.strip__card:hover .strip__shot{box-shadow:var(--shadow-2)}
+@media (hover:hover){
+  .strip__card:hover{transform:translateY(-6px)}
+}
+@media (max-width:720px){
+  .strip__card:hover{transform:none}
+}
+
+/* Secondary hero link reads clearly secondary */
+.hero__alt{
+  margin-top:14px;font-size:.9rem;color:var(--mute);text-align:center;
 }

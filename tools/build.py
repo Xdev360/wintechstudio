@@ -29,6 +29,24 @@ def main() -> int:
             return 1
         parts[name] = path.read_text(encoding="utf-8").strip()
 
+    # Only link the Gellix face file when the woff2 files are really there.
+    # Trial builds are gitignored, so a deploy simply falls back to Satoshi
+    # instead of requesting four fonts that do not exist.
+    have_gellix = all(
+        (ROOT / "fonts" / f"Gellix-{w}.woff2").exists()
+        for w in ("Regular", "Medium", "SemiBold", "Bold")
+    )
+    link = '<link rel="stylesheet" href="css/gellix.css">'
+    head = parts["head"]
+    head = head.replace(link + "\n", "").replace(link, "")
+    if have_gellix:
+        head = head.replace(
+            '<link rel="stylesheet" href="css/styles.css">',
+            '<link rel="stylesheet" href="css/styles.css">\n' + link,
+        )
+    parts["head"] = head
+    print(f"gellix files present: {have_gellix}")
+
     pages = sorted(p for p in ROOT.glob("*.html"))
     if not pages:
         print("no pages found", file=sys.stderr)
