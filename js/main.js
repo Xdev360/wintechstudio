@@ -804,11 +804,10 @@ const AI = (() => {
         render();
       }
     } catch (err) {
+      /* Endpoint missing, key unset, or network down. Answer from the
+         scripted table instead of showing the visitor an error. */
       state.busy = false;
-      state.messages.push({
-        role: 'assistant',
-        content: 'I could not reach the model just then. Book a call and you will get a straight answer from a person instead.'
-      });
+      state.messages.push({ role: 'assistant', content: scripted(text) });
       render();
     }
   }
@@ -842,7 +841,7 @@ const AI = (() => {
         <span class="ai__av ai__av--lg" aria-hidden="true">W</span>
         <div>
           <p class="ai__name">${esc(CFG.AI_NAME || 'Wintech AI')}</p>
-          <p class="ai__status"><span class="dot"></span>${CFG.AI_ENDPOINT ? 'Online' : 'Answering the common ones'}</p>
+          <p class="ai__status"><span class="dot"></span>Ask about scope, price, or fit</p>
         </div>
         ${variant === 'dock' ? '<button class="ai__x" data-ai-close aria-label="Close assistant"><i data-lucide="x"></i></button>' : ''}
       </div>

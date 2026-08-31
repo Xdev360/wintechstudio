@@ -23,10 +23,12 @@ window.WINTECH = {
   /* ── Wintech AI ──────────────────────────────────────────────
      The studio's own assistant, running on this site.
 
-     AI_ENDPOINT is the only thing it needs. Until you set it, the
-     assistant runs in "scripted" mode: it still opens, still
-     answers the common questions from ANSWERS below, and still
-     hands people to Calendly. It just is not your model yet.
+     AI_ENDPOINT points at the serverless function in api/ai.js.
+     That function needs ANTHROPIC_API_KEY set in Vercel.
+
+     If the endpoint is missing, unconfigured, or down, the panel
+     silently falls back to the scripted answers below, so the
+     assistant is never broken in front of a visitor.
 
      Your endpoint receives:
        { messages: [{role:'user'|'assistant', content:'...'}] }
@@ -34,7 +36,7 @@ window.WINTECH = {
        { reply: 'text' }
      or a text/plain stream, which the panel renders as it arrives.
      ──────────────────────────────────────────────────────────── */
-  AI_ENDPOINT: '',
+  AI_ENDPOINT: '/api/ai',
   AI_NAME: 'Wintech AI',
   AI_GREETING: 'Ask me what something costs, how long it takes, or what we would build for your situation.',
 

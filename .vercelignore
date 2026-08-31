@@ -10,3 +10,5 @@ README-ESTIMATOR.md
 # Trial-licensed font builds must never reach the CDN.
 fonts/*.woff2
 
+
+# api/ and package.json must deploy — they are the assistant.
