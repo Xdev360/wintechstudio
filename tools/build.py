@@ -11,6 +11,7 @@ Edit a partial, run `python3 tools/build.py`, and every page updates.
 The output stays plain static HTML, so nothing changes about hosting.
 """
 
+import hashlib
 import pathlib
 import re
 import sys
@@ -46,6 +47,21 @@ def main() -> int:
         )
     parts["head"] = head
     print(f"gellix files present: {have_gellix}")
+
+    # Stamp CSS and JS with a content hash so a deploy never serves a
+    # stale stylesheet or script from cache.
+    def stamp(rel: str) -> str:
+        f = ROOT / rel
+        if not f.exists():
+            return rel
+        h = hashlib.sha1(f.read_bytes()).hexdigest()[:8]
+        return f"{rel}?v={h}"
+
+    for block in ("head", "scripts"):
+        text = parts[block]
+        text = re.sub(r'(href|src)="(css/[^"?]+\.css|js/[^"?]+\.js)(\?v=[0-9a-f]+)?"',
+                      lambda m: f'{m.group(1)}="{stamp(m.group(2))}"', text)
+        parts[block] = text
 
     pages = sorted(p for p in ROOT.glob("*.html"))
     if not pages:

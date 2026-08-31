@@ -19,6 +19,8 @@ const paint = (root) => { try { window.paintIcons && window.paintIcons(root); } 
 const WORK = [
   {
     id: 'virelle',
+    brand: '#1F7A4D',
+    pitch: 'A wellness shop that sold entirely in Instagram DMs now has a store, a brand, and two AI systems running the floor.',
     caseUrl: 'case-virelle.html',
     n: 'Virelle Wellness Hub',
     img: 'virelle',
@@ -33,6 +35,8 @@ const WORK = [
   },
   {
     id: 'mylo',
+    brand: '#E8B33C',
+    pitch: 'A group product where the AI lives inside the room, not in a separate chat window.',
     n: 'Mylo',
     img: 'mylo',
     dept: 'Product & AI',
@@ -46,6 +50,8 @@ const WORK = [
   },
   {
     id: 'lets-hang',
+    brand: '#7B4DFF',
+    pitch: 'A map of people with a plan tonight. Joining one takes a tap instead of forty messages.',
     n: 'Let’s Hang',
     img: 'letshang',
     dept: 'Product',
@@ -59,6 +65,8 @@ const WORK = [
   },
   {
     id: 'cleartext',
+    brand: '#1F5BE8',
+    pitch: 'Your wallet shows hex. Cleartext shows a sentence, before you sign.',
     caseUrl: 'case-cleartext.html',
     n: 'Cleartext',
     img: 'cleartext',
@@ -73,6 +81,8 @@ const WORK = [
   },
   {
     id: 'cybersweep',
+    brand: '#E23B3B',
+    pitch: 'A pre-launch audit for AI-built apps that runs entirely in your browser. Nothing uploaded.',
     caseUrl: 'case-cybersweep.html',
     n: 'Cyber Sweep',
     img: 'cybersweep',
@@ -971,34 +981,46 @@ $$('[data-cal]').forEach((el) => {
   hosts.forEach((h) => io.observe(h));
 })();
 
-/* ─── Hero work strip ───────────────────────────────────────────
-   A slow, continuous marquee of the five live builds. Shows brand,
-   web, product and AI at once, and it never demands attention the
-   way a typing simulation does. Pauses on hover and on focus.
+/* ─── Work marquee ──────────────────────────────────────────────
+   Two rows of project names drifting in opposite directions. Hover
+   freezes both rows, tints the name in that project's brand colour,
+   and raises a note about the build. Clicking opens the live product.
    ────────────────────────────────────────────────────────────── */
 
-(function workStrip() {
-  const track = $('[data-strip-track]');
-  if (!track) return;
+(function workMarquee() {
+  const rows = $$('[data-marquee-row]');
+  if (!rows.length) return;
 
-  const card = (w) => `
-    <button class="strip__card" type="button" data-project="${w.id}" aria-label="${w.n}">
-      <span class="strip__shot">
-        <img src="images/live/${w.img}-640.webp" alt="" width="640" height="400" loading="lazy" decoding="async">
+  const item = (w) => `
+    <a class="mq__item" href="${w.live}" target="_blank" rel="noopener"
+       style="--brand:${w.brand}" data-mq-name="${w.n}">
+      <span class="mq__word">${w.n}</span>
+      <span class="mq__note" role="note">
+        <span class="mq__note-txt">${w.pitch}</span>
+        <span class="mq__note-go">Open the live product <i data-lucide="arrow-up-right"></i></span>
       </span>
-      <span class="strip__meta">
-        <span class="strip__name">${w.n}</span>
-        <span class="strip__dept">${w.dept}</span>
-      </span>
-    </button>`;
+    </a>
+    <span class="mq__sep" aria-hidden="true">✦</span>`;
 
-  /* Two passes so the loop is seamless. */
-  const once = WORK.map(card).join('');
-  track.innerHTML = once + once;
-  track.setAttribute('aria-hidden', 'false');
+  /* Second row starts from a different project so the two rows never
+     show the same word side by side. */
+  const orders = [WORK, [...WORK.slice(2), ...WORK.slice(0, 2)]];
 
-  /* Duration scales with content so speed stays constant. */
-  track.style.setProperty('--n', String(WORK.length));
+  rows.forEach((row, i) => {
+    const once = orders[i % 2].map(item).join('');
+    row.innerHTML = once + once;   // duplicated for a seamless loop
+    paint(row);
+  });
+
+  /* Freeze every row while any one item is hovered or focused. */
+  const wrap = $('[data-marquee]');
+  const freeze = (on) => wrap.classList.toggle('is-held', on);
+  $$('.mq__item').forEach((el) => {
+    el.addEventListener('mouseenter', () => freeze(true));
+    el.addEventListener('mouseleave', () => freeze(false));
+    el.addEventListener('focus', () => freeze(true));
+    el.addEventListener('blur', () => freeze(false));
+  });
 })();
 
 /* ─── Calendly inline embed ─────────────────────────────────────
