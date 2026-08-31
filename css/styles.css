@@ -1632,3 +1632,76 @@ html.is-leaving body{opacity:0;transition:opacity .22s ease}
 .hero__alt{
   margin-top:14px;font-size:.9rem;color:var(--mute);text-align:center;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   22. HERO ILLUSTRATION
+   A day / night desk scene behind the homepage hero. Only the
+   matching scheme's file is fetched — the other media query
+   never resolves, so nothing extra downloads.
+   ══════════════════════════════════════════════════════════════ */
+
+.hero--art .hero__frame{
+  background:#E8EDF6;              /* holds the space while the SVG loads */
+  border-color:rgba(10,14,23,.10);
+}
+.hero__art{
+  position:absolute;inset:0;z-index:0;
+  border-radius:inherit;overflow:hidden;pointer-events:none;
+  background-image:url('../images/hero/hero-light.svg');
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center 58%;
+}
+/* Scrim: keeps the headline readable over the artwork without
+   washing the scene out. Strongest through the middle band where
+   the copy sits, clear at the edges so the scene still reads. */
+.hero__art::after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 84% 76% at 50% 44%,
+      rgba(240,244,250,.95) 0%,
+      rgba(240,244,250,.86) 46%,
+      rgba(240,244,250,.56) 74%,
+      rgba(240,244,250,.10) 100%);
+}
+
+@media (prefers-color-scheme:dark){
+  .hero--art .hero__frame{
+    background:#0E1A31;
+    border-color:rgba(255,255,255,.09);
+  }
+  .hero__art{background-image:url('../images/hero/hero-dark.svg')}
+  .hero__art::after{
+    background:
+      radial-gradient(ellipse 78% 62% at 50% 46%,
+        rgba(9,16,32,.92) 0%,
+        rgba(9,16,32,.76) 42%,
+        rgba(9,16,32,.30) 72%,
+        rgba(9,16,32,0) 100%);
+  }
+}
+
+/* The scene is wider than it is tall, so on narrow screens pull the
+   framing in to keep the window and skyline behind the copy. */
+@media (max-width:900px){
+  .hero__art{background-position:center 62%;background-size:auto 140%}
+}
+@media (max-width:600px){
+  .hero__art{background-size:auto 165%}
+  .hero__art::after{
+    background:radial-gradient(ellipse 120% 58% at 50% 44%,
+      rgba(240,244,250,.96) 0%,
+      rgba(240,244,250,.86) 46%,
+      rgba(240,244,250,.42) 78%,
+      rgba(240,244,250,.1) 100%);
+  }
+  @media (prefers-color-scheme:dark){
+    .hero__art::after{
+      background:radial-gradient(ellipse 120% 58% at 50% 44%,
+        rgba(9,16,32,.95) 0%,
+        rgba(9,16,32,.84) 46%,
+        rgba(9,16,32,.42) 78%,
+        rgba(9,16,32,.1) 100%);
+    }
+  }
+}
