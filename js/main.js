@@ -982,45 +982,76 @@ $$('[data-cal]').forEach((el) => {
 })();
 
 /* ─── Work marquee ──────────────────────────────────────────────
-   Two rows of project names drifting in opposite directions. Hover
-   freezes both rows, tints the name in that project's brand colour,
-   and raises a note about the build. Clicking opens the live product.
+   One line: each project's logo beside its name, drifting left.
+   Hover freezes the row, tints the lockup in that project's brand
+   colour, and raises a note. Clicking opens the live product.
    ────────────────────────────────────────────────────────────── */
 
 (function workMarquee() {
-  const rows = $$('[data-marquee-row]');
-  if (!rows.length) return;
+  const row = $('[data-marquee-row]');
+  if (!row) return;
 
   const item = (w) => `
     <a class="mq__item" href="${w.live}" target="_blank" rel="noopener"
-       style="--brand:${w.brand}" data-mq-name="${w.n}">
-      <span class="mq__word">${w.n}</span>
-      <span class="mq__note" role="note">
-        <span class="mq__note-txt">${w.pitch}</span>
-        <span class="mq__note-go">Open the live product <i data-lucide="arrow-up-right"></i></span>
-      </span>
+       style="--brand:${w.brand}" data-mq="${w.id}">
+      <span class="mq__logo" style="--mark:url('/images/logos/${w.id}.svg')" aria-hidden="true"></span>
+      <span class="sr-only">${w.n}</span>
     </a>
-    <span class="mq__sep" aria-hidden="true">✦</span>`;
+    <span class="mq__sep" aria-hidden="true">/</span>`;
 
-  /* Second row starts from a different project so the two rows never
-     show the same word side by side. */
-  const orders = [WORK, [...WORK.slice(2), ...WORK.slice(0, 2)]];
+  const once = WORK.map(item).join('');
+  row.innerHTML = once + once;          // duplicated for a seamless loop
 
-  rows.forEach((row, i) => {
-    const once = orders[i % 2].map(item).join('');
-    row.innerHTML = once + once;   // duplicated for a seamless loop
-    paint(row);
-  });
+  /* The note lives on <body>, not inside the row, so the marquee's
+     overflow can never clip it. One element, moved to whichever
+     lockup is hovered. */
+  const note = document.createElement('div');
+  note.className = 'mq__note';
+  note.setAttribute('role', 'note');
+  document.body.appendChild(note);
 
-  /* Freeze every row while any one item is hovered or focused. */
   const wrap = $('[data-marquee]');
-  const freeze = (on) => wrap.classList.toggle('is-held', on);
-  $$('.mq__item').forEach((el) => {
-    el.addEventListener('mouseenter', () => freeze(true));
-    el.addEventListener('mouseleave', () => freeze(false));
-    el.addEventListener('focus', () => freeze(true));
-    el.addEventListener('blur', () => freeze(false));
+  let open = null;
+
+  const place = (el) => {
+    const r = el.getBoundingClientRect();
+    const nw = note.offsetWidth;
+    let x = r.left + r.width / 2 - nw / 2;
+    x = Math.max(14, Math.min(x, window.innerWidth - nw - 14));
+    note.style.left = `${x}px`;
+    note.style.top = `${r.top + window.scrollY - note.offsetHeight - 16}px`;
+  };
+
+  const show = (el) => {
+    const w = byId(el.dataset.mq);
+    if (!w) return;
+    if (open) open.classList.remove('is-on');
+    open = el;
+    el.classList.add('is-on');
+    wrap.classList.add('is-held');
+    note.innerHTML = `<span class="mq__note-txt">${w.pitch}</span>
+      <span class="mq__note-go">Open the live product <i data-lucide="arrow-up-right"></i></span>`;
+    paint(note);
+    note.classList.add('is-on');
+    place(el);
+  };
+
+  const hide = () => {
+    if (open) open.classList.remove('is-on');
+    open = null;
+    wrap.classList.remove('is-held');
+    note.classList.remove('is-on');
+  };
+
+  $$('.mq__item', row).forEach((el) => {
+    el.addEventListener('mouseenter', () => show(el));
+    el.addEventListener('focus', () => show(el));
+    el.addEventListener('mouseleave', hide);
+    el.addEventListener('blur', hide);
   });
+
+  window.addEventListener('scroll', () => { if (open) place(open); }, { passive: true });
+  window.addEventListener('resize', () => { if (open) place(open); });
 })();
 
 /* ─── Calendly inline embed ─────────────────────────────────────
