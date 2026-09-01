@@ -35,7 +35,7 @@ const WORK = [
   },
   {
     id: 'mylo',
-    brand: '#E8B33C',
+    brand: 'var(--ink)',
     pitch: 'A group product where the AI lives inside the room, not in a separate chat window.',
     n: 'Mylo',
     img: 'mylo',
@@ -311,10 +311,13 @@ const GROUPS = [
     });
   });
 
-  /* Safety net. Content is hidden by default, so if the observer is
-     throttled, the tab is backgrounded, or anything else goes wrong,
-     everything becomes visible anyway. Nothing stays blank. */
-  setTimeout(() => targets.forEach((el) => el.classList.add('in')), 2500);
+  /* Safety net for what is on screen. Content is hidden by default, so a
+     throttled observer must not leave a visible section blank. Anything
+     below the fold still waits, so it reveals on scroll as intended. */
+  setTimeout(() => targets.forEach((el) => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('in');
+  }), 2500);
 })();
 
 /* ─── FAQ ───────────────────────────────────────────────────── */
@@ -1122,9 +1125,13 @@ $$('[data-cal]').forEach((el) => {
   }), { threshold: 0.35 });
   els.forEach((e) => io.observe(e));
 
-  /* Safety net: these illustrations start at opacity 0, so a throttled
-     or never-fired observer would leave them blank. */
-  setTimeout(() => els.forEach((e) => e.classList.add('go')), 2500);
+  /* Safety net, but only for what is already on screen. Anything below
+     the fold keeps waiting for the observer, so it still animates when
+     you actually scroll to it. */
+  setTimeout(() => els.forEach((e) => {
+    const r = e.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) e.classList.add('go');
+  }), 2500);
 })();
 
 /* ─── Proof counters ────────────────────────────────────────── */
@@ -1150,4 +1157,34 @@ $$('[data-cal]').forEach((el) => {
     run(e.target); io.unobserve(e.target);
   }), { threshold: 0.6 });
   els.forEach((e) => io.observe(e));
+})();
+
+/* ─── Hero: scene follows the cursor ────────────────────────────
+   A small parallax push, so the view shifts as you move across it
+   and settles when you leave. Nothing moves on its own.
+   ────────────────────────────────────────────────────────────── */
+
+(function heroParallax() {
+  const hero = $('.hero--art');
+  if (!hero || REDUCED || window.matchMedia('(hover:none)').matches) return;
+
+  let raf = null, px = 0, py = 0;
+
+  const apply = () => {
+    hero.style.setProperty('--px', px.toFixed(3));
+    hero.style.setProperty('--py', py.toFixed(3));
+    raf = null;
+  };
+
+  hero.addEventListener('mousemove', (e) => {
+    const r = hero.getBoundingClientRect();
+    px = ((e.clientX - r.left) / r.width - 0.5) * 2;   // -1 .. 1
+    py = ((e.clientY - r.top) / r.height - 0.5) * 2;
+    if (!raf) raf = requestAnimationFrame(apply);
+  }, { passive: true });
+
+  hero.addEventListener('mouseleave', () => {
+    px = 0; py = 0;
+    if (!raf) raf = requestAnimationFrame(apply);
+  });
 })();
