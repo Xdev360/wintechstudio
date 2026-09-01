@@ -832,12 +832,12 @@ const AI = (() => {
     $$('[data-ai-log]').forEach((log) => {
       log.innerHTML = state.messages.map((m) => `
         <div class="ai__msg ai__msg--${m.role}">
-          ${m.role === 'assistant' ? '<span class="ai__av" aria-hidden="true">W</span>' : ''}
+          ${m.role === 'assistant' ? '<span class="ai__av" aria-hidden="true"></span>' : ''}
           <div class="ai__bubble">${para(m.content)}</div>
         </div>`).join('')
         + (state.busy ? `
         <div class="ai__msg ai__msg--assistant">
-          <span class="ai__av" aria-hidden="true">W</span>
+          <span class="ai__av" aria-hidden="true"></span>
           <div class="ai__bubble ai__bubble--wait"><i></i><i></i><i></i></div>
         </div>` : '');
       log.scrollTop = log.scrollHeight;
@@ -851,7 +851,7 @@ const AI = (() => {
   function shell(variant) {
     return `
       <div class="ai__head">
-        <span class="ai__av ai__av--lg" aria-hidden="true">W</span>
+        <span class="ai__av ai__av--lg" aria-hidden="true"></span>
         <div>
           <p class="ai__name">${esc(CFG.AI_NAME || 'Wintech AI')}</p>
           <p class="ai__status"><span class="dot"></span>Ask about scope, price, or fit</p>
@@ -902,7 +902,7 @@ const AI = (() => {
     launcher.id = 'ai-launch';
     launcher.type = 'button';
     launcher.setAttribute('aria-label', `Open ${CFG.AI_NAME || 'Wintech AI'}`);
-    launcher.innerHTML = `<span class="ai-launch__mark" aria-hidden="true">W</span><span class="ai-launch__txt">Ask ${esc(CFG.AI_NAME || 'Wintech AI')}</span>`;
+    launcher.innerHTML = `<span class="ai-launch__mark" aria-hidden="true"></span><span class="ai-launch__txt">Ask ${esc(CFG.AI_NAME || 'Wintech AI')}</span>`;
 
     const dock = document.createElement('div');
     dock.className = 'ai ai--dock';
