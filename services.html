@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://api.fontshare.com">
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
-<link rel="stylesheet" href="css/styles.css?v=2b269aef">
+<link rel="stylesheet" href="css/styles.css?v=e48fcbdf">
 <link rel="stylesheet" href="css/gellix.css?v=49dd9965">
 <!--#/head-->
 </head>
@@ -29,7 +29,7 @@
 <header class="nav" id="site-nav">
   <a class="skip" href="#main">Skip to content</a>
   <div class="nav__bar">
-    <a class="brand" href="index.html"><span class="brand__mark">W</span>Wintech Studio</a>
+    <a class="brand" href="index.html" aria-label="Wintech Studio, home"><span class="brand__mark" aria-hidden="true"></span><span class="brand__name">Wintech Studio</span></a>
     <nav class="nav__links" id="navlinks" aria-label="Main">
       <div class="nav__drop">
         <a class="nav__link" href="work.html" data-nav="work">Work <i data-lucide="chevron-down"></i></a>
@@ -137,17 +137,19 @@
     <div class="wrap">
       <p class="kicker">Next step</p>
       <h2>Tell us what’s slowing you down.</h2>
-      <p class="t-lead">Twenty-five minutes on a call. We map the scope, the order things get built in, and what it costs. You leave with a plan either way.</p>
+      <p class="t-lead">Twenty-five minutes. We work out what you need, in what order, and what it costs. You leave with a plan either way.</p>
       <div class="foot__actions">
         <a class="btn btn--accent" data-cal href="#" data-cal-label>Book a 25-min call</a>
         <a class="foot__alt" href="contact.html">Or send a written brief</a>
       </div>
     </div>
   </div>
-  <div class="wrap foot__grid">
+  <div class="wrap foot__shell">
+   <div class="foot__card">
+    <div class="foot__grid">
     <div class="foot__about">
-      <p class="foot__brand"><span class="brand__mark">W</span>Wintech Studio</p>
-      <p class="meta">A Lagos studio building the AI, product, and brand systems that serious businesses run on.</p>
+      <p class="foot__brand"><span class="brand__mark" aria-hidden="true"></span>Wintech Studio</p>
+      <p class="meta">A Lagos studio building the AI, products, and brands that real businesses run on.</p>
     </div>
     <div class="foot__col">
       <h3>Work</h3>
@@ -172,9 +174,11 @@
       <a data-cal href="#">Book a call</a>
     </div>
   </div>
-  <div class="wrap foot__bar">
-    <span>&copy; <span data-year>2026</span> Wintech Studio · Lagos, Nigeria</span>
-    <span>Four projects at a time</span>
+    <div class="foot__bar">
+      <span>&copy; <span data-year>2026</span> Wintech Studio · Lagos, Nigeria</span>
+      <span>Four projects at a time</span>
+    </div>
+   </div>
   </div>
 </footer>
 <!--#/footer-->
@@ -182,7 +186,7 @@
 <!--#scripts-->
 <script src="js/config.js?v=96195e63"></script>
 <script src="js/icons.js?v=a51b5ac1"></script>
-<script src="js/main.js?v=489cb51a"></script>
+<script src="js/main.js?v=750816e3"></script>
 <!--#/scripts-->
 </body>
 </html>

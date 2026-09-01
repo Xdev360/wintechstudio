@@ -535,7 +535,10 @@ if (quoteApp) {
     </div>`;
 
   function render() {
-    bar.innerHTML = Array.from({ length: 4 }, (_, i) => `<i class="${i < answers.step ? 'on' : ''}"></i>`).join('');
+    bar.innerHTML = Array.from({ length: 4 }, (_, i) => {
+      const cls = i < answers.step ? 'on' : (i === answers.step ? 'now' : '');
+      return `<i class="${cls}"></i>`;
+    }).join('');
 
     if (answers.step === 0) {
       host.innerHTML = `<div class="quote__step"><p class="q-title">What do you need?</p>
@@ -1118,6 +1121,10 @@ $$('[data-cal]').forEach((el) => {
     io.unobserve(e.target);
   }), { threshold: 0.35 });
   els.forEach((e) => io.observe(e));
+
+  /* Safety net: these illustrations start at opacity 0, so a throttled
+     or never-fired observer would leave them blank. */
+  setTimeout(() => els.forEach((e) => e.classList.add('go')), 2500);
 })();
 
 /* ─── Proof counters ────────────────────────────────────────── */

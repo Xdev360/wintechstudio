@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://api.fontshare.com">
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
-<link rel="stylesheet" href="css/styles.css?v=2b269aef">
+<link rel="stylesheet" href="css/styles.css?v=e48fcbdf">
 <link rel="stylesheet" href="css/gellix.css?v=49dd9965">
 <!--#/head-->
 </head>
@@ -33,7 +33,7 @@
 <header class="nav" id="site-nav">
   <a class="skip" href="#main">Skip to content</a>
   <div class="nav__bar">
-    <a class="brand" href="index.html"><span class="brand__mark">W</span>Wintech Studio</a>
+    <a class="brand" href="index.html" aria-label="Wintech Studio, home"><span class="brand__mark" aria-hidden="true"></span><span class="brand__name">Wintech Studio</span></a>
     <nav class="nav__links" id="navlinks" aria-label="Main">
       <div class="nav__drop">
         <a class="nav__link" href="work.html" data-nav="work">Work <i data-lucide="chevron-down"></i></a>
@@ -94,14 +94,13 @@
     </div>
 
     <div class="hero__copy">
-      <p class="hero__badge"><i data-lucide="sparkles"></i> Build it once. Have it run itself.</p>
+      <p class="hero__badge"><i data-lucide="sparkles"></i> Build it once. Let it run itself.</p>
       <h1 class="t-xl">Brand it. Build it.<br>Then let the AI run&nbsp;it.</h1>
-      <p class="t-lead">Wintech Studio designs the brand, builds the site or the product, and wires in the AI layer that keeps it earning after everyone logs off.</p>
+      <p class="t-lead">We build your brand, your site or app, and the AI that runs it while you sleep.</p>
       <div class="hero__actions">
-        <a class="btn btn--lg" data-cal href="#"><span data-cal-label>Book a 25-min call</span><i data-lucide="arrow-up-right"></i></a>
-        <a class="btn btn--lg btn--quiet" href="quote.html"><span>Get a quote</span></a>
+        <a class="btn" data-cal href="#"><span data-cal-label>Book a 25-min call</span><i data-lucide="arrow-up-right"></i></a>
+        <a class="btn btn--glass" href="quote.html"><span>Get a quote</span></a>
       </div>
-      <p class="slot" data-slot><span class="dot"></span><span data-slot-text>Next start: November</span></p>
     </div>
 
     <div class="hero__fade" aria-hidden="true"></div>
@@ -111,39 +110,35 @@
     <div class="mq" data-marquee>
       <div class="mq__row" data-marquee-row></div>
     </div>
-    <p class="mq__cap">Five products, all live. <a class="text-link" href="work.html">Open any of them</a></p>
   </section>
 
-  <section class="sec sec--tight proof">
-    <div class="wrap">
-      <div class="proof__grid">
-        <div class="proof__item">
-          <p class="proof__n" data-count-to="5">5</p>
-          <p class="proof__lbl">products shipped and live</p>
-          <p class="proof__sub">Every one has a URL you can open right now</p>
-        </div>
-        <div class="proof__item">
-          <p class="proof__n"><span data-count-to="4">4</span></p>
-          <p class="proof__lbl">disciplines under one roof</p>
-          <p class="proof__sub">Brand, website, product, and the AI layer</p>
-        </div>
-        <div class="proof__item">
-          <p class="proof__n">Weekly</p>
-          <p class="proof__lbl">something usable ships</p>
-          <p class="proof__sub">No three-week gaps where nothing arrives</p>
-        </div>
-        <div class="proof__item">
-          <p class="proof__n">4</p>
-          <p class="proof__lbl">projects at a time, maximum</p>
-          <p class="proof__sub">The number where the weekly rhythm holds</p>
-        </div>
+  <section class="sec proof">
+    <div class="wrap proof__layout">
+      <div class="proof__intro">
+        <p class="kicker">Why us</p>
+        <h2 class="t-lg">Five products live. <span class="proof__dim">One studio behind every one of them.</span></h2>
+        <p class="t-lead">We build the brand, the site or the app, and the AI that keeps it running. Then we hand it over so your team can use it.</p>
+        <a class="more" href="work.html">See the work <i data-lucide="arrow-right"></i></a>
       </div>
-      <p class="proof__cases">
-        Read a full build:
-        <a class="text-link" href="case-virelle.html">Virelle Wellness Hub</a>,
-        <a class="text-link" href="case-cybersweep.html">Cyber Sweep</a>, or
-        <a class="text-link" href="case-cleartext.html">Cleartext</a>.
-      </p>
+
+      <div class="proof__cards">
+        <article class="stat stat--fill">
+          <p class="stat__n">5<span>+</span></p>
+          <p class="stat__l">Products built<br>and live</p>
+        </article>
+        <article class="stat">
+          <p class="stat__n">4<span></span></p>
+          <p class="stat__l">Skills under<br>one roof</p>
+        </article>
+        <article class="stat stat--tint">
+          <p class="stat__n">7<span>days</span></p>
+          <p class="stat__l">Between each<br>thing we ship</p>
+        </article>
+        <article class="stat">
+          <p class="stat__n">4<span>max</span></p>
+          <p class="stat__l">Projects we take<br>at a time</p>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -151,14 +146,11 @@
     <div class="wrap">
       <div class="sec__head">
         <span class="pill">What changes</span>
-        <h2 class="t-lg">The deliverable is a working system.</h2>
-        <p class="t-lead">Three things happen in every engagement, always in this order.</p>
+        <h2 class="t-lg">You get a system that works.</h2>
+        <p class="t-lead">Every project runs in this order.</p>
       </div>
       <div class="feature-grid">
         <article class="card feature">
-          <p class="feature__n">01</p>
-          <h3>We map where the money moves</h3>
-          <p>Before anything gets designed we sit inside the operation: where demand arrives, what happens to it next, and which step quietly loses people. That map decides what gets built, and in what order.</p>
           <div class="viz" data-viz="leak" aria-hidden="true">
             <div class="viz-flow">
               <div class="viz-flow__row"><span class="viz-flow__lbl">Demand</span><span class="viz-flow__track"><i class="viz-flow__fill" style="--w:92%"></i></span></div>
@@ -166,11 +158,11 @@
               <div class="viz-flow__row"><span class="viz-flow__lbl">Order</span><span class="viz-flow__track"><i class="viz-flow__fill" style="--w:29%"></i></span></div>
             </div>
           </div>
-        </article>
+        <p class="feature__n">01</p>
+          <h3>We find where the money goes</h3>
+          <p>Before we design anything, we look at how work reaches you and where people drop off. That tells us what to build first.</p>
+          </article>
         <article class="card feature">
-          <p class="feature__n">02</p>
-          <h3>The AI carries a real shift</h3>
-          <p>Support, recommendations, and qualification, trained on your actual range and written in your tone. It answers the hundred repeat questions so a person is free for the ten that need judgement.</p>
           <div class="viz" data-viz="shift" aria-hidden="true">
             <div class="viz-chat">
               <p class="viz-chat__meta">2:14am</p>
@@ -179,11 +171,11 @@
               <span class="viz-chat__line viz-chat__line--them">perfect, I’ll take two</span>
             </div>
           </div>
-        </article>
+        <p class="feature__n">02</p>
+          <h3>The AI does a real shift</h3>
+          <p>It answers questions, suggests products, and sorts good leads from bad. Your team only handles the ones that need a person.</p>
+          </article>
         <article class="card feature">
-          <p class="feature__n">03</p>
-          <h3>It is built to earn</h3>
-          <p>Search can find it. A visitor reaches a conversation in one step. Everything is measured after launch, and when speed is the real constraint, a fast MVP proves the idea before the full build.</p>
           <div class="viz" data-viz="earn" aria-hidden="true">
             <div class="viz-earn">
               <p class="viz-earn__big"><span data-count="24">0</span><span>/7</span></p>
@@ -193,7 +185,10 @@
               </div>
             </div>
           </div>
-        </article>
+        <p class="feature__n">03</p>
+          <h3>It is built to make money</h3>
+          <p>Google can find it. Visitors can reach you in one click. And if you need to move fast, we ship a small version first.</p>
+          </article>
       </div>
     </div>
   </section>
@@ -202,15 +197,15 @@
     <div class="wrap">
       <div class="sec__head">
         <span class="pill">What we build</span>
-        <h2 class="t-lg">AI, product, sites, and brand. One studio.</h2>
-        <p class="t-lead">Most briefs combine two or three of these. On the call we tell you which ones apply to your situation and which you can safely leave until next year.</p>
+        <h2 class="t-lg">One studio. Four things we build.</h2>
+        <p class="t-lead">Most projects need two or three. On the call we tell you which ones you need now and which can wait.</p>
       </div>
       <div class="svc-bento">
         <article class="card svc-tile svc-tile--lead">
-          <p class="kicker">Where most briefs start</p>
+          <p class="kicker">Where most projects start</p>
           <h3>Intelligent automation &amp; AI</h3>
-          <p>Agents that answer enquiries, qualify them, and hand over a warm conversation. Chat that recommends from your real catalogue and knows what is in stock. Workflows that clear the repetitive middle of the day.</p>
-          <p>This is the layer that absorbs the volume you were about to hire for.</p>
+          <p>AI that answers questions, sorts your leads, and passes you the serious ones. It knows your products and your stock. It handles the repeat work.</p>
+          <p>This is what replaces the person you were about to hire.</p>
 <div class="ill" aria-hidden="true"><svg viewBox="0 0 220 72" fill="none">
   <rect class="f" x="2" y="10" width="52" height="24" rx="6"/><rect class="s" x="2" y="10" width="52" height="24" rx="6"/>
   <text x="10" y="25">enquiry</text>
@@ -219,7 +214,7 @@
   <path class="a draw" style="--len:60" d="M56 22h24q8 0 8 8v6"/>
   <path class="a draw d1" style="--len:60" d="M56 52h24q8 0 8-8v-6"/>
   <rect class="fi pop d2" x="88" y="26" width="44" height="20" rx="6"/>
-  <text x="97" y="39" style="fill:var(--page)">agent</text>
+  <text x="97" y="39" class="on-fill">agent</text>
   <path class="k draw d3" style="--len:44" d="M134 36h22q6 0 6-6v-8"/>
   <path class="k draw d4" style="--len:44" d="M134 36h22q6 0 6 6v8"/>
   <rect class="s pop d5" x="164" y="8" width="52" height="20" rx="6"/><text x="171" y="21">answered</text>
@@ -229,7 +224,7 @@
         </article>
         <a class="card svc-tile" href="product.html">
           <h3>Product &amp; apps</h3>
-          <p>Software shaped around how you sell or how your people work. A real first version when speed is the moat.</p>
+          <p>Software built around how you actually work. A real first version when you need to move fast.</p>
 <div class="ill" aria-hidden="true"><svg viewBox="0 0 220 72" fill="none">
   <rect class="s" x="2" y="6" width="128" height="60" rx="7"/>
   <path class="s" d="M2 20h128"/>
@@ -248,7 +243,7 @@
         </a>
         <a class="card svc-tile" href="websites.html">
           <h3>Websites</h3>
-          <p>A sharp story, SEO that holds up, and a clean path from landing to order.</p>
+          <p>A clear story, SEO that works, and a straight path from visit to order.</p>
 <div class="ill" aria-hidden="true"><svg viewBox="0 0 220 72" fill="none">
   <path class="a draw" style="--len:70" d="M4 60h30q10 0 14-10"/>
   <circle class="fa pop" cx="4" cy="60" r="3"/><text x="0" y="52">ad</text>
@@ -268,10 +263,10 @@
         </a>
         <a class="card svc-tile" href="brand.html">
           <h3>Brand systems</h3>
-          <p>An identity you can charge with, for businesses that have outgrown the look they started with.</p>
+          <p>A look that matches what you charge, for businesses that have outgrown their first one.</p>
 <div class="ill" aria-hidden="true"><svg viewBox="0 0 220 72" fill="none">
   <rect class="fi pop" x="4" y="18" width="34" height="34" rx="9"/>
-  <text x="14" y="40" style="fill:var(--page);font-size:12px">W</text>
+  <text x="14" y="40" class="on-fill" style="font-size:12px">W</text>
   <path class="k draw d1" style="--len:30" d="M42 35h18"/>
   <circle class="fi pop d2" cx="70" cy="24" r="7"/>
   <circle class="fa pop d3" cx="70" cy="46" r="7"/>
@@ -287,7 +282,7 @@
         </a>
         <a class="card svc-tile" href="growth.html">
           <h3>Growth &amp; content</h3>
-          <p>A publishing rhythm that keeps the pipeline filling, run by a system rather than one tired person.</p>
+          <p>A posting schedule that keeps leads coming, run by a system instead of one busy person.</p>
 <div class="ill" aria-hidden="true"><svg viewBox="0 0 220 72" fill="none">
   <rect class="f rise" x="4" y="14" width="26" height="14" rx="4"/><rect class="s rise" x="4" y="14" width="26" height="14" rx="4"/>
   <rect class="f rise d1" x="4" y="32" width="26" height="14" rx="4"/><rect class="s rise d1" x="4" y="32" width="26" height="14" rx="4"/>
@@ -313,31 +308,31 @@
       <div class="sec__head sec__head--center">
         <span class="pill">How we work</span>
         <h2 class="t-lg">Four steps. Something ships every week.</h2>
-        <p class="t-lead">You always know what is being built, why it is being built, and when you will see it.</p>
+        <p class="t-lead">You always know what we are building, why, and when you will see it.</p>
       </div>
       <div class="how-grid">
         <article class="card how-card">
           <span class="how-card__n">1</span>
           <h3>Diagnose</h3>
-          <p>We spend the first week inside the operation. How money arrives, where it stalls, and what fixing that stall is actually worth.</p>
+          <p>Week one we look at how money comes in, where it gets stuck, and what fixing that is worth.</p>
           <p class="how-card__when">Week one</p>
         </article>
         <article class="card how-card">
           <span class="how-card__n">2</span>
           <h3>Map</h3>
-          <p>One page showing what gets built, the order it gets built in, and the specific change each piece is supposed to produce.</p>
+          <p>One page: what we build, in what order, and what each part should change.</p>
           <p class="how-card__when">Week one to two</p>
         </article>
         <article class="card how-card">
           <span class="how-card__n">3</span>
           <h3>Build weekly</h3>
-          <p>Working slices land every week. You use the thing as it grows, so the final version is never a surprise.</p>
+          <p>You get working pieces every week. Nothing at the end is a surprise.</p>
           <p class="how-card__when">Week two onward</p>
         </article>
         <article class="card how-card">
           <span class="how-card__n">4</span>
           <h3>Run &amp; improve</h3>
-          <p>We hand it over so your team can operate it without us, then sharpen whatever the numbers say deserves sharpening.</p>
+          <p>We hand it over so your team can run it. Then we improve what the numbers say to improve.</p>
           <p class="how-card__when">After launch</p>
         </article>
       </div>
@@ -350,7 +345,7 @@
       <div class="sec__head">
         <span class="pill">Selected work</span>
         <h2 class="t-lg">Five products. All five are live.</h2>
-        <p class="t-lead">Three of the five, with a full case study behind each. Every one has a working URL you can open now.</p>
+        <p class="t-lead">Three of the five, each with a full write-up. All of them are live right now.</p>
       </div>
       <div class="work-grid">
         <a class="work" href="case-virelle.html" data-peek="virelle">
@@ -393,10 +388,10 @@
       <div class="ai-split__copy">
         <span class="pill">Wintech AI</span>
         <h2 class="t-lg">Try the AI layer we build.</h2>
-        <p class="t-body">This is the same layer we build for clients, pointed at our own business. It knows what we charge, how long things take, and what we would recommend for a situation like yours.</p>
+        <p class="t-body">This is the same AI we build for clients, pointed at our own business. It knows our prices, our timelines, and what we would suggest for you.</p>
         <p class="t-body">If it cannot help, it says so and hands you a real slot rather than looping. That is the standard we hold the ones we build for you to as well.</p>
         <ul class="ai-split__pts">
-          <li><i data-lucide="check"></i> Trained on the actual offer, not a generic script</li>
+          <li><i data-lucide="check"></i> Knows the real prices, not a script</li>
           <li><i data-lucide="check"></i> Escalates instead of stalling</li>
           <li><i data-lucide="check"></i> Runs on the site, in the DMs, or on Telegram</li>
         </ul>
@@ -458,17 +453,19 @@
     <div class="wrap">
       <p class="kicker">Next step</p>
       <h2>Tell us what’s slowing you down.</h2>
-      <p class="t-lead">Twenty-five minutes on a call. We map the scope, the order things get built in, and what it costs. You leave with a plan either way.</p>
+      <p class="t-lead">Twenty-five minutes. We work out what you need, in what order, and what it costs. You leave with a plan either way.</p>
       <div class="foot__actions">
         <a class="btn btn--accent" data-cal href="#" data-cal-label>Book a 25-min call</a>
         <a class="foot__alt" href="contact.html">Or send a written brief</a>
       </div>
     </div>
   </div>
-  <div class="wrap foot__grid">
+  <div class="wrap foot__shell">
+   <div class="foot__card">
+    <div class="foot__grid">
     <div class="foot__about">
-      <p class="foot__brand"><span class="brand__mark">W</span>Wintech Studio</p>
-      <p class="meta">A Lagos studio building the AI, product, and brand systems that serious businesses run on.</p>
+      <p class="foot__brand"><span class="brand__mark" aria-hidden="true"></span>Wintech Studio</p>
+      <p class="meta">A Lagos studio building the AI, products, and brands that real businesses run on.</p>
     </div>
     <div class="foot__col">
       <h3>Work</h3>
@@ -493,9 +490,11 @@
       <a data-cal href="#">Book a call</a>
     </div>
   </div>
-  <div class="wrap foot__bar">
-    <span>&copy; <span data-year>2026</span> Wintech Studio · Lagos, Nigeria</span>
-    <span>Four projects at a time</span>
+    <div class="foot__bar">
+      <span>&copy; <span data-year>2026</span> Wintech Studio · Lagos, Nigeria</span>
+      <span>Four projects at a time</span>
+    </div>
+   </div>
   </div>
 </footer>
 <!--#/footer-->
@@ -510,7 +509,7 @@
 <!--#scripts-->
 <script src="js/config.js?v=96195e63"></script>
 <script src="js/icons.js?v=a51b5ac1"></script>
-<script src="js/main.js?v=489cb51a"></script>
+<script src="js/main.js?v=750816e3"></script>
 <!--#/scripts-->
 </body>
 </html>
