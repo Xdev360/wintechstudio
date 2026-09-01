@@ -1562,8 +1562,8 @@ html.is-leaving body{opacity:0;transition:opacity .22s ease}
   .hero .t-lead{font-size:1rem;line-height:1.55}
 
   /* Every tap target clears 48px. */
-  .btn{min-height:50px;height:auto;padding:14px 22px}
-  .btn--lg{min-height:54px;padding:16px 26px}
+  .btn{min-height:44px;height:auto;padding:12px 18px}
+  .btn--lg{min-height:46px;padding:13px 20px}
   .hero__actions{width:auto}
   .hero__actions .btn{width:auto}
   .nav__link{min-height:52px}
@@ -1621,7 +1621,8 @@ html.is-leaving body{opacity:0;transition:opacity .22s ease}
   .hero .t-lead{font-size:1.05rem;line-height:1.6}
 
   /* Primary CTA full width and comfortable */
-  .hero__actions .btn{width:100%;min-height:54px;font-size:1.05rem}
+  .hero__actions{flex-direction:row;justify-content:center;width:auto}
+  .hero__actions .btn{width:auto;min-height:44px;font-size:.86rem;padding:12px 18px}
 
   /* Strip cards */
 
