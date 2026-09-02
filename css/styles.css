@@ -195,12 +195,11 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:var(--w-display);letter-
   font-family:var(--font-display);font-weight:var(--w-display);font-size:1rem;letter-spacing:-.026em;z-index:2;
 }
 .brand__mark{
-  width:26px;height:19px;flex:0 0 26px;display:block;
-  background-color:currentColor;
-  -webkit-mask:url('/images/logos/wintech.svg') no-repeat center/contain;
-  mask:url('/images/logos/wintech.svg') no-repeat center/contain;
+  width:28px;height:20px;flex:0 0 28px;display:block;
+  overflow:visible;
   transition:transform .4s var(--ease);
 }
+.brand__mark path{fill:currentColor}
 .brand:hover .brand__mark{transform:translateY(-2px) scale(1.06)}
 
 .nav__links{justify-self:center;display:flex;align-items:center;gap:2px;position:relative;z-index:4}
