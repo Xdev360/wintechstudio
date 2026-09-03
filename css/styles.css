@@ -1075,7 +1075,7 @@ html.is-leaving body{opacity:0;transition:opacity .22s ease}
 .ai__x svg{width:15px;height:15px}
 
 .ai__log{
-  flex:1;min-height:0;padding:18px;overflow-y:auto;
+  flex:1;min-height:0;padding:18px;overflow-y:auto;overscroll-behavior:contain;
   display:flex;flex-direction:column;gap:14px;
 }
 .ai__log:empty{display:none}
@@ -1100,6 +1100,9 @@ html.is-leaving body{opacity:0;transition:opacity .22s ease}
 @keyframes aiDot{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
 
 .ai__suggest{flex:1;min-height:0;padding:18px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px}
+/* Author display beats [hidden], so say it explicitly. Without this the
+   greeting and chips survive the first message and squeeze the log. */
+.ai__suggest[hidden]{display:none}
 .ai__greet{width:100%;margin:0 0 4px;font-size:.92rem;line-height:1.6;color:var(--mute)}
 .ai__chip{
   padding:8px 13px;border-radius:999px;border:1px solid var(--line-ui);
@@ -1583,6 +1586,8 @@ html.is-leaving body{opacity:0;transition:opacity .22s ease}
   .foot__col a{min-height:44px;display:inline-flex;align-items:center}
   .nav__burger{width:48px;height:48px;margin-right:-10px}
   .ai__send{width:46px;height:46px;flex:0 0 46px}
+  /* Under 16px iOS zooms the page on focus. It is not a taste call. */
+  .ai__input{font-size:16px;padding:12px 16px}
   .more{min-height:48px;display:inline-flex;align-items:center}
   .brand{min-height:48px}
   .mega__all,.nav__acc a{min-height:44px}

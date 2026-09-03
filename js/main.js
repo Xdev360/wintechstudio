@@ -867,7 +867,7 @@ const AI = (() => {
         ${SUGGESTIONS.map((s) => `<button class="ai__chip" data-ai-q="${esc(s)}">${esc(s)}</button>`).join('')}
       </div>
       <form class="ai__bar" data-ai-form>
-        <input class="ai__input" data-ai-input placeholder="Ask about scope, price, or timeline" aria-label="Message ${esc(CFG.AI_NAME || 'Wintech AI')}" autocomplete="off">
+        <input class="ai__input" data-ai-input placeholder="Ask a question" aria-label="Message ${esc(CFG.AI_NAME || 'Wintech AI')}" autocomplete="off">
         <button class="ai__send" type="submit" data-ai-send aria-label="Send"><i data-lucide="arrow-up-right"></i></button>
       </form>
       <p class="ai__foot">Straight answers beat a sales call. <a data-cal href="${CFG.CALENDLY || 'contact.html'}"${CFG.CALENDLY ? ' target="_blank" rel="noopener"' : ''}>Book one anyway</a></p>`;
