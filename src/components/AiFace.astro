@@ -1,0 +1,30 @@
+---
+// Wintech AI face v2 (Figma Kit 799:540). States shown here: awake and sleep (default), switched with data-state on a parent.
+interface Props { size?: number; class?: string }
+const { size = 32, class: cls } = Astro.props;
+const id = 'f' + Math.random().toString(36).slice(2, 7);
+const body = 'M24 6H72C74.6264 6 77.2272 6.51732 79.6537 7.52241C82.0802 8.5275 84.285 10.0007 86.1421 11.8579C87.9993 13.715 89.4725 15.9198 90.4776 18.3463C91.4827 20.7728 92 23.3736 92 26V50C92 52.6264 91.4827 55.2272 90.4776 57.6537C89.4725 60.0802 87.9993 62.285 86.1421 64.1421C84.285 65.9993 82.0802 67.4725 79.6537 68.4776C77.2272 69.4827 74.6264 70 72 70H30L16.8 78.8C16.5865 78.9489 16.3357 79.0354 16.0758 79.0496C15.8159 79.0639 15.5572 79.0055 15.3286 78.8808C15.1001 78.7562 14.9109 78.5703 14.7822 78.344C14.6535 78.1178 14.5904 77.8601 14.6 77.6V68.4C11.2839 66.6375 8.53096 63.977 6.65634 60.723C4.78173 57.4689 3.86116 53.7528 4 50V26C4 20.6957 6.10713 15.6086 9.85786 11.8579C13.6086 8.10714 18.6957 6 24 6Z';
+---
+<svg class:list={['ai-face', cls]} width={size} height={size * 88 / 96} viewBox="0 0 96 88" fill="none" aria-hidden="true">
+  <defs>
+    <linearGradient id={`${id}a`} x1="4" y1="6" x2="75.8" y2="92.5" gradientUnits="userSpaceOnUse"><stop stop-color="#1E2A44"/><stop offset="1" stop-color="#0A0E17"/></linearGradient>
+    <linearGradient id={`${id}b`} x1="4" y1="6" x2="4" y2="79" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity=".18"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  </defs>
+  <path d={body} fill={`url(#${id}a)`} />
+  <path d={body} fill={`url(#${id}b)`} />
+  <g class="awake">
+    <path d="M37.757 25.6476C37.1424 23.1825 34.6458 21.6825 32.1808 22.2971C29.7157 22.9117 28.2157 25.4082 28.8303 27.8733L31.443 38.3525C32.0576 40.8175 34.5542 42.3176 37.0192 41.703C39.4843 41.0884 40.9843 38.5918 40.3697 36.1268L37.757 25.6476Z" fill="#F4F6FA"/>
+    <path d="M67.1697 27.8732C67.7844 25.4082 66.2843 22.9117 63.8192 22.297C61.3542 21.6824 58.8576 23.1825 58.243 25.6476L55.6303 36.1268C55.0157 38.5918 56.5157 41.0884 58.9808 41.703C61.4458 42.3176 63.9424 40.8175 64.557 38.3524L67.1697 27.8732Z" fill="#F4F6FA"/>
+    <path d="M42 51L48 55.8L54 51" stroke="#F4F6FA" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g class="sleep">
+    <path d="M29 35H39M57 35H67" stroke="#F4F6FA" stroke-width="4.4" stroke-linecap="round"/>
+    <path d="M44 51H52" stroke="#F4F6FA" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
+<style>
+  .ai-face{flex:none;display:block}
+  .ai-face .sleep{display:none}
+  :global([data-state="sleep"]) .ai-face .awake{display:none}
+  :global([data-state="sleep"]) .ai-face .sleep{display:inline}
+</style>

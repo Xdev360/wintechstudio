@@ -4,11 +4,13 @@
   --sig:#3B5BFF; --sig-hover:#2F4BE6; --sig-press:#2640C7; --soft:#EEF1FF; --ok:#12805C; --warn:#B25E09; --err:#C8322B;
   --bg:var(--paper); --fg:var(--ink); --fg-2:var(--mute); --card:var(--paper); --rule:var(--line); --surface:var(--mist);
   --font:'Figtree Variable',system-ui,sans-serif; --mono:'Geist Mono',ui-monospace,monospace;
-  --w-max:1200px; --gutter:clamp(16px,4vw,120px);
+  --w-max:1200px; --gutter:clamp(16px,8.34vw,120px);
   --ring:0 0 0 3px rgba(59,91,255,.28);
+  --bi-fill:#DFE6EF; --bi-stroke:#2F4A6B; --menu-bg:#FFFFFF; --ibox:#F2F4F8;
 }
 :root[data-theme="dark"]{
   --bg:#0A0E17; --fg:#F4F4F5; --fg-2:#A1A1AA; --card:#121722; --rule:#1F2532; --surface:#111723;
+  --bi-fill:#1F2B3D; --bi-stroke:#AEBED4; --menu-bg:#131A26; --ibox:#1C2432;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}

@@ -1,0 +1,8 @@
+---
+import { bi } from '../data/bi';
+interface Props { name: string; size?: number; class?: string }
+const { name, size = 40, class: cls } = Astro.props;
+const [vb, inner] = bi[name] ?? bi.spark;
+const sw = vb === 32 ? 2.13333 : vb === 36 ? 2.4 : 2.66667;
+---
+<svg class:list={['bi', cls]} width={size} height={size} viewBox={`0 0 ${vb} ${vb}`} fill="none" stroke-width={sw} stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={inner} />

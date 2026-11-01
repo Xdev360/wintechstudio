@@ -1,40 +1,113 @@
 ---
+// Header v2 + mega menus v2 (Figma Kit 799:636 header, 800:522 services, 800:687 work, 800:803 studio).
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import { services, cases, contact } from '../data/site';
-const menus = [
-  { label: 'Services', items: [{ href: '/services', label: 'All services' }, ...services.map(s => ({ href: `/services/${s.slug}`, label: s.name }))] },
-  { label: 'Work', items: [{ href: '/work', label: 'All work' }, ...cases.map(c => ({ href: `/work/${c.slug}`, label: c.name }))] },
-  { label: 'Studio', items: [{ href: '/how-we-work', label: 'How we work' }, { href: '/about', label: 'About' }, { href: '/faq', label: 'FAQ' }, { href: '/join-the-bench', label: 'Join the bench' }] },
-];
+import Bi from './Bi.astro';
+import { contact } from '../data/site';
+type Item = { href: string; label: string; sub?: string; icon: string };
+const services: { cols: { h: string; items: Item[] }[]; featured?: { title: string; text: string; href: string; img?: string } } = {
+  cols: [
+    { h: 'START, RUN OR REVAMP', items: [
+      { href: '/services#starting', label: 'Starting something', sub: 'Idea to landing page to MVP', icon: 'rocket' },
+      { href: '/services#adding-tech', label: 'Adding tech to my business', sub: 'Store, AI and automation', icon: 'store' },
+      { href: '/services#refresh', label: 'Refreshing my brand', sub: 'It works, it looks dated', icon: 'refresh' } ] },
+    { h: 'WHAT WE BUILD', items: [
+      { href: '/services/brand', label: 'Brand and packaging', sub: 'Identity, packaging, guidelines', icon: 'palette' },
+      { href: '/services/websites', label: 'Websites and stores', sub: 'Sites that prove, stores that sell', icon: 'website' },
+      { href: '/services/ai-assistant', label: 'AI assistant', sub: 'Replies like you, any hour', icon: 'message' },
+      { href: '/services/automation', label: 'Automation', sub: 'Orders, invoices, follow ups', icon: 'bolt' },
+      { href: '/services/apps', label: 'Apps and MVPs', sub: 'Web and mobile products', icon: 'code' },
+      { href: '/services/motion', label: 'Motion and film', sub: 'Launch films, explainers', icon: 'image' } ] },
+  ],
+  featured: { title: 'Plan your project', text: 'Answer a few taps, see the scope and price, send it to us.', href: '/tools/plan' },
+};
+const work = {
+  cols: [
+    { h: 'OUR WORK', items: [
+      { href: '/work', label: 'Case studies', icon: 'template' },
+      { href: '/how-we-work', label: 'How we work', icon: 'spark' },
+      { href: '/about', label: 'About the studio', icon: 'users' } ] },
+    { h: 'RECENT', items: [
+      { href: '/work/mylo', label: 'Mylo', sub: 'Our product · December 2026', icon: 'phone' },
+      { href: '/work/virelle', label: 'Virelle Wellness', sub: 'Brand, store and packaging', icon: 'store' },
+      { href: '/work/tobel-pearls', label: 'Tobel Pearls', sub: 'Brand system and guideline', icon: 'palette' } ] },
+  ],
+  featured: { title: 'Mylo', text: 'Our own product. It is hard to do it alone; Mylo helps you do it together.', href: '/work/mylo', img: '/images/cases/film-mylo-800.webp' },
+};
+const studio = {
+  cols: [
+    { h: 'STUDIO', items: [
+      { href: '/about', label: 'About', icon: 'users' },
+      { href: '/faq', label: 'FAQ', icon: 'help' },
+      { href: '/join-the-bench', label: 'Join the bench', sub: 'Designers, devs, film crews', icon: 'team' } ] },
+    { h: 'TALK TO US', items: [
+      { href: '/book', label: 'Book a call', sub: '25 minutes', icon: 'calendar' },
+      { href: '/contact', label: 'Contact', sub: contact.email, icon: 'mail' },
+      { href: '#ask', label: 'Ask Wintech AI', sub: 'Answers any hour', icon: 'spark' } ] },
+  ],
+};
+const menus = [['Services', services], ['Work', work], ['Studio', studio]] as const;
+const foot = [['/services', 'All services', 'template'], ['/pricing', 'Pricing', 'receipt'], ['/tools/plan', 'Plan your project', 'rocket'], ['/tools/cost-calculator', 'Cost calculator', 'chart'], ['/tools', 'Free tools', 'book']];
 ---
 <header class="site-header">
-  <a class="announce" href="/tools/plan"><span class="new">NEW</span> Plan your project in 3 minutes. Free tool, no call needed. <Icon name="arrow-right" size={14} /></a>
-  <div class="bar wrap">
+  <a class="announce" href="/tools/plan"><span class="new">NEW</span><span>Plan your project in 3 minutes. Free tool, no call needed.</span><Icon name="arrow-right" size={14} /></a>
+  <div class="row">
     <Logo />
     <nav class="nav" aria-label="Main">
-      {menus.map(m => (
-        <div class="dd">
-          <button class="nav-item" aria-haspopup="true">{m.label} <Icon name="plus" size={13} /></button>
-          <div class="dd-panel">{m.items.map(i => <a href={i.href}>{i.label}</a>)}</div>
+      {menus.map(([label, m], i) => (
+        <div class="dd" data-dd>
+          <button class="nav-item" type="button" aria-expanded="false" aria-controls={`mm-${i}`}>{label}<Icon name="plus" size={13} /></button>
+          <div class="mega" id={`mm-${i}`} role="menu">
+            <div class="mega-top">
+              {m.cols.map(c => (
+                <div class="col">
+                  <p class="mh">{c.h}</p>
+                  {c.items.map(it => (
+                    <a class="mi" href={it.href} data-ask={it.href === '#ask' ? '' : undefined}>
+                      <span class="ib"><Bi name={it.icon} size={40} /></span>
+                      <span class="mt"><strong>{it.label}</strong>{it.sub && <small>{it.sub}</small>}</span>
+                    </a>
+                  ))}
+                </div>
+              ))}
+              {'featured' in m && m.featured && (
+                <a class="feat" href={m.featured.href}>
+                  <p class="mh">FEATURED</p>
+                  <span class="fimg" style={m.featured.img ? `background-image:url(${m.featured.img})` : undefined}><span>{m.featured.title}</span></span>
+                  <span class="fnote"><Bi name="spark" size={36} /><span>{m.featured.text}</span></span>
+                </a>
+              )}
+            </div>
+            <div class="mega-foot">{foot.map(([h, l, ic]) => <a href={h}><Bi name={ic} size={32} />{l}</a>)}</div>
+          </div>
         </div>
       ))}
-      <a class="nav-item" href="/tools">Free tools <span class="badge">NEW</span></a>
+      <a class="nav-item" href="/tools">Free tools<span class="badge">NEW</span></a>
       <a class="nav-item" href="/pricing">Pricing</a>
-      <a class="nav-item" href="/templates">Templates</a>
+      <a class="nav-item" href={contact.templates} target="_blank" rel="noopener">Templates<Icon name="arrow-up-right" size={12} /></a>
       <a class="nav-item" href="/contact">Contact</a>
     </nav>
     <div class="actions">
-      <button class="icon-btn sound" id="sound-toggle" aria-label="Sound effects" aria-pressed="false" title="Sound effects"><Icon name="volume-x" size={18} class="off" /><Icon name="volume-2" size={18} class="onn" /></button>
-      <button class="icon-btn" id="theme-toggle" aria-label="Switch light and dark"><Icon name="moon" size={18} /></button>
-      <a class="btn btn-primary book" href="/book">Book a call</a>
-      <button class="icon-btn burger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><Icon name="menu" size={22} /></button>
+      <button class="icon-btn sound" id="sound-toggle" type="button" aria-label="Sound effects" aria-pressed="false" title="Sound effects"><Icon name="volume-x" size={18} class="off" /><Icon name="volume-2" size={18} class="onn" /></button>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch light and dark"><Icon name="moon" size={18} class="moon" /><Icon name="sun" size={18} class="sun" /></button>
+      <a class="book" href="/book">Book a call</a>
+      <button class="icon-btn burger" id="menu-open" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><Icon name="menu" size={22} /></button>
     </div>
   </div>
   <div class="sheet" id="mobile-menu" hidden>
-    {menus.map(m => (<details><summary>{m.label} <Icon name="plus" size={14} /></summary>{m.items.map(i => <a href={i.href}>{i.label}</a>)}</details>))}
-    <a href="/tools">Free tools</a><a href="/pricing">Pricing</a><a href="/templates">Templates</a><a href="/contact">Contact</a>
-    <a class="btn btn-primary" href="/book">Book a call</a>
+    <div class="shead"><Logo /><button class="icon-btn" id="menu-close" type="button" aria-label="Close menu"><Icon name="x" size={22} /></button></div>
+    <div class="sbody">
+      <p class="mh">WHERE ARE YOU?</p>
+      {services.cols[0].items.map(it => <a class="door" href={it.href}><span class="ib sq"><Bi name={it.icon} size={40} /></span>{it.label}</a>)}
+      <details open><summary>Services<Icon name="plus" size={18} class="pl" /><Icon name="minus" size={18} class="mn" /></summary><div class="sub">{services.cols[1].items.map(it => <a href={it.href}>{it.label}</a>)}<a href="/services">All services</a></div></details>
+      <details><summary>Work<Icon name="plus" size={18} class="pl" /><Icon name="minus" size={18} class="mn" /></summary><div class="sub"><a href="/work">Case studies</a>{work.cols[1].items.map(it => <a href={it.href}>{it.label}</a>)}</div></details>
+      <details><summary>Studio<Icon name="plus" size={18} class="pl" /><Icon name="minus" size={18} class="mn" /></summary><div class="sub"><a href="/how-we-work">How we work</a>{studio.cols.flatMap(c => c.items).map(it => <a href={it.href} data-ask={it.href === '#ask' ? '' : undefined}>{it.label}</a>)}</div></details>
+      <details><summary>Free tools<Icon name="plus" size={18} class="pl" /><Icon name="minus" size={18} class="mn" /></summary><div class="sub"><a href="/tools/plan">Plan your project</a><a href="/tools/cost-calculator">Cost calculator</a><a href="/tools/inbox-check">Inbox check</a></div></details>
+      <a class="srow" href="/pricing">Pricing<Icon name="arrow-right" size={18} /></a>
+      <a class="srow" href={contact.templates} target="_blank" rel="noopener">Templates<Icon name="arrow-up-right" size={18} /></a>
+      <a class="srow" href="/contact">Contact<Icon name="arrow-right" size={18} /></a>
+    </div>
+    <div class="sfoot"><a class="sb primary" href="/book">Book a call</a><a class="sb soft" href="/tools/plan">Plan project</a></div>
   </div>
 </header>
 <script is:inline>
@@ -42,30 +115,78 @@ const menus = [
     var root=document.documentElement;try{var t=localStorage.getItem('theme');if(t&&!root.dataset.force)root.dataset.theme=t}catch(e){}
     document.getElementById('theme-toggle')?.addEventListener('click',function(){var d=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=d;try{localStorage.setItem('theme',d)}catch(e){}});
     var b=document.getElementById('menu-open'),s=document.getElementById('mobile-menu');
-    b?.addEventListener('click',function(){var o=s.hidden;s.hidden=!o;b.setAttribute('aria-expanded',String(o))});
+    function ms(o){s.hidden=!o;root.classList.toggle('menu-open',o);b.setAttribute('aria-expanded',String(o));document.body.style.overflow=o?'hidden':''}b?.addEventListener('click',function(){ms(true)});document.getElementById('menu-close')?.addEventListener('click',function(){ms(false)});s?.addEventListener('click',function(e){if(e.target.closest('a'))ms(false)});
+    var dds=[].slice.call(document.querySelectorAll('[data-dd]')),timer;
+    function close(except){dds.forEach(function(d){if(d!==except){d.classList.remove('open');d.querySelector('button').setAttribute('aria-expanded','false')}})}
+    function open(d){close(d);d.classList.add('open');d.querySelector('button').setAttribute('aria-expanded','true')}
+    dds.forEach(function(d){
+      d.addEventListener('mouseenter',function(){clearTimeout(timer);open(d)});
+      d.addEventListener('mouseleave',function(){timer=setTimeout(function(){d.classList.remove('open');d.querySelector('button').setAttribute('aria-expanded','false')},140)});
+      d.querySelector('button').addEventListener('click',function(){d.classList.contains('open')?close():open(d)});
+    });
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+    document.addEventListener('click',function(e){if(!e.target.closest('[data-dd]'))close()});
   })();
 </script>
 <style>
-  .site-header{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--rule)}
-  .announce{display:flex;justify-content:center;align-items:center;gap:10px;background:#000;color:#fff;font-size:13px;padding:8px 16px;text-decoration:none}
-  .new{background:#fff;color:#000;font-size:10px;font-weight:500;padding:1px 6px}
-  .bar{display:flex;align-items:center;justify-content:space-between;height:79px}
-  .nav{display:flex;gap:6px}
-  .nav-item{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;font:500 15px var(--font);color:var(--fg);text-decoration:none;background:none;border:0;cursor:pointer}
-  .nav-item:hover{background:var(--surface)}
-  .badge{background:var(--ink);color:#fff;font-size:10px;padding:1px 5px}
-  .dd{position:relative}
-  .dd-panel{position:absolute;top:100%;left:0;min-width:240px;background:var(--card);border:1px solid var(--rule);padding:8px;display:none;flex-direction:column;box-shadow:0 16px 40px rgba(10,14,23,.08)}
-  .dd:hover .dd-panel,.dd:focus-within .dd-panel{display:flex}
-  .dd-panel a{padding:10px 12px;text-decoration:none;font-size:15px}.dd-panel a:hover{background:var(--surface)}
-  .actions{display:flex;align-items:center;gap:12px}
-  .icon-btn{background:none;border:0;color:var(--fg);padding:8px;cursor:pointer;display:inline-flex}
+  .site-header{position:sticky;top:0;z-index:50;background:var(--bg)}
+  .announce{display:flex;justify-content:center;align-items:center;gap:10px;background:#0A0E17;color:rgba(255,255,255,.85);font-size:13px;padding:8px 16px;text-decoration:none}
+  .announce:hover span:not(.new){color:#fff}
+  .new{background:#fff;color:#0A0E17;font:500 10px var(--mono);padding:2px 6px;border-radius:3px}
+  .row{position:relative;display:flex;align-items:center;justify-content:space-between;padding:20px var(--gutter);border-bottom:1px solid var(--rule);max-width:none}
+  .row :global(.logo){font-size:20.5px;gap:5.7px;letter-spacing:-.51px}
+  .nav{display:flex;gap:6px;align-items:center}
+  .nav-item{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:6px;font:500 15px/normal var(--font);color:var(--fg);text-decoration:none;background:none;border:0;cursor:pointer}
+  .nav-item:hover,.dd.open>.nav-item{background:var(--surface)}
+  .dd.open>.nav-item :global(svg){transform:rotate(45deg)}.nav-item :global(svg){transition:transform .2s}
+  .badge{background:var(--fg);color:var(--bg);font:500 10px var(--mono);padding:1px 5px;border-radius:3px}
+  .actions{display:flex;align-items:center;gap:18px}
+  .icon-btn{background:none;border:0;color:var(--fg);padding:0;cursor:pointer;display:inline-flex}
+  .book{background:#3B5BFF;color:#fff;font:500 15px/normal var(--font);padding:10px 16px;border-radius:4px;text-decoration:none}.book:hover{background:var(--sig-hover)}
   .burger{display:none}
   .sound :global(.onn){display:none}:global(:root[data-sound="on"]) .sound :global(.onn){display:block}:global(:root[data-sound="on"]) .sound :global(.off){display:none}
-  .sheet{display:flex;flex-direction:column;padding:8px 16px 24px;border-top:1px solid var(--rule)}
+  #theme-toggle :global(.sun){display:none}:global(:root[data-theme="dark"]) #theme-toggle :global(.sun){display:block}:global(:root[data-theme="dark"]) #theme-toggle :global(.moon){display:none}
+
+  /* Mega menu */
+  .dd{position:static}
+  .mega{position:absolute;top:calc(100% + 1px);left:50%;transform:translate(-50%,6px);width:min(1200px,calc(100vw - 32px));background:var(--menu-bg);border:1px solid var(--rule);box-shadow:0 24px 24px rgba(0,0,0,.08);opacity:0;visibility:hidden;transition:opacity .16s,transform .16s,visibility 0s .16s}
+  .dd.open .mega{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .16s,transform .16s}
+  .mega-top{display:flex}
+  .col{flex:1;display:flex;flex-direction:column;gap:2px;padding:20px;border-right:1px solid var(--rule)}
+  .col:last-child{border-right:0}
+  .mh{font:400 11px var(--mono);letter-spacing:.66px;color:var(--fg-2);margin:0 0 10px}
+  .mi{display:flex;align-items:center;gap:12px;padding:9px 8px;border-radius:8px;text-decoration:none;color:var(--fg)}
+  .mi:hover{background:var(--surface)}
+  .ib{display:inline-flex;padding:6px;background:var(--ibox);border:1px solid var(--rule);border-radius:8px;flex:none}
+  .mt{display:flex;flex-direction:column;gap:1px}.mt strong{font-weight:500;font-size:15px}.mt small{font-size:13px;color:var(--fg-2)}
+  .feat{flex:none;display:flex;flex-direction:column;gap:12px;padding:20px;text-decoration:none;color:var(--fg)}
+  .feat .mh{margin:0}
+  .fimg{position:relative;width:280px;height:170px;background:linear-gradient(141deg,#0A0A0A 0%,#6B6F76 71%);background-size:cover;background-position:center}
+  .fimg span{position:absolute;left:18px;bottom:18px;font:600 22px var(--font);color:#fff}
+  .fimg[style]::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.55))}
+  .fnote{display:flex;gap:10px;align-items:center;width:286px}.fnote span{font-size:14px;line-height:1.45;color:var(--fg-2)}
+  .mega-foot{display:flex;border-top:1px solid var(--rule)}
+  .mega-foot a{flex:1;display:flex;align-items:center;gap:8px;padding:14px 20px;border-right:1px solid var(--rule);font-size:14px;color:var(--fg);text-decoration:none}
+  .mega-foot a:last-child{border-right:0}.mega-foot a:hover{background:var(--surface)}
+  :global(:root[data-theme="dark"]) .mega{border-color:rgba(255,255,255,.08)}
+
+  /* Mobile menu (Figma 820:3928) */
+  .sheet{position:fixed;inset:0;z-index:70;background:var(--bg);display:flex;flex-direction:column}
   .sheet[hidden]{display:none}
-  .sheet a,.sheet summary{padding:14px 0;border-bottom:1px solid var(--rule);text-decoration:none;font-size:17px;font-weight:500;list-style:none;display:flex;justify-content:space-between;align-items:center}
-  .sheet details a{padding-left:12px;font-weight:400;color:var(--fg-2)}
-  .sheet .btn{margin-top:16px;border:0;justify-content:center;color:#fff}
-  @media (max-width:1023px){.nav,.book,#theme-toggle,.sound{display:none}.burger{display:inline-flex}.bar{height:61px}}
+  .shead{display:flex;justify-content:space-between;align-items:center;padding:11px 16px}
+  .shead :global(.logo){font-size:18.24px;letter-spacing:-.456px}
+  .sbody{flex:1;overflow:auto;padding:0 16px 16px}
+  .sbody .mh{font-size:10px;letter-spacing:.6px;margin:0 0 10px}
+  .door{display:flex;align-items:center;gap:12px;padding:12px 0;text-decoration:none;color:var(--fg);font:500 16px var(--font)}
+  .ib.sq{border:0;border-radius:0;background:var(--surface)}
+  .sbody summary,.srow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-top:1px solid var(--rule);font:600 22px var(--font);letter-spacing:-.22px;color:var(--fg);text-decoration:none;list-style:none;cursor:pointer}
+  .sbody summary::-webkit-details-marker{display:none}
+  .sbody summary :global(.mn){display:none}.sbody details[open] summary :global(.mn){display:block}.sbody details[open] summary :global(.pl){display:none}
+  .sbody .sub{display:flex;flex-direction:column;gap:4px;padding:0 0 8px}
+  .sbody .sub a{font-size:15px;line-height:18px;color:var(--fg-2);text-decoration:none}
+  .sfoot{display:flex;gap:10px;padding:12px 16px 16px}
+  .sb{flex:1;text-align:center;padding:14px;font:500 16px var(--font);text-decoration:none}
+  .sb.primary{background:#3B5BFF;color:#fff}.sb.soft{background:var(--surface);color:var(--fg)}
+  @media (max-width:1180px){.nav-item{padding:8px 8px}.nav{gap:2px}}
+  @media (max-width:1023px){.nav,.actions .book,#theme-toggle{display:none}.burger{display:inline-flex}.row{padding:11px 16px}.row :global(.logo){font-size:18.24px}.announce{font-size:12px}.actions{gap:16px}}
 </style>
