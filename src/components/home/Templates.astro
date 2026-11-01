@@ -1,0 +1,138 @@
+---
+// "Wintech Templates" (Figma 983:22152, dark 983:22191, M 983:22230)
+import Icon from '../Icon.astro';
+import { contact } from '../../data/site';
+const tiles = [
+  { name: 'Salon & beauty', bg: '#F4EDE6', ink: '#0A0E17', ac: '#B07A5A', sel: true },
+  { name: 'Consultant', bg: '#EEF1FF', ink: '#0A0E17', ac: '#3B5BFF' },
+  { name: 'Restaurant', bg: '#1A1D26', ink: '#FFFFFF', ac: '#E8B04B' },
+];
+---
+<section class="tpl">
+  <div class="h-wrap grid">
+    <div class="copy">
+      <p class="h-mono">Wintech Templates</p>
+      <h2>Just need a website?<br />Go live today.</h2>
+      <p class="lede"><span class="dk">Our template shop. </span>Pick a design made for Nigerian businesses, add your prices and photos, and it’s live at yourname.wintechstudio.com.</p>
+      <dl class="facts">
+        <div><dt>12</dt><dd>templates live</dd></div>
+        <div><dt>4</dt><dd><span class="dk">kinds: booking, store, portfolio, landing</span><span class="mb">kinds of site</span></dd></div>
+        <div><dt>₦</dt><dd><span class="dk">pay in naira, no cut of your sales</span><span class="mb">pay in naira</span></dd></div>
+      </dl>
+      <div class="btns">
+        <a class="browse" href={contact.templates} target="_blank" rel="noopener">Browse templates <Icon name="arrow-up-right" size={16} /></a>
+        <a class="sell" href={`${contact.templates}/sell`} target="_blank" rel="noopener">Sell your templates <Icon name="arrow-up-right" size={16} /></a>
+      </div>
+      <p class="h-mono note">Opens app.wintechstudio.com</p>
+    </div>
+    <div class="stage" aria-hidden="true">
+      <img class="art" src="/images/hero/hero-dark.svg" alt="" loading="lazy" />
+      <div class="shade"></div>
+      <div class="pill"><i></i>Free site at yourname.wintechstudio.com</div>
+      <p class="st">Pick a template. Go live today.</p>
+      <div class="glass">
+        <div class="prompt">
+          <p class="q">A booking site for my salon in Lekki<b></b></p>
+          <div class="kinds"><em>All</em><em>Portfolio</em><em>Landing page</em><em>Store</em><em class="on">Booking</em></div>
+          <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg></span>
+        </div>
+        <p class="matches">Matches for "salon"</p>
+        <div class="tiles">
+          {tiles.map((t) => (
+            <div class:list={['tile', { sel: t.sel }]} style={`--bg:${t.bg};--ink:${t.ink};--ac:${t.ac}`}>
+              <div class="shot"><i class="nav"></i><i class="h1"></i><i class="h1b"></i><i class="cta"></i><i class="img"></i></div>
+              <p><span>{t.name}</span><span class="k">Booking</span></p>
+              {t.sel && <span class="use">Use this</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .tpl{background:var(--h-alt);padding:96px 0 112px}
+  :root[data-theme="dark"] .tpl{--h-fg:#F4F4F5;--h-mute:#A1A1AA;--h-rule:#2A2F3A}
+  .grid{display:grid;grid-template-columns:minmax(0,440px) 720px;justify-content:space-between;gap:40px}
+  .copy{padding-top:16px;display:flex;flex-direction:column;align-items:flex-start}
+  .copy .h-mono{letter-spacing:.6px}
+  h2{font-size:48px;line-height:54px;letter-spacing:-1.2px;font-weight:600;color:var(--h-fg);margin:14px 0 0}
+  .lede{font-size:17px;line-height:27px;color:var(--h-mute);margin:22px 0 0;max-width:420px}
+  .mb{display:none}
+  .facts{margin:21px 0 0;width:100%;max-width:420px;border-top:1px solid var(--h-rule)}
+  .facts div{display:flex;align-items:center;height:43px;border-bottom:1px solid var(--h-rule)}
+  .facts dt{width:48px;font-size:17px;font-weight:600;color:var(--h-fg)}
+  .facts dd{margin:0;font-size:15px;color:var(--h-mute)}
+  .btns{display:flex;align-items:center;gap:20px;margin-top:32px}
+  .browse{white-space:nowrap;display:inline-flex;align-items:center;gap:8px;padding:12px 20px;background:#0A0E17;color:#fff;font:500 15px/normal var(--font);text-decoration:none}
+  .browse:hover{background:#1C2230}
+  :root[data-theme="dark"] .browse{background:#3B5BFF}:root[data-theme="dark"] .browse:hover{background:#2F4BE6}
+  .sell{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;font:500 15px/normal var(--font);color:var(--h-fg);text-decoration:none}
+  .sell:hover{color:var(--h-accent)}
+  .copy .note{margin-top:26px;letter-spacing:.6px}
+  .stage{position:relative;width:720px;height:540px;overflow:hidden;background:#0A0E17;color:#fff}
+  :root[data-theme="dark"] .stage{outline:1px solid rgba(255,255,255,.1);outline-offset:-1px}
+  .art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,23,.55) 0%,rgba(10,14,23,.15) 60%,rgba(10,14,23,.7) 100%)}
+  .pill{position:absolute;left:50%;top:28px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font:500 13px/normal var(--font);white-space:nowrap}
+  .pill i{width:7px;height:7px;border-radius:50%;background:#3DDC97}
+  .st{position:absolute;left:0;right:0;top:78px;text-align:center;margin:0;font-size:30px;font-weight:600;letter-spacing:-.8px;line-height:normal}
+  .glass{position:absolute;left:28px;top:136px;width:664px;height:333px;box-sizing:border-box;padding:11px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .prompt{position:relative;height:96px;box-sizing:border-box;border-radius:10px;background:rgba(10,14,23,.6);padding:14px 14px 0 16px}
+  .q{margin:0;font-size:15px;line-height:normal}
+  .q b{display:inline-block;width:1.5px;height:14px;background:#8FA3FF;margin-left:3px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  @media (prefers-reduced-motion:reduce){.q b{animation:none}}
+  .kinds{display:flex;gap:6px;margin:21px 0 0 -2px}
+  .kinds em{font:500 12px/normal var(--font);font-style:normal;padding:6px 11px;border-radius:7px;background:rgba(255,255,255,.08)}
+  .kinds .on{background:#fff;color:#0A0E17}
+  .go{position:absolute;right:14px;top:52px;width:30px;height:30px;border-radius:50%;background:#3B5BFF;display:flex;align-items:center;justify-content:center}
+  .go svg{width:16px;height:16px}
+  .matches{margin:14px 0 0 2px;font-size:12px;line-height:normal;color:#B9C1CF}
+  .tiles{display:flex;gap:10.5px;margin-top:10px}
+  .tile{position:relative;flex:1;height:175px;box-sizing:border-box;border-radius:10px;padding:4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+  .tile.sel{border:1.5px solid rgba(255,255,255,.6);padding:3px}
+  .shot{position:relative;height:135px;border-radius:6px;background:var(--bg);overflow:hidden}
+  .shot i{position:absolute;left:8px;background:var(--ink)}
+  .shot .nav{top:8px;width:26px;height:4px;opacity:.7}
+  .shot .h1{top:20px;width:50%;height:7px}.shot .h1b{top:31px;width:36%;height:7px}
+  .shot .cta{top:46px;width:30px;height:9px;border-radius:2px;background:var(--ac)}
+  .shot .img{left:60%;top:16px;width:32%;height:111px;border-radius:4px;background:var(--ac);opacity:.35}
+  .tile p{display:flex;justify-content:space-between;align-items:center;margin:8px 3px 0 3px;font:500 12px/normal var(--font)}
+  .tile .k{font-weight:400;font-size:11px;color:#B9C1CF}
+  .use{position:absolute;right:9px;top:10px;background:#3B5BFF;color:#fff;font:500 10px/normal var(--font);padding:3px 7px;border-radius:999px}
+  @media (max-width:1300px) and (min-width:1024px){.grid{grid-template-columns:1fr;gap:56px}.copy{padding-top:0}.stage{justify-self:center}}
+  @media (max-width:1023px){
+    .tpl{padding:56px 0}
+    .dk,.note{display:none}.mb{display:inline}
+    .grid{display:flex;flex-direction:column;gap:0}
+    .copy{display:contents}
+    .copy .h-mono{letter-spacing:.6px}
+    h2{font-size:30px;line-height:36px;letter-spacing:-.6px;margin-top:11px}
+    .lede{font-size:15px;line-height:23px;margin-top:10px;max-width:none}
+    .stage{order:1;margin-top:24px;width:100%;height:341px;aspect-ratio:auto}
+    .art{top:-79px;height:420px}
+    .pill{top:17px;font-size:8px;padding:5px 12px;gap:6px}.pill i{width:5px;height:5px}
+    .st{top:55px;font-size:19px}
+    .glass{left:17px;right:17px;top:92px;bottom:auto;width:auto;height:221px;padding:6px;border-radius:9px}
+    .prompt{height:60px;border-radius:6px;padding:9px 9px 0 10px}
+    .q{font-size:9px}.q b{height:7px;vertical-align:0}
+    .kinds{margin:13px 0 0 -1px}.kinds em{font-size:7px;padding:4px 7px;border-radius:4px}
+    .go{right:8px;top:32px;width:19px;height:19px}.go svg{width:10px;height:10px}
+    .matches{font-size:7px;margin:9px 0 0 2px}
+    .tiles{gap:6px;margin-top:6px}
+    .tile{height:124px;border-radius:6px;padding:3px;flex:0 0 calc(50% - 3px)}
+    .tile.sel{padding:2px}
+    .tile:nth-child(3){display:none}
+    .shot{height:99px;border-radius:4px}
+    .shot i{left:5px}.shot .nav{top:5px;width:16px;height:2px}.shot .h1{top:12px;height:4px}.shot .h1b{top:19px;height:4px}
+    .shot .cta{top:29px;width:19px;height:6px}.shot .img{top:10px;height:84px;border-radius:2px}
+    .tile p{font-size:7px;margin:5px 1px 0}.tile .k{font-size:7px}
+    .use{font-size:6px;padding:2px 4px;right:5px;top:5px}
+    .facts{order:2;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;border:0;margin-top:20px;max-width:none}
+    .facts div{flex-direction:column;align-items:flex-start;height:auto;border:0;gap:8px}
+    .facts dt{width:auto;font-size:20px;line-height:normal}.facts dd{font-size:12px}
+    .btns{order:3;flex-direction:column;gap:16px;width:100%;margin-top:28px}
+    .browse{width:100%;justify-content:center;box-sizing:border-box}
+  }
+</style>

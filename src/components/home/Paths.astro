@@ -1,0 +1,91 @@
+---
+// "Where are you right now?" (Figma 801:1184, dark 801:1745, M 820:3742, M dark 1029:22832)
+import Icon from '../Icon.astro';
+import Bi from '../Bi.astro';
+const doors = [
+  { key: 'starting', icon: 'rocket', title: 'Starting something', text: 'An idea, maybe a waitlist. You need a brand, a page to test demand and a first version.', tags: 'Landing page · Brand · MVP', mtags: 'Brand · Landing page · MVP' },
+  { key: 'adding-tech', icon: 'store', title: 'Adding tech to my business', text: 'It already sells. You need a store, replies at any hour and less work on your phone.', tags: 'Store · AI assistant · Automation', mtags: 'Store · AI assistant · Automation' },
+  { key: 'refresh', icon: 'refresh', title: 'Refreshing my brand', text: 'It works but looks dated or leaks customers. You want it sharper, faster, premium.', tags: 'Rebrand · New website · Packaging', mtags: 'Rebrand · Website · Packaging' },
+];
+const tools = [['Plan your project', 'Plan', '/tools/plan'], ['Cost calculator', 'Calculator', '/tools/cost-calculator'], ['Inbox check', 'Inbox check', '/tools/inbox-check']];
+---
+<section class="paths rails">
+  <div class="h-wrap">
+    <div class="top">
+      <div class="head">
+        <p class="h-mono">Plan your project</p>
+        <h2>Where are you<br /><span class="h-grad">right now?</span></h2>
+        <p class="lede">One question decides the rest. Pick where you are, tap what you need, and see the scope and the price before you talk to anyone.</p>
+      </div>
+      <a class="h-btn primary open" href="/tools/plan">Open the planner</a>
+    </div>
+    <div class="doors">
+      {doors.map((d, i) => (
+        <a class:list={['door', { hi: i === 1 }]} href={`/tools/plan?start=${d.key}`}>
+          <span class="row">
+            <Bi name={d.icon} size={56} class="bi-ic" />
+            <span class="go-d"><Icon name="arrow-up-right" size={18} /></span>
+          </span>
+          <span class="dt">
+            <strong>{d.title}</strong>
+            <span class="tx">{d.text}</span>
+            <em class="tags"><span class="dk">{d.tags}</span><span class="mb">{d.mtags}</span></em>
+          </span>
+          <span class="go-m"><Icon name="arrow-right" size={16} /></span>
+        </a>
+      ))}
+    </div>
+    <div class="tools">
+      <span class="lead"><span class="dk">Not ready to talk? Start with a free tool:</span><span class="mb">Not ready to talk? Try a free tool:</span></span>
+      <span class="links">{tools.map((t) => <a href={t[2]}><span class="dk">{t[0]}</span><span class="mb">{t[1]}</span><Icon name="arrow-right" size={14} /></a>)}</span>
+    </div>
+  </div>
+</section>
+<style>
+  .paths{background:var(--h-alt);padding:128px 0 100px}
+  .top{display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
+  .head{display:flex;flex-direction:column;gap:16px;max-width:560px}
+  h2{font-size:56px;line-height:1.05;letter-spacing:-1.12px;font-weight:600;color:var(--h-fg);margin:0}
+  .lede{font-size:18px;line-height:1.5;color:var(--h-mute);margin:0}
+  .mb{display:none}
+  .doors{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+  .door{display:flex;flex-direction:column;gap:16px;padding:28px;background:var(--h-card);border:1px solid var(--h-rule);text-decoration:none;color:var(--h-fg);transition:border-color .15s,box-shadow .15s}
+  :root[data-theme="dark"] .door{background:#111723}
+  .door:hover{border-color:var(--h-accent);box-shadow:0 12px 28px rgba(10,14,23,.08)}
+  .row{display:flex;justify-content:space-between;align-items:center}
+  .go-d{color:var(--h-mute);display:flex}.go-m{display:none}
+  .door:hover .go-d{color:var(--h-accent)}
+  .dt{display:flex;flex-direction:column;gap:16px}
+  .dt strong{font-size:22px;font-weight:600;line-height:normal}
+  .tx{font-size:15px;line-height:1.5;color:var(--h-mute);max-width:320px}
+  .tags{font:400 12px/normal var(--mono);font-style:normal;color:var(--h-accent)}
+  .tools{display:flex;align-items:center;gap:24px;margin-top:56px;border-top:1px solid var(--h-rule);padding:22px 0 0;min-height:60px;font:500 15px/normal var(--font)}
+  .lead{color:var(--h-mute)}
+  .links{display:flex;gap:24px}
+  .links a{display:inline-flex;align-items:center;gap:6px;color:var(--h-accent);text-decoration:none}
+  .links a:hover{text-decoration:underline;text-underline-offset:3px}
+  @media (max-width:1180px){.dt strong{font-size:20px}}
+  @media (max-width:1023px){
+    .paths{padding:56px 0}
+    .dk{display:none}.mb{display:inline}
+    .head{gap:12px}
+    h2{font-size:34px;line-height:1.06;letter-spacing:-.51px}
+    .top{flex-direction:column;align-items:flex-start}
+    .lede,.top .open{display:none}
+    .doors{grid-template-columns:1fr;gap:20px;margin-top:20px}
+    .door{flex-direction:row;align-items:center;gap:14px;padding:16px}
+    .row{flex:none}.go-d,.tx{display:none}
+    .row :global(.bi-ic){width:52px;height:52px}
+    .dt{flex:1;min-width:0;gap:2px}.dt strong{font-size:16px}
+    .go-m{display:flex;color:var(--h-fg)}
+    /* The middle door is shown inverted in the M frames */
+    .door.hi{background:#0A0E17;border-color:#0A0E17;color:#F4F6FA;--bi-fill:#1F2B3D;--bi-stroke:#AEBED4}
+    .door.hi .tags{color:#7C93FF}.door.hi .go-m{color:#F4F6FA}
+    .door.hi .row :global(.bi-ic){width:39px;height:39px}
+    :root[data-theme="dark"] .door{background:#0A0E17;border-color:rgba(255,255,255,.09)}
+    :root[data-theme="dark"] .door.hi{background:#F4F4F5;border-color:#F4F4F5;color:#0A0E17;--bi-fill:#DFE6EF;--bi-stroke:#2F4A6B}
+    :root[data-theme="dark"] .door.hi .tags{color:#3B5BFF}:root[data-theme="dark"] .door.hi .go-m{color:#0A0E17}
+    .tools{flex-direction:column;align-items:flex-start;gap:16px;margin-top:20px;padding-top:16px;font-size:14px}
+    .links{gap:14px}.links a{gap:4px}
+  }
+</style>

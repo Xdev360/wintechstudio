@@ -1,0 +1,66 @@
+---
+// Home FAQ (Figma 801:1325, dark 801:1886). Not in the M frames; stacks on mobile.
+import Icon from '../Icon.astro';
+const faqs: [string, string][] = [
+  ['What does it cost?', 'Websites from $1,200, brand systems from $1,500, the AI assistant from $1,800 plus $60 a month. Plan your project shows the full range before any call.'],
+  ['Do I need to be a startup?', 'No. We work with founders starting out, businesses that already sell and want to add tech, and brands that need a refresh.'],
+  ['Can you work with what I already have?', 'Yes. We keep what works, your logo, your site or your tools, and fix or extend the rest.'],
+  ['Who owns the accounts and files?', 'You do. Domain, hosting and every account sit in your name from day one, and all design files, code and documents are yours on the final payment.'],
+  ['How fast can you start?', 'We take on four projects at a time. Book a call and we will tell you the next start date, usually within two weeks.'],
+];
+---
+<section class="faq rails">
+  <div class="h-wrap cols">
+    <div class="side">
+      <div class="head">
+        <p class="h-mono">FAQ</p>
+        <h2><a href="/faq">Read the FAQs</a></h2>
+      </div>
+      <div class="box">
+        <p class="bt">Still deciding?</p>
+        <p class="bx">Ask Wintech AI now, or the<br />project lead on a call.</p>
+        <a class="h-btn primary" href="/book">Book a call</a>
+      </div>
+    </div>
+    <div class="list">
+      {faqs.map((f, i) => (
+        <details name="home-faq" open={i === 0}>
+          <summary>{f[0]}<span class="ic" aria-hidden="true"><Icon name="plus" size={20} stroke={1.5} class="p" /><Icon name="minus" size={20} stroke={1.5} class="m" /></span></summary>
+          <p>{f[1]}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+<script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } })) })} />
+<style>
+  .faq{background:var(--h-bg);padding:128px 0}
+  .cols{display:flex;gap:80px;align-items:flex-start}
+  .side{flex:none;width:380px;display:flex;flex-direction:column;gap:28px}
+  .head{display:flex;flex-direction:column;gap:16px}
+  h2{font-size:56px;line-height:1.05;letter-spacing:-1.12px;font-weight:600;margin:0}
+  h2 a{color:var(--h-fg);text-decoration:none}h2 a:hover{color:var(--h-accent)}
+  .box{background:var(--h-alt);padding:24px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+  :root[data-theme="dark"] .box{background:#161D2A}
+  .bt{font-size:20px;font-weight:600;color:var(--h-fg);margin:0;line-height:normal}
+  .bx{font-size:15px;line-height:1.5;color:var(--h-mute);margin:0}
+  .list{flex:1;min-width:0}
+  details{border-bottom:1px solid var(--h-rule);padding:22px 0}
+  summary{display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;list-style:none;font-size:19px;font-weight:500;line-height:normal;color:var(--h-fg)}
+  summary::-webkit-details-marker{display:none}
+  summary:hover{color:var(--h-accent)}
+  .ic{display:flex;flex:none}
+  .ic :global(.m){display:none}details[open] .ic :global(.m){display:block}details[open] .ic :global(.p){display:none}
+  details p{margin:12px 0 0;font-size:16px;line-height:1.55;color:var(--h-mute);max-width:620px}
+  @media (max-width:1180px){.cols{gap:48px}.side{width:320px}}
+  @media (max-width:1023px){
+    .faq{padding:56px 0}
+    .cols{flex-direction:column;gap:20px}
+    .side{width:100%;display:contents}
+    .head{gap:12px}
+    h2{font-size:34px;line-height:1.06;letter-spacing:-.51px}
+    .list{width:100%}
+    .box{order:2;width:100%;box-sizing:border-box;margin-top:12px}
+    details{padding:18px 0}summary{font-size:17px}details p{font-size:15px}
+  }
+</style>
