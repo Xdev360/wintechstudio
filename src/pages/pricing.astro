@@ -2,52 +2,271 @@
 import Page from '../layouts/Page.astro';
 import Faq from '../components/ui/Faq.astro';
 import Icon from '../components/Icon.astro';
+import Glyph from '../components/ui/Glyph.astro';
 import services from '../data/services.json';
-const projects = [['Website', 'websites'], ['Brand system', 'brand'], ['AI assistant', 'ai-assistant'], ['App or MVP', 'apps'], ['Launch film', 'motion']].map(([n, s]) => ({ n, s, d: services.find(x => x.slug === s)! }));
-const plans = [['AI care plan', '$60', '/mo', 'For every AI assistant we build.', ['Retraining when products change', 'Monthly report: chats, orders, questions', 'Fixes within one working day', 'Hosting and model costs included']], ['Growth and content', '$600', '/mo', '3 month minimum. Posts, films and campaigns.', ['12 posts and 2 short films a month', 'Captions and posting calendar', 'Monthly results call', 'Ads support, budget separate']], ['Run it for you', 'Custom', '', 'For owners who want the whole system handled.', ['Store, AI, automation and content', 'One project lead, weekly check in', 'Priority on new features', 'Quoted after the diagnostic']]] as const;
-const promises = [['Accounts in your name', 'Domain, store and payments are registered to you.'], ['Written agreement first', 'Scope, price, dates and change orders, signed first.'], ['Nothing goes live without you', 'Every change has a preview you approve.'], ['Changes are priced', 'Anything new gets a written change order.'], ['One person to call', 'The project lead answers, not a ticket queue.'], ['Lagos hours, worldwide', 'We overlap with London and the US East Coast.']];
-const faqs: [string, string][] = [['Why "from" prices?', 'Scope sets the price: pages, products, integrations and motion. After the brief and the call we send a fixed scope and price.'], ['Can I pay in naira?', 'Yes. Prices show in dollars with naira beside them, and your proposal can be invoiced in naira.'], ['What does the $60 a month cover?', 'Hosting and model costs for your AI assistant, retraining when your products change, a monthly report and fixes within one working day.'], ['Can I pause a monthly plan?', 'Yes, one month at a time. The AI care plan keeps running while content pauses. Cancel with 30 days notice.'], ['What if the scope changes?', 'Anything new gets a written change order with its own price before we build it.']];
+import '../styles/studio.css';
+
+const S = (slug: string) => services.find(x => x.slug === slug)!;
+const bare = (p: string) => p.replace(/^from\s+/, '');
+const lead = [['One project lead', 'Your single contact'], ['Weekly previews', 'Nothing ships without your yes']];
+type Item = { k: string; name: string; icon: string; usd: string; ngn?: string; title: string; intro: string; big: string; bigNgn?: string; per: string; perNgn?: string; how: string[][]; get: string[]; brief?: string; href: string };
+const svc = (k: string, slug: string, name: string, icon: string, extra: Partial<Item> = {}): Item => {
+  const d = S(slug);
+  const [usdMain, usdMo] = bare(d.price).split(' + ');
+  const [ngnMain, ngnMo] = d.priceNgn.split(' + ');
+  return { k, name, icon, usd: usdMo ? `from ${usdMain}` : d.price, ngn: `from ${ngnMain}`, title: name, intro: d.intro, big: usdMain, bigNgn: ngnMain, per: usdMo ? `/ project + ${usdMo}` : '/ project', perNgn: ngnMo ? `/ project + ${ngnMo}` : '/ project', how: [[d.timeline, 'Kickoff to launch'], ...lead], get: d.cells.map(c => c.title), brief: `/services/${slug}#brief`, href: `/services/${slug}`, ...extra };
+};
+const first: Item = { k: 'diagnostic', name: 'Paid diagnostic', icon: 'search', usd: '$200', title: 'Paid diagnostic', intro: 'A working session on your business, money flows and what to build first. You leave with a written plan.', big: '$200', per: '/ session', how: [['One working session', 'Your business and money flows'], ['A written plan', 'What to build first']], get: ['A study of the business and the numbers', 'What to build first', 'A written plan you keep'], href: '/book' };
+const web = S('websites');
+const projects: Item[] = [
+  svc('website', 'websites', 'Website', 'website'),
+  svc('brand', 'brand', 'Brand system', 'palette'),
+  // Store with checkout has no naira figure in services.json yet: USD shows in both modes.
+  { k: 'store', name: 'Store with checkout', icon: 'store', usd: 'from $1,500', title: 'Store with checkout', intro: web.cells[1].body, big: '$1,500', per: '/ project', how: [[web.timeline, 'Kickoff to launch'], ...lead], get: web.cells.map(c => c.title), brief: '/services/websites#brief', href: '/services/websites' },
+  // Brand + website: naira from the Figma frame (no combined figure in services.json).
+  { k: 'brand-website', name: 'Brand + website', icon: 'rocket', usd: 'from $2,500', ngn: 'from ₦1,800,000', title: 'Brand + website', intro: 'A brand people remember and a website that proves it, by one team.', big: '$2,500', bigNgn: '₦1,800,000', per: '/ project', perNgn: '/ project', how: [['4 to 6 weeks', 'Kickoff to launch'], ...lead], get: ['Brand direction', 'Logo, colour and type', 'Website design and build', 'Google and AI search ready', 'Handover and training'], brief: '/services/brand#brief', href: '/services/brand' },
+  svc('ai', 'ai-assistant', 'AI assistant', 'message'),
+  svc('app', 'apps', 'App or MVP', 'code'),
+  svc('film', 'motion', 'Launch film', 'image'),
+];
+const aiNgnMo = S('ai-assistant').priceNgn.split(' + ')[1];
+const plans = [
+  { k: 'growth', name: 'Growth and content', icon: 'trend', price: '$600', per: '/mo', desc: '3 month minimum. Posts, films and campaigns.', items: ['12 posts and 2 short films a month', 'Captions and posting calendar', 'Monthly results call', 'Ads support, budget separate'] },
+  { k: 'care', name: 'AI care plan', icon: 'spark', price: '$60', ngnPrice: aiNgnMo.replace('/mo', ''), per: '/mo', desc: 'For every AI assistant we build.', items: ['Retraining when products change', 'Monthly report: chats, orders, questions', 'Fixes within one working day', 'Hosting and model costs included'] },
+];
+const monthly: Item[] = plans.map(p => ({ k: p.k, name: p.name, icon: p.icon, usd: `${p.price}/mo`, ngn: p.ngnPrice ? `${p.ngnPrice}/mo` : undefined, title: p.name, intro: p.desc, big: p.price, bigNgn: p.ngnPrice, per: '/ month', perNgn: '/ month', how: [['Billed monthly', 'Cancel with 30 days notice'], ['Pause a month', 'One month at a time'], ...lead.slice(0, 1)], get: p.items, href: '/monthly-plans' }));
+const all = [first, ...projects, ...monthly];
+const sel = 'brand-website';
+
+const cards = [
+  { name: 'AI care plan', price: '$60', ngn: aiNgnMo.replace('/mo', ''), per: '/mo', desc: plans[1].desc, items: plans[1].items },
+  { name: 'Growth and content', price: '$600', per: '/mo', desc: plans[0].desc, items: plans[0].items, dark: true },
+  { name: 'Run it for you', price: 'Custom', per: '', desc: 'For owners who want the whole system handled.', items: ['Store, AI, automation and content', 'One project lead, weekly check in', 'Priority on new features', 'Quoted after the diagnostic'] },
+];
+const promises = [['lock', 'Accounts in your name', 'Domain, store and payments are registered to you.'], ['receipt', 'Written agreement first', 'Scope, price, dates and change orders, signed first.'], ['check', 'Nothing goes live without you', 'Every change has a preview you approve.'], ['tag', 'Changes are priced', 'Anything new gets a written change order.'], ['users', 'One person to call', 'The project lead answers, not a ticket queue.'], ['globe', 'Lagos hours, worldwide', 'We overlap with London and the US East Coast.']];
+const faqs: [string, string][] = [['Why "from" prices?', 'Scope sets the price: pages, products, integrations and motion. After the brief and the call we send a fixed scope and price.'], ['Can I pay in naira?', 'Yes. Switch prices to naira at the top of this page, and your proposal can be invoiced in naira.'], ['What does the $60 a month cover?', 'Hosting and model costs for your AI assistant, retraining when your products change, a monthly report and fixes within one working day.'], ['Can I pause a monthly plan?', 'Yes, one month at a time. The AI care plan keeps running while content pauses. Cancel with 30 days notice.'], ['What if the scope changes?', 'Anything new gets a written change order with its own price before we build it.']];
+const P = (usd: string, ngn?: string) => ({ 'data-usd': usd, 'data-ngn': ngn ?? usd, ...(ngn ? {} : { 'data-nongn': '' }) });
 ---
-<Page title="Pricing · Wintech Studio" description="Websites from $1,200, brand systems from $1,500, brand and website from $2,500, AI assistants from $1,800 plus $60 a month, apps from $4,000." crumbs={[['Pricing', '/pricing']]}>
-  <section class="sec">
-    <div class="wrap">
-      <p class="mono">Pricing</p>
-      <h1 class="h1">Starting points,<br />not surprises.</h1>
-      <p class="lede">A one-time project or a monthly plan. Every project gets a fixed price before work starts.</p>
-      <div class="top">
-        <div class="card diag"><p class="mono">First step</p><h2>Paid diagnostic</h2><p class="big">$200</p><p>A working session on your business, money flows and what to build first. You leave with a written plan.</p><a class="btn btn-outline" href="/book">Book the diagnostic</a></div>
-        <div class="card hero-p"><p class="mono">Most picked</p><h2>Brand + website</h2><p class="big">from $2,500</p><p>A brand people remember and a website that proves it, by one team. 4 to 6 weeks, kickoff to launch.</p><ul class="ticks">{['Brand direction', 'Logo, colour and type', 'Website design and build', 'Google and AI search ready', 'Weekly previews', 'Handover and training'].map(t => <li><Icon name="check" size={16} />{t}</li>)}</ul><div class="ctas"><a class="btn btn-primary" href="/services/brand#brief">Build your brief</a><a class="btn btn-soft" href="/book">Book a call</a></div></div>
+<Page title="Pricing · Wintech Studio" description="Websites from $1,200, brand systems from $1,500, brand and website from $2,500, AI assistants from $1,800 plus $60 a month, apps from $4,000. Dollars first, naira beside it." crumbs={[['Pricing', '/pricing']]}>
+  <div class="sp pr">
+    <section class="hero">
+      <div class="wrap">
+        <div class="hd c">
+          <p class="eb">Pricing</p>
+          <h1 class="t1">Starting points,<br /><span class="gt">not surprises.</span></h1>
+          <p class="ld"><span class="d">A one-time project or a monthly plan. Dollars first, naira beside it. Every project gets a fixed price before work starts.</span><span class="m">Dollars first, naira beside it. A fixed price before work starts.</span></p>
+        </div>
+        <div class="tg">
+          <div class="seg kind" role="group" aria-label="Show"><a href="#projects" class="on" data-kind="projects">One-time projects</a><a href="#monthly" data-kind="monthly">Monthly plans</a></div>
+          <div class="seg cur" role="group" aria-label="Currency"><button type="button" class="on" data-cur="usd" aria-pressed="true">USD</button><button type="button" data-cur="ngn" aria-pressed="false">NGN</button></div>
+        </div>
       </div>
-      <h2 class="h3">Projects</h2>
-      <div class="rows">{projects.map(p => <a class="row" href={`/services/${p.s}`}><span class="n">{p.n}</span><span class="p">{p.d.price}</span><span class="ng">{p.d.priceNgn}</span><span class="t">{p.d.timeline}</span><Icon name="arrow-right" size={16} /></a>)}</div>
-      <p class="note">Paid 50% to start, 40% at design approval, 10% at handover.</p>
-    </div>
-  </section>
-  <section class="sec alt" id="monthly">
-    <div class="wrap">
-      <p class="mono">Monthly plans</p><h2 class="h2">Or keep us on, month by month.</h2>
-      <div class="grid g3 plans">{plans.map(([n, p, per, d, items], i) => <div class:list={['card', { dark: i === 1 }]}><p class="mono">{n}</p><p class="big">{p}<small>{per}</small></p><p>{d}</p><ul class="ticks">{items.map(t => <li><Icon name="check" size={16} />{t}</li>)}</ul></div>)}</div>
-      <div class="card partner"><div><p class="mono">By invitation</p><h3>Ready to start, but not with the whole cost?</h3><p>Partner build: a lower fee and a share of what the system sells. Offered after the diagnostic.</p></div><a class="btn btn-outline" href="/partner-build">How partner builds work</a></div>
-    </div>
-  </section>
-  <section class="sec">
-    <div class="wrap"><p class="mono">Before you sign</p><h2 class="h2">Your accounts. Your files. Your call.</h2>
-      <div class="grid g3">{promises.map(([t, d], i) => <div class="card"><p class="mono">{String(i + 1).padStart(2, '0')} / 06</p><h3>{t}</h3><p>{d}</p></div>)}</div>
-    </div>
-  </section>
-  <Faq items={faqs} title="Pricing questions" />
+    </section>
+
+    <section class="picker" id="projects">
+      <div class="wrap pk">
+        <div class="pk-l">
+          {[['First step', [first]], ['Projects', projects], ['Monthly', monthly]].map(([label, list]) => (
+            <div class="grp">
+              <p class="eb">{label as string}</p>
+              <div class="rows">{(list as Item[]).map(it => (
+                <a class:list={['row', { on: it.k === sel }]} href={it.href} data-k={it.k} aria-controls="pk-detail">
+                  <span class="rn"><Glyph name={it.icon} size={40} /><span>{it.name}</span></span>
+                  <span class="rp" {...P(it.usd, it.ngn)}>{it.usd}</span>
+                </a>
+              ))}</div>
+            </div>
+          ))}
+          <a class="btn btn-primary mplan" href="/tools/plan">Plan your project</a>
+          <a class="pb" href="/partner-build">
+            <p class="pb-eb">By invitation</p>
+            <h3>Ready to start, but not with the whole cost?</h3>
+            <p>Partner build: a lower fee and a share of what the system sells. Offered after the diagnostic.</p>
+          </a>
+        </div>
+        <div class="pk-r" id="pk-detail" aria-live="polite">
+          {all.map(it => (
+            <article class="dt" data-k={it.k} hidden={it.k !== sel}>
+              <h2>{it.title}</h2>
+              <p class="dt-in">{it.intro}</p>
+              <div class="dt-p"><span class="big" {...P(it.big, it.bigNgn)}>{it.big}</span><span class="per"><span {...P(it.per, it.perNgn)}>{it.per}</span>{it.bigNgn && <span class="ng"><span class="dot">·</span><span data-usd={it.bigNgn} data-ngn={it.big}>{it.bigNgn}</span></span>}</span></div>
+              <div class="dt-c">
+                {it.brief ? <a class="btn btn-primary" href={it.brief}>Build your brief</a> : null}
+                <a class:list={['btn', it.brief ? 'btn-soft' : 'btn-primary']} href={it.k === 'diagnostic' ? '/book' : '/book'}>{it.k === 'diagnostic' ? 'Book the diagnostic' : 'Book a call'}</a>
+                {it.href === '/monthly-plans' && <a class="btn btn-soft" href="/monthly-plans">See monthly plans</a>}
+              </div>
+              <div class="dt-cols">
+                <div><p class="eb">How it works</p><ul>{it.how.map(([a, b]) => <li><Icon name="check" size={16} stroke={1.75} /><span><strong>{a}</strong>{b && <small>{b}</small>}</span></li>)}</ul></div>
+                <div><p class="eb">What you get</p><ul>{it.get.map(g => <li><Icon name="check" size={16} stroke={1.75} /><span><strong>{g}</strong></span></li>)}</ul></div>
+              </div>
+              <p class="dt-n">{it.href === '/monthly-plans' ? 'Billed monthly. Pause one month at a time, cancel with 30 days notice.' : it.k === 'diagnostic' ? 'Paid up front. Counts as the first step before any proposal.' : 'Paid 50% to start, 40% at design approval, 10% at handover.'}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="mon" id="monthly">
+      <div class="wrap">
+        <div class="hd"><p class="eb">Monthly plans</p><h2 class="t2">Or keep us on, month by month.</h2></div>
+        <div class="plans">{cards.map(c => (
+          <div class:list={['plan', { ink: c.dark }]}>
+            <p class="pl-eb">{c.name}</p>
+            <p class="pl-p"><span {...P(c.price, c.ngn)}>{c.price}</span>{c.per && <small>{c.per}</small>}</p>
+            <p class="pl-d">{c.desc}</p>
+            <ul class="ticks">{c.items.map(t => <li><Icon name="check" size={16} stroke={1.75} />{t}</li>)}</ul>
+            <a class:list={['btn', c.dark ? 'btn-primary' : 'btn-dark']} href="/book">Book a call</a>
+          </div>
+        ))}</div>
+        <p class="mon-more"><a class="link" href="/monthly-plans">How monthly plans work <Icon name="arrow-right" size={14} /></a></p>
+      </div>
+    </section>
+
+    <section class="s alt bys">
+      <div class="wrap">
+        <div class="hd"><p class="eb">Before you sign</p><h2 class="t2" style="--fs:44px">Your accounts.<br />Your files. <span class="gt">Your call.</span></h2></div>
+        <div class="pg">{promises.map(([ic, t, d], i) => (
+          <div class="pc card2"><div class="pc-t"><Glyph name={ic} size={48} /><span>{String(i + 1).padStart(2, '0')} / 06</span></div><h3>{t}</h3><p>{d}</p></div>
+        ))}</div>
+      </div>
+    </section>
+
+    <Faq items={faqs} title="Pricing questions" />
+  </div>
 </Page>
+
+<script>
+  const root = document.querySelector('.pr') as HTMLElement;
+  // Currency toggle: swaps every [data-usd]/[data-ngn] text. Remembered per viewer.
+  const setCur = (c: string) => {
+    root.querySelectorAll<HTMLElement>('[data-usd]').forEach(el => { el.textContent = (c === 'ngn' ? el.dataset.ngn : el.dataset.usd) || ''; el.title = c === 'ngn' && el.hasAttribute('data-nongn') ? 'Naira price on request' : ''; });
+    root.querySelectorAll<HTMLButtonElement>('[data-cur]').forEach(b => { const on = b.dataset.cur === c; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
+    root.dataset.cur = c;
+    try { localStorage.setItem('wt-cur', c); } catch (e) {}
+  };
+  root.querySelectorAll<HTMLButtonElement>('[data-cur]').forEach(b => b.addEventListener('click', () => setCur(b.dataset.cur!)));
+  try { const c = localStorage.getItem('wt-cur'); if (c === 'ngn') setCur('ngn'); } catch (e) {}
+
+  // Picker: on desktop a row selects its detail; on mobile the row is a plain link to the service page.
+  const wide = matchMedia('(min-width:1024px)');
+  root.querySelectorAll<HTMLAnchorElement>('.row').forEach(r => r.addEventListener('click', e => {
+    if (!wide.matches) return;
+    e.preventDefault();
+    root.querySelectorAll('.row').forEach(x => x.classList.toggle('on', x === r));
+    root.querySelectorAll<HTMLElement>('.dt').forEach(d => { d.hidden = d.dataset.k !== r.dataset.k; });
+  }));
+
+  // One-time / monthly segmented control follows the section in view.
+  const kinds = root.querySelectorAll<HTMLAnchorElement>('[data-kind]');
+  const mark = (k: string) => kinds.forEach(a => a.classList.toggle('on', a.dataset.kind === k));
+  kinds.forEach(a => a.addEventListener('click', () => mark(a.dataset.kind!)));
+  const mon = document.getElementById('monthly')!;
+  new IntersectionObserver(es => es.forEach(e => mark(e.isIntersecting || e.boundingClientRect.top < 0 ? 'monthly' : 'projects')), { rootMargin: '0px 0px -55% 0px' }).observe(mon);
+</script>
+
 <style>
-  .top{display:grid;grid-template-columns:1fr 2fr;gap:16px;margin:48px 0}
-  .card h2{font-size:24px;margin:8px 0 4px}.big{font-size:40px;font-weight:600;letter-spacing:-.03em;margin:8px 0;color:var(--fg)}.big small{font-size:16px;color:var(--fg-2);font-weight:400}
-  .hero-p{border-color:var(--sig)}.diag{display:grid;align-content:start;gap:6px}.diag .btn{justify-self:start;margin-top:12px}
-  .ticks{list-style:none;padding:0;margin:16px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px}.ticks li{display:flex;gap:8px;align-items:center;font-size:14px}.ticks :global(svg){color:var(--sig);flex:none}
-  .plans .ticks{grid-template-columns:1fr}
-  .h3{font-size:20px;font-weight:600;margin:0 0 12px}
-  .rows{border-top:1px solid var(--rule)}.row{display:grid;grid-template-columns:2fr 1.4fr 1.6fr 1fr 20px;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--fg)}
-  .row:hover{background:var(--surface)}.row .n{font-weight:500}.row .ng,.row .t{color:var(--fg-2);font-size:14px}
-  .note{color:var(--fg-2);font-size:14px;margin-top:16px}
-  .plans{margin-top:40px}.dark{background:#0A0E17;color:#fff;border-color:#0A0E17}.dark .big,.dark .mono{color:#fff}.dark p{color:#A1A1AA}
-  .partner{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:16px}
-  @media (max-width:1023px){.top{grid-template-columns:1fr}.row{grid-template-columns:1fr auto;}.row .ng,.row .t{display:none}.ticks{grid-template-columns:1fr}.partner{flex-direction:column;align-items:start}}
+  .tg{display:flex;justify-content:center;gap:12px;margin-top:48px}
+  .seg{display:inline-flex;border:1px solid var(--rule);padding:3px;background:var(--bg)}
+  .seg a,.seg button{font:500 14px/17px var(--font);padding:9px 16px;color:var(--fg-2);text-decoration:none;background:none;border:0;cursor:pointer;transition:background .15s,color .15s}
+  .seg a:hover,.seg button:hover{color:var(--fg)}
+  .seg .on{background:var(--fg);color:var(--bg)}
+  .seg .on:hover{color:var(--bg)}
+  .hero{padding-bottom:48px}
+
+  .picker{padding:24px 0 96px}
+  .pk{display:grid;grid-template-columns:480px 1fr;gap:24px;align-items:start}
+  .pk-l{display:flex;flex-direction:column;gap:24px}
+  .grp{display:flex;flex-direction:column;gap:8px}
+  .rows{border:1px solid var(--rule);background:var(--card)}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 18px 13px 16px;text-decoration:none;color:var(--fg);transition:background .15s}
+  .row+.row{border-top:1px solid var(--rule)}
+  .row:hover{background:var(--surface)}
+  .rn{display:flex;align-items:center;gap:12px;font-size:16px;line-height:19px;font-weight:500}
+  .rn :global(svg){flex:none}
+  .rp{font-size:15px;line-height:18px;color:var(--fg-2);white-space:nowrap}
+  @media (min-width:1024px){
+    .row.on{background:var(--inkc);color:var(--inkc-fg);--bi-fill:#1F2B3D;--bi-stroke:#AEBED4}
+    .row.on .rn :global(svg){width:30px;height:30px}
+    .row.on .rp{color:var(--inkc-2)}
+    :root[data-theme="dark"] .row.on{background:#151C28}
+    :root[data-theme="dark"] .row.on .rp{color:var(--fg-2)}
+  }
+  .mplan{display:none}
+  .pb{display:flex;flex-direction:column;gap:8px;padding:22px;text-decoration:none;color:#fff;position:relative;overflow:hidden;background:linear-gradient(172deg,#0A0E17 0%,#0A0E17 30%,#0C1949 62%,#3B5BFF 100%)}
+  .pb::after{content:"";position:absolute;inset:auto -20% -60% 10%;height:120%;background:radial-gradient(60% 50% at 70% 50%,rgba(124,147,255,.55),transparent 70%);filter:blur(6px);pointer-events:none}
+  .pb>*{position:relative;z-index:1;margin:0}
+  .pb-eb{font-family:var(--mono);font-size:10px;line-height:13px;letter-spacing:.06em;text-transform:uppercase;color:#B9C1CF}
+  .pb h3{font-size:18px;line-height:22px;font-weight:600;letter-spacing:0;color:#fff}
+  .pb p:last-child{font-size:14px;line-height:1.5;color:#B9C1CF;max-width:420px}
+  .pb:hover h3{text-decoration:underline;text-underline-offset:3px}
+
+  .pk-r{position:sticky;top:96px;border:1px solid var(--rule);background:var(--card)}
+  .dt[hidden]{display:none}
+  .dt{padding:36px 40px;display:flex;flex-direction:column;gap:24px}
+  .dt h2{font-size:32px;line-height:38px;letter-spacing:-.01em;font-weight:600}
+  .dt-in{font-size:17px;line-height:1.45;color:var(--fg-2);margin:0;max-width:560px}
+  .dt-p{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .big{font-size:56px;line-height:67px;font-weight:600;letter-spacing:-.03em;color:var(--fg)}
+  .per{font-size:17px;line-height:20px;color:var(--fg-2);display:inline-flex;gap:8px;flex-wrap:wrap}
+  .dot{margin-right:8px}
+  .dt-c{display:flex;gap:10px;flex-wrap:wrap}
+  .dt-cols{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  .dt-cols .eb{margin-bottom:8px}
+  .dt-cols ul{list-style:none;padding:0;margin:0}
+  .dt-cols li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--rule)}
+  .dt-cols li :global(svg){flex:none;margin-top:1px;color:var(--fg)}
+  .dt-cols li span{display:flex;flex-direction:column;gap:2px}
+  .dt-cols strong{font-size:15px;line-height:18px;font-weight:500;color:var(--fg)}
+  .dt-cols small{font-size:13px;line-height:16px;color:var(--fg-2)}
+  .dt-n{font-size:13px;line-height:16px;color:var(--fg-2);margin:0}
+
+  .mon{padding:24px 0 112px}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;align-items:start}
+  .plan{background:var(--surface);padding:32px;display:flex;flex-direction:column;gap:18px}
+  .pl-eb{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--sig);margin:0}
+  .pl-p{display:flex;align-items:baseline;gap:4px;margin:0;font-size:48px;line-height:58px;font-weight:600;letter-spacing:-.02em;color:var(--fg)}
+  .pl-p small{font-size:17px;line-height:20px;font-weight:400;letter-spacing:0;color:var(--fg-2)}
+  .pl-d{font-size:15px;line-height:1.5;color:var(--fg-2);margin:0;max-width:300px}
+  .plan .btn{width:100%}
+  .plan.ink{background:var(--inkc)}
+  .plan.ink .pl-eb{color:var(--inkc-eb)}
+  .plan.ink .pl-p{color:#fff}.plan.ink .pl-p small,.plan.ink .pl-d{color:var(--inkc-2)}
+  .plan.ink .ticks li{color:#fff}.plan.ink .ticks :global(svg){color:var(--inkc-eb)}
+  :root[data-theme="dark"] .plan:not(.ink){background:var(--card);border:1px solid var(--rule)}
+  :root[data-theme="dark"] .plan.ink{border:1px solid #2A3550}
+  .mon-more{margin:24px 0 0;font-size:15px}
+
+  .bys .hd{margin-bottom:48px}
+  .bys{padding:96px 0}
+  .pg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start}
+  .pc{padding:24px;display:flex;flex-direction:column;gap:10px}
+  .pc-t{display:flex;justify-content:space-between;align-items:center}
+  .pc-t span{font-family:var(--mono);font-size:11px;line-height:14px;color:var(--fg-2)}
+  .pc h3{font-size:18px;line-height:22px;font-weight:600;letter-spacing:0;margin:0}
+  .pc p{font-size:14px;line-height:1.5;color:var(--fg-2);margin:0;max-width:300px}
+
+  @media (max-width:1023px){
+    .hero{padding-bottom:0}
+    .tg{justify-content:flex-start;margin-top:20px}
+    .kind{display:none}
+    .seg button{font-size:13px;line-height:16px;padding:8px 16px}
+    .picker{padding:20px 0 56px}
+    .pk{grid-template-columns:1fr}
+    .pk-l{gap:20px}
+    .grp{gap:20px}
+    .grp .eb{margin-bottom:0}
+    .row{padding:13px 14px}
+    .rn{gap:10px;font-size:15px;line-height:18px}
+    .rn :global(svg){width:36px;height:36px}
+    .rp{font-size:13px;line-height:16px}
+    .mplan{display:flex;width:100%;padding:14px 0}
+    .pk-r{display:none}
+    .mon{padding:56px 0}
+    .plans{grid-template-columns:1fr;margin-top:28px}
+    .plan{padding:24px}
+    .pl-p{font-size:40px;line-height:48px}
+    .bys{padding:56px 0}
+    .bys .hd{margin-bottom:28px}
+    .pg{grid-template-columns:1fr}
+  }
 </style>

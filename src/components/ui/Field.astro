@@ -1,18 +1,32 @@
 ---
-interface Props { label: string; name: string; type?: string; placeholder?: string; required?: boolean; options?: string[]; rows?: number }
-const { label, name, type = 'text', placeholder, required, options, rows } = Astro.props;
+// Form field from the Figma contact and bench forms. `options` renders single-pick chips; `suggest` adds a datalist.
+interface Props { label: string; name: string; type?: string; placeholder?: string; required?: boolean; options?: string[]; rows?: number; suggest?: string[]; value?: string; class?: string }
+const { label, name, type = 'text', placeholder, required, options, rows, suggest, value, class: cls } = Astro.props;
 const id = 'f-' + name.toLowerCase().replace(/\W+/g, '-');
 ---
-<div class="field">
-  {options ? (<fieldset><legend>{label}</legend><div class="chips">{options.map(o => <label class="chip"><input type="radio" name={name} value={o} data-label={label} /><span>{o}</span></label>)}</div></fieldset>)
-  : (<><label for={id}>{label}</label>{rows ? <textarea id={id} name={name} rows={rows} placeholder={placeholder} required={required} data-label={label}></textarea> : <input id={id} name={name} type={type} placeholder={placeholder} required={required} data-label={label} />}</>)}
+<div class:list={['field', cls]}>
+  {options ? (<fieldset><legend>{label}</legend><div class="chips">{options.map(o => <label class="chip"><input type="radio" name={name} value={o} data-label={label} checked={o === value} /><span>{o}</span></label>)}</div></fieldset>)
+  : (<><label for={id}>{label}</label>{rows ? <textarea id={id} name={name} rows={rows} placeholder={placeholder} required={required} data-label={label}></textarea> : <input id={id} name={name} type={type} placeholder={placeholder} required={required} data-label={label} list={suggest ? id + '-l' : undefined} value={value} />}{suggest && <datalist id={id + '-l'}>{suggest.map(s => <option value={s} />)}</datalist>}</>)}
 </div>
 <style>
-  .field{display:grid;gap:8px}.field label,.field legend{font-size:14px;font-weight:500}
-  fieldset{border:0;padding:0;margin:0}legend{margin-bottom:10px}
-  input:not([type=radio]),textarea{font:15px var(--font);padding:13px 14px;border:1px solid var(--rule);background:var(--card);color:var(--fg);width:100%;box-sizing:border-box}
-  input:focus,textarea:focus{outline:2px solid var(--sig);outline-offset:-1px}
-  .chips{display:flex;flex-wrap:wrap;gap:8px}.chip input{position:absolute;opacity:0;pointer-events:none}
-  .chip span{display:inline-block;font-size:14px;padding:9px 14px;border:1px solid var(--rule);background:var(--card);cursor:pointer}
-  .chip input:checked+span{background:var(--fg);color:var(--bg);border-color:var(--fg)}.chip input:focus-visible+span{outline:2px solid var(--sig)}
+  .field{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .field label,.field legend{font-size:14px;line-height:17px;font-weight:500;color:var(--fg);padding:0}
+  fieldset{border:0;padding:0;margin:0;min-width:0}legend{margin-bottom:10px}
+  input:not([type=radio]),textarea{font:400 15px/18px var(--font);padding:13px 14px;border:1px solid var(--rule);border-radius:0;background:var(--card);color:var(--fg);width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none}
+  textarea{height:120px;resize:vertical;display:block}
+  input::placeholder,textarea::placeholder{color:var(--ash)}
+  :root[data-theme="dark"] input::placeholder,:root[data-theme="dark"] textarea::placeholder{color:#5B6475}
+  input:focus,textarea:focus{outline:none;border-color:var(--sig);box-shadow:var(--ring)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{position:relative}
+  .chip input{position:absolute;opacity:0;pointer-events:none}
+  .chip span{display:inline-block;font-size:14px;line-height:17px;padding:8px 12px;border:1px solid var(--rule);background:var(--card);color:var(--fg);cursor:pointer;transition:background .15s,border-color .15s}
+  .chip span:hover{border-color:var(--ash)}
+  .chip input:checked+span{background:var(--pick,#EAF0FF);border-color:var(--sig);font-weight:500}
+  .chip input:focus-visible+span{box-shadow:var(--ring)}
+  @media (max-width:1023px){
+    .field{gap:6px}
+    input:not([type=radio]),textarea{padding:12px}
+    textarea{height:100px}
+  }
 </style>

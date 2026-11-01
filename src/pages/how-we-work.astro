@@ -1,38 +1,106 @@
 ---
 import Page from '../layouts/Page.astro';
-const steps = [['Brief', 'Your ticks from the service page, read before we talk.', 'Compiles your picks and links into one page.', 'Decide if we are a fit, honestly.', 'Day 1'], ['Study', 'Business model, money flows, competitors.', 'Drafts the competitor scan.', 'Decide what matters first.', 'Week 1'], ['Proposal', 'Scope, price and dates, signed before work.', 'Formats the proposal.', 'Set the scope and the order.', 'Week 1'], ['Build weekly', 'Something new every Friday.', 'Drafts variations, code and checks.', 'Choose, refine, approve.', 'Weeks 2 to 6'], ['Polish and ship', 'The last 10% that makes it feel expensive.', 'Runs checks on every page.', 'Final QA and your sign off.', 'Launch'], ['Run it', 'Docs, training, and a care plan if you want.', 'Answers customers, runs automations.', 'Retrain, report, improve.', 'After']];
-const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'How Wintech Studio runs a project', step: steps.map(([n, d], i) => ({ '@type': 'HowToStep', position: i + 1, name: n, text: d })) };
+import Bi from '../components/Bi.astro';
+import Glyph from '../components/ui/Glyph.astro';
+import '../styles/studio.css';
+// [name, short (mobile), detail, the AI drafts, we decide, when]
+const steps = [
+  ['Brief', 'Your ticks, read before we talk.', 'Your ticks from the service page, read before we talk.', 'Compiles your picks and links into one page.', 'Decide if we are a fit, honestly.', 'Day 1'],
+  ['Study', 'Business model, money flows, competitors.', 'Business model, money flows, competitors.', 'Drafts the competitor scan.', 'Decide what matters first.', 'Week 1'],
+  ['Proposal', 'Scope, price, dates, signed first.', 'Scope, price and dates, signed before work.', 'Formats the proposal.', 'Set the scope and the order.', 'Week 1'],
+  ['Build weekly', 'Something new every Friday.', 'Something new every Friday.', 'Drafts variations, code and checks.', 'Choose, refine, approve.', 'Weeks 2 to 6'],
+  ['Polish and ship', 'The last 10% that feels expensive.', 'The last 10% that makes it feel expensive.', 'Runs checks on every page.', 'Final QA and your sign off.', 'Launch'],
+  ['Run it', 'Docs, training, care plan.', 'Docs, training, and a care plan if you want.', 'Answers customers, runs automations.', 'Retrain, report, improve.', 'After'],
+];
+const team = [['palette', 'Brand'], ['edit', 'Design'], ['code', 'Development'], ['image', 'Film'], ['message', 'AI and automation']];
+const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'How Wintech Studio runs a project', step: steps.map(([n, , d], i) => ({ '@type': 'HowToStep', position: i + 1, name: n, text: d })) };
 ---
 <Page title="How we work · Wintech Studio" description="You talk to one project lead. Behind them sit designers, developers, a film crew and the AI. Six steps from brief to a system you can run." crumbs={[['How we work', '/how-we-work']]} jsonld={[ld]}>
-  <section class="sec">
-    <div class="wrap">
-      <p class="mono">How we work</p>
-      <h1 class="h1">AI does the legwork.<br />People make the calls.</h1>
-      <p class="lede">You talk to one project lead. Behind them sit designers, developers, a film crew and the AI. Nothing ships until you say yes.</p>
-      <div class="model">
-        <div class="node you">You</div><div class="line"><span class="mono">One thread · two check ins a week</span></div>
-        <div class="node lead">Project lead<small>Plans, briefs, reviews every piece</small></div><div class="line"><span class="mono">Briefs and reviews</span></div>
-        <div class="team">{['Brand', 'Design', 'Development', 'Film', 'AI and automation'].map(t => <span>{t}</span>)}</div>
+  <div class="sp hw">
+    <section class="hero">
+      <div class="wrap">
+        <div class="hd" style="max-width:1000px">
+          <p class="eb">How we work</p>
+          <h1 class="t1" style="--fs:72px;--fsm:30px">AI does the legwork.<br /><span class="gt">People make the calls.</span></h1>
+          <p class="ld d">You talk to one project lead. Behind them sit designers, developers, a film crew and the AI. Nothing ships until you say yes.</p>
+        </div>
+        <ol class="msteps">{steps.map(([n, s], i) => <li><span class="mn">{String(i + 1).padStart(2, '0')}</span><span><strong>{n === 'Polish and ship' ? 'Ship' : n}</strong><small>{s}</small></span></li>)}</ol>
       </div>
-    </div>
-  </section>
-  <section class="sec alt">
-    <div class="wrap">
-      <p class="mono">Six steps</p><h2 class="h2">From brief to a system you can run.</h2>
-      <ol class="steps">{steps.map(([n, d, ai, we, when], i) => (
-        <li><p class="mono">{String(i + 1).padStart(2, '0')} · {when}</p><h3>{n}</h3><p class="d">{d}</p><dl><div><dt class="mono">The AI drafts</dt><dd>{ai}</dd></div><div><dt class="mono">We decide</dt><dd>{we}</dd></div></dl></li>
-      ))}</ol>
-    </div>
-  </section>
+    </section>
+
+    <section class="s alt model">
+      <div class="wrap">
+        <div class="hd"><p class="eb">The model</p><h2 class="t2">Who talks to whom</h2></div>
+        <div class="dg">
+          <div class="nd card2"><Glyph name="user" size={56} /><h3>You</h3><p>Two check ins a week, one thread.</p></div>
+          <div class="ln"><span>One thread</span><i></i></div>
+          <div class="nd lead"><Glyph name="spark4" size={42} /><h3>Project lead</h3><p>Plans, briefs, reviews every piece.</p></div>
+          <div class="ln"><span>Briefs and reviews</span><i></i></div>
+          <ul class="tm">{team.map(([ic, t]) => <li class="card2">{ic === 'edit' ? <Glyph name={ic} size={36} /> : <Bi name={ic} size={36} />}<span>{t}</span></li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="s steps">
+      <div class="wrap">
+        <div class="hd"><p class="eb">Six steps</p><h2 class="t2" style="--fs:52px">From brief to a system<br /><span class="gt">you can run.</span></h2></div>
+        <ol class="st">{steps.map(([n, , d, ai, we, when], i) => (
+          <li>
+            <div class="st-n"><span>{String(i + 1).padStart(2, '0')}</span><small>{when}</small></div>
+            <div class="st-t"><h3>{n}</h3><p>{d}</p></div>
+            <div class="st-b ai"><p class="k">The AI drafts</p><p>{ai}</p></div>
+            <div class="st-b we"><p class="k">We decide</p><p>{we}</p></div>
+          </li>
+        ))}</ol>
+      </div>
+    </section>
+  </div>
 </Page>
 <style>
-  .model{margin-top:56px;display:grid;justify-items:center;gap:0;padding:48px 24px;background:var(--surface)}
-  .node{padding:14px 24px;background:var(--card);border:1px solid var(--rule);font-weight:600;display:grid;text-align:center}.node small{font-weight:400;color:var(--fg-2);font-size:13px}
-  .lead{background:var(--ink);color:#fff;border-color:var(--ink)}.lead small{color:#A1A1AA}:root[data-theme="dark"] .lead{background:var(--sig);border-color:var(--sig)}
-  .line{width:1px;height:56px;background:var(--ash);position:relative}.line span{position:absolute;left:14px;top:50%;transform:translateY(-50%);white-space:nowrap}
-  .team{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.team span{padding:10px 16px;background:var(--card);border:1px solid var(--rule);font-size:14px}
-  .steps{list-style:none;padding:0;margin:40px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .steps li{background:var(--card);border:1px solid var(--rule);padding:24px}.steps h3{font-size:22px;margin:8px 0 6px}.d{color:var(--fg-2)}
-  dl{margin:16px 0 0;display:grid;gap:12px;border-top:1px solid var(--rule);padding-top:16px}dd{margin:4px 0 0;font-size:14px}
-  @media (max-width:1023px){.steps{grid-template-columns:1fr}}
+  .hero{padding-bottom:72px}
+  .msteps{display:none}
+  .model{padding:96px 0}
+  .dg{display:flex;justify-content:space-between;align-items:center;margin-top:48px}
+  .nd{width:250px;padding:24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+  .nd h3{font-size:20px;line-height:24px;font-weight:600;letter-spacing:0;margin:0}
+  .nd p{font-size:14px;line-height:1.45;color:var(--fg-2);margin:0;max-width:200px}
+  .lead{background:var(--inkc);border:1px solid var(--rule);color:#fff;--bi-fill:#1F2B3D;--bi-stroke:#AEBED4}
+  .lead p{color:var(--inkc-2)}
+  :root[data-theme="dark"] .lead{border-color:#2A3550}
+  .ln{width:120px;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .ln span{font-family:var(--mono);font-size:10px;line-height:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-2);white-space:nowrap}
+  .ln i{display:block;width:100%;height:2px;background:rgba(59,91,255,.5)}
+  .tm{list-style:none;padding:0;margin:0;width:205px;display:flex;flex-direction:column;gap:8px}
+  .tm li{display:flex;align-items:center;gap:10px;padding:10px 18px 10px 14px;font-size:15px;line-height:18px;font-weight:500}
+  .tm :global(svg){flex:none}
+
+  .st{list-style:none;padding:0;margin:48px 0 0}
+  .st li{display:grid;grid-template-columns:110px 340px 1fr 1fr;gap:32px;align-items:start;padding:28px 0;border-top:1px solid var(--rule)}
+  .st-n span{display:block;font-size:36px;line-height:43px;font-weight:600;letter-spacing:-.015em}
+  .st-n small{display:block;margin-top:6px;font-family:var(--mono);font-size:10px;line-height:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-2)}
+  .st-t h3{font-size:22px;line-height:26px;font-weight:600;letter-spacing:0;margin:0 0 8px}
+  .st-t p{font-size:15px;line-height:1.5;color:var(--fg-2);margin:0}
+  .st-b{padding:16px 18px;display:flex;flex-direction:column;gap:6px;background:var(--surface)}
+  .st-b.we{background:#EAF0FF}
+  :root[data-theme="dark"] .st-b.we{background:#141C33}
+  .st-b p{font-size:14px;line-height:1.45;margin:0;max-width:230px;color:var(--fg)}
+  .st-b .k{font-family:var(--mono);font-size:10px;line-height:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2)}
+
+  @media (max-width:1023px){
+    .hero{padding-bottom:56px}
+    .msteps{display:block;list-style:none;padding:0;margin:20px 0 0}
+    .msteps li{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-top:1px solid var(--rule)}
+    .msteps li+li{margin-top:20px}
+    .mn{font-size:22px;line-height:26px;font-weight:600;min-width:24px}
+    .msteps span:last-child{display:flex;flex-direction:column;gap:2px}
+    .msteps strong{font-size:17px;line-height:20px;font-weight:600}
+    .msteps small{font-size:14px;line-height:17px;color:var(--fg-2)}
+    .model{padding:56px 0}
+    .dg{flex-direction:column;align-items:stretch;gap:12px;margin-top:28px}
+    .nd{width:auto}
+    .ln{width:auto;flex-direction:row;justify-content:center;gap:10px}
+    .ln i{width:2px;height:28px;order:-1}
+    .tm{width:auto}
+    .steps{display:none}
+  }
 </style>

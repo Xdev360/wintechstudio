@@ -1,22 +1,53 @@
 ---
+// Legal page from Figma S15/S16: heading, sticky "On this page" list on the left, clauses on the right.
 import Page from '../../layouts/Page.astro';
-interface Props { title: string; path: string; description: string; clauses: [string, string][] }
-const { title, path, description, clauses } = Astro.props;
+import '../../styles/studio.css';
+interface Props { title: string; path: string; description: string; clauses: [string, string][]; updated?: string }
+const { title, path, description, clauses, updated = '25 October 2026' } = Astro.props;
 const id = (s: string) => s.toLowerCase().replace(/\W+/g, '-');
+const linkify = (s: string) => s.replace(/hello@wintechstudio\.com/g, '<a href="mailto:hello@wintechstudio.com">hello@wintechstudio.com</a>');
 ---
 <Page title={`${title} · Wintech Studio`} description={description} crumbs={[[title, path]]} closing={false}>
-  <section class="sec">
-    <div class="wrap legal">
-      <aside><p class="mono">On this page</p><nav>{clauses.map(([h]) => <a href={`#${id(h)}`}>{h}</a>)}</nav></aside>
-      <div>
-        <p class="mono">Legal</p><h1 class="h1">{title}</h1><p class="upd">Last updated 25 October 2026.</p>
-        {clauses.map(([h, b]) => <section id={id(h)}><h2>{h}</h2><p>{b}</p></section>)}
+  <div class="sp lg">
+    <section class="ls">
+      <div class="wrap">
+        <div class="hd"><p class="eb">Legal</p><h1 class="t1" style="--fs:56px;--fsm:30px">{title}</h1><p class="ld">Last updated {updated}. Draft for legal review.</p></div>
+        <div class="lgg">
+          <nav aria-label="On this page"><p class="eb">On this page</p>{clauses.map(([h], i) => <a href={`#${id(h)}`} class:list={{ on: i === 0 }}>{h}</a>)}</nav>
+          <div class="cl">{clauses.map(([h, b]) => <section id={id(h)}><h2>{h}</h2><p set:html={linkify(b)} /></section>)}</div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Page>
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.lg nav a')];
+  const mark = (h: string) => links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === h));
+  let hold = 0;
+  links.forEach(a => a.addEventListener('click', () => { hold = Date.now() + 1000; mark(a.getAttribute('href')!); }));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && Date.now() > hold) mark('#' + e.target.id); }), { rootMargin: '-25% 0px -65% 0px' });
+  document.querySelectorAll('.lg .cl section').forEach(s => io.observe(s));
+</script>
 <style>
-  .legal{display:grid;grid-template-columns:240px 1fr;gap:64px}aside{position:sticky;top:120px;align-self:start}aside nav{display:grid;gap:10px;margin-top:12px}aside a{color:var(--fg-2);text-decoration:none;font-size:14px}aside a:hover{color:var(--fg)}
-  .upd{color:var(--fg-2)}section{border-top:1px solid var(--rule);padding:28px 0;max-width:720px}h2{font-size:20px;margin:0 0 10px}section p{color:var(--fg-2);line-height:1.7;margin:0}
-  @media (max-width:1023px){.legal{grid-template-columns:1fr}aside{position:static}}
+  .ls{padding:104px 0 140px}
+  .lgg{display:grid;grid-template-columns:260px 1fr;gap:80px;align-items:start;margin-top:48px}
+  nav{position:sticky;top:96px;display:flex;flex-direction:column;gap:12px}
+  nav a{font-size:15px;line-height:18px;color:var(--fg-2);text-decoration:none}
+  nav a:hover{color:var(--fg)}
+  nav a.on{color:var(--fg);font-weight:500}
+  .cl{display:flex;flex-direction:column;gap:32px;max-width:720px}
+  .cl section{display:flex;flex-direction:column;gap:10px;scroll-margin-top:96px}
+  h2{font-size:22px;line-height:26px;font-weight:600;letter-spacing:0;margin:0}
+  .cl p{font-size:16px;line-height:1.65;color:var(--body-2);margin:0}
+  .cl p :global(a){color:inherit;text-underline-offset:3px}
+  .cl p :global(a:hover){color:var(--sig)}
+  @media (max-width:1023px){
+    .ls{padding:40px 0 56px}
+    .lgg{grid-template-columns:1fr;gap:0;margin-top:28px}
+    nav{display:none}
+    .cl{gap:28px}
+    .cl section{gap:8px}
+    h2{font-size:18px;line-height:22px}
+    .cl p{font-size:15px;line-height:1.6}
+  }
 </style>

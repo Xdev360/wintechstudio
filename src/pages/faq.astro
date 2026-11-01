@@ -1,14 +1,93 @@
 ---
 import Page from '../layouts/Page.astro';
-import Faq from '../components/ui/Faq.astro';
+import Icon from '../components/Icon.astro';
+import '../styles/studio.css';
+// Answers reuse facts already stated elsewhere on the site (pricing, how we work, services, partner build).
 const groups: [string, [string, string][]][] = [
-  ['Prices and payment', [['What does it cost?', 'Websites from $1,200, brand systems from $1,500, brand and website from $2,500, the AI assistant from $1,800 plus $60 a month, apps from $4,000. Every project has a fixed price before work starts.'], ['Can I pay in naira?', 'Yes. Every price shows in dollars with naira beside it, and your proposal can be invoiced in naira.'], ['How do payments work?', '50% to start, 40% at design approval, 10% at handover. Monthly plans are billed monthly.'], ['Can I start smaller?', 'Yes. Start with the $200 diagnostic or one service, then add more when it pays for itself. Wintech Templates gives you a free site to start today.']]],
-  ['The brief and the call', [['Do I have to book a call?', 'No. You can send the brief on WhatsApp or by email and we reply in writing. A call is faster for bigger projects.'], ['What happens to the brief I tick?', 'Your picks are saved in your browser. They reach us only when you send them or book a call, and we read them before we talk.']]],
-  ['Accounts and ownership', [['Who owns the work?', 'You do. Accounts are in your name from day one, and every file, asset and line of code is yours on the final payment.'], ['Will I be able to edit my site?', 'Yes. We hand over with training, and you can edit words, photos and prices yourself.']]],
-  ['Timelines', [['How long does a project take?', 'Motion 1 to 3 weeks, websites 2 to 6 weeks, brand 3 to 4 weeks, AI assistants 4 to 6 weeks, apps 4 to 8 weeks. You see something new every Friday.']]],
+  ['Prices and payment', [
+    ['What does it cost?', 'Websites from $1,200, brand systems from $1,500, brand and website from $2,500, the AI assistant from $1,800 plus $60 a month, apps from $4,000. Every project has a fixed price before work starts.'],
+    ['Can I pay in naira?', 'Yes. Every price shows in dollars and naira. Switch at the top of the pricing page, and your proposal can be invoiced in naira.'],
+    ['How do payments work?', '50% to start, 40% at design approval, 10% at handover. Monthly plans are billed monthly.'],
+    ['Can I start smaller?', 'Yes. Start with the $200 diagnostic or one service, then add more when it pays for itself. Wintech Templates gives you a free site to start today.'],
+  ]],
+  ['The brief and the call', [
+    ['Do I have to book a call?', 'No. You can send the brief on WhatsApp or by email and we reply in writing. A call is faster for bigger projects.'],
+    ['What happens to the brief I tick?', 'Your picks are saved in your browser. They reach us only when you send them or book a call, and we read them before we talk.'],
+  ]],
+  ['How we work', [
+    ['Who will I talk to?', 'One project lead. Behind them sit designers, developers, a film crew and the AI. Two check ins a week, one thread.'],
+    ['When do I see progress?', 'Something new every Friday. Nothing ships until you say yes.'],
+  ]],
+  ['Accounts and ownership', [
+    ['Who owns the accounts and files?', 'You do. Accounts are in your name from day one, and every file, asset and line of code is yours on the final payment.'],
+    ['Will I be able to edit my site?', 'Yes. We hand over with training, and you can edit words, photos and prices yourself.'],
+  ]],
+  ['AI assistant', [
+    ['What does the AI assistant do?', 'Trained on your products, prices and tone, it answers on your site and WhatsApp in seconds, takes orders and bookings, and hands over to you when it should.'],
+    ['What does the $60 a month cover?', 'Hosting and model costs for your AI assistant, retraining when your products change, a monthly report and fixes within one working day.'],
+  ]],
+  ['Timelines', [
+    ['How long does a project take?', 'Motion 1 to 3 weeks, websites 2 to 6 weeks, brand 3 to 4 weeks, AI assistants 4 to 6 weeks, apps 4 to 8 weeks. You see something new every Friday.'],
+  ]],
+  ['Partner builds', [
+    ['What is a partner build?', 'A lower fee and a share of what the system sells, for a set period or until a cap. Offered by invitation after the paid diagnostic.'],
+    ['How do I get one?', 'Start with the $200 diagnostic. If the numbers work, we offer a partner build in writing, with the share, period, cap and reporting signed before any work.'],
+  ]],
 ];
+const id = (s: string) => s.toLowerCase().replace(/\W+/g, '-');
 ---
 <Page jsonld={[{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: groups.flatMap(g => g[1]).map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }]} title="FAQ · Wintech Studio" description="Answers on prices, payment, ownership, timelines and how a Wintech Studio project runs." crumbs={[['FAQ', '/faq']]}>
-  <section class="sec"><div class="wrap"><p class="mono">FAQ</p><h1 class="h1">Questions people ask<br />before they book.</h1></div></section>
-  {groups.map(([t, items], i) => <Faq items={items} title={t} ld={false} plain={i % 2 === 1} />)}
+  <div class="sp fp">
+    <section class="fs">
+      <div class="wrap">
+        <div class="hd"><p class="eb">FAQ</p><h1 class="t1" style="--fs:64px;--fsm:30px">Questions people ask<br /><span class="gt">before they book.</span></h1></div>
+        <div class="fg">
+          <nav class="fn" aria-label="FAQ topics">{groups.map(([t], i) => <a href={`#${id(t)}`} class:list={{ on: i === 0 }}>{t}</a>)}</nav>
+          <div class="fl">{groups.map(([t, items], gi) => (
+            <section id={id(t)} class="grp">
+              <p class="eb">{t}</p>
+              {items.map(([q, a], i) => <details open={gi === 0 && i < 3 || undefined}><summary><span>{q}</span><Icon name="plus" size={20} class="pl" /><Icon name="minus" size={20} class="mi" /></summary><p>{a}</p></details>)}
+            </section>
+          ))}</div>
+        </div>
+      </div>
+    </section>
+  </div>
 </Page>
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.fn a')];
+  const mark = (h: string) => links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === h));
+  let hold = 0;
+  links.forEach(a => a.addEventListener('click', () => { hold = Date.now() + 1000; mark(a.getAttribute('href')!); }));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && Date.now() > hold) mark('#' + e.target.id); }), { rootMargin: '-30% 0px -60% 0px' });
+  document.querySelectorAll('.fl .grp').forEach(s => io.observe(s));
+</script>
+<style>
+  .fs{padding:104px 0 120px}
+  .fg{display:grid;grid-template-columns:260px 1fr;gap:64px;align-items:start;margin-top:48px}
+  .fn{position:sticky;top:96px;display:flex;flex-direction:column;gap:2px}
+  .fn a{padding:11px 14px;font-size:15px;line-height:18px;color:var(--fg-2);text-decoration:none;transition:background .15s,color .15s}
+  .fn a:hover{color:var(--fg)}
+  .fn a.on{background:var(--surface);color:var(--fg);font-weight:500}
+  .grp{scroll-margin-top:96px}
+  .grp+.grp{margin-top:48px}
+  details{border-bottom:1px solid var(--rule);padding:22px 0}
+  summary{display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;list-style:none;font-size:19px;line-height:23px;font-weight:500;color:var(--fg)}
+  summary::-webkit-details-marker{display:none}
+  summary :global(svg){flex:none}
+  summary :global(.mi),details[open] summary :global(.pl){display:none}
+  details[open] summary :global(.mi){display:block}
+  summary:hover span{color:var(--sig)}
+  details p{font-size:16px;line-height:1.55;color:var(--fg-2);margin:12px 0 0;max-width:640px}
+  @media (max-width:1023px){
+    .fs{padding:40px 0 56px}
+    .fg{grid-template-columns:1fr;gap:0;margin-top:20px}
+    .fn{display:none}
+    .grp+.grp{margin-top:32px}
+    .grp .eb{margin-bottom:4px}
+    details{padding:16px 0}
+    summary{font-size:16px;line-height:19px}
+    summary :global(svg){width:18px;height:18px}
+    details p{font-size:14px;line-height:1.5;margin-top:10px;max-width:330px}
+  }
+</style>

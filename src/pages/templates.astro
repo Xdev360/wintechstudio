@@ -1,45 +1,101 @@
 ---
 import Page from '../layouts/Page.astro';
-import Icon from '../components/Icon.astro';
-const kinds = ['Fashion and beauty', 'Food and drinks', 'Wellness', 'Services', 'Events', 'Shops'];
-const plans = [['Free', '$0', '', 'A live site on a Wintech link'], ['Starter', '$4', '₦6,000 a month', ''], ['Grow', '$10', '₦15,000 a month', ''], ['Business', '$25', '₦37,500 a month', '']];
+import { contact } from '../data/site';
+import '../styles/studio.css';
+// Tile colours from the Figma gallery. Each tile is a placeholder until real template screenshots are exported.
+const kinds = [
+  ['Fashion and beauty', '#F6E7DC', '#B7795A', '810:4104', '821:4867'],
+  ['Food and drinks', '#FDF0D5', '#C98A1B', '810:4110', '821:4870'],
+  ['Wellness', '#E6F4EA', '#2E6B45', '810:4116', '821:4873'],
+  ['Services', '#E8EEFB', '#254D7F', '810:4123', ''],
+  ['Events', '#EFE9FB', '#6B4DBF', '810:4129', ''],
+  ['Shops', '#F2F4F8', '#0A0E17', '810:4135', ''],
+];
+const plans = [['Free', '$0', '', 'A live site on a Wintech link'], ['Starter', '$4', '/mo', '₦6,000 a month'], ['Grow', '$10', '/mo', '₦15,000 a month'], ['Business', '$25', '/mo', '₦37,500 a month']];
 ---
 <Page title="Wintech Templates · Free website for your business · Wintech Studio" description="Not ready for a full build? Pick a Wintech template, describe your business in your own words and go live the same afternoon at yourname.wintechstudio.com." crumbs={[['Templates', '/templates']]}>
-  <section class="sec">
-    <div class="wrap hg">
-      <div>
-        <p class="mono">Wintech Templates</p>
-        <h1 class="h1">Not ready for a full build?<br />Start with a template.</h1>
-        <p class="lede">Pick a template, describe your business in your own words, and go live the same afternoon. Made by the studio, run by you.</p>
-        <div class="ctas"><a class="btn btn-primary" href="https://app.wintechstudio.com" target="_blank" rel="noopener">Open Wintech Templates <Icon name="arrow-up-right" size={14} /></a><a class="btn btn-soft" href="#plans">See plans</a></div>
-      </div>
-      <div class="stage" aria-hidden="true">
-        <div class="win"><div class="bar"><i></i><i></i><i></i><span>yourname.wintechstudio.com</span></div>
-          <div class="prompt"><p class="mono">Describe your business</p><p class="typed">A bakery in Yaba. Cakes, small chops and same-day delivery.</p><span class="go">Build my site <Icon name="arrow-right" size={14} /></span></div>
+  <div class="sp tp">
+    <section class="hero">
+      <div class="wrap">
+        <div class="hd c" style="max-width:1000px">
+          <p class="eb">Wintech Templates</p>
+          <h1 class="t1" style="--fs:64px"><span class="d">Not ready for a full build?<br /></span>Start with a <span class="gt">template.</span></h1>
+          <p class="ld"><span class="d">Pick a template, describe your business in your own words, and go live the same afternoon. Made by the studio, run by you.</span><span class="m">Pick, describe, go live the same afternoon.</span></p>
         </div>
+        <div class="ctas">
+          <a class="btn btn-primary" href={contact.templates} target="_blank" rel="noopener">Open Wintech Templates</a>
+          <a class="btn btn-soft d" href="#plans">See plans</a>
+        </div>
+        <p class="url">app.wintechstudio.com</p>
       </div>
-    </div>
-  </section>
-  <section class="sec alt">
-    <div class="wrap"><p class="mono">Templates for</p><h2 class="h2">Made for how Nigerian businesses sell.</h2>
-      <div class="grid g3 kinds">{kinds.map(k => <a class="card" href="https://app.wintechstudio.com" target="_blank" rel="noopener"><h3>{k}</h3><span class="link">Preview · Use this template <Icon name="arrow-up-right" size={14} /></span></a>)}</div>
-    </div>
-  </section>
-  <section class="sec" id="plans">
-    <div class="wrap"><p class="mono">Plans</p><h2 class="h2">Start free. Upgrade when it sells.</h2>
-      <div class="grid g4 plans">{plans.map(([n, p, ng, d], i) => <div class:list={['card', { hi: i === 2 }]}><p class="mono">{n}</p><p class="big">{p}<small>/mo</small></p><p>{ng || d}</p></div>)}</div>
-      <p class="note">0% cut of your sales on every plan. Plans are a proposal and may change before launch.</p>
-      <div class="up card"><div><h3>Outgrown your template?</h3><p>We carry your products, words and photos over to a custom site when you are ready.</p></div><a class="btn btn-outline" href="/compare/custom-website-vs-wintech-templates">Custom or template?</a></div>
-    </div>
-  </section>
+    </section>
+
+    <section class="gal">
+      <div class="wrap gg">{kinds.map(([k, bg, fg, id, mid], i) => (
+        <a class:list={['tc', { dk: i > 2 }]} href={contact.templates} target="_blank" rel="noopener">
+          <div class="pv" style={`--tb:${bg};--tf:${fg}`} data-todo-image={id} data-todo-image-mobile={mid || undefined}><span>{k}</span><i></i></div>
+          <strong>{k}</strong>
+          <small>Preview  ·  Use this template</small>
+        </a>
+      ))}</div>
+    </section>
+
+    <section class="s alt pl" id="plans">
+      <div class="wrap">
+        <div class="hd"><p class="eb">Plans</p><h2 class="t2">Start free. Upgrade when it sells.</h2></div>
+        <div class="pg">{plans.map(([n, p, per, d], i) => (
+          <div class:list={['pc', { ink: i === 2 }]}>
+            <p class="k">{n}</p>
+            <p class="pr">{p}{per && <small>{per}</small>}</p>
+            <p class="dd">{d}</p>
+          </div>
+        ))}</div>
+        <p class="note">0% cut of your sales on every plan. Plans are a proposal and may change before launch.</p>
+      </div>
+    </section>
+  </div>
 </Page>
 <style>
-  .hg{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
-  .stage{background:#0A0E17;padding:40px 32px;background-image:radial-gradient(circle at 80% 0%,rgba(59,91,255,.45),transparent 55%)}
-  .win{background:#fff;color:#0A0E17;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}.bar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid #E3E7EE}.bar i{width:8px;height:8px;border-radius:50%;background:#E3E7EE}.bar span{margin-left:10px;font:12px var(--mono);color:#5E6678}
-  .prompt{padding:28px 24px;display:grid;gap:12px}.typed{font-size:20px;font-weight:500;margin:0;line-height:1.35}.go{justify-self:start;display:inline-flex;gap:6px;align-items:center;background:#3B5BFF;color:#fff;padding:10px 14px;font-size:14px;font-weight:500}
-  .kinds{margin-top:40px}.kinds a{text-decoration:none;display:grid;gap:24px}.kinds a:hover{border-color:var(--ash)}.kinds h3{font-size:20px;margin:0}
-  .plans{margin-top:40px}.big{font-size:36px;font-weight:600;margin:8px 0;letter-spacing:-.02em;color:var(--fg)}.big small{font-size:15px;color:var(--fg-2);font-weight:400}.hi{border-color:var(--sig)}
-  .note{color:var(--fg-2);font-size:14px}.up{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:32px}.up h3{margin:0 0 4px}.up p{margin:0}
-  @media (max-width:1023px){.hg{grid-template-columns:1fr}.up{flex-direction:column;align-items:start}}
+  .hero{padding-bottom:72px;text-align:center}
+  .ctas{display:flex;justify-content:center;gap:10px;margin-top:48px}
+  .url{font-family:var(--mono);font-size:13px;line-height:17px;color:var(--fg-2);margin:48px 0 0}
+  .gal{padding:0 0 96px}
+  .gg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .tc{display:flex;flex-direction:column;gap:12px;text-decoration:none;color:var(--fg)}
+  .pv{height:231px;background:var(--tb);padding:20px;display:flex;flex-direction:column;gap:10px;transition:transform .25s}
+  .pv span{font-size:26px;line-height:31px;font-weight:600;letter-spacing:-.01em;color:var(--tf)}
+  .pv i{flex:1;background:var(--tf);opacity:.12}
+  .tc:hover .pv{transform:translateY(-3px)}
+  .tc strong{font-size:17px;line-height:20px;font-weight:500}
+  .tc small{font-size:14px;line-height:17px;color:var(--fg-2);white-space:pre}
+  .tc:hover small{color:var(--sig)}
+  :root[data-theme="dark"] .pv{filter:brightness(.92)}
+  .pl{padding:96px 0}
+  .pg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:48px}
+  .pc{background:var(--card);border:1px solid var(--rule);padding:24px;display:flex;flex-direction:column;gap:10px}
+  .pc .k{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--sig);margin:0}
+  .pr{display:flex;align-items:baseline;gap:4px;margin:0;font-size:40px;line-height:48px;font-weight:600;letter-spacing:-.02em}
+  .pr small{font-size:15px;line-height:18px;font-weight:400;letter-spacing:0;color:var(--fg-2)}
+  .dd{font-size:14px;line-height:17px;color:var(--fg-2);margin:0}
+  .pc.ink{background:var(--inkc);border-color:var(--inkc)}
+  .pc.ink .k{color:var(--inkc-eb)}.pc.ink .pr{color:#fff}.pc.ink small,.pc.ink .dd{color:var(--inkc-2)}
+  :root[data-theme="dark"] .pc.ink{border-color:#2A3550}
+  .note{font-size:14px;line-height:17px;color:var(--fg-2);margin:48px 0 0}
+  @media (max-width:1023px){
+    .hero{padding-bottom:20px}
+    .hero .hd.c{align-items:center;text-align:center}
+    .ctas{margin-top:20px}
+    .ctas .btn{width:100%;padding:14px 0}
+    .url{font-size:12px;line-height:16px;margin-top:20px}
+    .gal{padding:0 0 56px}
+    .gg{grid-template-columns:1fr;gap:20px}
+    .tc strong,.tc small{display:none}
+    .tc{gap:0}
+    .pv{height:176px;padding:16px;gap:8px}
+    .pv span{font-size:22px;line-height:26px;letter-spacing:0}
+    .pl{padding:56px 0}
+    .pg{grid-template-columns:1fr 1fr;margin-top:28px}
+    .pr{font-size:32px;line-height:40px}
+    .note{margin-top:24px}
+  }
 </style>
