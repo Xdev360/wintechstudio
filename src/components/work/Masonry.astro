@@ -1,0 +1,45 @@
+---
+// PXDX gallery (Figma "Grid · masonry (parallax columns)", 1280 wide, columns 352 / 544 / 352, gap 16).
+// Desktop: three columns, the side columns drift slightly against the middle one on scroll.
+// Mobile (M frames "Slider · project images (swipe)"): one swipe track, tiles fit 330 x 440, with a progress line.
+import type { Tile } from '../../data/cases';
+interface Props { slug: string; name: string; cols: Tile[][] }
+const { slug, name, cols } = Astro.props;
+const src = (f: string) => `/images/cases/tiles/${f}`;
+// Interleave columns for the mobile track: middle, left, right, middle...
+const flat: Tile[] = [];
+const max = Math.max(...cols.map(c => c.length));
+for (let i = 0; i < max; i++) for (const c of [cols[1], cols[0], cols[2]]) if (c && c[i]) flat.push(c[i]);
+const fit = ([, w, h]: Tile) => { const s = Math.min(330 / w, 440 / h); return [Math.round(w * s), Math.round(h * s)]; };
+---
+<section class="pxdx" aria-label={`${name}: selected screens and brand work`}>
+  <div class="cols" data-parallax>
+    {cols.map((col, ci) => (
+      <div class="col" data-speed={ci === 1 ? '0' : '1'}>
+        {col.map(([f, w, h]) => <img src={src(f)} width={w} height={h} alt="" loading="lazy" decoding="async" />)}
+      </div>
+    ))}
+  </div>
+  <div class="mslider" data-slider>
+    <div class="track" data-track>
+      {flat.map(t => { const [w, h] = fit(t); return <img src={src(t[0])} width={w} height={h} style={`width:${w}px;height:${h}px`} alt="" loading="lazy" decoding="async" />; })}
+    </div>
+    <div class="prog" aria-hidden="true"><i data-bar></i></div>
+  </div>
+</section>
+<style>
+  .pxdx{max-width:1280px;margin:0 auto;overflow:hidden}
+  .cols{display:grid;grid-template-columns:352fr 544fr 352fr;gap:16px;align-items:start;max-height:2440px}
+  .col{display:flex;flex-direction:column;gap:16px;will-change:transform}
+  .col img{display:block;width:100%;height:auto;background:var(--c-card)}
+  .mslider{display:none}
+  @media (max-width:1023px){
+    .cols{display:none}
+    .mslider{display:block}
+    .track{display:flex;align-items:center;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px;height:440px;scrollbar-width:none;overscroll-behavior-x:contain}
+    .track::-webkit-scrollbar{display:none}
+    .track img{flex:none;scroll-snap-align:center;object-fit:cover;background:var(--c-card)}
+    .prog{margin:14px 16px 0;height:2px;background:var(--c-line);position:relative}
+    .prog i{position:absolute;left:0;top:0;height:2px;width:12%;background:var(--c-fg)}
+  }
+</style>

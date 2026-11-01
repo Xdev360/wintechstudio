@@ -1,69 +1,257 @@
 ---
+// Case study template (Figma C0 823:6328; C1..C7). Overview, film, PXDX grid, story chapters, Wintech ending.
+// Fixed layers: side rail of chapter dashes, case bar (Kit web/case-bar light 799:744 / dark 799:758), AI pill (Page).
 import Page from '../../layouts/Page.astro';
-import Poster from '../../components/work/Poster.astro';
-import Icon from '../../components/Icon.astro';
-import { cases } from '../../data/cases';
-import { services } from '../../data/site';
+import Masonry from '../../components/work/Masonry.astro';
+import Visual from '../../components/work/Visual.astro';
+import { cases, tiles } from '../../data/cases';
+import { contact } from '../../data/site';
 export function getStaticPaths() { return cases.map(c => ({ params: { slug: c.slug } })); }
 const i = cases.findIndex(x => x.slug === Astro.params.slug);
 const c = cases[i]; const next = cases[(i + 1) % cases.length];
 const ld = { '@context': 'https://schema.org', '@type': 'CreativeWork', name: c.headline, about: c.name, creator: { '@type': 'Organization', name: 'Wintech Studio' }, description: c.intro, image: `https://www.wintechstudio.com/images/cases/film-${c.slug}.webp` };
+const dark = c.theme === 'dark';
+const pal = c.slug === 'virtual-trades'
+  ? '--c-bg:#07070A;--c-card:#111015;--c-fg:#F4F3F7;--c-intro:#D6D3DE;--c-mute:#8E8A99;--c-line:#25232C;'
+  : dark ? '--c-bg:#0F0F0F;--c-card:#1A1A1B;--c-fg:#F4F4F5;--c-intro:#D4D4D8;--c-mute:#A1A1AA;--c-line:#2A2A2E;' : '';
+const rail = [['overview', 'Overview'], ['film', c.film.title], ...c.chapters.map(ch => [`ch-${ch.n}`, ch.title])];
 ---
-<Page title={`${c.name} case study · Wintech Studio`} description={c.intro.slice(0, 158)} crumbs={[['Work', '/work'], [c.name, `/work/${c.slug}`]]} jsonld={[ld]}>
-  <article style={`--c1:${c.colors[0]};--c2:${c.colors[1]}`}>
-    <section class="sec over">
-      <div class="wrap">
-        <p class="mono">Overview</p>
-        <h1 class="h1">{c.headline}</h1>
-        <p class="lede">{c.intro}</p>
-        <div class="ov">
+<Page title={`${c.name} case study · Wintech Studio`} description={c.intro.slice(0, 158)} crumbs={[['Work', '/work'], [c.name, `/work/${c.slug}`]]} jsonld={[ld]} theme={dark ? 'dark' : undefined}>
+  <article class:list={['case', dark ? 'is-dark' : 'is-light']} style={`${pal}--g1:${c.grad[0]};--g2:${c.grad[1]}`}>
+    <section class="ov" id="overview">
+      <div class="in">
+        <p class="lbl">Overview</p>
+        <h1>{c.headline}</h1>
+        <p class="intro">{c.intro}</p>
+        <div class="grid">
           <div class="stats">{c.stats.map(([t, d]) => <div class="stat"><strong>{t}</strong><span>{d}</span></div>)}</div>
-          <div class="status"><p class="mono">Status</p><p class="st">{c.status}</p>{c.url && <a class="link" href={c.url} target="_blank" rel="noopener">Visit {c.url.replace('https://', '')} <Icon name="arrow-up-right" size={14} /></a>}<span class="tile" aria-hidden="true"><span>{c.name[0]}</span></span></div>
+          <div class="status">
+            <p class="lbl">Status</p>
+            <p class="st">{c.status}</p>
+            {c.url && <a class="visit" href={c.url} target="_blank" rel="noopener">Visit {c.url.replace('https://', '')}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>}
+            <span class="tile" aria-hidden="true">
+              <span class="gt"></span>
+              {c.icon ? <img class="ic" src={c.icon} alt="" width="124" height="124" /> : <span class="ic todo" data-todo-image={c.iconTodo}></span>}
+            </span>
+          </div>
         </div>
-        <ul class="did">{c.did.map(d => <li>{d}</li>)}</ul>
+        <ul class="did" aria-label="What we did">{c.did.map(d => <li>{d}</li>)}</ul>
       </div>
     </section>
-    <section class="sec">
-      <div class="wrap two"><h2>{c.filmTitle}</h2><div><p class="lead">{c.filmLead}</p><p>{c.filmBody}</p></div></div>
-      <div class="wide"><Poster c={c} big eager /></div>
-    </section>
-    <section class="gallery" aria-label={`${c.name} work`}>
-      <img src={`/images/cases/grid-${c.slug}.webp`} alt={`Selected screens and brand work from ${c.name}`} width="1280" height="2440" loading="lazy" decoding="async" />
-    </section>
-    <section class="sec alt">
-      <div class="wrap">
-        <div class="two"><p class="mono">01</p><div><h2>{c.challengeTitle}</h2><p>{c.challenge}</p></div></div>
-        <ol class="grid g3 probs">{c.problems.map(([t, d], k) => <li class="card"><p class="mono">{String(k + 1).padStart(2, '0')}</p><h3>{t}</h3><p>{d}</p></li>)}</ol>
+
+    <section class="film" id="film">
+      <div class="in head">
+        <h2 class="ft">{c.film.title}</h2>
+        <div class="txt"><p class="lead">{c.film.lead}</p><p class="body">{c.film.body}</p></div>
       </div>
+      <figure class="panel">
+        <img src={`/images/cases/film-${c.slug}.webp`} srcset={`/images/cases/film-${c.slug}-800.webp 800w, /images/cases/film-${c.slug}.webp 1360w`} sizes="(max-width:1023px) calc(100vw - 32px), min(1360px, calc(100vw - 80px))" width={c.film.w} height={c.film.h} alt={`${c.name}: ${c.film.label}`} fetchpriority="high" decoding="async" />
+      </figure>
     </section>
-    <section class="sec">
-      <div class="wrap two"><p class="mono">02 · How it started</p><div><h2>{c.startedTitle}</h2><p>{c.started}</p></div></div>
-    </section>
-    <section class="sec alt">
-      <div class="wrap want">
-        <div><p class="mono">Want this?</p><h2 class="h2">The same team can build yours.</h2><p class="tags">{c.services.map(s => <a href={`/services/${s}`}>{services.find(x => x.slug === s)!.name}</a>)}</p></div>
-        <a class="nextc" href={`/work/${next.slug}`}><span class="mono">Next case</span><strong>{next.name}</strong><span>{next.line}</span><Icon name="arrow-right" size={18} /></a>
-      </div>
+
+    <div class="gal"><Masonry slug={c.slug} name={c.name} cols={tiles[c.slug]} /></div>
+
+    {c.chapters.map(ch => (
+      <section class:list={['ch', { haslist: !!ch.list }]} id={`ch-${ch.n}`} aria-labelledby={`t-${ch.n}`}>
+        <div class="in head">
+          <p class="num" aria-hidden="true">{ch.n}</p>
+          <h2 class="ct" id={`t-${ch.n}`}><span class="mnum">{ch.n}</span>{ch.title}</h2>
+          <div class="txt"><p class="lead">{ch.lead}</p><p class="body">{ch.body}</p></div>
+        </div>
+        {ch.list && (
+          <div class="in"><ol class="list">
+            {ch.list.map(([t, d], k) => <li><span class="bx">{String(k + 1).padStart(2, '0')}</span><div><strong>{t}</strong><p>{d}</p></div></li>)}
+          </ol></div>
+        )}
+        {ch.visuals && <div class="vis">{ch.visuals.map(v => <Visual v={v} />)}</div>}
+      </section>
+    ))}
+
+    <a class="next" href={`/work/${next.slug}`}>
+      <span class="in"><span><span class="mono">Next case study</span><strong>{next.name}</strong></span><span class="arr" aria-hidden="true">→</span></span>
+    </a>
+    <section class="want">
+      <div class="in"><h2>Want this for your business?</h2><a class="btn btn-primary" href={c.want.href}>{c.want.label}</a></div>
     </section>
   </article>
+
+  <nav class="rail" aria-label="Sections">
+    {rail.map(([id, t], k) => <a href={`#${id}`} class:list={{ on: k === 0 }} aria-label={t}><i></i></a>)}
+  </nav>
+  <div class:list={['bar', dark ? 'bar-d' : 'bar-l']} role="region" aria-label="Case actions">
+    <p class="side"><span class="mono">Client</span><i></i><span>{c.name}</span></p>
+    <p class="mside mono">{c.name} · {c.year}</p>
+    <div class="acts"><a class="b1" href="/book">Book an intro call</a><a class="b2" href={`mailto:${contact.email}?subject=${encodeURIComponent(`Project like ${c.name}`)}`}><span class="dl">Send email</span><span class="ml">Email</span></a></div>
+    <p class="side r"><span class="mono">Year</span><i></i><span>{c.year}</span></p>
+  </div>
 </Page>
+
+<script>
+  // Side rail: highlight the section in view; smooth jump on click.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.rail a')];
+  const secs = links.map(a => document.querySelector(a.hash)).filter(Boolean) as Element[];
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) { const k = secs.indexOf(e.target); links.forEach((l, j) => l.classList.toggle('on', j === k)); } });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  secs.forEach(s => io.observe(s));
+  // Swipe sliders (mobile): progress line follows scroll.
+  document.querySelectorAll<HTMLElement>('[data-slider]').forEach(s => {
+    const t = s.querySelector<HTMLElement>('[data-track]'); const b = s.querySelector<HTMLElement>('[data-bar]');
+    if (!t || !b) return;
+    const up = () => { const vis = t.clientWidth / t.scrollWidth; const p = t.scrollLeft / Math.max(1, t.scrollWidth - t.clientWidth); b.style.width = `${Math.max(8, vis * 100)}%`; b.style.left = `${p * (100 - Math.max(8, vis * 100))}%`; };
+    t.addEventListener('scroll', up, { passive: true }); addEventListener('resize', up); up();
+  });
+  // Parallax columns (desktop, motion allowed): side columns drift against the middle one.
+  const par = document.querySelector<HTMLElement>('[data-parallax]');
+  if (par && matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches) {
+    const cols = [...par.querySelectorAll<HTMLElement>('[data-speed="1"]')];
+    let raf = 0;
+    const run = () => { raf = 0; const r = par.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height))); cols.forEach(c => { c.style.transform = `translateY(${(0.5 - p) * 48}px)`; }); };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(run); }, { passive: true }); run();
+  }
+</script>
+
 <style>
-  .ov{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px}
-  .stats{display:grid;gap:12px}.stat{background:var(--surface);padding:20px 24px;border-radius:4px;display:grid;gap:4px}
-  .stat strong{font-size:26px;font-weight:600;letter-spacing:-.02em}.stat span{font-size:14px;color:var(--fg-2)}
-  .status{background:var(--surface);border-radius:4px;padding:24px;position:relative;overflow:hidden;min-height:260px;display:flex;flex-direction:column;gap:14px}
-  .st{font-size:22px;font-weight:600;line-height:1.35;max-width:440px;margin:0;letter-spacing:-.01em}
-  .tile{position:absolute;right:28px;bottom:28px;width:100px;height:100px;transform:rotate(-7deg);background:linear-gradient(135deg,var(--c1),var(--c2));border-radius:22px;display:grid;place-items:center;color:#fff;font-size:44px;font-weight:600;box-shadow:0 20px 40px -20px rgba(0,0,0,.4)}
-  .tile::before{content:"";position:absolute;inset:0;border-radius:22px;background:linear-gradient(135deg,var(--c2),var(--c1));transform:rotate(17deg);z-index:-1;opacity:.6}
-  .did{list-style:none;padding:0;margin:32px 0 0;display:flex;flex-wrap:wrap;gap:8px}
-  .did li{font-size:13px;font-weight:500;padding:7px 14px;border-radius:100px;border:1.5px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(90deg,var(--c1),var(--c2)) border-box}
-  .two{display:grid;grid-template-columns:360px 1fr;gap:40px}.two h2{font-size:24px;font-weight:600;margin:0 0 12px;letter-spacing:-.01em}.two p{color:var(--fg-2);font-size:16px;line-height:1.6;max-width:672px;margin:0 0 10px}.two .lead{color:var(--fg);font-size:18px;font-weight:500}
-  .wide{max-width:1360px;margin:40px auto 0;padding:0 clamp(16px,3vw,40px)}.wide :global(.poster){border-radius:4px}
-  .gallery{max-width:1280px;margin:0 auto;padding:0 clamp(16px,3vw,40px) 96px}.gallery img{width:100%;height:auto;display:block}
-  .probs{list-style:none;padding:0;margin-top:40px}
-  .want{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
-  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.tags a{font-size:13px;border:1px solid var(--rule);padding:6px 12px;text-decoration:none;color:var(--fg)}
-  .nextc{display:grid;gap:6px;padding:28px;background:var(--card);border:1px solid var(--rule);text-decoration:none;color:var(--fg)}.nextc:hover{border-color:var(--ash)}
-  .nextc strong{font-size:28px;font-weight:600;letter-spacing:-.02em}.nextc span:not(.mono){color:var(--fg-2)}
-  @media (max-width:1023px){.ov,.two,.want{grid-template-columns:1fr}.tile{width:70px;height:70px;font-size:30px}.two{gap:12px}}
+  /* Light palette (C2..C6) by default; dark cases set their own palette inline. Light cases follow the site toggle. */
+  .case{--c-bg:#FFFFFF;--c-card:#F4F4F5;--c-fg:#18181B;--c-intro:#3F3F46;--c-mute:#71717A;--c-line:#E4E4E7;background:var(--c-bg);color:var(--c-fg)}
+  :root[data-theme="dark"] .case.is-light{--c-bg:#0F0F0F;--c-card:#1A1A1B;--c-fg:#F4F4F5;--c-intro:#D4D4D8;--c-mute:#A1A1AA;--c-line:#2A2A2E}
+  :global(main:has(.case) > .crumbs){background:transparent}
+  .in{max-width:1200px;margin:0 auto;padding:0 var(--gutter);box-sizing:content-box}
+  .lbl{margin:0;font-size:11px;line-height:14px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--c-mute)}
+
+  /* Overview */
+  .ov{padding-top:62px}
+  .ov h1{font-size:56px;line-height:64px;letter-spacing:-.02em;font-weight:600;max-width:1000px;margin:20px 0 0}
+  .intro{font-size:18px;line-height:27px;font-weight:500;color:var(--c-intro);max-width:900px;margin:20px 0 0}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1152px;margin-top:64px}
+  .stats{display:grid;gap:12px}
+  .stat{background:var(--c-card);border-radius:4px;padding:20px;min-height:98px;display:flex;flex-direction:column;gap:4px}
+  .stat strong{font-size:28px;line-height:34px;font-weight:600;letter-spacing:-.5px}
+  .stat span{font-size:14px;line-height:20px;color:var(--c-mute)}
+  .status{background:var(--c-card);border-radius:4px;padding:24px;position:relative;overflow:hidden;min-height:318px}
+  .st{font-size:24px;line-height:32px;font-weight:600;max-width:500px;margin:18px 0 0}
+  .visit{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:14px;font-weight:500;color:var(--c-fg);text-underline-offset:3px}
+  .tile{position:absolute;right:34px;bottom:34px;width:167px;height:167px}
+  .gt{position:absolute;left:37px;top:17px;width:124px;height:124px;border-radius:28.5px;transform:rotate(10deg);opacity:.9;background:linear-gradient(135deg,var(--g1),var(--g2))}
+  .ic{position:absolute;left:14px;top:27px;width:124px;height:124px;border-radius:28.5px;transform:rotate(-7deg);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+  .ic.todo{background:var(--c-line)}
+  .did{list-style:none;padding:0;margin:20px 0 0;display:flex;flex-wrap:wrap;gap:10px}
+  .did li{font-size:13px;line-height:16px;font-weight:500;padding:12px 18px;border-radius:100px;border:1.5px solid transparent;background:linear-gradient(var(--chip),var(--chip)) padding-box,linear-gradient(90deg,var(--g1),var(--g2)) border-box;--chip:var(--c-bg)}
+  .is-dark .did li{--chip:var(--c-card)}
+
+  /* Two-column heads: title at x151, copy at x541 (672 wide) */
+  .head{display:grid;grid-template-columns:31px 390px minmax(0,672px);align-items:start}
+  .film .head .ft{grid-column:2}
+  .ft,.ct{font-size:24px;line-height:31px;font-weight:600;letter-spacing:0;margin:0}
+  .txt{grid-column:3}
+  .lead{font-size:18px;line-height:26px;font-weight:500;margin:0}
+  .body{font-size:16px;line-height:24px;color:var(--c-mute);margin:12px 0 0}
+  .film{padding-top:216px}
+  .panel{margin:64px auto 0;max-width:1360px;padding:0 40px;box-sizing:content-box}
+  .panel img{display:block;width:100%;height:auto;border-radius:4px;background:var(--c-card)}
+  .gal{padding:160px 80px 0}
+
+  /* Chapters */
+  .ch{padding-top:160px}
+  .num{grid-column:1;margin:9px 0 0;font-size:11px;line-height:14px;font-weight:500;letter-spacing:.06em;color:var(--c-mute)}
+  .ct{grid-column:2;max-width:360px;position:relative;padding-bottom:17px}
+  .ct::after{content:"";position:absolute;left:0;bottom:0;width:28px;height:2px;background:var(--c-fg)}
+  .mnum{display:none}
+  .list{list-style:none;margin:40px 0 0 421px;padding:0 0 44px;max-width:672px}
+  .list li{display:flex;gap:16px;padding:0 0 14px;border-bottom:1px solid var(--c-line);margin-bottom:14px}
+  .bx{flex:none;width:28px;height:28px;border:1px solid var(--c-line);border-radius:4px;display:grid;place-items:center;font-size:11px;font-weight:500;color:var(--c-mute)}
+  .list strong{display:block;font-size:16px;line-height:22px;font-weight:500;margin-top:3px}
+  .list p{margin:5px 0 0;font-size:14px;line-height:20px;color:var(--c-mute)}
+  .vis{max-width:1280px;margin:60px auto 0;padding:0 80px;box-sizing:content-box;display:grid;gap:16px}
+
+  /* Ending */
+  .next{display:block;margin-top:176px;background:#F3F4F7;color:#0A0E17;text-decoration:none}
+  .is-dark .next,:root[data-theme="dark"] .next{background:#111723;color:#F4F6FA}
+  .next .in{display:flex;justify-content:space-between;align-items:center;padding-top:72px;padding-bottom:72px}
+  .next .mono{display:block;color:#9AA3B2;margin-bottom:8px}
+  .next strong{font-size:40px;line-height:48px;font-weight:600;letter-spacing:-.015em}
+  .arr{font-size:40px;line-height:48px;transition:transform .2s}
+  .next:hover .arr{transform:translateX(6px)}
+  .want{background:#FFFFFF;color:#0A0E17}
+  .is-dark .want,:root[data-theme="dark"] .want{background:#0A0E17;color:#F4F6FA}
+  .want .in{display:flex;justify-content:space-between;align-items:center;gap:24px;padding-top:72px;padding-bottom:72px}
+  .want h2{font-size:32px;line-height:38px;font-weight:600;letter-spacing:-.01em}
+  .want .btn{font-size:16px;padding:13px 20px}
+
+  /* Fixed layers */
+  .rail{position:fixed;left:12px;top:420px;z-index:40;display:flex;flex-direction:column;gap:0}
+  .rail a{display:block;padding:4px 0;width:18px}
+  .rail i{display:block;width:12px;height:2px;background:var(--fg);opacity:.4;transition:width .2s,opacity .2s}
+  .rail a.on i,.rail a:hover i{width:18px;opacity:1}
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:50;height:65px;display:flex;align-items:center;justify-content:space-between;padding:12px 40px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+  .bar-d{background:rgba(10,14,23,.94);color:#fff;--m:#B9C1CF;--ln:rgba(255,255,255,.25)}
+  .bar-l{background:rgba(255,255,255,.94);color:#0A0E17;border-top:1px solid #E3E7EE;--m:#5E6678;--ln:rgba(10,14,23,.25)}
+  :root[data-theme="dark"] .bar-l{background:rgba(10,14,23,.94);color:#fff;border-top-color:rgba(255,255,255,.09);--m:#B9C1CF;--ln:rgba(255,255,255,.25)}
+  .side{display:flex;align-items:center;gap:14px;margin:0;font-size:15px;font-weight:500;min-width:200px}
+  .side.r{justify-content:flex-end}
+  .side .mono{color:var(--m)}
+  .side i{width:40px;height:1px;background:var(--ln)}
+  .mside{display:none}
+  .acts{display:flex}
+  .acts a{font-size:15px;font-weight:500;padding:10px 16px;text-decoration:none;line-height:18px}
+  .bar-d .b1{background:#fff;color:#0A0E17}.bar-d .b2{background:#1C2432;color:#fff;border:1px solid rgba(255,255,255,.12)}
+  .bar-l .b1{background:#0A0E17;color:#fff}.bar-l .b2{background:#F2F4F8;color:#0A0E17;border:1px solid #E3E7EE}
+  :root[data-theme="dark"] .bar-l .b1{background:#fff;color:#0A0E17}
+  :root[data-theme="dark"] .bar-l .b2{background:#1C2432;color:#fff;border-color:rgba(255,255,255,.12)}
+  .ml{display:none}
+  :global(body:has(.bar)){padding-bottom:65px}
+  :global(body:has(.bar) #ask-open){bottom:81px}
+
+  @media (max-width:1023px){
+    .in{padding:0 16px}
+    .ov{padding-top:32px}
+    .ov h1{font-size:32px;line-height:38px;letter-spacing:-.64px;margin-top:14px}
+    .intro{font-size:16px;line-height:24px;margin-top:16px}
+    .grid{grid-template-columns:1fr;gap:8px;margin-top:28px}
+    .stats{gap:8px}
+    .stat{padding:16px 18px;min-height:88px}
+    .stat strong{font-size:24px;line-height:30px}
+    .stat span{font-size:13px;line-height:18px}
+    .status{min-height:250px;padding:20px}
+    .st{font-size:19px;line-height:26px;margin-top:12px;max-width:318px}
+    .tile{width:109px;height:109px;right:14px;bottom:14px}
+    .gt{left:24px;top:11px;width:81px;height:81px;border-radius:18.5px}
+    .ic{left:9px;top:17px;width:81px;height:81px;border-radius:18.5px}
+    .did{margin-top:20px}
+    .head{display:block}
+    .num{display:none}
+    .ft,.ct{font-size:22px;line-height:28px}
+    .ct{font-size:20px;line-height:26px;max-width:none;padding-bottom:18px;margin-bottom:18px}
+    .ct::after{width:24px}
+    .mnum{display:inline;margin-right:12px}
+    .film{padding-top:56px}
+    .film .ft{margin-bottom:16px}
+    .lead{font-size:16px;line-height:24px}
+    .body{font-size:15px;line-height:22px}
+    .panel{margin-top:24px;padding:0 16px}
+    .panel img{border-radius:1px}
+    .gal{padding:56px 0 0}
+    .ch{padding-top:56px}
+    .list{margin:32px 0 0;padding:0}
+    .list li{display:block;padding-bottom:6px;margin-bottom:6px}
+    .bx{display:none}
+    .list strong{font-size:15px;line-height:20px;margin:0}
+    .list p{font-size:13px;line-height:19px;margin-top:4px}
+    .vis{margin-top:32px;padding:0 16px;gap:8px}
+    .next{margin-top:90px}
+    .next .in{padding-top:40px;padding-bottom:40px}
+    .next strong{font-size:26px;line-height:31px}
+    .want .in{flex-direction:column;align-items:flex-start;padding-top:40px;padding-bottom:40px}
+    .want h2{font-size:28px;line-height:34px}
+    .rail{display:none}
+    .bar{height:58px;padding:10px 16px}
+    .bar-l,.bar-d,:root[data-theme="dark"] .bar-l{background:rgba(10,14,23,.96);color:#fff;border-top:1px solid rgba(255,255,255,.09)}
+    .side{display:none}
+    .mside{display:block;margin:0;font-size:10px;letter-spacing:.04em;color:#9AA3B2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .acts a{font-size:14px;padding:10px 14px;line-height:17px}
+    .bar .b1{background:#F4F6FA!important;color:#0A0E17!important}.bar .b2{background:#1C2432!important;color:#F4F6FA!important;border:0!important}
+    .dl{display:none}.ml{display:inline}
+    :global(body:has(.bar)){padding-bottom:58px}
+    :global(body:has(.bar) #ask-open){bottom:68px}
+  }
 </style>

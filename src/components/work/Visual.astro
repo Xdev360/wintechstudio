@@ -1,0 +1,33 @@
+---
+// One chapter visual. 'todo' = raster panel still to be exported from Figma: a sized neutral slot with
+// data-todo-image so it can be swapped later. 'swatches' = colour row rebuilt in HTML.
+import type { Visual } from '../../data/cases';
+interface Props { v: Visual }
+import fs from 'node:fs';
+const { v } = Astro.props;
+// Chapter rasters live at public/images/cases/ch/<figma id with : as ->.webp once exported. Until then the slot is left out.
+const file = v.kind === 'todo' ? `/images/cases/ch/${v.id.replace(':', '-')}.webp` : '';
+const has = !!file && fs.existsSync(`public${file}`);
+---
+{v.kind === 'todo' ? (has ? (
+  <figure class="img" data-figma={v.id}><img src={file} alt={v.label} width={v.w} height={v.h} loading="lazy" decoding="async" /></figure>
+) : null) : (
+  <figure class="sw" data-figma={v.id} style={v.bg ? `--sw-bg:${v.bg}` : ''} aria-label="Colour palette">
+    {v.items.map(i => <div class="chip" style={`background:${i.hex};color:${i.ink}`}><strong>{i.name}</strong><span>{i.hex}</span></div>)}
+  </figure>
+)}
+<style>
+  figure{margin:0}
+  .img img{display:block;width:100%;height:auto}
+  .slot{width:100%;background:var(--c-card);display:flex;align-items:flex-end;padding:20px 24px;position:relative}
+  .slot figcaption{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--c-mute)}
+  .sw{background:var(--sw-bg,var(--c-card));padding:80px 66px;display:grid;grid-template-columns:repeat(5,1fr);gap:23px}
+  :root[data-theme="dark"] .sw{background:var(--c-card)}
+  .chip{aspect-ratio:208/129;border-radius:19px;padding:0 15px 16px;display:flex;flex-direction:column;justify-content:flex-end;gap:4px}
+  .chip strong{font-size:14px;font-weight:500}.chip span{font-size:11px;font-family:var(--mono)}
+  @media (max-width:1023px){
+    .slot{padding:12px 14px}.slot figcaption{font-size:10px}
+    .sw{padding:16px;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;scrollbar-width:none}
+    .chip{flex:0 0 160px;scroll-snap-align:start}
+  }
+</style>
