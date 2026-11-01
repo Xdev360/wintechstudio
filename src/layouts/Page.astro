@@ -4,12 +4,12 @@ import Header from '../components/Header.astro';
 import AskAI from '../components/AskAI.astro';
 import Footer from '../components/Footer.astro';
 import Closing from '../components/ui/Closing.astro';
-interface Props { title: string; description: string; image?: string; jsonld?: Record<string, unknown>[]; closing?: boolean; crumbs?: [string, string][] }
-const { title, description, image, jsonld = [], closing = true, crumbs } = Astro.props;
+interface Props { title: string; description: string; image?: string; jsonld?: Record<string, unknown>[]; closing?: boolean; crumbs?: [string, string][]; theme?: 'dark' | 'light' }
+const { title, description, image, jsonld = [], closing = true, crumbs, theme } = Astro.props;
 const site = 'https://www.wintechstudio.com';
 const bc = crumbs ? [{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', '/'], ...crumbs].map(([n, h], i) => ({ '@type': 'ListItem', position: i + 1, name: n, item: site + h })) }] : [];
 ---
-<Base title={title} description={description} image={image} jsonld={[...bc, ...jsonld]}>
+<Base title={title} description={description} image={image} jsonld={[...bc, ...jsonld]} theme={theme}>
   <Header />
   <main>
     {crumbs && <nav class="crumbs wrap" aria-label="Breadcrumb"><a href="/">Home</a>{crumbs.map(([n, h], i) => <><span aria-hidden="true">›</span>{i === crumbs.length - 1 ? <span aria-current="page">{n}</span> : <a href={h}>{n}</a>}</>)}</nav>}

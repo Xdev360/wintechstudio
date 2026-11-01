@@ -39,7 +39,7 @@ const menus = [
 </header>
 <script is:inline>
   (function(){
-    var root=document.documentElement;try{var t=localStorage.getItem('theme');if(t)root.dataset.theme=t}catch(e){}
+    var root=document.documentElement;try{var t=localStorage.getItem('theme');if(t&&!root.dataset.force)root.dataset.theme=t}catch(e){}
     document.getElementById('theme-toggle')?.addEventListener('click',function(){var d=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=d;try{localStorage.setItem('theme',d)}catch(e){}});
     var b=document.getElementById('menu-open'),s=document.getElementById('mobile-menu');
     b?.addEventListener('click',function(){var o=s.hidden;s.hidden=!o;b.setAttribute('aria-expanded',String(o))});

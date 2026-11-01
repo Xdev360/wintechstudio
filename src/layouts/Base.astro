@@ -10,8 +10,9 @@ interface Props {
   image?: string;
   noindex?: boolean;
   jsonld?: Record<string, unknown>[];
+  theme?: 'dark' | 'light';
 }
-const { title, description, image = '/og/default.png', noindex = false, jsonld = [] } = Astro.props;
+const { title, description, image = '/og/default.png', noindex = false, jsonld = [], theme } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const og = new URL(image, Astro.site).toString();
 const org = {
@@ -31,7 +32,7 @@ const org = {
 };
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme={theme} data-force={theme ? '1' : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -49,7 +50,7 @@ const org = {
     <meta property="og:image" content={og} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@wintechstudio_" />
-    <script is:inline>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+    <script is:inline>try{var h=document.documentElement;if(!h.dataset.force){var t=localStorage.getItem("theme");if(t)h.dataset.theme=t}}catch(e){}</script>
     <script src="/ui-sound.js" defer></script>
     <script src="/form-send.js" defer></script>
     <script type="application/ld+json" set:html={JSON.stringify([org, ...jsonld])} />
