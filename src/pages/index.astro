@@ -1,10 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../components/home/Hero.astro';
+import Sections from '../components/home/Sections.astro';
 ---
-<Base title="Wintech Studio · Design and build studio in Lagos" description="Brand, websites, stores, AI and automation, from one team in Lagos." noindex>
-  <main class="wrap" style="padding-top:120px;padding-bottom:120px">
-    <p class="mono">Astro v5 build · in progress</p>
-    <h1 style="font-size:clamp(36px,6vw,64px);margin-top:16px">Bring the idea.<br />We'll bring the team.</h1>
-    <p style="color:var(--fg-2);max-width:560px;margin-top:20px">This branch is the new site. The previous site is kept at <a href="/archive/">/archive</a>.</p>
+<Base title="Wintech Studio · Design and build studio in Lagos" description="Brand, websites, stores, AI and automation for businesses starting out, adding tech, or refreshing their brand. One team in Lagos, working worldwide.">
+  <Header />
+  <main>
+    <Hero />
+    <Sections />
   </main>
+  <Footer />
 </Base>

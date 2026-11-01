@@ -1,0 +1,518 @@
+[
+ {
+  "slug": "brand",
+  "label": "BRAND AND PACKAGING",
+  "title": "A brand that looks like the price you charge.",
+  "intro": "Customers judge the price by the logo, the box and the page. We build the brand that makes the product look as good as it is.",
+  "price": "from $1,500",
+  "priceNgn": "₦1,000,000",
+  "timeline": "3 to 4 weeks",
+  "whatTitle": "A brand people trust before they read a word.",
+  "cells": [
+   {
+    "title": "A logo that works small",
+    "body": "A primary logo, a mark and lockups that still read on a label, a pin or a WhatsApp photo."
+   },
+   {
+    "title": "Colour, type and voice",
+    "body": "A palette, a type pair and how you sound, written down so everyone uses them the same way."
+   },
+   {
+    "title": "Packaging per product",
+    "body": "Boxes, labels and stickers sized for your printer, with print files ready to send."
+   },
+   {
+    "title": "Guidelines in Figma, owned by you",
+    "body": "Every file in your name. Your next designer opens it and keeps going, no handover call."
+   },
+   {
+    "title": "Social and print kit",
+    "body": "Post templates, stories and a business card, so new content looks like the brand on day one."
+   }
+  ],
+  "brief": [
+   {
+    "q": "What do you have now?",
+    "multi": false,
+    "options": [
+     "Nothing yet",
+     "A logo only",
+     "Logo and colours",
+     "A full brand that feels dated"
+    ]
+   },
+   {
+    "q": "What do you need?",
+    "multi": true,
+    "options": [
+     "Logo",
+     "Colours and type",
+     "Packaging",
+     "Guidelines",
+     "Social templates",
+     "Signage and print"
+    ]
+   },
+   {
+    "q": "How should it feel?",
+    "multi": false,
+    "options": [
+     "Calm and premium",
+     "Bold and loud",
+     "Warm and local",
+     "Clean and techy"
+    ]
+   },
+   {
+    "q": "Who buys from you?",
+    "multi": false,
+    "options": [
+     "Mostly Lagos",
+     "All of Nigeria",
+     "Abroad too"
+    ]
+   },
+   {
+    "q": "When do you need it?",
+    "multi": false,
+    "options": [
+     "This month",
+     "In 1 to 2 months",
+     "No rush"
+    ]
+   },
+   {
+    "q": "Budget",
+    "multi": false,
+    "options": [
+     "Under $1,000",
+     "$1,000 to $3,000",
+     "$3,000+",
+     "Not sure yet"
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "websites",
+  "label": "WEBSITES AND STORES",
+  "title": "A website that proves the work, or a store that sells.",
+  "intro": "Not every business needs a store. An engineering firm needs proof; a skincare brand needs checkout. We build the one you need, fast on Nigerian mobile data.",
+  "price": "from $1,200",
+  "priceNgn": "₦900,000",
+  "timeline": "2 to 6 weeks",
+  "whatTitle": "A site that loads on 3G and sells while you sleep.",
+  "cells": [
+   {
+    "title": "Fast on Nigerian data",
+    "body": "Built in Astro, light images, no bloat. It opens before your customer gives up."
+   },
+   {
+    "title": "Checkout that works here",
+    "body": "Card, transfer and USSD through Paystack. Delivery fees by area, worked out for you."
+   },
+   {
+    "title": "Domain and hosting in your name",
+    "body": "You own every account from day one. We are added as helpers and removed when you say."
+   },
+   {
+    "title": "Change prices yourself",
+    "body": "Edit products, prices and photos from your phone. No ticket, no waiting for us."
+   },
+   {
+    "title": "Found on Google and WhatsApp",
+    "body": "Search basics done right, and link previews that look good when shared in a chat."
+   }
+  ],
+  "brief": [
+   {
+    "q": "What do you have now?",
+    "multi": false,
+    "options": [
+     "Nothing",
+     "Instagram only",
+     "A site I don't like",
+     "A site that works"
+    ]
+   },
+   {
+    "q": "What should it do?",
+    "multi": true,
+    "options": [
+     "Show my work",
+     "Take orders and payment",
+     "Take bookings",
+     "Collect leads"
+    ]
+   },
+   {
+    "q": "How many products or pages?",
+    "multi": false,
+    "options": [
+     "Under 10",
+     "10 to 50",
+     "50 to 200",
+     "200+"
+    ]
+   },
+   {
+    "q": "Extras",
+    "multi": true,
+    "options": [
+     "AI replies on WhatsApp",
+     "Delivery fees by area",
+     "Customer accounts",
+     "Blog"
+    ]
+   },
+   {
+    "q": "When?",
+    "multi": false,
+    "options": [
+     "This month",
+     "In 1 to 2 months",
+     "No rush"
+    ]
+   },
+   {
+    "q": "Budget",
+    "multi": false,
+    "options": [
+     "Under $1,000",
+     "$1,000 to $3,000",
+     "$3,000+",
+     "Not sure yet"
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "ai-assistant",
+  "label": "AI ASSISTANT",
+  "title": "An assistant that replies like you, at 2am.",
+  "intro": "Trained on your products, prices and tone. It answers on your site and WhatsApp in seconds, takes orders and bookings, and hands over to you when it should.",
+  "price": "from $1,800 + $60/mo",
+  "priceNgn": "₦1,200,000 + ₦50,000/mo",
+  "timeline": "4 to 6 weeks",
+  "whatTitle": "An assistant that sells, and knows when to stop.",
+  "cells": [
+   {
+    "title": "Trained on your catalogue",
+    "body": "Products, prices, sizes and delivery areas. Change one and it learns it the same day."
+   },
+   {
+    "title": "Replies like you, at 2am",
+    "body": "On your website and WhatsApp, in your tone, in seconds. Nobody waits for morning."
+   },
+   {
+    "title": "You decide what it handles",
+    "body": "It answers and takes orders. Refunds and complaints always come to a person."
+   },
+   {
+    "title": "Orders logged as they happen",
+    "body": "Every order it takes lands on your phone with the total, the area and the time."
+   },
+   {
+    "title": "A report every month",
+    "body": "What people asked, what it answered, what it sold. We retrain it on what it missed."
+   }
+  ],
+  "brief": [
+   {
+    "q": "Where do customers message you?",
+    "multi": true,
+    "options": [
+     "WhatsApp",
+     "Instagram DMs",
+     "Website",
+     "Phone calls"
+    ]
+   },
+   {
+    "q": "How many messages a day?",
+    "multi": false,
+    "options": [
+     "Under 20",
+     "20 to 100",
+     "100+"
+    ]
+   },
+   {
+    "q": "What should it handle?",
+    "multi": true,
+    "options": [
+     "Prices and stock",
+     "Delivery questions",
+     "Taking orders",
+     "Bookings",
+     "Complaints to a person"
+    ]
+   },
+   {
+    "q": "Your tone",
+    "multi": false,
+    "options": [
+     "Friendly and casual",
+     "Polite and formal",
+     "Pidgin is fine"
+    ]
+   },
+   {
+    "q": "When?",
+    "multi": false,
+    "options": [
+     "This month",
+     "In 1 to 2 months",
+     "No rush"
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "automation",
+  "label": "AUTOMATION",
+  "title": "The repetitive work, running on its own.",
+  "intro": "Order confirmations, receipts, invoices, stock alerts and follow ups. We map what you repeat every day and make it run without you.",
+  "price": "With the AI plan",
+  "priceNgn": "or quoted per workflow",
+  "timeline": "2 to 4 weeks",
+  "whatTitle": "The work you repeat daily, running without you.",
+  "cells": [
+   {
+    "title": "Order to receipt, on its own",
+    "body": "A payment lands, the receipt goes out and your sales sheet updates. Nobody types it."
+   },
+   {
+    "title": "Stock alerts before you run out",
+    "body": "A WhatsApp message when a product gets low, with how fast it usually sells."
+   },
+   {
+    "title": "Invoices sent and chased",
+    "body": "Invoices go out on time and polite reminders follow until they are paid."
+   },
+   {
+    "title": "Follow ups that never forget",
+    "body": "Thank you, review and reorder messages go out on the right day after every order."
+   },
+   {
+    "title": "A log you can actually read",
+    "body": "Every run, in plain words. If something fails, we know before you do and fix it."
+   }
+  ],
+  "brief": [
+   {
+    "q": "What do you repeat every day?",
+    "multi": true,
+    "options": [
+     "Confirming orders",
+     "Sending receipts",
+     "Chasing payments",
+     "Booking delivery",
+     "Updating stock"
+    ]
+   },
+   {
+    "q": "Tools you already use",
+    "multi": true,
+    "options": [
+     "WhatsApp Business",
+     "Paystack",
+     "Google Sheets",
+     "Instagram",
+     "Email"
+    ]
+   },
+   {
+    "q": "How many orders a week?",
+    "multi": false,
+    "options": [
+     "Under 20",
+     "20 to 100",
+     "100+"
+    ]
+   },
+   {
+    "q": "When?",
+    "multi": false,
+    "options": [
+     "This month",
+     "In 1 to 2 months",
+     "No rush"
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "apps",
+  "label": "APPS AND MVPS",
+  "title": "From idea to an app people can touch.",
+  "intro": "For founders with proof that people want it. Strategy, flows, design and a working first version in weeks, with something new every Friday.",
+  "price": "from $4,000",
+  "priceNgn": "₦3,000,000",
+  "timeline": "4 to 8 weeks",
+  "whatTitle": "Something new every Friday, until it ships.",
+  "cells": [
+   {
+    "title": "The flow before the screens",
+    "body": "We map how people move through it first, so we build the shortest path, not every idea."
+   },
+   {
+    "title": "Designed to be touched",
+    "body": "Real screens in Figma you can click through on your phone before a line of code."
+   },
+   {
+    "title": "A build you can tap, weekly",
+    "body": "Every Friday there is a new version on your phone, and a short note on what changed."
+   },
+   {
+    "title": "Built on accounts you own",
+    "body": "Code, database and hosting sit in your name. Hire anyone later and they pick it up."
+   },
+   {
+    "title": "Launch, then 90 days of care",
+    "body": "We ship to the stores, watch the crash reports and fix what real users find."
+   }
+  ],
+  "brief": [
+   {
+    "q": "Where is the idea?",
+    "multi": false,
+    "options": [
+     "In my head",
+     "Notes and sketches",
+     "A waitlist",
+     "Something built with AI"
+    ]
+   },
+   {
+    "q": "Proof people want it?",
+    "multi": false,
+    "options": [
+     "Not yet",
+     "Some interest",
+     "Paying users",
+     "Funding"
+    ]
+   },
+   {
+    "q": "Platform",
+    "multi": false,
+    "options": [
+     "Web app",
+     "Mobile app",
+     "Both"
+    ]
+   },
+   {
+    "q": "Must have at launch",
+    "multi": true,
+    "options": [
+     "Sign up",
+     "Payments",
+     "Chat",
+     "AI features",
+     "Admin panel"
+    ]
+   },
+   {
+    "q": "When?",
+    "multi": false,
+    "options": [
+     "This month",
+     "In 1 to 2 months",
+     "No rush"
+    ]
+   },
+   {
+    "q": "Budget",
+    "multi": false,
+    "options": [
+     "Under $3,000",
+     "$3,000 to $8,000",
+     "$8,000+",
+     "Not sure yet"
+    ]
+   }
+  ]
+ },
+ {
+  "slug": "motion",
+  "label": "MOTION AND FILM",
+  "title": "Films that explain what you sell.",
+  "intro": "Launch films and explainers, voice led and paced to read, with your real product on screen. Cut for Instagram, X, LinkedIn and your site.",
+  "price": "from $650",
+  "priceNgn": "₦500,000",
+  "timeline": "1 to 3 weeks",
+  "whatTitle": "Films that explain, paced so people read.",
+  "cells": [
+   {
+    "title": "Script and voice first",
+    "body": "We write what it says before what it looks like, and you approve every line."
+   },
+   {
+    "title": "Your real product on screen",
+    "body": "Your actual site, app and packaging, not look-alikes. People see what they will get."
+   },
+   {
+    "title": "Cut for every place it plays",
+    "body": "Status, Reels, feed, X and your site. Each one framed for that screen, not cropped."
+   },
+   {
+    "title": "Storyboard before animation",
+    "body": "You approve the frames first, so there are no surprises when the film arrives."
+   },
+   {
+    "title": "Source files, yours to keep",
+    "body": "Every cut plus the project file, so you can update a price without starting over."
+   }
+  ],
+  "brief": [
+   {
+    "q": "What is it for?",
+    "multi": false,
+    "options": [
+     "A launch",
+     "An ad",
+     "Explaining the product",
+     "Social content"
+    ]
+   },
+   {
+    "q": "Length",
+    "multi": false,
+    "options": [
+     "15 seconds",
+     "30 to 40 seconds",
+     "About a minute"
+    ]
+   },
+   {
+    "q": "Style",
+    "multi": false,
+    "options": [
+     "Clean UI motion",
+     "Characters",
+     "Kinetic type",
+     "Mixed"
+    ]
+   },
+   {
+    "q": "Voiceover?",
+    "multi": false,
+    "options": [
+     "Yes",
+     "No, music only"
+    ]
+   },
+   {
+    "q": "When?",
+    "multi": false,
+    "options": [
+     "This month",
+     "In 1 to 2 months",
+     "No rush"
+    ]
+   }
+  ]
+ }
+]

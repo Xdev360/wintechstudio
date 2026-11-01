@@ -1,0 +1,68 @@
+---
+import Icon from '../Icon.astro';
+const reel = [
+  { name: 'Mylo', tags: 'Product, brand, app, website', href: '/work/mylo', poster: '/images/work/mylo-1000.webp', video: '' },
+  { name: 'Virelle Wellness', tags: 'Brand, store, AI assistant', href: '/work/virelle', poster: '/images/work/virelle-1000.webp', video: '' },
+  { name: "Let's Hang", tags: 'Product, app design', href: '/work/lets-hang', poster: '/images/work/letshang-1000.webp', video: '' },
+];
+---
+<section class="hero">
+  <div class="art" aria-hidden="true">
+    <img class="l" src="/images/hero/hero-light.svg" alt="" fetchpriority="high" />
+    <img class="d" src="/images/hero/hero-dark.svg" alt="" loading="lazy" />
+  </div>
+  <div class="blur" aria-hidden="true"></div>
+  <div class="wrap inner">
+    <div class="copy">
+      <p class="mono">Design and build studio · Lagos, worldwide</p>
+      <h1>Bring the idea.<br />We'll bring <span class="accent">the team.</span></h1>
+      <p class="lede">Brand, websites, stores, AI and automation for businesses starting out, adding tech, or refreshing their brand.</p>
+      <div class="ctas"><a class="btn btn-primary" href="/tools/plan">Plan your project</a><a class="btn btn-soft" href="/book">Book a call</a></div>
+      <ul class="facts">
+        <li><strong>1 project lead</strong><span>for every client</span></li>
+        <li><strong>Weekly</strong><span>builds you can see</span></li>
+        <li><strong>USD or ₦</strong><span>prices on the page</span></li>
+      </ul>
+    </div>
+    <aside class="now" id="now-playing" data-reel={JSON.stringify(reel)} aria-label="Now playing">
+      <div class="media">
+        <img id="np-poster" src={reel[0].poster} alt="" width="340" height="190" />
+        <video id="np-video" muted playsinline loop preload="none" hidden></video>
+      </div>
+      <p class="np-row"><span class="mono">Now playing</span> <strong id="np-name">{reel[0].name}</strong></p>
+      <p class="np-tags" id="np-tags">{reel[0].tags}</p>
+      <div class="np-foot">
+        <div class="dashes">{reel.map((_, i) => <span class={i === 0 ? 'on' : ''}></span>)}</div>
+        <a class="link" id="np-link" href={reel[0].href}>View case study <Icon name="arrow-right" size={14} /></a>
+      </div>
+    </aside>
+  </div>
+</section>
+<script is:inline>
+  (function(){var el=document.getElementById('now-playing');if(!el)return;var reel=JSON.parse(el.dataset.reel),i=0,d=el.querySelectorAll('.dashes span');
+  function show(n){var r=reel[n];document.getElementById('np-name').textContent=r.name;document.getElementById('np-tags').textContent=r.tags;document.getElementById('np-link').href=r.href;var p=document.getElementById('np-poster'),v=document.getElementById('np-video');p.src=r.poster;if(r.video){v.src=r.video;v.hidden=false;p.hidden=true;v.play().catch(function(){})}else{v.hidden=true;p.hidden=false}d.forEach(function(s,k){s.className=k===n?'on':''})}
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;setInterval(function(){i=(i+1)%reel.length;show(i)},7000)})();
+</script>
+<style>
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule)}
+  .art .d{display:none}:root[data-theme="dark"] .art .d{display:block}:root[data-theme="dark"] .art .l{display:none}
+  .art img{position:absolute;right:-6%;bottom:-18%;width:70%;max-width:1100px;height:auto;pointer-events:none}
+  .blur{position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 38%,color-mix(in srgb,var(--bg) 40%,transparent) 62%,transparent);backdrop-filter:blur(0px)}
+  .inner{position:relative;display:grid;grid-template-columns:1.5fr 1fr;gap:48px;align-items:center;padding-top:96px;padding-bottom:96px}
+  h1{font-size:clamp(40px,6vw,72px);margin:20px 0}
+  .accent{background:linear-gradient(90deg,#25507F,#3B5BFF);-webkit-background-clip:text;background-clip:text;color:transparent}
+  :root[data-theme="dark"] .accent{background:linear-gradient(90deg,#8FA3FF,#C9D1F5);-webkit-background-clip:text;background-clip:text}
+  .lede{font-size:18px;color:var(--fg-2);max-width:560px;margin:0 0 28px}
+  .ctas{display:flex;gap:12px;flex-wrap:wrap}
+  .facts{list-style:none;display:flex;gap:32px 40px;padding:0;margin:40px 0 0;flex-wrap:wrap}
+  .facts li{display:flex;flex-direction:column;font-size:14px}.facts strong{font-weight:600;font-size:16px}.facts span{color:var(--fg-2)}
+  .now{justify-self:end;width:374px;background:var(--card);padding:16px;border:1px solid var(--rule);box-shadow:0 2px 4px rgba(10,14,23,.04),0 12px 24px rgba(10,14,23,.06),0 40px 80px rgba(10,14,23,.10)}
+  .media{aspect-ratio:340/190;background:var(--surface);overflow:hidden}
+  .media img,.media video{width:100%;height:100%;object-fit:cover;display:block}
+  .np-row{display:flex;gap:10px;align-items:baseline;margin:14px 0 4px}.np-row strong{font-weight:500}
+  .np-tags{color:var(--fg-2);font-size:14px;margin:0 0 14px}
+  .np-foot{display:flex;justify-content:space-between;align-items:center}
+  .dashes{display:flex;gap:6px}.dashes span{width:28px;height:2px;background:var(--rule)}.dashes .on{background:var(--fg)}
+  @media (max-width:1023px){.inner{grid-template-columns:1fr;padding-top:48px;padding-bottom:56px}.now{justify-self:stretch;width:auto}.art .d{display:none}:root[data-theme="dark"] .art .d{display:block}:root[data-theme="dark"] .art .l{display:none}
+  .art img{width:140%;right:-40%;bottom:-10%}.blur{background:linear-gradient(180deg,var(--bg) 45%,color-mix(in srgb,var(--bg) 30%,transparent))}}
+</style>

@@ -1,0 +1,69 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { services, cases, contact } from '../data/site';
+const menus = [
+  { label: 'Services', items: [{ href: '/services', label: 'All services' }, ...services.map(s => ({ href: `/services/${s.slug}`, label: s.name }))] },
+  { label: 'Work', items: [{ href: '/work', label: 'All work' }, ...cases.map(c => ({ href: `/work/${c.slug}`, label: c.name }))] },
+  { label: 'Studio', items: [{ href: '/how-we-work', label: 'How we work' }, { href: '/about', label: 'About' }, { href: '/faq', label: 'FAQ' }, { href: '/join-the-bench', label: 'Join the bench' }] },
+];
+---
+<header class="site-header">
+  <a class="announce" href="/tools/plan"><span class="new">NEW</span> Plan your project in 3 minutes. Free tool, no call needed. <Icon name="arrow-right" size={14} /></a>
+  <div class="bar wrap">
+    <Logo />
+    <nav class="nav" aria-label="Main">
+      {menus.map(m => (
+        <div class="dd">
+          <button class="nav-item" aria-haspopup="true">{m.label} <Icon name="plus" size={13} /></button>
+          <div class="dd-panel">{m.items.map(i => <a href={i.href}>{i.label}</a>)}</div>
+        </div>
+      ))}
+      <a class="nav-item" href="/tools">Free tools <span class="badge">NEW</span></a>
+      <a class="nav-item" href="/pricing">Pricing</a>
+      <a class="nav-item" href={contact.templates} target="_blank" rel="noopener">Templates <Icon name="arrow-up-right" size={12} /></a>
+      <a class="nav-item" href="/contact">Contact</a>
+    </nav>
+    <div class="actions">
+      <button class="icon-btn" id="theme-toggle" aria-label="Switch light and dark"><Icon name="moon" size={18} /></button>
+      <a class="btn btn-primary book" href="/book">Book a call</a>
+      <button class="icon-btn burger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><Icon name="menu" size={22} /></button>
+    </div>
+  </div>
+  <div class="sheet" id="mobile-menu" hidden>
+    {menus.map(m => (<details><summary>{m.label} <Icon name="plus" size={14} /></summary>{m.items.map(i => <a href={i.href}>{i.label}</a>)}</details>))}
+    <a href="/tools">Free tools</a><a href="/pricing">Pricing</a><a href={contact.templates}>Templates</a><a href="/contact">Contact</a>
+    <a class="btn btn-primary" href="/book">Book a call</a>
+  </div>
+</header>
+<script is:inline>
+  (function(){
+    var root=document.documentElement;try{var t=localStorage.getItem('theme');if(t)root.dataset.theme=t}catch(e){}
+    document.getElementById('theme-toggle')?.addEventListener('click',function(){var d=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=d;try{localStorage.setItem('theme',d)}catch(e){}});
+    var b=document.getElementById('menu-open'),s=document.getElementById('mobile-menu');
+    b?.addEventListener('click',function(){var o=s.hidden;s.hidden=!o;b.setAttribute('aria-expanded',String(o))});
+  })();
+</script>
+<style>
+  .site-header{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--rule)}
+  .announce{display:flex;justify-content:center;align-items:center;gap:10px;background:#000;color:#fff;font-size:13px;padding:8px 16px;text-decoration:none}
+  .new{background:#fff;color:#000;font-size:10px;font-weight:500;padding:1px 6px}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:79px}
+  .nav{display:flex;gap:6px}
+  .nav-item{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;font:500 15px var(--font);color:var(--fg);text-decoration:none;background:none;border:0;cursor:pointer}
+  .nav-item:hover{background:var(--surface)}
+  .badge{background:var(--ink);color:#fff;font-size:10px;padding:1px 5px}
+  .dd{position:relative}
+  .dd-panel{position:absolute;top:100%;left:0;min-width:240px;background:var(--card);border:1px solid var(--rule);padding:8px;display:none;flex-direction:column;box-shadow:0 16px 40px rgba(10,14,23,.08)}
+  .dd:hover .dd-panel,.dd:focus-within .dd-panel{display:flex}
+  .dd-panel a{padding:10px 12px;text-decoration:none;font-size:15px}.dd-panel a:hover{background:var(--surface)}
+  .actions{display:flex;align-items:center;gap:12px}
+  .icon-btn{background:none;border:0;color:var(--fg);padding:8px;cursor:pointer;display:inline-flex}
+  .burger{display:none}
+  .sheet{display:flex;flex-direction:column;padding:8px 16px 24px;border-top:1px solid var(--rule)}
+  .sheet[hidden]{display:none}
+  .sheet a,.sheet summary{padding:14px 0;border-bottom:1px solid var(--rule);text-decoration:none;font-size:17px;font-weight:500;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .sheet details a{padding-left:12px;font-weight:400;color:var(--fg-2)}
+  .sheet .btn{margin-top:16px;border:0;justify-content:center;color:#fff}
+  @media (max-width:1023px){.nav,.book,#theme-toggle{display:none}.burger{display:inline-flex}.bar{height:61px}}
+</style>

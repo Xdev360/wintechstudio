@@ -18,3 +18,14 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.08;margin:0}
 .wrap{max-width:calc(var(--w-max) + 2*var(--gutter));margin:0 auto;padding:0 var(--gutter)}
 a{color:inherit}
 :focus-visible{outline:none;box-shadow:var(--ring)}
+
+/* Buttons, from Kit K2 states */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;font:500 15px/1.2 var(--font);text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .15s,border-color .15s}
+.btn-primary{background:var(--sig);color:#fff}.btn-primary:hover{background:var(--sig-hover)}.btn-primary:active{background:var(--sig-press)}
+.btn-dark{background:var(--ink);color:#fff}.btn-dark:hover{background:#1C2230}.btn-dark:active{background:#000}
+.btn-outline{background:var(--card);color:var(--fg);border-color:var(--rule)}.btn-outline:hover{background:var(--surface)}
+.btn-soft{background:var(--surface);color:var(--fg)}.btn-soft:hover{background:var(--rule)}
+.btn[aria-disabled="true"],.btn:disabled{background:var(--line);color:var(--ash);pointer-events:none}
+:root[data-theme="dark"] .btn-dark{background:#F4F4F5;color:#0A0E17}
+.link{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-weight:500}.link:hover{color:var(--sig);text-decoration:underline;text-underline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}

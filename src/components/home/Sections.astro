@@ -1,0 +1,178 @@
+---
+import Icon from '../Icon.astro';
+import services from '../../data/services.json';
+import { contact, services as names } from '../../data/site';
+const order = ['ai-assistant', 'websites', 'brand', 'automation', 'apps', 'motion'];
+const svc = order.map(s => ({ ...services.find(x => x.slug === s)!, name: names.find(n => n.slug === s)!.name }));
+const faqs = [
+  ['What does it cost?', 'Websites from $1,200, brand systems from $1,500, brand and website from $2,500, the AI assistant from $1,800 plus $60 a month, apps from $4,000. Plan your project shows the full range before any call.'],
+  ['Do I need to be a startup?', 'No. We work with founders starting out, businesses that already sell and want to add tech, and brands that need a refresh.'],
+  ['Can you work with what I already have?', 'Yes. We keep what works, your logo, your site or your tools, and fix or extend the rest.'],
+  ['Who owns the accounts and files?', 'You do. Domain, hosting and every account sit in your name from day one, and all design files, code and documents are yours on the final payment.'],
+  ['How fast can you start?', 'We take on four projects at a time. Book a call and we will tell you the next start date, usually within two weeks.'],
+];
+---
+<section class="sec">
+  <div class="wrap">
+    <p class="mono">How we help</p>
+    <h2 class="h2">One team for the brand,<br />the build and the AI.</h2>
+    <p class="lede">Pick one thing or the whole system. Every service is built, handed over, and run if you want us to.</p>
+    <div class="acc">
+      {svc.map((s, i) => (
+        <details open={i === 0}>
+          <summary><span class="num mono">{String(i + 1).padStart(2, '0')}</span><span class="t">{s.name}</span><Icon name="plus" size={18} class="pm" /></summary>
+          <div class="acc-body">
+            <p>{s.intro}</p>
+            <ul>{s.cells.slice(0, 4).map(c => <li><Icon name="check" size={16} /> {c.title}</li>)}</ul>
+            <div class="price"><strong>{s.price}</strong> <span>{s.priceNgn} · {s.timeline}</span></div>
+            <a class="link" href={`/services/${s.slug}`}>Explore {s.name.toLowerCase().replace("ai ","AI ").replace("mvps","MVPs")} <Icon name="arrow-right" size={14} /></a>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="sec alt">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <p class="mono">Plan your project</p>
+        <h2 class="h2">Where are you<br />right now?</h2>
+        <p class="lede">One question decides the rest. Pick where you are, tap what you need, and see the scope and the price before you talk to anyone.</p>
+        <a class="btn btn-dark" href="/tools/plan">Open the planner</a>
+      </div>
+      <div class="paths">
+        {[['starting','Starting something','An idea, maybe a waitlist. You need a brand, a page to test demand and a first version.','Landing page · Brand · MVP'],['adding-tech','Adding tech to my business','It already sells. You need a store, replies at any hour and less work on your phone.','Store · AI assistant · Automation'],['refresh','Refreshing my brand','It works but looks dated or leaks customers. You want it sharper, faster, premium.','Rebrand · New website · Packaging']].map(p => (
+          <a class="path" href={`/tools/plan?start=${p[0]}`}><strong>{p[1]}</strong><span>{p[2]}</span><em class="mono">{p[3]}</em><Icon name="arrow-right" size={18} class="go" /></a>
+        ))}
+      </div>
+    </div>
+    <p class="tools">Not ready to talk? Start with a free tool: <a href="/tools/plan">Plan your project</a> <a href="/tools/cost-calculator">Cost calculator</a> <a href="/tools/inbox-check">Inbox check</a></p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <p class="mono">Selected work</p>
+    <h2 class="h2">Case studies</h2>
+    <a class="feature" href="/work/mylo">
+      <div class="fcopy">
+        <p class="mono">Mylo · Our product · Consumer app · 2026</p>
+        <h3>The goal app for people who do better together.</h3>
+        <p>Plan the day, tick it off with friends, close it at night and open a chest on Sunday. Designed, branded and built in the studio.</p>
+        <span class="link">Read the case study <Icon name="arrow-right" size={14} /></span>
+      </div>
+      <img src="/images/work/mylo-1000.webp" alt="Mylo app screens" loading="lazy" width="1000" height="625" />
+    </a>
+    <a class="link more" href="/work">See all seven case studies <Icon name="arrow-right" size={14} /></a>
+  </div>
+</section>
+
+<section class="sec alt">
+  <div class="wrap split">
+    <div>
+      <p class="mono">Wintech Templates</p>
+      <h2 class="h2">Just need a website?<br />Go live today.</h2>
+      <p class="lede">Our template shop. Pick a design made for Nigerian businesses, add your prices and photos, and it's live at yourname.wintechstudio.com.</p>
+      <dl class="facts3">
+        <div><dt>12</dt><dd>templates live</dd></div>
+        <div><dt>4</dt><dd>kinds: booking, store, portfolio, landing</dd></div>
+        <div><dt>₦</dt><dd>pay in naira, no cut of your sales</dd></div>
+      </dl>
+      <div class="ctas"><a class="btn btn-dark" href={contact.templates} target="_blank" rel="noopener">Browse templates <Icon name="arrow-up-right" size={16} /></a><a class="link" href={`${contact.templates}/sell`} target="_blank" rel="noopener">Sell your templates <Icon name="arrow-up-right" size={16} /></a></div>
+      <p class="mono note">Opens app.wintechstudio.com</p>
+    </div>
+    <div class="stage" aria-hidden="true">
+      <img src="/images/hero/hero-dark.svg" alt="" loading="lazy" />
+      <div class="pill"><i></i>Free site at yourname.wintechstudio.com</div>
+      <p class="st">Pick a template. Go live today.</p>
+      <div class="glass">
+        <div class="prompt"><span>A booking site for my salon in Lekki<b></b></span><div class="kinds"><em>All</em><em>Portfolio</em><em>Landing page</em><em>Store</em><em class="on">Booking</em></div></div>
+        <p class="matches">Matches for "salon"</p>
+        <div class="tiles"><div class="tile sel"><i style="--c:#F4EDE6;--a:#B07A5A"></i><span>Salon & beauty</span></div><div class="tile"><i style="--c:#EEF1FF;--a:#3B5BFF"></i><span>Consultant</span></div><div class="tile"><i style="--c:#1A1D26;--a:#E8B04B"></i><span>Restaurant</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <p class="mono">Secure by setup</p>
+    <h2 class="h2">Everything is yours<br />from day one.</h2>
+    <div class="grid4">
+      {[['Domain and hosting in your name','Registered to your business from day one, with your email on the login. Never ours.'],['Nothing goes live without you','Every change waits on a preview link until someone on your side says yes.'],['Private until you launch','We sign an NDA before you share anything, and ask before your work appears anywhere.'],['Access removed when work ends','When the project closes, our access to your tools goes the same day. You get the list.']].map(c => <div class="cell"><h3>{c[0]}</h3><p>{c[1]}</p></div>)}
+    </div>
+  </div>
+</section>
+
+<section class="sec alt">
+  <div class="wrap split">
+    <div>
+      <p class="mono">FAQ</p>
+      <h2 class="h2">Still deciding?</h2>
+      <p class="lede">Ask Wintech AI now, or the project lead on a call.</p>
+      <div class="ctas"><a class="btn btn-dark" href="/book">Book a call</a><a class="link" href="/faq">Read the FAQs <Icon name="arrow-right" size={14} /></a></div>
+    </div>
+    <div class="faq">{faqs.map((f, i) => <details open={i === 0}><summary>{f[0]}<Icon name="plus" size={18} class="pm" /></summary><p>{f[1]}</p></details>)}</div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <p class="mono">You've reached the end, so now…</p>
+    <h2>Tell us what<br />you're building.</h2>
+    <p>We map the right scope, team, timeline and next step.</p>
+    <div class="ctas c"><a class="btn btn-primary" href="/book">Book a call</a><a class="btn btn-outline" href="/tools/plan">Plan your project</a></div>
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(f => ({ '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } })) })} />
+
+<style>
+  .sec{padding:112px 0;border-bottom:1px solid var(--rule)}.alt{background:var(--surface)}
+  .h2{font-size:clamp(32px,4.4vw,48px);margin:14px 0 16px}
+  .lede{color:var(--fg-2);font-size:17px;max-width:560px;margin:0 0 28px}
+  .ctas{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.ctas.c{justify-content:center}
+  .acc{margin-top:40px;border-top:1px solid var(--rule)}
+  .acc details{border-bottom:1px solid var(--rule)}
+  .acc summary,.faq summary{display:flex;align-items:center;gap:20px;padding:24px 0;cursor:pointer;list-style:none;font-size:22px;font-weight:500}
+  .acc summary::-webkit-details-marker,.faq summary::-webkit-details-marker{display:none}
+  .acc .t{flex:1}:global(.pm){transition:transform .2s}details[open] :global(.pm){transform:rotate(45deg)}
+  .acc-body{padding:0 0 32px 52px;display:grid;gap:16px;max-width:760px}.acc-body p{margin:0;color:var(--fg-2)}
+  .acc-body ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}.acc-body li{display:flex;gap:8px;align-items:center;font-size:15px}
+  .price span{color:var(--fg-2);font-size:14px}
+  .split{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:start}
+  .paths{display:grid;gap:12px}
+  .path{position:relative;display:grid;gap:6px;padding:24px;background:var(--card);border:1px solid var(--rule);text-decoration:none}
+  .path:hover{border-color:var(--ash);box-shadow:0 8px 24px rgba(10,14,23,.08)}
+  .path strong{font-size:19px;font-weight:600}.path span{color:var(--fg-2);font-size:15px;padding-right:32px}.path em{font-style:normal}
+  .path :global(.go){position:absolute;right:24px;top:26px}
+  .tools{margin-top:40px;color:var(--fg-2);font-size:15px}.tools a{margin-left:14px;color:var(--fg);font-weight:500}
+  .feature{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:center;margin-top:40px;background:#0F0F0F;color:#F4F4F5;text-decoration:none;overflow:hidden}
+  .feature .fcopy{padding:48px}.feature .mono{color:#A1A1AA}.feature h3{font-size:32px;margin:16px 0}.feature p{color:#D4D4D8}
+  .feature img{width:100%;height:100%;object-fit:cover}
+  .more{margin-top:24px}
+  .facts3{margin:0 0 32px;border-top:1px solid var(--rule)}.facts3 div{display:flex;gap:20px;padding:12px 0;border-bottom:1px solid var(--rule)}.facts3 dt{font-weight:600;width:28px}.facts3 dd{margin:0;color:var(--fg-2)}
+  .note{margin-top:20px}
+  .stage{position:relative;background:#0A0E17;aspect-ratio:4/3;overflow:hidden;color:#fff;padding:28px}
+  .stage img{position:absolute;inset:auto 0 0 0;width:100%;opacity:.95}
+  .stage::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,23,.55),rgba(10,14,23,.15) 60%,rgba(10,14,23,.7))}
+  .stage>*:not(img){position:relative;z-index:1}
+  .pill{display:flex;gap:8px;align-items:center;width:max-content;margin:0 auto;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);font-size:13px;backdrop-filter:blur(24px)}.pill i{width:7px;height:7px;border-radius:50%;background:#3DDC97}
+  .st{text-align:center;font-size:26px;font-weight:600;letter-spacing:-.02em;margin:14px 0 20px}
+  .glass{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:12px;backdrop-filter:blur(24px)}
+  .prompt{background:rgba(10,14,23,.6);border-radius:10px;padding:14px 16px}.prompt b{display:inline-block;width:2px;height:16px;background:#8FA3FF;margin-left:3px;vertical-align:middle;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .kinds{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}.kinds em{font-style:normal;font-size:12px;padding:5px 10px;border-radius:7px;background:rgba(255,255,255,.08)}.kinds .on{background:#fff;color:#0A0E17}
+  .matches{font-size:12px;color:#B9C1CF;margin:14px 2px 10px}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tile{border-radius:10px;padding:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font-size:12px}.tile.sel{border-color:rgba(255,255,255,.6)}
+  .tile i{display:block;aspect-ratio:1.5;border-radius:6px;background:linear-gradient(90deg,var(--c) 58%,color-mix(in srgb,var(--a) 40%,var(--c)) 58%)}.tile span{display:block;padding:8px 2px 2px}
+  .grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px}
+  .cell{padding:32px;background:var(--card);border:1px solid var(--rule)}.cell h3{font-size:22px;margin-bottom:10px}.cell p{color:var(--fg-2);margin:0}
+  .faq details{border-bottom:1px solid var(--rule);background:var(--card);padding:0 24px;margin-bottom:8px;border:1px solid var(--rule)}
+  .faq summary{font-size:18px;justify-content:space-between;padding:20px 0}.faq p{color:var(--fg-2);margin:0 0 20px}
+  .closing{padding:120px 0;text-align:center;background:linear-gradient(180deg,var(--bg),color-mix(in srgb,var(--sig) 12%,var(--bg)))}
+  .closing h2{font-size:clamp(36px,5vw,56px);margin:16px 0}.closing p{color:var(--fg-2);margin:0 0 28px}
+  @media (max-width:1023px){.sec{padding:64px 0}.split,.feature{grid-template-columns:1fr}.grid4{grid-template-columns:1fr}.acc-body{padding-left:0}.acc-body ul{grid-template-columns:1fr}.feature .fcopy{padding:28px}.closing{padding:72px 0}}
+</style>
