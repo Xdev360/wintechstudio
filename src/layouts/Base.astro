@@ -1,0 +1,56 @@
+---
+import '@fontsource-variable/figtree';
+import '@fontsource/geist-mono/400.css';
+import '../styles/tokens.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+  jsonld?: Record<string, unknown>[];
+}
+const { title, description, image = '/og/default.png', noindex = false, jsonld = [] } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const og = new URL(image, Astro.site).toString();
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Wintech Studio',
+  url: 'https://www.wintechstudio.com',
+  logo: 'https://www.wintechstudio.com/favicon.svg',
+  founder: { '@type': 'Person', name: 'Oladele Ibraheem' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Lagos', addressCountry: 'NG' },
+  telephone: '+234 913 407 1813',
+  email: 'hello@wintechstudio.com',
+  sameAs: [
+    'https://www.instagram.com/wintechstudio',
+    'https://x.com/wintechstudio_',
+  ],
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Wintech Studio" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@wintechstudio_" />
+    <script type="application/ld+json" set:html={JSON.stringify([org, ...jsonld])} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

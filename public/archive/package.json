@@ -1,0 +1,10 @@
+{
+  "name": "wintech-studio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Wintech Studio site. Static pages plus one serverless function for Wintech AI.",
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.0"
+  }
+}
