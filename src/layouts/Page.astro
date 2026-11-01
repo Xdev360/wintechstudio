@@ -1,6 +1,7 @@
 ---
 import Base from './Base.astro';
 import Header from '../components/Header.astro';
+import AskAI from '../components/AskAI.astro';
 import Footer from '../components/Footer.astro';
 import Closing from '../components/ui/Closing.astro';
 interface Props { title: string; description: string; image?: string; jsonld?: Record<string, unknown>[]; closing?: boolean; crumbs?: [string, string][] }
@@ -16,6 +17,7 @@ const bc = crumbs ? [{ '@context': 'https://schema.org', '@type': 'BreadcrumbLis
     {closing && <Closing />}
   </main>
   <Footer />
+  <AskAI />
 </Base>
 <style>
   .crumbs{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--fg-2);padding-top:28px}

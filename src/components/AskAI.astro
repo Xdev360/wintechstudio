@@ -1,0 +1,46 @@
+---
+const chips = ['What does a website cost?', 'How long does a brand take?', 'Can the AI reply on WhatsApp?', 'Can I pay in naira?'];
+const spark = '<path d="M9.94 14.5A2 2 0 0 0 8.5 13.06l-6.13-1.58a.5.5 0 0 1 0-.96L8.5 8.94A2 2 0 0 0 9.94 7.5l1.58-6.13a.5.5 0 0 1 .96 0L14.06 7.5A2 2 0 0 0 15.5 8.94l6.13 1.58a.5.5 0 0 1 0 .96L15.5 13.06a2 2 0 0 0-1.44 1.44l-1.58 6.13a.5.5 0 0 1-.96 0z"/>';
+---
+<div id="ask" data-open="false">
+  <button class="pill" id="ask-open" type="button" aria-expanded="false" aria-controls="ask-panel"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={spark}></svg>Ask Wintech AI</button>
+  <section class="panel" id="ask-panel" role="dialog" aria-label="Ask Wintech AI" hidden>
+    <header><div><strong>Wintech AI</strong><span>Answers from this website. A person replies on WhatsApp.</span></div><button type="button" id="ask-close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></header>
+    <div class="log" id="ask-log" aria-live="polite"><p class="msg bot">Hi. Ask about prices, timelines or how we work.</p></div>
+    <div class="chips" id="ask-chips">{chips.map(c => <button type="button">{c}</button>)}</div>
+    <form id="ask-form"><input id="ask-in" autocomplete="off" placeholder="Ask anything about Wintech" aria-label="Your question" maxlength="600" /><button class="btn btn-primary" type="submit" aria-label="Send"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></form>
+    <p class="foot">Do not share payment details here. <a href="https://wa.me/2349134071813" target="_blank" rel="noopener">WhatsApp us</a></p>
+  </section>
+</div>
+<script is:inline>
+(function(){var root=document.getElementById('ask'),panel=document.getElementById('ask-panel'),btn=document.getElementById('ask-open'),log=document.getElementById('ask-log'),form=document.getElementById('ask-form'),inp=document.getElementById('ask-in'),hist=[],busy=false;
+  function set(o){panel.hidden=!o;root.dataset.open=o;btn.setAttribute('aria-expanded',o);if(o)setTimeout(function(){inp.focus()},50)}
+  btn.onclick=function(){set(panel.hidden)};document.getElementById('ask-close').onclick=function(){set(false);btn.focus()};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden)set(false)});
+  function add(t,who){var p=document.createElement('p');p.className='msg '+who;p.textContent=t;log.appendChild(p);log.scrollTop=log.scrollHeight;return p}
+  async function ask(q){if(busy||!q.trim())return;busy=true;document.getElementById('ask-chips').hidden=true;add(q,'me');hist.push({role:'user',content:q});var p=add('…','bot');
+    try{var r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:hist})});if(!r.ok||!r.body)throw 0;var rd=r.body.getReader(),dec=new TextDecoder(),t='';p.textContent='';
+      while(true){var x=await rd.read();if(x.done)break;t+=dec.decode(x.value,{stream:true});p.textContent=t;log.scrollTop=log.scrollHeight}hist.push({role:'assistant',content:t})}
+    catch(e){p.innerHTML='';p.append('The assistant is resting right now. ');var a=document.createElement('a');a.href='https://wa.me/2349134071813?text='+encodeURIComponent(q);a.target='_blank';a.rel='noopener';a.textContent='Ask us on WhatsApp';p.append(a);hist.pop()}
+    busy=false}
+  form.onsubmit=function(e){e.preventDefault();var q=inp.value;inp.value='';ask(q)};
+  document.querySelectorAll('#ask-chips button').forEach(function(b){b.onclick=function(){ask(b.textContent)}});
+  document.querySelectorAll('[data-ask]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();set(true)})});
+})();
+</script>
+<style>
+  #ask{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:60}
+  .pill{display:inline-flex;align-items:center;gap:8px;font:500 14px var(--font);padding:12px 18px;border-radius:100px;background:#0A0E17;color:#fff;border:1px solid rgba(255,255,255,.12);box-shadow:0 12px 32px -12px rgba(10,14,23,.5);cursor:pointer}
+  .pill svg{color:#8FA3FF}.pill:hover{background:#151B29}
+  :root[data-theme="dark"] .pill{background:#F4F4F5;color:#0A0E17}:root[data-theme="dark"] .pill svg{color:var(--sig)}
+  #ask[data-open="true"] .pill{display:none}
+  .panel{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);width:min(420px,calc(100vw - 32px));max-height:min(620px,calc(100vh - 120px));background:var(--card);border:1px solid var(--rule);box-shadow:0 30px 60px -20px rgba(10,14,23,.35);display:flex;flex-direction:column}
+  .panel[hidden]{display:none}
+  .panel header{display:flex;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--rule)}.panel header div{display:grid}.panel header span{font-size:12px;color:var(--fg-2)}
+  .panel header button{background:none;border:0;color:var(--fg);cursor:pointer;padding:4px;align-self:start}
+  .log{flex:1;overflow:auto;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-height:140px}
+  .msg{margin:0;padding:10px 12px;font-size:14px;line-height:1.5;max-width:88%;white-space:pre-wrap}.bot{background:var(--surface);align-self:flex-start}.me{background:var(--sig);color:#fff;align-self:flex-end}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px 12px}.chips button{font:13px var(--font);padding:7px 10px;border:1px solid var(--rule);background:var(--card);color:var(--fg);cursor:pointer}.chips button:hover{border-color:var(--ash)}
+  #ask-form{display:flex;gap:8px;padding:12px 18px;border-top:1px solid var(--rule)}#ask-form input{flex:1;font:15px var(--font);padding:11px 12px;border:1px solid var(--rule);background:var(--bg);color:var(--fg);min-width:0}#ask-form .btn{padding:0 14px}
+  .foot{font-size:11px;color:var(--fg-2);margin:0;padding:0 18px 12px}.foot a{color:var(--fg)}
+</style>

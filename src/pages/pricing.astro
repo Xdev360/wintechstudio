@@ -27,7 +27,7 @@ const faqs: [string, string][] = [['Why "from" prices?', 'Scope sets the price: 
     <div class="wrap">
       <p class="mono">Monthly plans</p><h2 class="h2">Or keep us on, month by month.</h2>
       <div class="grid g3 plans">{plans.map(([n, p, per, d, items], i) => <div class:list={['card', { dark: i === 1 }]}><p class="mono">{n}</p><p class="big">{p}<small>{per}</small></p><p>{d}</p><ul class="ticks">{items.map(t => <li><Icon name="check" size={16} />{t}</li>)}</ul></div>)}</div>
-      <div class="card partner"><div><p class="mono">By invitation</p><h3>Ready to start, but not with the whole cost?</h3><p>Partner build: a lower fee and a share of what the system sells. Offered after the diagnostic.</p></div><a class="btn btn-outline" href="/book">Start with the diagnostic</a></div>
+      <div class="card partner"><div><p class="mono">By invitation</p><h3>Ready to start, but not with the whole cost?</h3><p>Partner build: a lower fee and a share of what the system sells. Offered after the diagnostic.</p></div><a class="btn btn-outline" href="/partner-build">How partner builds work</a></div>
     </div>
   </section>
   <section class="sec">

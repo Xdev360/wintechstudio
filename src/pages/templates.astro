@@ -1,0 +1,45 @@
+---
+import Page from '../layouts/Page.astro';
+import Icon from '../components/Icon.astro';
+const kinds = ['Fashion and beauty', 'Food and drinks', 'Wellness', 'Services', 'Events', 'Shops'];
+const plans = [['Free', '$0', '', 'A live site on a Wintech link'], ['Starter', '$4', '₦6,000 a month', ''], ['Grow', '$10', '₦15,000 a month', ''], ['Business', '$25', '₦37,500 a month', '']];
+---
+<Page title="Wintech Templates · Free website for your business · Wintech Studio" description="Not ready for a full build? Pick a Wintech template, describe your business in your own words and go live the same afternoon at yourname.wintechstudio.com." crumbs={[['Templates', '/templates']]}>
+  <section class="sec">
+    <div class="wrap hg">
+      <div>
+        <p class="mono">Wintech Templates</p>
+        <h1 class="h1">Not ready for a full build?<br />Start with a template.</h1>
+        <p class="lede">Pick a template, describe your business in your own words, and go live the same afternoon. Made by the studio, run by you.</p>
+        <div class="ctas"><a class="btn btn-primary" href="https://app.wintechstudio.com" target="_blank" rel="noopener">Open Wintech Templates <Icon name="arrow-up-right" size={14} /></a><a class="btn btn-soft" href="#plans">See plans</a></div>
+      </div>
+      <div class="stage" aria-hidden="true">
+        <div class="win"><div class="bar"><i></i><i></i><i></i><span>yourname.wintechstudio.com</span></div>
+          <div class="prompt"><p class="mono">Describe your business</p><p class="typed">A bakery in Yaba. Cakes, small chops and same-day delivery.</p><span class="go">Build my site <Icon name="arrow-right" size={14} /></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="sec alt">
+    <div class="wrap"><p class="mono">Templates for</p><h2 class="h2">Made for how Nigerian businesses sell.</h2>
+      <div class="grid g3 kinds">{kinds.map(k => <a class="card" href="https://app.wintechstudio.com" target="_blank" rel="noopener"><h3>{k}</h3><span class="link">Preview · Use this template <Icon name="arrow-up-right" size={14} /></span></a>)}</div>
+    </div>
+  </section>
+  <section class="sec" id="plans">
+    <div class="wrap"><p class="mono">Plans</p><h2 class="h2">Start free. Upgrade when it sells.</h2>
+      <div class="grid g4 plans">{plans.map(([n, p, ng, d], i) => <div class:list={['card', { hi: i === 2 }]}><p class="mono">{n}</p><p class="big">{p}<small>/mo</small></p><p>{ng || d}</p></div>)}</div>
+      <p class="note">0% cut of your sales on every plan. Plans are a proposal and may change before launch.</p>
+      <div class="up card"><div><h3>Outgrown your template?</h3><p>We carry your products, words and photos over to a custom site when you are ready.</p></div><a class="btn btn-outline" href="/compare/custom-website-vs-wintech-templates">Custom or template?</a></div>
+    </div>
+  </section>
+</Page>
+<style>
+  .hg{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .stage{background:#0A0E17;padding:40px 32px;background-image:radial-gradient(circle at 80% 0%,rgba(59,91,255,.45),transparent 55%)}
+  .win{background:#fff;color:#0A0E17;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}.bar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid #E3E7EE}.bar i{width:8px;height:8px;border-radius:50%;background:#E3E7EE}.bar span{margin-left:10px;font:12px var(--mono);color:#5E6678}
+  .prompt{padding:28px 24px;display:grid;gap:12px}.typed{font-size:20px;font-weight:500;margin:0;line-height:1.35}.go{justify-self:start;display:inline-flex;gap:6px;align-items:center;background:#3B5BFF;color:#fff;padding:10px 14px;font-size:14px;font-weight:500}
+  .kinds{margin-top:40px}.kinds a{text-decoration:none;display:grid;gap:24px}.kinds a:hover{border-color:var(--ash)}.kinds h3{font-size:20px;margin:0}
+  .plans{margin-top:40px}.big{font-size:36px;font-weight:600;margin:8px 0;letter-spacing:-.02em;color:var(--fg)}.big small{font-size:15px;color:var(--fg-2);font-weight:400}.hi{border-color:var(--sig)}
+  .note{color:var(--fg-2);font-size:14px}.up{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:32px}.up h3{margin:0 0 4px}.up p{margin:0}
+  @media (max-width:1023px){.hg{grid-template-columns:1fr}.up{flex-direction:column;align-items:start}}
+</style>

@@ -21,7 +21,7 @@ const menus = [
       ))}
       <a class="nav-item" href="/tools">Free tools <span class="badge">NEW</span></a>
       <a class="nav-item" href="/pricing">Pricing</a>
-      <a class="nav-item" href={contact.templates} target="_blank" rel="noopener">Templates <Icon name="arrow-up-right" size={12} /></a>
+      <a class="nav-item" href="/templates">Templates</a>
       <a class="nav-item" href="/contact">Contact</a>
     </nav>
     <div class="actions">
@@ -33,7 +33,7 @@ const menus = [
   </div>
   <div class="sheet" id="mobile-menu" hidden>
     {menus.map(m => (<details><summary>{m.label} <Icon name="plus" size={14} /></summary>{m.items.map(i => <a href={i.href}>{i.label}</a>)}</details>))}
-    <a href="/tools">Free tools</a><a href="/pricing">Pricing</a><a href={contact.templates}>Templates</a><a href="/contact">Contact</a>
+    <a href="/tools">Free tools</a><a href="/pricing">Pricing</a><a href="/templates">Templates</a><a href="/contact">Contact</a>
     <a class="btn btn-primary" href="/book">Book a call</a>
   </div>
 </header>

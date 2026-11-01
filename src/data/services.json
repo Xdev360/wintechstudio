@@ -316,7 +316,6 @@
     "multi": true,
     "options": [
      "WhatsApp Business",
-     "Paystack",
      "Google Sheets",
      "Instagram",
      "Email"

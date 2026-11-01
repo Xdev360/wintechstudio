@@ -7,7 +7,7 @@ import { services } from '../../data/site';
 export function getStaticPaths() { return cases.map(c => ({ params: { slug: c.slug } })); }
 const i = cases.findIndex(x => x.slug === Astro.params.slug);
 const c = cases[i]; const next = cases[(i + 1) % cases.length];
-const ld = { '@context': 'https://schema.org', '@type': 'CreativeWork', name: c.headline, about: c.name, creator: { '@type': 'Organization', name: 'Wintech Studio' }, description: c.intro, ...(c.image ? { image: 'https://www.wintechstudio.com' + c.image } : {}) };
+const ld = { '@context': 'https://schema.org', '@type': 'CreativeWork', name: c.headline, about: c.name, creator: { '@type': 'Organization', name: 'Wintech Studio' }, description: c.intro, image: `https://www.wintechstudio.com/images/cases/film-${c.slug}.webp` };
 ---
 <Page title={`${c.name} case study · Wintech Studio`} description={c.intro.slice(0, 158)} crumbs={[['Work', '/work'], [c.name, `/work/${c.slug}`]]} jsonld={[ld]}>
   <article style={`--c1:${c.colors[0]};--c2:${c.colors[1]}`}>
@@ -26,6 +26,9 @@ const ld = { '@context': 'https://schema.org', '@type': 'CreativeWork', name: c.
     <section class="sec">
       <div class="wrap two"><h2>{c.filmTitle}</h2><div><p class="lead">{c.filmLead}</p><p>{c.filmBody}</p></div></div>
       <div class="wide"><Poster c={c} big eager /></div>
+    </section>
+    <section class="gallery" aria-label={`${c.name} work`}>
+      <img src={`/images/cases/grid-${c.slug}.webp`} alt={`Selected screens and brand work from ${c.name}`} width="1280" height="2440" loading="lazy" decoding="async" />
     </section>
     <section class="sec alt">
       <div class="wrap">
@@ -56,6 +59,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'CreativeWork', name: c.
   .did li{font-size:13px;font-weight:500;padding:7px 14px;border-radius:100px;border:1.5px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(90deg,var(--c1),var(--c2)) border-box}
   .two{display:grid;grid-template-columns:360px 1fr;gap:40px}.two h2{font-size:24px;font-weight:600;margin:0 0 12px;letter-spacing:-.01em}.two p{color:var(--fg-2);font-size:16px;line-height:1.6;max-width:672px;margin:0 0 10px}.two .lead{color:var(--fg);font-size:18px;font-weight:500}
   .wide{max-width:1360px;margin:40px auto 0;padding:0 clamp(16px,3vw,40px)}.wide :global(.poster){border-radius:4px}
+  .gallery{max-width:1280px;margin:0 auto;padding:0 clamp(16px,3vw,40px) 96px}.gallery img{width:100%;height:auto;display:block}
   .probs{list-style:none;padding:0;margin-top:40px}
   .want{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
   .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.tags a{font-size:13px;border:1px solid var(--rule);padding:6px 12px;text-decoration:none;color:var(--fg)}
