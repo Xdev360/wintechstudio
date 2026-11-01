@@ -3,11 +3,16 @@
   "slug": "brand",
   "label": "BRAND AND PACKAGING",
   "title": "A brand that looks like the price you charge.",
+  "heroTitle": "A brand that looks like\n*the price* you charge.",
   "intro": "Customers judge the price by the logo, the box and the page. We build the brand that makes the product look as good as it is.",
   "price": "from $1,500",
   "priceNgn": "₦1,000,000",
   "timeline": "3 to 4 weeks",
   "whatTitle": "A brand people trust before they read a word.",
+  "whatLines": [
+   "A brand people trust",
+   "before they read a word."
+  ],
   "cells": [
    {
     "title": "A logo that works small",
@@ -91,17 +96,53 @@
      "Not sure yet"
     ]
    }
-  ]
+  ],
+  "briefLabel": "Brand",
+  "starting": "$1,500 · 3 to 4 weeks",
+  "built": {
+   "title": "Real brands, already out in the world.",
+   "items": [
+    {
+     "slug": "tobel-pearls",
+     "name": "Tobel Pearls",
+     "line": "Identity, 55-page guideline, billboard",
+     "img": "/images/services/brand-case-tobel.webp"
+    },
+    {
+     "slug": "virelle",
+     "name": "Virelle Wellness",
+     "line": "Identity, packaging seal, store",
+     "img": "/images/cases/film-virelle-800.webp"
+    },
+    {
+     "slug": "manzeelatur-ridho",
+     "name": "Manzeelatur Ridho",
+     "line": "Bilingual identity, emblem, app",
+     "img": "/images/cases/film-manzeelatur-ridho-800.webp"
+    },
+    {
+     "slug": "mylo",
+     "name": "Mylo",
+     "line": "Characters, app icon, product brand",
+     "img": "/images/cases/film-mylo-800.webp"
+    }
+   ]
+  }
  },
  {
   "slug": "websites",
   "label": "WEBSITES AND STORES",
   "title": "A website that proves the work, or a store that sells.",
+  "heroTitle": "A website that proves\nthe work, or a store\nthat *sells.*",
   "intro": "Not every business needs a store. An engineering firm needs proof; a skincare brand needs checkout. We build the one you need, fast on Nigerian mobile data.",
   "price": "from $1,200",
   "priceNgn": "₦900,000",
   "timeline": "2 to 6 weeks",
   "whatTitle": "A site that loads on 3G and sells while you sleep.",
+  "whatLines": [
+   "A site that loads on 3G",
+   "and sells while you sleep."
+  ],
   "cells": [
    {
     "title": "Fast on Nigerian data",
@@ -184,17 +225,24 @@
      "Not sure yet"
     ]
    }
-  ]
+  ],
+  "briefLabel": "Website",
+  "starting": "$1,200 to $2,000 · 2 to 5 weeks"
  },
  {
   "slug": "ai-assistant",
   "label": "AI ASSISTANT",
   "title": "An assistant that replies like you, at 2am.",
+  "heroTitle": "An assistant that\nreplies *like you,*\nat 2am.",
   "intro": "Trained on your products, prices and tone. It answers on your site and WhatsApp in seconds, takes orders and bookings, and hands over to you when it should.",
   "price": "from $1,800 + $60/mo",
   "priceNgn": "₦1,200,000 + ₦50,000/mo",
   "timeline": "4 to 6 weeks",
   "whatTitle": "An assistant that sells, and knows when to stop.",
+  "whatLines": [
+   "An assistant that sells,",
+   "and knows when to stop."
+  ],
   "cells": [
    {
     "title": "Trained on your catalogue",
@@ -266,17 +314,24 @@
      "No rush"
     ]
    }
-  ]
+  ],
+  "briefLabel": "AI assistant",
+  "starting": "$1,800 + $60/mo · 4 to 6 weeks"
  },
  {
   "slug": "automation",
   "label": "AUTOMATION",
   "title": "The repetitive work, running on its own.",
+  "heroTitle": "The repetitive work,\nrunning *on its own.*",
   "intro": "Order confirmations, receipts, invoices, stock alerts and follow ups. We map what you repeat every day and make it run without you.",
   "price": "With the AI plan",
   "priceNgn": "or quoted per workflow",
   "timeline": "2 to 4 weeks",
   "whatTitle": "The work you repeat daily, running without you.",
+  "whatLines": [
+   "The work you repeat daily,",
+   "running without you."
+  ],
   "cells": [
    {
     "title": "Order to receipt, on its own",
@@ -339,17 +394,24 @@
      "No rush"
     ]
    }
-  ]
+  ],
+  "briefLabel": "Automation",
+  "starting": "Quoted per workflow · 2 to 4 weeks"
  },
  {
   "slug": "apps",
   "label": "APPS AND MVPS",
   "title": "From idea to an app people can touch.",
+  "heroTitle": "From idea to an app\npeople can *touch.*",
   "intro": "For founders with proof that people want it. Strategy, flows, design and a working first version in weeks, with something new every Friday.",
   "price": "from $4,000",
   "priceNgn": "₦3,000,000",
   "timeline": "4 to 8 weeks",
   "whatTitle": "Something new every Friday, until it ships.",
+  "whatLines": [
+   "Something new every Friday,",
+   "until it ships."
+  ],
   "cells": [
    {
     "title": "The flow before the screens",
@@ -432,17 +494,24 @@
      "Not sure yet"
     ]
    }
-  ]
+  ],
+  "briefLabel": "App or MVP",
+  "starting": "$4,000 to $6,000 · 4 to 8 weeks"
  },
  {
   "slug": "motion",
   "label": "MOTION AND FILM",
   "title": "Films that explain what you sell.",
+  "heroTitle": "Films that explain\n*what you sell.*",
   "intro": "Launch films and explainers, voice led and paced to read, with your real product on screen. Cut for Instagram, X, LinkedIn and your site.",
   "price": "from $650",
   "priceNgn": "₦500,000",
   "timeline": "1 to 3 weeks",
   "whatTitle": "Films that explain, paced so people read.",
+  "whatLines": [
+   "Films that explain,",
+   "paced so people read."
+  ],
   "cells": [
    {
     "title": "Script and voice first",
@@ -512,6 +581,8 @@
      "No rush"
     ]
    }
-  ]
+  ],
+  "briefLabel": "Motion",
+  "starting": "$650 · 1 to 3 weeks"
  }
 ]

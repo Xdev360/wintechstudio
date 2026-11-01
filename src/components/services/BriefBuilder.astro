@@ -1,0 +1,191 @@
+---
+// Brief builder from Figma S1-S6 "brief" (807:2294 etc.), mobile brief list + sticky bar + sheet (1014:22465, 820:4375).
+// Picks are saved in localStorage "wt-brief-<slug>", sent to /book?service=<slug> or WhatsApp.
+import Icon from '../Icon.astro';
+import { contact } from '../../data/site';
+interface Q { q: string; multi: boolean; options: string[] }
+interface Props { slug: string; name: string; label: string; starting: string; questions: Q[] }
+const { slug, name, label, starting, questions } = Astro.props;
+const pad = (i: number) => String(i + 1).padStart(2, '0');
+---
+<section class="bb" id="brief">
+  <div class="wrap">
+    <div class="bb-head">
+      <p class="eb">Before the call</p>
+      <h2>Tick what fits.<span class="rest"><br /> <span class="grad">We read it</span> before we talk.</span></h2>
+      <p class="lede">No forms to fill. Tap what applies, and your picks are compiled into a brief that goes with your booking.</p>
+    </div>
+    <div class="bb-grid" data-brief data-slug={slug} data-service={name}>
+      <div class="bb-form">
+        <div class="bb-top"><h3>Build your brief</h3><span class="eb">Saved as you tick</span></div>
+        {questions.map((q, i) => (
+          <fieldset class="bq" data-q={q.q} data-multi={q.multi ? '1' : '0'}>
+            <legend><span class="n">{pad(i)}</span><span class="qt">{q.q}</span>{q.multi && <span class="any">pick any</span>}</legend>
+            <div class="chips">{q.options.map(o => (
+              <button type="button" class="chip" aria-pressed="false" data-v={o}><span class="box" aria-hidden="true"><Icon name="check" size={12} stroke={3} /></span><span>{o}</span></button>
+            ))}</div>
+          </fieldset>
+        ))}
+        <label class="bq note"><span class="qt">Anything else? (optional)</span><textarea data-note rows="3" placeholder="A link to your Instagram, a brand you like, or one line about the business"></textarea></label>
+      </div>
+      <aside class="bb-sum" aria-label="Your brief">
+        <div class="sum-top"><span class="eb">Your brief · {label}</span><span class="cnt"><span data-count>0</span> picks</span></div>
+        <ul class="sum-list" data-list><li class="empty">Tap options to build your brief.</li></ul>
+        <div class="start"><span class="eb">Likely starting point</span><strong>{starting}</strong></div>
+        <a class="sbtn primary" data-book href={`/book?service=${slug}`}>Book a call with this brief</a>
+        <a class="sbtn ghost" data-wa href={contact.whatsappLink} target="_blank" rel="noopener" title="Send on WhatsApp">Just send the brief</a>
+        <p class="fine">Your picks are attached to the booking, so the call starts where the brief ends.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div class="mbar" data-mbar hidden>
+  <div><span class="eb"><span>Your brief · </span><span data-count>0</span> picks</span><strong>{starting}</strong></div>
+  <button type="button" class="rv" data-open>Review <Icon name="arrow-right" size={14} /></button>
+</div>
+<div class="msheet" data-sheet hidden>
+  <div class="scrim" data-close></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label={`Your brief · ${label}`}>
+    <span class="handle" aria-hidden="true"></span>
+    <div class="sh-top"><h3>Your brief · {label}</h3><button type="button" class="x" data-close aria-label="Close"><Icon name="x" size={20} /></button></div>
+    <ul class="sh-list" data-slist></ul>
+    <div class="sh-foot">
+      <div class="start"><span class="eb">Likely starting point</span><strong>{starting}</strong></div>
+      <a class="sbtn primary" data-book href={`/book?service=${slug}`}>Book a call with this brief</a>
+      <a class="sbtn ghost" data-wa href={contact.whatsappLink} target="_blank" rel="noopener" title="Send on WhatsApp">Just send the brief</a>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ slug, wa: contact.whatsappLink }}>
+(function(){
+  var root=document.querySelector('[data-brief]');if(!root)return;
+  var KEY='wt-brief-'+slug,state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}
+  var note=root.querySelector('[data-note]');if(state._note)note.value=state._note;
+  var fs=[].slice.call(root.querySelectorAll('fieldset.bq'));
+  fs.forEach(function(f){var q=f.dataset.q,multi=f.dataset.multi==='1';
+    f.querySelectorAll('.chip').forEach(function(b){
+      if((state[q]||[]).indexOf(b.dataset.v)>-1)b.setAttribute('aria-pressed','true');
+      b.addEventListener('click',function(){var on=b.getAttribute('aria-pressed')==='true';if(!multi)f.querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed',String(!on));save()});
+    })});
+  note.addEventListener('input',save);
+  function save(){var s={};fs.forEach(function(f){var v=[].slice.call(f.querySelectorAll('.chip[aria-pressed="true"]')).map(function(b){return b.dataset.v});if(v.length)s[f.dataset.q]=v});if(note.value)s._note=note.value;state=s;try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}render()}
+  function text(){var l=['Brief: '+root.dataset.service];fs.forEach(function(f){var k=f.dataset.q;if(state[k])l.push(k+': '+state[k].join(', '))});if(state._note)l.push('Note: '+state._note);return l.join('\n')}
+  var keep=/^(WhatsApp|Instagram|Google|Email|AI|Lagos|Nigeria|Web|Mobile)/;
+  function joinv(v){return v.map(function(x,i){return i&&!keep.test(x)&&/^[A-Z][a-z]/.test(x)?x.charAt(0).toLowerCase()+x.slice(1):x}).join(', ')}
+  function li(q,v){var e=document.createElement('li');var a=document.createElement('span');a.textContent=q;var b=document.createElement('b');b.textContent=v;e.appendChild(a);e.appendChild(b);return e}
+  function render(){
+    var list=root.querySelector('[data-list]'),sl=document.querySelector('[data-slist]'),n=0;list.innerHTML='';sl.innerHTML='';
+    fs.forEach(function(f){var k=f.dataset.q,v=state[k];if(!v)return;v.forEach(function(x){n++;list.appendChild(li(k,x))});sl.appendChild(li(k,joinv(v)))});
+    if(!n){list.innerHTML='<li class="empty">Tap options to build your brief.</li>';sl.innerHTML='<li class="empty">Nothing ticked yet. Tap the options that fit.</li>'}
+    document.querySelectorAll('[data-count]').forEach(function(c){c.textContent=n});
+    var href=wa+'?text='+encodeURIComponent('Hello Wintech, here is my brief.\n\n'+text());
+    document.querySelectorAll('[data-wa]').forEach(function(a){a.href=href});
+    document.querySelectorAll('[data-book]').forEach(function(a){a.href='/book?service='+slug});
+  }
+  render();
+  // Mobile: sticky bar while the brief is on screen, sheet on Review.
+  var bar=document.querySelector('[data-mbar]'),sheet=document.querySelector('[data-sheet]'),sec=document.getElementById('brief');
+  if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){var on=e.isIntersecting;bar.hidden=!on;document.documentElement.classList.toggle('brief-bar-on',on)})},{rootMargin:'0px 0px -30% 0px'}).observe(sec)}
+  function open(){sheet.hidden=false;document.documentElement.style.overflow='hidden';var x=sheet.querySelector('.x');x&&x.focus()}
+  function close(){sheet.hidden=true;document.documentElement.style.overflow=''}
+  bar.querySelector('[data-open]').addEventListener('click',open);
+  sheet.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',close)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!sheet.hidden)close()});
+  window.addEventListener('resize',function(){if(window.innerWidth>1023&&!sheet.hidden)close()});
+})();
+</script>
+
+<style>
+  .bb{padding:112px 0;background:var(--bg)}
+  .eb{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2)}
+  .bb-head{display:flex;flex-direction:column;gap:16px;max-width:760px;margin-bottom:40px}
+  .bb-head .eb{margin:0}
+  .bb-head h2{font-size:56px;line-height:1.05;letter-spacing:-.02em;font-weight:600;margin:0}
+  .grad{background:linear-gradient(90deg,#254D7F,#3B5BFF);-webkit-background-clip:text;background-clip:text;color:transparent}
+  :global(:root[data-theme="dark"]) .grad{background-image:linear-gradient(90deg,#8FA3FF,#C9D1F5)}
+  .lede{font-size:18px;line-height:1.5;color:var(--fg-2);max-width:640px;margin:0}
+  .bb-grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:start}
+  .bb-form{border:1px solid var(--rule)}
+  .bb-top{display:flex;justify-content:space-between;align-items:center;padding:22px 28px}
+  .bb-top h3{font-size:24px;line-height:29px;letter-spacing:-.01em;font-weight:600;margin:0}
+  .bq{border:0;border-top:1px solid var(--rule);margin:0;padding:20px 28px;display:flex;flex-direction:column;gap:14px;min-width:0}
+  .bq legend{float:left;width:100%;padding:0;display:flex;align-items:baseline;gap:10px}
+  .bq legend+*{clear:both}
+  .n{font-family:var(--mono);font-size:12px;color:var(--fg-2)}
+  .qt{font-size:16px;line-height:19px;font-weight:500;color:var(--fg)}
+  .any{font-size:12px;color:var(--fg-2)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{display:inline-flex;align-items:center;gap:8px;padding:9px 14px 9px 12px;background:var(--card);border:1px solid var(--rule);font:400 14px/17px var(--font);color:var(--fg);cursor:pointer;transition:border-color .15s,background .15s}
+  .chip:hover{border-color:var(--ash)}
+  .box{width:16px;height:16px;flex:none;border:1px solid var(--ash);display:grid;place-items:center;color:#fff}
+  .box :global(svg){opacity:0}
+  .chip[aria-pressed="true"]{background:#EAF0FF;border-color:var(--sig);font-weight:500}
+  .chip[aria-pressed="true"] .box{background:var(--sig);border-color:var(--sig)}
+  .chip[aria-pressed="true"] .box :global(svg){opacity:1}
+  :global(:root[data-theme="dark"]) .chip{background:#0A0E17;border-color:rgba(255,255,255,.09)}
+  :global(:root[data-theme="dark"]) .chip[aria-pressed="true"]{background:#1A2547;border-color:var(--sig)}
+  :global(:root[data-theme="dark"]) .box{border-color:rgba(255,255,255,.25)}
+  .note{gap:10px;padding-bottom:24px}
+  textarea{width:100%;min-height:84px;padding:14px;border:1px solid var(--rule);background:var(--card);color:var(--fg);font:400 14px/20px var(--font);resize:vertical;border-radius:0}
+  textarea::placeholder{color:var(--ash)}
+  :global(:root[data-theme="dark"]) textarea{background:transparent}
+  :global(:root[data-theme="dark"]) textarea::placeholder{color:#5E6678}
+  .bb-sum{position:sticky;top:96px;background:#0A0E17;color:#F4F6FA;padding:24px;display:flex;flex-direction:column;gap:16px}
+  :global(:root[data-theme="dark"]) .bb-sum{background:transparent;border:1px solid rgba(255,255,255,.1)}
+  .bb-sum .eb,.sheet .eb{color:#9AA3B2}
+  .sum-top{display:flex;justify-content:space-between}
+  .cnt{font-family:var(--mono);font-size:11px;line-height:14px;color:#7C93FF}
+  .sum-list,.sh-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+  .sum-list :global(li){border-top:1px solid rgba(255,255,255,.1);padding-top:10px;display:flex;flex-direction:column;gap:2px}
+  .sum-list :global(span),.sh-list :global(span){font-size:12px;line-height:14px;color:#9AA3B2}
+  .sum-list :global(b),.sh-list :global(b){font-size:15px;line-height:18px;font-weight:500;color:#F4F6FA}
+  .sum-list :global(.empty),.sh-list :global(.empty){font-size:14px;color:#9AA3B2}
+  .start{background:rgba(255,255,255,.06);padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+  .start .eb{font-size:10px;line-height:13px}
+  .start strong{font-size:18px;line-height:22px;font-weight:600;color:#F4F6FA}
+  .sbtn{display:flex;align-items:center;justify-content:center;text-decoration:none;font:500 16px/19px var(--font);padding:13px 20px;transition:background .15s}
+  .sbtn.primary{background:var(--sig);color:#fff}.sbtn.primary:hover{background:var(--sig-hover)}
+  .sbtn.ghost{border:1px solid rgba(255,255,255,.15);color:#F4F6FA;font-size:15px;line-height:18px;padding:12px 20px}.sbtn.ghost:hover{background:rgba(255,255,255,.06)}
+  .fine{font-size:12px;line-height:1.45;color:#9AA3B2;margin:0}
+  .mbar,.msheet{display:none}
+  @media (max-width:1023px){
+    .wrap{padding-left:16px;padding-right:16px}
+    .bb{padding:56px 0;background:var(--surface)}
+    .bb-head{gap:12px;margin-bottom:24px}
+    .bb-head .eb{font-size:10px;line-height:13px}
+    .bb-head h2{font-size:30px;line-height:1.06;letter-spacing:-.015em}
+    .rest,.bb-head .lede{display:none}
+    .bb-grid{display:block}
+    .bb-form{border:0;display:flex;flex-direction:column;gap:24px}
+    .bb-top,.n{display:none}
+    .bq{border:0;padding:0;gap:10px}
+    .qt{font-size:15px;line-height:18px}
+    .chip{padding:9px 12px 9px 10px;background:var(--card)}
+    textarea{min-height:96px}
+    .bb-sum{display:none}
+    .mbar:not([hidden]){display:flex;position:fixed;left:0;right:0;bottom:0;z-index:55;background:#0A0E17;color:#F4F6FA;padding:12px 12px 12px 16px;justify-content:space-between;align-items:center;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+    .mbar>div{display:flex;flex-direction:column;gap:2px}
+    .mbar .eb{font-size:10px;line-height:13px;color:#9AA3B2}
+    .mbar strong{font-size:15px;line-height:18px;font-weight:600}
+    .rv{display:inline-flex;align-items:center;gap:6px;background:var(--sig);color:#fff;border:0;padding:10px 14px;font:500 14px/17px var(--font);cursor:pointer}
+    .msheet:not([hidden]){display:block;position:fixed;inset:0;z-index:70}
+    .scrim{position:absolute;inset:0;background:rgba(10,14,23,.5)}
+    .sheet{position:absolute;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;background:#0A0E17;color:#F4F6FA;animation:up .25s ease-out}
+    .handle{display:block;width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.25);margin:10px auto 6px}
+    .sh-top{display:flex;justify-content:space-between;align-items:center;padding:8px 20px 14px}
+    .sh-top h3{font-size:20px;line-height:24px;font-weight:600;letter-spacing:0;margin:0}
+    .x{background:none;border:0;color:#F4F6FA;padding:0;cursor:pointer;display:grid}
+    .sh-list{gap:0}
+    .sh-list :global(li){border-top:1px solid rgba(255,255,255,.09);padding:10px 20px;display:flex;flex-direction:column;gap:2px}
+    .sh-foot{padding:16px 20px 28px;display:flex;flex-direction:column;gap:10px}
+    .sh-foot .start{background:#161D2A;padding:12px 14px;gap:2px}
+    .sh-foot .start strong{font-size:17px;line-height:20px}
+    .sh-foot .sbtn{padding:14px 20px}
+    .sh-foot .sbtn.ghost{background:#161D2A;border-color:rgba(255,255,255,.09);font-size:16px;line-height:19px}
+    :global(html.brief-bar-on #ask-open){display:none}
+  }
+  @keyframes up{from{transform:translateY(40px);opacity:.6}}
+</style>

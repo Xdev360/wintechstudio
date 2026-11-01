@@ -1,0 +1,65 @@
+---
+// "What you get" bento from Figma S1-S6 (807:2258 etc.). Text is real HTML; the vignette art is cropped
+// out of the exported card images (public/images/services/<slug>-<n>.webp, 2x) by its Figma rect.
+interface Props { slug: string; cells: [string, string][]; lines: string[] }
+const { slug, cells, lines } = Astro.props;
+const textTop = slug === 'brand'; // brand: text above the art in every cell; others: wide cells put art on top
+const cw = [400, 400, 399, 600, 599];
+const rect = (i: number) => i < 3
+  ? { x: 32, y: textTop ? 134 : 138, w: 335, h: 236 }
+  : { x: 32, y: textTop ? 134 : 0, w: 535, h: 244 };
+---
+<section class="wyg">
+  <div class="wrap">
+    <div class="head"><p class="eb">What you get</p><h2>{lines[0]}<br /> <span>{lines[1]}</span></h2></div>
+    <div class="grid">
+      {cells.map(([t, d], i) => {
+        const r = rect(i);
+        const artFirst = !textTop && i > 2;
+        const imgStyle = `width:${(cw[i] / r.w) * 100}%;left:${(-r.x / r.w) * 100}%;top:${(-r.y / r.h) * 100}%`;
+        return (
+          <div class:list={['cell', i > 2 ? 'wide' : 'top', { 'art-first': artFirst, 'bleed-b': !textTop && i < 3, 'bleed-t': artFirst }]}>
+            <div class="txt"><h3>{t}</h3><p>{d}</p></div>
+            <div class="vig" style={`aspect-ratio:${r.w}/${r.h}`}><img src={`/images/services/${slug}-${i + 1}.webp`} alt="" style={imgStyle} loading="lazy" decoding="async" /></div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+<style>
+  .wyg{padding:112px 0;background:var(--bg)}
+  .head{display:flex;flex-direction:column;gap:14px;margin-bottom:48px}
+  .eb{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2);margin:0}
+  h2{font-size:48px;line-height:1.08;letter-spacing:-.02em;font-weight:600;margin:0}
+  h2 span{color:#9AA3B2}
+  :global(:root[data-theme="dark"]) h2 span{color:#5E6678}
+  .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .cell{display:flex;flex-direction:column;gap:24px;padding:32px;min-width:0;background:var(--bg)}
+  .top{grid-column:span 2}
+  .wide{grid-column:span 3}
+  .bleed-b{padding-bottom:0;gap:28px}
+  .art-first{flex-direction:column-reverse;justify-content:flex-end}
+  .bleed-t{padding-top:0}
+  .txt{display:flex;flex-direction:column;gap:6px}
+  h3{font-size:20px;line-height:24px;font-weight:600;letter-spacing:0;margin:0}
+  .txt p{font-size:15px;line-height:1.5;color:var(--fg-2);margin:0}
+  .vig{position:relative;overflow:hidden;width:100%;margin-top:auto}
+  .art-first .vig{margin-top:0}
+  .vig img{position:absolute;max-width:none;height:auto;display:block}
+  @media (max-width:1023px){
+    .wrap{padding-left:16px;padding-right:16px}
+    .wyg{padding:56px 0}
+    .head{gap:12px;margin-bottom:24px}
+    .eb{font-size:10px;line-height:13px}
+    h2{font-size:30px;line-height:36px;letter-spacing:-.02em}
+    h2 br{display:none}
+    h2 span{color:inherit}
+    .grid{display:flex;flex-direction:column;gap:24px;border:0;background:none}
+    .cell,.bleed-b,.bleed-t{flex-direction:column-reverse;justify-content:flex-end;gap:16px;padding:20px;border:1px solid var(--rule)!important}
+    .vig{margin-top:0}
+    h3{font-size:18px;line-height:22px}
+    .txt{gap:6px}
+    .txt p{font-size:14px;line-height:21px}
+  }
+</style>
