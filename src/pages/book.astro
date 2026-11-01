@@ -1,0 +1,40 @@
+---
+import Page from '../layouts/Page.astro';
+import Field from '../components/ui/Field.astro';
+import { services } from '../data/site';
+---
+<Page title="Book a call · Wintech Studio" description="Book a 25 minute call with the Wintech project lead. Bring your brief, leave with a clear next step." crumbs={[['Book a call', '/book']]} closing={false}>
+  <section class="sec">
+    <div class="wrap grid2">
+      <div>
+        <p class="mono">Book a call</p>
+        <h1 class="h1">25 minutes with the project lead.</h1>
+        <p class="lede">Pick a service and a time that suits you. If you built a brief on a service page, it is attached automatically.</p>
+        <ol class="what">
+          <li><strong>Before</strong> We read your brief and look at your business.</li>
+          <li><strong>On the call</strong> Your goals, what to build first, and a rough budget and timeline.</li>
+          <li><strong>After</strong> A written next step within one working day. No pressure to sign.</li>
+        </ol>
+      </div>
+      <form class="card form" data-send="Call request from wintechstudio.com">
+        <Field label="Your name" name="Name" required />
+        <Field label="Email or WhatsApp" name="Contact" required />
+        <Field label="What is it about?" name="Service" options={[...services.map(s => s.name), 'Not sure yet']} />
+        <Field label="Best time" name="Time" options={['Weekday morning', 'Weekday afternoon', 'Evening', 'Weekend']} />
+        <Field label="Your time zone" name="Time zone" placeholder="Lagos, London, New York..." />
+        <Field label="Anything we should read first?" name="Notes" rows={3} placeholder="A link, a deadline, or one line about the business" />
+        <div class="send"><button class="btn btn-primary" type="submit" value="whatsapp">Request on WhatsApp</button><button class="btn btn-outline" type="submit" value="email">Request by email</button></div>
+        <p class="sent" hidden>Your request is ready to send. We confirm a time within one working day.</p>
+      </form>
+    </div>
+  </section>
+</Page>
+<script is:inline>
+  (function(){var s=new URLSearchParams(location.search).get('service');if(!s)return;var map={brand:'Brand and packaging',websites:'Websites and stores','ai-assistant':'AI assistant',automation:'Automation',apps:'Apps and MVPs',motion:'Motion and film'};document.querySelectorAll('input[name="Service"]').forEach(function(i){if(i.value===map[s])i.checked=true})})();
+</script>
+<style>
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  .what{padding:0;list-style:none;margin:40px 0 0;display:grid;gap:16px;counter-reset:w}.what li{display:grid;gap:4px;color:var(--fg-2);padding-left:20px;border-left:2px solid var(--rule)}.what strong{color:var(--fg)}
+  .form{display:grid;gap:22px;padding:32px}.send{display:flex;gap:10px;flex-wrap:wrap}.sent{color:#1A7F4B;font-size:14px;margin:0}
+  @media (max-width:1023px){.grid2{grid-template-columns:1fr;gap:40px}}
+</style>

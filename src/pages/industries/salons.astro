@@ -1,0 +1,32 @@
+---
+import Page from '../../layouts/Page.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Related from '../../components/ui/Related.astro';
+import Icon from '../../components/Icon.astro';
+const pairs = [['Clients DM "how much?" all day', 'A price list and booking page they can see first'], ['No-shows waste your chair', 'Deposits at booking and a reminder the day before'], ['Messages pile up after hours', 'An assistant that answers prices and books slots on WhatsApp'], ['Your page does not look like your work', 'A brand and site that match the standard of your salon']];
+const get = [['Booking website', 'Services, prices, durations and time slots', 'Websites and stores', '/services/websites'], ['WhatsApp assistant', 'Answers prices and books for you', 'AI assistant', '/services/ai-assistant'], ['Reminders and receipts', 'Sent on their own after every booking', 'Automation', '/services/automation']];
+---
+<Page title="Websites and AI for salons in Lagos · Wintech Studio" description="Booking websites, WhatsApp assistants and automatic reminders for salons and beauty businesses in Lagos." crumbs={[['Industries', '/guides'], ['Salons and beauty', '/industries/salons']]}>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono k">For salons and beauty</p>
+      <h1 class="h1">Websites and AI for salons in Lagos</h1>
+      <p class="lede">Bookings that fill themselves, prices clients can see before they DM, and replies at 11pm when you are closed.</p>
+      <div class="ctas"><a class="btn btn-primary" href="/services/websites#brief">Build your brief</a><a class="btn btn-outline" href="/book">Book a call</a></div>
+      <p class="mono sub">What we fix</p>
+      <div class="pairs">{pairs.map(([a, b]) => <div><span>{a}</span><Icon name="arrow-right" size={16} /><strong>{b}</strong></div>)}</div>
+      <p class="mono sub">What you get</p>
+      <div class="grid g3">{get.map(([t, d, l, h]) => <a class="card g" href={h}><h3>{t}</h3><p>{d}</p><span class="link">{l} <Icon name="arrow-up-right" size={14} /></span></a>)}</div>
+      <div class="nudge"><p>Just starting out? A salon template is live today at yourname.wintechstudio.com.</p><a class="btn btn-primary" href="https://app.wintechstudio.com" target="_blank" rel="noopener">See the templates</a></div>
+    </div>
+  </section>
+  <Faq title="Salon owners ask" items={[['Can clients pay a deposit when they book?', 'Yes. Bookings can take a deposit through Paystack, and the rest is paid at the salon.'], ['Will the assistant sound like a robot?', 'It replies in your tone, from your real price list, and hands over to you for anything it should not handle.'], ['Do I need a big budget?', 'No. Start on a salon template, then move to a custom site when the bookings justify it.']]} />
+  <Related items={[['Guide · Payments', 'How to take Paystack payments on your website', '/guides/paystack-payments-on-your-website'], ['Case study', 'Virelle Wellness: imported wellness you can trust', '/work/virelle'], ['Free tool', 'Inbox check: how many customers do you lose?', '/tools/inbox-check']]} />
+</Page>
+<style>
+  .k{color:var(--sig)}.sub{margin:72px 0 16px}
+  .pairs>div{display:grid;grid-template-columns:1fr 24px 1fr;gap:16px;align-items:center;padding:22px 24px}.pairs>div:nth-child(odd){background:var(--surface)}.pairs span{color:var(--fg-2)}.pairs strong{font-weight:500}.pairs :global(svg){color:var(--sig)}
+  .g{text-decoration:none;display:grid;gap:8px;align-content:start}.g:hover{border-color:var(--ash)}.g h3{margin:0;font-size:20px}
+  .nudge{margin-top:40px;background:#0A0E17;color:#fff;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;gap:20px}.nudge p{margin:0;font-weight:500}
+  @media (max-width:800px){.pairs>div{grid-template-columns:1fr}.pairs :global(svg){transform:rotate(90deg)}.nudge{flex-direction:column;align-items:start}}
+</style>

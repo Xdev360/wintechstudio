@@ -1,0 +1,9 @@
+---
+import Page from '../../layouts/Page.astro';
+const items = [['/guides/paystack-payments-on-your-website', 'Payments', 'How to take Paystack payments on your website in Nigeria'], ['/compare/custom-website-vs-wintech-templates', 'Compare', 'Custom website or Wintech Templates: which one fits?'], ['/industries/salons', 'Industry', 'Websites and AI for salons in Lagos'], ['/glossary', 'Glossary', 'Website and AI words, in plain English']];
+---
+<Page title="Guides · Wintech Studio" description="Plain-English guides for business owners in Nigeria: payments, websites, AI assistants and more." crumbs={[['Guides', '/guides']]}>
+  <section class="sec"><div class="wrap"><p class="mono">Guides</p><h1 class="h1">Short answers for<br />business owners.</h1>
+    <div class="list">{items.map(([h, k, t]) => <a href={h}><span class="mono">{k}</span><strong>{t}</strong></a>)}</div></div></section>
+</Page>
+<style>.list{margin-top:40px;border-top:1px solid var(--rule)}.list a{display:grid;grid-template-columns:160px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--fg)}.list a:hover strong{color:var(--sig)}.list strong{font-size:20px;font-weight:600}@media (max-width:700px){.list a{grid-template-columns:1fr;gap:4px}}</style>

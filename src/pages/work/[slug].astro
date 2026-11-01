@@ -1,0 +1,65 @@
+---
+import Page from '../../layouts/Page.astro';
+import Poster from '../../components/work/Poster.astro';
+import Icon from '../../components/Icon.astro';
+import { cases } from '../../data/cases';
+import { services } from '../../data/site';
+export function getStaticPaths() { return cases.map(c => ({ params: { slug: c.slug } })); }
+const i = cases.findIndex(x => x.slug === Astro.params.slug);
+const c = cases[i]; const next = cases[(i + 1) % cases.length];
+const ld = { '@context': 'https://schema.org', '@type': 'CreativeWork', name: c.headline, about: c.name, creator: { '@type': 'Organization', name: 'Wintech Studio' }, description: c.intro, ...(c.image ? { image: 'https://www.wintechstudio.com' + c.image } : {}) };
+---
+<Page title={`${c.name} case study · Wintech Studio`} description={c.intro.slice(0, 158)} crumbs={[['Work', '/work'], [c.name, `/work/${c.slug}`]]} jsonld={[ld]}>
+  <article style={`--c1:${c.colors[0]};--c2:${c.colors[1]}`}>
+    <section class="sec over">
+      <div class="wrap">
+        <p class="mono">Overview</p>
+        <h1 class="h1">{c.headline}</h1>
+        <p class="lede">{c.intro}</p>
+        <div class="ov">
+          <div class="stats">{c.stats.map(([t, d]) => <div class="stat"><strong>{t}</strong><span>{d}</span></div>)}</div>
+          <div class="status"><p class="mono">Status</p><p class="st">{c.status}</p>{c.url && <a class="link" href={c.url} target="_blank" rel="noopener">Visit {c.url.replace('https://', '')} <Icon name="arrow-up-right" size={14} /></a>}<span class="tile" aria-hidden="true"><span>{c.name[0]}</span></span></div>
+        </div>
+        <ul class="did">{c.did.map(d => <li>{d}</li>)}</ul>
+      </div>
+    </section>
+    <section class="sec">
+      <div class="wrap two"><h2>{c.filmTitle}</h2><div><p class="lead">{c.filmLead}</p><p>{c.filmBody}</p></div></div>
+      <div class="wide"><Poster c={c} big eager /></div>
+    </section>
+    <section class="sec alt">
+      <div class="wrap">
+        <div class="two"><p class="mono">01</p><div><h2>{c.challengeTitle}</h2><p>{c.challenge}</p></div></div>
+        <ol class="grid g3 probs">{c.problems.map(([t, d], k) => <li class="card"><p class="mono">{String(k + 1).padStart(2, '0')}</p><h3>{t}</h3><p>{d}</p></li>)}</ol>
+      </div>
+    </section>
+    <section class="sec">
+      <div class="wrap two"><p class="mono">02 · How it started</p><div><h2>{c.startedTitle}</h2><p>{c.started}</p></div></div>
+    </section>
+    <section class="sec alt">
+      <div class="wrap want">
+        <div><p class="mono">Want this?</p><h2 class="h2">The same team can build yours.</h2><p class="tags">{c.services.map(s => <a href={`/services/${s}`}>{services.find(x => x.slug === s)!.name}</a>)}</p></div>
+        <a class="nextc" href={`/work/${next.slug}`}><span class="mono">Next case</span><strong>{next.name}</strong><span>{next.line}</span><Icon name="arrow-right" size={18} /></a>
+      </div>
+    </section>
+  </article>
+</Page>
+<style>
+  .ov{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px}
+  .stats{display:grid;gap:12px}.stat{background:var(--surface);padding:20px 24px;border-radius:4px;display:grid;gap:4px}
+  .stat strong{font-size:26px;font-weight:600;letter-spacing:-.02em}.stat span{font-size:14px;color:var(--fg-2)}
+  .status{background:var(--surface);border-radius:4px;padding:24px;position:relative;overflow:hidden;min-height:260px;display:flex;flex-direction:column;gap:14px}
+  .st{font-size:22px;font-weight:600;line-height:1.35;max-width:440px;margin:0;letter-spacing:-.01em}
+  .tile{position:absolute;right:28px;bottom:28px;width:100px;height:100px;transform:rotate(-7deg);background:linear-gradient(135deg,var(--c1),var(--c2));border-radius:22px;display:grid;place-items:center;color:#fff;font-size:44px;font-weight:600;box-shadow:0 20px 40px -20px rgba(0,0,0,.4)}
+  .tile::before{content:"";position:absolute;inset:0;border-radius:22px;background:linear-gradient(135deg,var(--c2),var(--c1));transform:rotate(17deg);z-index:-1;opacity:.6}
+  .did{list-style:none;padding:0;margin:32px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+  .did li{font-size:13px;font-weight:500;padding:7px 14px;border-radius:100px;border:1.5px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(90deg,var(--c1),var(--c2)) border-box}
+  .two{display:grid;grid-template-columns:360px 1fr;gap:40px}.two h2{font-size:24px;font-weight:600;margin:0 0 12px;letter-spacing:-.01em}.two p{color:var(--fg-2);font-size:16px;line-height:1.6;max-width:672px;margin:0 0 10px}.two .lead{color:var(--fg);font-size:18px;font-weight:500}
+  .wide{max-width:1360px;margin:40px auto 0;padding:0 clamp(16px,3vw,40px)}.wide :global(.poster){border-radius:4px}
+  .probs{list-style:none;padding:0;margin-top:40px}
+  .want{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.tags a{font-size:13px;border:1px solid var(--rule);padding:6px 12px;text-decoration:none;color:var(--fg)}
+  .nextc{display:grid;gap:6px;padding:28px;background:var(--card);border:1px solid var(--rule);text-decoration:none;color:var(--fg)}.nextc:hover{border-color:var(--ash)}
+  .nextc strong{font-size:28px;font-weight:600;letter-spacing:-.02em}.nextc span:not(.mono){color:var(--fg-2)}
+  @media (max-width:1023px){.ov,.two,.want{grid-template-columns:1fr}.tile{width:70px;height:70px;font-size:30px}.two{gap:12px}}
+</style>

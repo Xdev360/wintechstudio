@@ -1,0 +1,40 @@
+---
+import Page from '../layouts/Page.astro';
+import Field from '../components/ui/Field.astro';
+import Icon from '../components/Icon.astro';
+import { contact } from '../data/site';
+const ld = { '@context': 'https://schema.org', '@type': 'ContactPage', name: 'Contact Wintech Studio' };
+---
+<Page title="Contact · Wintech Studio" description="Tell us what you run and what is not working. We reply within one working day. Email hello@wintechstudio.com or WhatsApp +234 913 407 1813." crumbs={[['Contact', '/contact']]} jsonld={[ld]} closing={false}>
+  <section class="sec">
+    <div class="wrap grid2">
+      <div>
+        <p class="mono">Contact</p>
+        <h1 class="h1">Send us the details.</h1>
+        <p class="lede">Tell us what you run and what is not working. We reply within one working day.</p>
+        <ul class="ways">
+          <li><span class="mono">Email</span><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+          <li><span class="mono">WhatsApp</span><a href={contact.whatsappLink} target="_blank" rel="noopener">{contact.whatsapp}</a><small>Send WEBSITE, BRAND or MOTION to start</small></li>
+          <li><span class="mono">Prefer to talk?</span><a href="/book">Book a 25 minute call <Icon name="arrow-right" size={14} /></a></li>
+          <li><span class="mono">Not sure what you need?</span><a href="/tools/plan">Plan your project in 3 minutes <Icon name="arrow-right" size={14} /></a></li>
+        </ul>
+      </div>
+      <form class="card form" data-send="New enquiry from wintechstudio.com">
+        <Field label="Your name" name="Name" placeholder="Ada Okafor" required />
+        <Field label="Email or WhatsApp" name="Contact" placeholder="ada@business.com" required />
+        <Field label="Business and a link" name="Business" placeholder="Instagram, website or both" />
+        <Field label="Where are you?" name="Stage" options={['Starting something', 'Adding tech to my business', 'Refreshing my brand']} />
+        <Field label="Budget" name="Budget" options={['Under $1,000', '$1,000 to $3,000', '$3,000+', 'Not sure']} />
+        <Field label="What is not working right now?" name="Problem" rows={4} placeholder="Orders come in on WhatsApp and we miss some at night" />
+        <div class="send"><button class="btn btn-primary" type="submit" value="whatsapp">Send on WhatsApp</button><button class="btn btn-outline" type="submit" value="email">Send by email</button></div>
+        <p class="sent" hidden>Your message is ready in WhatsApp or your email app. Press send there and we reply within one working day.</p>
+      </form>
+    </div>
+  </section>
+</Page>
+<style>
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  .ways{list-style:none;padding:0;margin:40px 0 0;display:grid;gap:20px}.ways li{display:grid;gap:4px}.ways a{font-size:18px;font-weight:500;color:var(--fg);text-decoration:none;display:inline-flex;gap:6px;align-items:center}.ways a:hover{color:var(--sig)}.ways small{color:var(--fg-2)}
+  .form{display:grid;gap:22px;padding:32px}.send{display:flex;gap:10px;flex-wrap:wrap}.sent{color:var(--ok,#1A7F4B);font-size:14px;margin:0}
+  @media (max-width:1023px){.grid2{grid-template-columns:1fr;gap:40px}}
+</style>

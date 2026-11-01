@@ -1,0 +1,101 @@
+---
+import Page from '../../layouts/Page.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Icon from '../../components/Icon.astro';
+import services from '../../data/services.json';
+import { services as names, contact } from '../../data/site';
+export function getStaticPaths() { return services.map(s => ({ params: { slug: s.slug } })); }
+const s = services.find(x => x.slug === Astro.params.slug)!;
+const name = names.find(n => n.slug === s.slug)!.name;
+const steps = [['Brief', 'Your picks, read before the call.'], ['Call', '25 minutes with the project lead.'], ['Proposal', 'Fixed scope, price and date.'], ['Build weekly', 'Something to see every Friday.']];
+const faqs: [string, string][] = [
+  [`How much does ${name.toLowerCase()} cost?`, `${s.price.replace(/^from/, 'From')}${s.priceNgn ? ` (${s.priceNgn})` : ''}. Your proposal fixes the real price before any work starts.`],
+  ['How do payments work?', '50% to start, 40% at design approval and 10% at handover. Monthly plans are billed monthly.'],
+  ['Who owns the work?', 'You do. Accounts are in your name from day one, and every file, asset and line of code is yours on the final payment.'],
+];
+const svcLd = { '@context': 'https://schema.org', '@type': 'Service', name, serviceType: name, provider: { '@type': 'Organization', name: 'Wintech Studio', url: 'https://www.wintechstudio.com' }, areaServed: ['Nigeria', 'Worldwide'], description: s.intro };
+---
+<Page title={`${name} · Wintech Studio`} description={s.intro} crumbs={[['Services', '/services'], [name, `/services/${s.slug}`]]} jsonld={[svcLd]}>
+  <section class="sec hero">
+    <div class="wrap">
+      <p class="mono">Services · {name}</p>
+      <h1 class="h1">{s.title}</h1>
+      <p class="lede">{s.intro}</p>
+      <div class="ctas"><a class="btn btn-primary" href="#brief">Build your brief</a><a class="btn btn-soft" href="/book">Book a call</a></div>
+      <dl class="meta"><div><dt>{s.price}</dt><dd>{s.priceNgn}</dd></div><div><dt>{s.timeline}</dt><dd>typical timeline</dd></div></dl>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono">What you get</p>
+      <h2 class="h2">{s.whatTitle}</h2>
+      <div class="grid g3 cells">{s.cells.map((c, i) => <div class="card"><p class="mono n">{String(i + 1).padStart(2, '0')}</p><h3>{c.title}</h3><p>{c.body}</p></div>)}</div>
+    </div>
+  </section>
+  <section class="sec alt" id="brief">
+    <div class="wrap brief" data-service={name}>
+      <div>
+        <p class="mono">Before the call</p>
+        <h2 class="h2">Tick what fits.<br />We read it before we talk.</h2>
+        <p class="lede">No forms to fill. Tap what applies, and your picks go with your booking.</p>
+        {s.brief.map((q, qi) => (
+          <fieldset class="q" data-q={q.q} data-multi={q.multi ? '1' : '0'}>
+            <legend>{q.q}{q.multi && <span> · pick any</span>}</legend>
+            <div class="opts">{q.options.map(o => <button type="button" class="opt" aria-pressed="false">{o}</button>)}</div>
+          </fieldset>
+        ))}
+        <label class="q"><span class="legend">Anything else? (optional)</span><textarea id="brief-note" rows="3" placeholder="A link to your Instagram, a brand you like, or one line about the business"></textarea></label>
+      </div>
+      <aside class="summary">
+        <p class="mono">Your brief · {name}</p>
+        <p class="count"><strong id="pick-count">0</strong> picks</p>
+        <ul id="pick-list"><li class="empty">Tap options to build your brief.</li></ul>
+        <a class="btn btn-primary" id="brief-book" href="/book">Book a call with this brief</a>
+        <a class="btn btn-outline" id="brief-wa" href={contact.whatsappLink} target="_blank" rel="noopener">Send on WhatsApp</a>
+        <p class="hint">Your picks are saved in your browser and attached to the booking.</p>
+      </aside>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono">How it runs</p>
+      <h2 class="h2">Four steps, one project lead.</h2>
+      <ol class="grid g4 steps">{steps.map(([t, d], i) => <li class="card"><p class="mono n">{String(i + 1).padStart(2, '0')}</p><h3>{t}</h3><p>{d}</p></li>)}</ol>
+    </div>
+  </section>
+  <Faq items={faqs} />
+</Page>
+<script is:inline define:vars={{ slug: s.slug, wa: contact.whatsappLink }}>
+  (function(){
+    var root=document.querySelector('.brief');if(!root)return;var KEY='wt-brief-'+slug,state={};
+    try{state=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+    var note=document.getElementById('brief-note');if(state._note)note.value=state._note;
+    root.querySelectorAll('fieldset.q').forEach(function(f){var q=f.dataset.q,multi=f.dataset.multi==='1';f.querySelectorAll('.opt').forEach(function(b){if((state[q]||[]).indexOf(b.textContent)>-1)b.setAttribute('aria-pressed','true');b.addEventListener('click',function(){var on=b.getAttribute('aria-pressed')==='true';if(!multi)f.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed',String(!on));save()})})});
+    note.addEventListener('input',save);
+    function save(){var s={};root.querySelectorAll('fieldset.q').forEach(function(f){var v=[].slice.call(f.querySelectorAll('.opt[aria-pressed="true"]')).map(function(b){return b.textContent});if(v.length)s[f.dataset.q]=v});if(note.value)s._note=note.value;state=s;try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){};render()}
+    function text(){var lines=['Brief: '+root.dataset.service];Object.keys(state).forEach(function(k){if(k!=='_note')lines.push(k+': '+state[k].join(', '))});if(state._note)lines.push('Note: '+state._note);return lines.join('\n')}
+    function render(){var list=document.getElementById('pick-list'),n=0;list.innerHTML='';Object.keys(state).forEach(function(k){if(k==='_note')return;state[k].forEach(function(v){n++;var li=document.createElement('li');li.innerHTML='<span></span><b></b>';li.firstChild.textContent=k;li.lastChild.textContent=v;list.appendChild(li)})});if(!n)list.innerHTML='<li class="empty">Tap options to build your brief.</li>';document.getElementById('pick-count').textContent=n;document.getElementById('brief-book').href='/book?service='+slug;document.getElementById('brief-wa').href=wa+'?text='+encodeURIComponent('Hello Wintech, here is my brief.\n\n'+text())}
+    render();
+  })();
+</script>
+<style>
+  .hero{border-bottom:1px solid var(--rule)}
+  .meta{display:flex;gap:40px;margin:36px 0 0}.meta dt{font-weight:600;font-size:17px}.meta dd{margin:0;color:var(--fg-2);font-size:14px}
+  .cells{margin-top:40px}.n{margin:0 0 20px;color:var(--sig)}
+  .brief{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start}
+  .q{border:0;padding:0;margin:0 0 28px;display:block}
+  .q legend,.legend{font-weight:500;font-size:16px;margin-bottom:12px;display:block}.q legend span{color:var(--fg-2);font-weight:400;font-size:13px}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .opt{font:400 14px var(--font);padding:9px 14px;background:var(--card);border:1px solid var(--rule);color:var(--fg);cursor:pointer}
+  .opt:hover{border-color:var(--ash)}.opt[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  :root[data-theme="dark"] .opt[aria-pressed="true"]{background:#F4F4F5;color:#0A0E17}
+  textarea{width:100%;font:15px var(--font);padding:14px;border:1px solid var(--rule);background:var(--card);color:var(--fg);resize:vertical}
+  .summary{position:sticky;top:120px;background:var(--card);border:1px solid var(--rule);padding:24px;display:grid;gap:12px}
+  .count{margin:0;color:var(--fg-2)}.count strong{color:var(--fg);font-size:22px}
+  #pick-list{list-style:none;padding:0;margin:0;display:grid;gap:8px;max-height:320px;overflow:auto}
+  #pick-list li{display:grid;font-size:14px;border-bottom:1px solid var(--rule);padding-bottom:8px}#pick-list li span{color:var(--fg-2);font-size:12px}#pick-list b{font-weight:500}
+  #pick-list .empty{color:var(--fg-2);border:0}
+  .hint{font-size:12px;color:var(--fg-2);margin:0}
+  .steps{list-style:none;padding:0;margin-top:40px}
+  @media (max-width:1023px){.brief{grid-template-columns:1fr}.summary{position:static}}
+</style>

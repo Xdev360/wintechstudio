@@ -1,0 +1,10 @@
+---
+import Page from '../../layouts/Page.astro';
+import Icon from '../../components/Icon.astro';
+const tools = [['/tools/plan', 'Plan your project', '3 minutes', 'Answer a few questions and get the services, timeline and starting budget that fit where you are.'], ['/tools/cost-calculator', 'Cost calculator', '1 minute', 'Pick what you need and see an estimated range in dollars and naira before you talk to anyone.'], ['/tools/inbox-check', 'Inbox check', '2 minutes', 'Score how many customers you lose in DMs and WhatsApp, and what to fix first.']];
+---
+<Page title="Free tools · Wintech Studio" description="Free planning tools for business owners: plan your project, estimate the cost and check how many customers you lose in your inbox." crumbs={[['Free tools', '/tools']]}>
+  <section class="sec"><div class="wrap"><p class="mono">Free tools</p><h1 class="h1">Plan it before<br />you pay for it.</h1><p class="lede">No sign-up. Your answers stay in your browser unless you choose to send them.</p>
+    <div class="grid g3 list">{tools.map(([h, t, m, d]) => <a class="card tool" href={h}><p class="mono">{m}</p><h2>{t}</h2><p>{d}</p><span class="link">Start <Icon name="arrow-right" size={14} /></span></a>)}</div></div></section>
+</Page>
+<style>.list{margin-top:40px}.tool{text-decoration:none;display:grid;gap:10px;align-content:start}.tool:hover{border-color:var(--ash)}.tool h2{font-size:22px;margin:0}</style>

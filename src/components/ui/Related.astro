@@ -1,0 +1,7 @@
+---
+import Icon from '../Icon.astro';
+interface Props { items: [string, string, string][] }
+const { items } = Astro.props;
+---
+<section class="sec"><div class="wrap"><p class="mono">Keep reading</p><div class="grid g3 rel">{items.map(([k, t, h]) => <a class="card" href={h}><p class="mono k">{k}</p><h3>{t}</h3><span class="link">Read <Icon name="arrow-up-right" size={14} /></span></a>)}</div></div></section>
+<style>.rel{margin-top:20px}.rel a{text-decoration:none;display:grid;gap:10px;align-content:start}.rel a:hover{border-color:var(--ash)}.k{color:var(--sig)}.rel h3{font-size:19px;margin:0}</style>

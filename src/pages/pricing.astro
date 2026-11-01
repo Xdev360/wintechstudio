@@ -1,0 +1,53 @@
+---
+import Page from '../layouts/Page.astro';
+import Faq from '../components/ui/Faq.astro';
+import Icon from '../components/Icon.astro';
+import services from '../data/services.json';
+const projects = [['Website', 'websites'], ['Brand system', 'brand'], ['AI assistant', 'ai-assistant'], ['App or MVP', 'apps'], ['Launch film', 'motion']].map(([n, s]) => ({ n, s, d: services.find(x => x.slug === s)! }));
+const plans = [['AI care plan', '$60', '/mo', 'For every AI assistant we build.', ['Retraining when products change', 'Monthly report: chats, orders, questions', 'Fixes within one working day', 'Hosting and model costs included']], ['Growth and content', '$600', '/mo', '3 month minimum. Posts, films and campaigns.', ['12 posts and 2 short films a month', 'Captions and posting calendar', 'Monthly results call', 'Ads support, budget separate']], ['Run it for you', 'Custom', '', 'For owners who want the whole system handled.', ['Store, AI, automation and content', 'One project lead, weekly check in', 'Priority on new features', 'Quoted after the diagnostic']]] as const;
+const promises = [['Accounts in your name', 'Domain, store and payments are registered to you.'], ['Written agreement first', 'Scope, price, dates and change orders, signed first.'], ['Nothing goes live without you', 'Every change has a preview you approve.'], ['Changes are priced', 'Anything new gets a written change order.'], ['One person to call', 'The project lead answers, not a ticket queue.'], ['Lagos hours, worldwide', 'We overlap with London and the US East Coast.']];
+const faqs: [string, string][] = [['Why "from" prices?', 'Scope sets the price: pages, products, integrations and motion. After the brief and the call we send a fixed scope and price.'], ['Can I pay in naira?', 'Yes. Prices show in dollars with naira beside them, and your proposal can be invoiced in naira.'], ['What does the $60 a month cover?', 'Hosting and model costs for your AI assistant, retraining when your products change, a monthly report and fixes within one working day.'], ['Can I pause a monthly plan?', 'Yes, one month at a time. The AI care plan keeps running while content pauses. Cancel with 30 days notice.'], ['What if the scope changes?', 'Anything new gets a written change order with its own price before we build it.']];
+---
+<Page title="Pricing · Wintech Studio" description="Websites from $1,200, brand systems from $1,500, brand and website from $2,500, AI assistants from $1,800 plus $60 a month, apps from $4,000." crumbs={[['Pricing', '/pricing']]}>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono">Pricing</p>
+      <h1 class="h1">Starting points,<br />not surprises.</h1>
+      <p class="lede">A one-time project or a monthly plan. Every project gets a fixed price before work starts.</p>
+      <div class="top">
+        <div class="card diag"><p class="mono">First step</p><h2>Paid diagnostic</h2><p class="big">$200</p><p>A working session on your business, money flows and what to build first. You leave with a written plan.</p><a class="btn btn-outline" href="/book">Book the diagnostic</a></div>
+        <div class="card hero-p"><p class="mono">Most picked</p><h2>Brand + website</h2><p class="big">from $2,500</p><p>A brand people remember and a website that proves it, by one team. 4 to 6 weeks, kickoff to launch.</p><ul class="ticks">{['Brand direction', 'Logo, colour and type', 'Website design and build', 'Google and AI search ready', 'Weekly previews', 'Handover and training'].map(t => <li><Icon name="check" size={16} />{t}</li>)}</ul><div class="ctas"><a class="btn btn-primary" href="/services/brand#brief">Build your brief</a><a class="btn btn-soft" href="/book">Book a call</a></div></div>
+      </div>
+      <h2 class="h3">Projects</h2>
+      <div class="rows">{projects.map(p => <a class="row" href={`/services/${p.s}`}><span class="n">{p.n}</span><span class="p">{p.d.price}</span><span class="ng">{p.d.priceNgn}</span><span class="t">{p.d.timeline}</span><Icon name="arrow-right" size={16} /></a>)}</div>
+      <p class="note">Paid 50% to start, 40% at design approval, 10% at handover.</p>
+    </div>
+  </section>
+  <section class="sec alt" id="monthly">
+    <div class="wrap">
+      <p class="mono">Monthly plans</p><h2 class="h2">Or keep us on, month by month.</h2>
+      <div class="grid g3 plans">{plans.map(([n, p, per, d, items], i) => <div class:list={['card', { dark: i === 1 }]}><p class="mono">{n}</p><p class="big">{p}<small>{per}</small></p><p>{d}</p><ul class="ticks">{items.map(t => <li><Icon name="check" size={16} />{t}</li>)}</ul></div>)}</div>
+      <div class="card partner"><div><p class="mono">By invitation</p><h3>Ready to start, but not with the whole cost?</h3><p>Partner build: a lower fee and a share of what the system sells. Offered after the diagnostic.</p></div><a class="btn btn-outline" href="/book">Start with the diagnostic</a></div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap"><p class="mono">Before you sign</p><h2 class="h2">Your accounts. Your files. Your call.</h2>
+      <div class="grid g3">{promises.map(([t, d], i) => <div class="card"><p class="mono">{String(i + 1).padStart(2, '0')} / 06</p><h3>{t}</h3><p>{d}</p></div>)}</div>
+    </div>
+  </section>
+  <Faq items={faqs} title="Pricing questions" />
+</Page>
+<style>
+  .top{display:grid;grid-template-columns:1fr 2fr;gap:16px;margin:48px 0}
+  .card h2{font-size:24px;margin:8px 0 4px}.big{font-size:40px;font-weight:600;letter-spacing:-.03em;margin:8px 0;color:var(--fg)}.big small{font-size:16px;color:var(--fg-2);font-weight:400}
+  .hero-p{border-color:var(--sig)}.diag{display:grid;align-content:start;gap:6px}.diag .btn{justify-self:start;margin-top:12px}
+  .ticks{list-style:none;padding:0;margin:16px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px}.ticks li{display:flex;gap:8px;align-items:center;font-size:14px}.ticks :global(svg){color:var(--sig);flex:none}
+  .plans .ticks{grid-template-columns:1fr}
+  .h3{font-size:20px;font-weight:600;margin:0 0 12px}
+  .rows{border-top:1px solid var(--rule)}.row{display:grid;grid-template-columns:2fr 1.4fr 1.6fr 1fr 20px;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--fg)}
+  .row:hover{background:var(--surface)}.row .n{font-weight:500}.row .ng,.row .t{color:var(--fg-2);font-size:14px}
+  .note{color:var(--fg-2);font-size:14px;margin-top:16px}
+  .plans{margin-top:40px}.dark{background:#0A0E17;color:#fff;border-color:#0A0E17}.dark .big,.dark .mono{color:#fff}.dark p{color:#A1A1AA}
+  .partner{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:16px}
+  @media (max-width:1023px){.top{grid-template-columns:1fr}.row{grid-template-columns:1fr auto;}.row .ng,.row .t{display:none}.ticks{grid-template-columns:1fr}.partner{flex-direction:column;align-items:start}}
+</style>

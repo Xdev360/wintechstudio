@@ -1,0 +1,23 @@
+---
+import Page from '../layouts/Page.astro';
+import Related from '../components/ui/Related.astro';
+const terms: [string, string][] = [['AEO', 'Answer engine optimisation. Writing and structuring pages so AI tools like ChatGPT can find and quote them.'], ['Brand guideline', 'A file that shows how to use your logo, colours, fonts and tone, so everyone uses them the same way.'], ['CMS', 'A content management system. The place you edit words, photos and prices without touching code.'], ['Domain', 'Your address on the internet, like wintechstudio.com. You rent it yearly and it should be in your name.'], ['Hosting', 'The computer that serves your site to visitors. Fast hosting means pages open quickly on mobile data.'], ['Landing page', 'A single page built for one goal, like signing up or booking a call.'], ['MVP', 'Minimum viable product. The smallest version of an app that real people can use and pay for.'], ['Payment gateway', 'A service that lets your site take card, bank transfer and USSD payments and settles the money to your bank. Paystack and Flutterwave are common in Nigeria.'], ['SEO', 'Search engine optimisation. Making pages that Google understands and shows for the right searches.'], ['USSD checkout', 'Paying by dialling a short code on any phone, no internet or card needed.'], ['WhatsApp Business API', 'The official way to connect WhatsApp to software, so an assistant can reply and take orders for you.']];
+const id = (s: string) => s.toLowerCase().replace(/\W+/g, '-');
+const letters = [...new Set(terms.map(t => t[0][0]))];
+const ld = { '@context': 'https://schema.org', '@type': 'DefinedTermSet', name: 'Wintech Studio glossary', hasDefinedTerm: terms.map(([n, d]) => ({ '@type': 'DefinedTerm', name: n, description: d, url: `https://www.wintechstudio.com/glossary#${id(n)}` })) };
+---
+<Page title="Website and AI glossary in plain English · Wintech Studio" description="Plain-English definitions of website and AI words: AEO, CMS, domain, hosting, MVP, payment gateway, SEO, USSD checkout and more." crumbs={[['Glossary', '/glossary']]} jsonld={[ld]}>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono k">Glossary</p><h1 class="h1">Website and AI words,<br />in plain English</h1>
+      <nav class="az">{letters.map(l => <a href={`#${id(terms.find(t => t[0][0] === l)![0])}`}>{l}</a>)}</nav>
+      <dl>{terms.map(([n, d]) => <div id={id(n)}><dt>{n}</dt><dd>{d}</dd></div>)}</dl>
+    </div>
+  </section>
+  <Related items={[['Guide · Payments', 'How to take Paystack payments on your website', '/guides/paystack-payments-on-your-website'], ['Compare', 'Custom website or Wintech Templates', '/compare/custom-website-vs-wintech-templates'], ['Service', 'AI assistant', '/services/ai-assistant']]} />
+</Page>
+<style>
+  .k{color:var(--sig)}.az{display:flex;flex-wrap:wrap;gap:6px;margin:32px 0 40px}.az a{padding:7px 12px;border:1px solid var(--rule);text-decoration:none;color:var(--fg);font-size:14px}.az a:hover{background:var(--fg);color:var(--bg)}
+  dl{margin:0}dl>div{display:grid;grid-template-columns:300px 1fr;gap:40px;padding:24px 0;border-top:1px solid var(--rule);scroll-margin-top:100px}dt{font-size:20px;font-weight:600}dd{margin:0;color:var(--fg-2);font-size:16px;line-height:1.6;max-width:760px}
+  @media (max-width:800px){dl>div{grid-template-columns:1fr;gap:6px}}
+</style>

@@ -1,0 +1,38 @@
+---
+import Page from '../layouts/Page.astro';
+const steps = [['Brief', 'Your ticks from the service page, read before we talk.', 'Compiles your picks and links into one page.', 'Decide if we are a fit, honestly.', 'Day 1'], ['Study', 'Business model, money flows, competitors.', 'Drafts the competitor scan.', 'Decide what matters first.', 'Week 1'], ['Proposal', 'Scope, price and dates, signed before work.', 'Formats the proposal.', 'Set the scope and the order.', 'Week 1'], ['Build weekly', 'Something new every Friday.', 'Drafts variations, code and checks.', 'Choose, refine, approve.', 'Weeks 2 to 6'], ['Polish and ship', 'The last 10% that makes it feel expensive.', 'Runs checks on every page.', 'Final QA and your sign off.', 'Launch'], ['Run it', 'Docs, training, and a care plan if you want.', 'Answers customers, runs automations.', 'Retrain, report, improve.', 'After']];
+const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'How Wintech Studio runs a project', step: steps.map(([n, d], i) => ({ '@type': 'HowToStep', position: i + 1, name: n, text: d })) };
+---
+<Page title="How we work · Wintech Studio" description="You talk to one project lead. Behind them sit designers, developers, a film crew and the AI. Six steps from brief to a system you can run." crumbs={[['How we work', '/how-we-work']]} jsonld={[ld]}>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono">How we work</p>
+      <h1 class="h1">AI does the legwork.<br />People make the calls.</h1>
+      <p class="lede">You talk to one project lead. Behind them sit designers, developers, a film crew and the AI. Nothing ships until you say yes.</p>
+      <div class="model">
+        <div class="node you">You</div><div class="line"><span class="mono">One thread · two check ins a week</span></div>
+        <div class="node lead">Project lead<small>Plans, briefs, reviews every piece</small></div><div class="line"><span class="mono">Briefs and reviews</span></div>
+        <div class="team">{['Brand', 'Design', 'Development', 'Film', 'AI and automation'].map(t => <span>{t}</span>)}</div>
+      </div>
+    </div>
+  </section>
+  <section class="sec alt">
+    <div class="wrap">
+      <p class="mono">Six steps</p><h2 class="h2">From brief to a system you can run.</h2>
+      <ol class="steps">{steps.map(([n, d, ai, we, when], i) => (
+        <li><p class="mono">{String(i + 1).padStart(2, '0')} · {when}</p><h3>{n}</h3><p class="d">{d}</p><dl><div><dt class="mono">The AI drafts</dt><dd>{ai}</dd></div><div><dt class="mono">We decide</dt><dd>{we}</dd></div></dl></li>
+      ))}</ol>
+    </div>
+  </section>
+</Page>
+<style>
+  .model{margin-top:56px;display:grid;justify-items:center;gap:0;padding:48px 24px;background:var(--surface)}
+  .node{padding:14px 24px;background:var(--card);border:1px solid var(--rule);font-weight:600;display:grid;text-align:center}.node small{font-weight:400;color:var(--fg-2);font-size:13px}
+  .lead{background:var(--ink);color:#fff;border-color:var(--ink)}.lead small{color:#A1A1AA}:root[data-theme="dark"] .lead{background:var(--sig);border-color:var(--sig)}
+  .line{width:1px;height:56px;background:var(--ash);position:relative}.line span{position:absolute;left:14px;top:50%;transform:translateY(-50%);white-space:nowrap}
+  .team{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.team span{padding:10px 16px;background:var(--card);border:1px solid var(--rule);font-size:14px}
+  .steps{list-style:none;padding:0;margin:40px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .steps li{background:var(--card);border:1px solid var(--rule);padding:24px}.steps h3{font-size:22px;margin:8px 0 6px}.d{color:var(--fg-2)}
+  dl{margin:16px 0 0;display:grid;gap:12px;border-top:1px solid var(--rule);padding-top:16px}dd{margin:4px 0 0;font-size:14px}
+  @media (max-width:1023px){.steps{grid-template-columns:1fr}}
+</style>

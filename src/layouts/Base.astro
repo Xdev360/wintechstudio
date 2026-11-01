@@ -2,6 +2,7 @@
 import '@fontsource-variable/figtree';
 import '@fontsource/geist-mono/400.css';
 import '../styles/tokens.css';
+import '../styles/page.css';
 
 interface Props {
   title: string;
@@ -50,6 +51,7 @@ const org = {
     <meta name="twitter:site" content="@wintechstudio_" />
     <script is:inline>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
     <script src="/ui-sound.js" defer></script>
+    <script src="/form-send.js" defer></script>
     <script type="application/ld+json" set:html={JSON.stringify([org, ...jsonld])} />
   </head>
   <body>

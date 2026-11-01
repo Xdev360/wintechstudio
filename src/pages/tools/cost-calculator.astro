@@ -1,0 +1,49 @@
+---
+import Page from '../../layouts/Page.astro';
+import services from '../../data/services.json';
+import { services as names } from '../../data/site';
+const num = (s: string) => Number((s.match(/[\d,]+/) || ['0'])[0].replace(/,/g, ''));
+const svc = services.filter(s => s.slug !== 'automation').map(s => ({ slug: s.slug, name: names.find(n => n.slug === s.slug)!.name, usd: num(s.price), ngn: num(s.priceNgn || ''), monthly: s.slug === 'ai-assistant' ? 60 : 0 }));
+---
+<Page title="Website and app cost calculator · Free tool · Wintech Studio" description="Estimate what a website, brand, AI assistant, app or launch film costs in Nigeria and abroad, in dollars and naira. Free, no sign-up." crumbs={[['Free tools', '/tools'], ['Cost calculator', '/tools/cost-calculator']]}>
+  <section class="sec">
+    <div class="wrap cc">
+      <div>
+        <p class="mono">Free tool · 1 minute</p>
+        <h1 class="h1">What will it cost?</h1>
+        <p class="lede">Pick what you need and how big it is. You get an estimated range, not a quote.</p>
+        <fieldset><legend>What do you need?</legend><div class="opts" id="svc">{svc.map(s => <button type="button" class="opt" data-v={s.slug}>{s.name}</button>)}</div></fieldset>
+        <fieldset><legend>How big is it?</legend><div class="opts" id="size">{[['Lean', '1'], ['Standard', '1.3'], ['Full', '1.7']].map(([l, v], i) => <button type="button" class="opt" data-v={v} aria-pressed={i === 0 ? 'true' : 'false'}>{l}</button>)}</div><p class="hint">Lean: the essentials. Standard: more pages, products or screens. Full: integrations, motion and extras.</p></fieldset>
+      </div>
+      <aside class="card out" aria-live="polite">
+        <p class="mono">Estimated range</p>
+        <p class="big" id="usd">$0</p><p class="ngn" id="ngn">Pick at least one service</p><p class="mo" id="mo" hidden></p>
+        <p class="hint">Starting prices from our pricing page. Your proposal fixes the real price after a short call.</p>
+        <a class="btn btn-primary" id="send" href="https://wa.me/2349134071813" target="_blank" rel="noopener">Get a fixed quote</a>
+        <a class="btn btn-outline" href="/pricing">See pricing</a>
+      </aside>
+    </div>
+  </section>
+</Page>
+<script is:inline define:vars={{ svc }}>
+(function(){var picked=[],size=1;var f=function(n){return n.toLocaleString('en-US')};
+  document.querySelectorAll('#svc .opt').forEach(function(b){b.onclick=function(){var i=picked.indexOf(b.dataset.v);i>-1?picked.splice(i,1):picked.push(b.dataset.v);b.setAttribute('aria-pressed',i<0);r()}});
+  document.querySelectorAll('#size .opt').forEach(function(b){b.onclick=function(){document.querySelectorAll('#size .opt').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');size=+b.dataset.v;r()}});
+  function round(n,s){return Math.round(n/s)*s}
+  function r(){var lo=0,ln=0,mo=0;picked.forEach(function(s){var x=svc.find(function(v){return v.slug===s});lo+=x.usd;ln+=x.ngn;mo+=x.monthly});
+    if(picked.indexOf('brand')>-1&&picked.indexOf('websites')>-1)lo=Math.max(lo-200,2500);
+    var a=round(lo*size,50),b=round(lo*size*1.4,50),na=round(ln*size,50000),nb=round(ln*size*1.4,50000);
+    document.getElementById('usd').textContent=picked.length?'$'+f(a)+' to $'+f(b):'$0';
+    document.getElementById('ngn').textContent=picked.length?'About ₦'+f(na)+' to ₦'+f(nb):'Pick at least one service';
+    var m=document.getElementById('mo');m.hidden=!mo;m.textContent='+ $'+mo+' a month for the AI care plan';
+    var names=picked.map(function(s){return svc.find(function(v){return v.slug===s}).name});
+    document.getElementById('send').href='https://wa.me/2349134071813?text='+encodeURIComponent('Hello Wintech, I used the cost calculator.\nNeed: '+names.join(', ')+'\nEstimate: $'+f(a)+' to $'+f(b)+'\nCan I get a fixed quote?')}
+  r()})();
+</script>
+<style>
+  .cc{display:grid;grid-template-columns:1fr 400px;gap:48px;align-items:start}
+  fieldset{border:0;padding:0;margin:32px 0 0}legend{font-weight:500;margin-bottom:12px}.hint{color:var(--fg-2);font-size:13px;margin:10px 0 0}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}.opt{font:400 14px var(--font);padding:10px 14px;background:var(--card);border:1px solid var(--rule);color:var(--fg);cursor:pointer}.opt[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+  .out{position:sticky;top:120px;display:grid;gap:10px}.big{font-size:34px;font-weight:600;letter-spacing:-.02em;margin:0}.ngn,.mo{margin:0;color:var(--fg-2)}
+  @media (max-width:1023px){.cc{grid-template-columns:1fr}.out{position:static}}
+</style>

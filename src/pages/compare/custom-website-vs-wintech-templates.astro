@@ -1,0 +1,28 @@
+---
+import Page from '../../layouts/Page.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Related from '../../components/ui/Related.astro';
+const rows = [['Best for', 'Brands that need to stand out and rank', 'Small businesses going live fast'], ['Cost to start', 'From $1,200', 'Free site at yourname.wintechstudio.com'], ['Time to launch', '2 to 6 weeks', 'Today'], ['Design freedom', 'Anything you can picture', 'Pick a design, change words and photos'], ['Payments', 'Card, bank transfer and USSD', 'Bank transfer checkout'], ['You own the code', 'Yes, in your accounts', 'Site stays on our platform'], ['Good on Google', 'Built for it', 'Basic']];
+---
+<Page title="Custom website or Wintech Templates: which fits your business? · Wintech Studio" description="Compare a custom website with a free Wintech Templates site: cost, time to launch, design freedom, payments, ownership and Google." crumbs={[['Compare', '/guides'], ['Website options', '/compare/custom-website-vs-wintech-templates']]}>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono k">Compare</p>
+      <h1 class="h1">Custom website or Wintech Templates: which one fits your business?</h1>
+      <div class="short"><p class="mono">Short answer</p><p>Selling a few products and need to start this week: a template. Need a site that proves your work, ranks on Google or does something no template can: a custom build.</p></div>
+      <div class="tw"><table><thead><tr><th></th><th class="ours">Custom website</th><th>Wintech Templates</th></tr></thead><tbody>{rows.map(r => <tr><th scope="row">{r[0]}</th><td>{r[1]}</td><td>{r[2]}</td></tr>)}</tbody></table></div>
+      <div class="grid g2 picks">
+        <div class="card"><h2>Pick a template if</h2><p>You sell a handful of things, you want to be live today, and you are happy with a proven layout.</p><a class="btn btn-dark" href="https://app.wintechstudio.com" target="_blank" rel="noopener">Browse templates</a></div>
+        <div class="card dark"><h2>Pick custom if</h2><p>Your site has to win trust, rank on Google, take bookings or orders your way, or connect to your tools.</p><a class="btn btn-primary" href="/services/websites#brief">Build your brief</a></div>
+      </div>
+    </div>
+  </section>
+  <Faq items={[['Can I start on a template and move to custom later?', 'Yes. We can carry your products, words and photos over when you are ready.'], ['Do templates take a cut of my sales?', 'No. Wintech Templates charges in naira for the plan, never a percentage of what you sell.'], ['Which one is best for Google?', 'A custom Astro site, because every page can be written and structured for the searches your customers make.']]} />
+  <Related items={[['Guide · Payments', 'How to take Paystack payments on your website', '/guides/paystack-payments-on-your-website'], ['Service', 'Websites and stores', '/services/websites'], ['Glossary', 'Website and AI words, in plain English', '/glossary']]} />
+</Page>
+<style>
+  .k{color:var(--sig)}.h1{max-width:900px}.short{background:#EEF1FF;padding:24px;margin:32px 0 40px}.short p:last-child{margin:8px 0 0;font-size:17px}:root[data-theme="dark"] .short{background:#161C33}
+  .tw{overflow-x:auto;border:1px solid var(--rule)}table{width:100%;border-collapse:collapse;min-width:640px}th,td{text-align:left;padding:18px 24px;border-top:1px solid var(--rule);vertical-align:top;font-size:15px}thead th{background:var(--surface);border-top:0;font-size:16px}
+  td{color:var(--fg-2)}tbody th{font-weight:500}.ours{box-shadow:inset 0 3px 0 var(--sig)}
+  .picks{margin-top:40px}.picks h2{font-size:22px;margin:0 0 8px}.picks .btn{margin-top:12px}.dark{background:#0A0E17;color:#fff;border-color:#0A0E17}.dark p{color:#A1A1AA}
+</style>

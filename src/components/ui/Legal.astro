@@ -1,0 +1,22 @@
+---
+import Page from '../../layouts/Page.astro';
+interface Props { title: string; path: string; description: string; clauses: [string, string][] }
+const { title, path, description, clauses } = Astro.props;
+const id = (s: string) => s.toLowerCase().replace(/\W+/g, '-');
+---
+<Page title={`${title} · Wintech Studio`} description={description} crumbs={[[title, path]]} closing={false}>
+  <section class="sec">
+    <div class="wrap legal">
+      <aside><p class="mono">On this page</p><nav>{clauses.map(([h]) => <a href={`#${id(h)}`}>{h}</a>)}</nav></aside>
+      <div>
+        <p class="mono">Legal</p><h1 class="h1">{title}</h1><p class="upd">Last updated 25 October 2026.</p>
+        {clauses.map(([h, b]) => <section id={id(h)}><h2>{h}</h2><p>{b}</p></section>)}
+      </div>
+    </div>
+  </section>
+</Page>
+<style>
+  .legal{display:grid;grid-template-columns:240px 1fr;gap:64px}aside{position:sticky;top:120px;align-self:start}aside nav{display:grid;gap:10px;margin-top:12px}aside a{color:var(--fg-2);text-decoration:none;font-size:14px}aside a:hover{color:var(--fg)}
+  .upd{color:var(--fg-2)}section{border-top:1px solid var(--rule);padding:28px 0;max-width:720px}h2{font-size:20px;margin:0 0 10px}section p{color:var(--fg-2);line-height:1.7;margin:0}
+  @media (max-width:1023px){.legal{grid-template-columns:1fr}aside{position:static}}
+</style>

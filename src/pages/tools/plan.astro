@@ -1,0 +1,53 @@
+---
+import Page from '../../layouts/Page.astro';
+import services from '../../data/services.json';
+import { services as names } from '../../data/site';
+const svc = services.map(s => ({ slug: s.slug, name: names.find(n => n.slug === s.slug)!.name, price: s.price, timeline: s.timeline }));
+---
+<Page title="Plan your project · Free tool · Wintech Studio" description="Answer four questions and get the services, timeline and starting budget that fit your business. Free, no sign-up." crumbs={[['Free tools', '/tools'], ['Plan your project', '/tools/plan']]}>
+  <section class="sec">
+    <div class="wrap pl">
+      <div>
+        <p class="mono">Free tool · 3 minutes</p>
+        <h1 class="h1">Plan your project.</h1>
+        <p class="lede">Four questions. You get a plan you can send us, or keep.</p>
+        <div id="qs">
+          <fieldset data-k="stage"><legend>1. Where are you?</legend><div class="opts">{['Starting something', 'Adding tech to my business', 'Refreshing my brand'].map((o, i) => <button type="button" class="opt" data-v={['starting', 'adding-tech', 'refresh'][i]}>{o}</button>)}</div></fieldset>
+          <fieldset data-k="need" data-multi="1"><legend>2. What do you need? <span>pick any</span></legend><div class="opts">{svc.map(s => <button type="button" class="opt" data-v={s.slug}>{s.name}</button>)}<button type="button" class="opt" data-v="unsure">Not sure</button></div></fieldset>
+          <fieldset data-k="when"><legend>3. When do you need it?</legend><div class="opts">{['This month', 'In 1 to 3 months', 'Just exploring'].map(o => <button type="button" class="opt" data-v={o}>{o}</button>)}</div></fieldset>
+          <fieldset data-k="budget"><legend>4. Budget</legend><div class="opts">{['Under $1,000', '$1,000 to $3,000', '$3,000+', 'Not sure'].map(o => <button type="button" class="opt" data-v={o}>{o}</button>)}</div></fieldset>
+        </div>
+      </div>
+      <aside class="card out" aria-live="polite">
+        <p class="mono">Your plan</p>
+        <div id="plan"><p class="empty">Answer the questions to see your plan.</p></div>
+        <a class="btn btn-primary" id="send" href="https://wa.me/2349134071813" target="_blank" rel="noopener">Send this plan on WhatsApp</a>
+        <a class="btn btn-outline" href="/book">Book a call instead</a>
+      </aside>
+    </div>
+  </section>
+</Page>
+<script is:inline define:vars={{ svc }}>
+(function(){
+  var st={need:[]},rec={starting:['brand','websites','apps'],'adding-tech':['websites','ai-assistant','automation'],refresh:['brand','websites','motion']};
+  var p=new URLSearchParams(location.search).get('start');if(p&&rec[p])st.stage=p;
+  document.querySelectorAll('#qs fieldset').forEach(function(f){var k=f.dataset.k,m=f.dataset.multi;f.querySelectorAll('.opt').forEach(function(b){
+    b.onclick=function(){if(m){var i=st[k].indexOf(b.dataset.v);i>-1?st[k].splice(i,1):st[k].push(b.dataset.v)}else st[k]=b.dataset.v;sync()}})});
+  function sync(){document.querySelectorAll('#qs fieldset').forEach(function(f){var k=f.dataset.k;f.querySelectorAll('.opt').forEach(function(b){var on=Array.isArray(st[k])?st[k].indexOf(b.dataset.v)>-1:st[k]===b.dataset.v;b.setAttribute('aria-pressed',on)})});render()}
+  function render(){var el=document.getElementById('plan');var picks=st.need.filter(function(x){return x!=='unsure'});if(!picks.length&&st.stage)picks=rec[st.stage];if(!picks.length){el.innerHTML='<p class="empty">Answer the questions to see your plan.</p>';return}
+    var rows=picks.map(function(s){var x=svc.find(function(v){return v.slug===s});return x});var h='<ol>';rows.forEach(function(x,i){h+='<li><b></b><span></span></li>'});h+='</ol>';el.innerHTML=h;
+    el.querySelectorAll('li').forEach(function(li,i){li.firstChild.textContent=rows[i].name;li.lastChild.textContent=rows[i].price+' · '+rows[i].timeline});
+    var tip=document.createElement('p');tip.className='tip';tip.textContent=st.budget==='Under $1,000'?'Tip: start with the $200 diagnostic or a free Wintech Templates site, then build up.':(rows.length>1?'Start with the first item. The rest can follow once it pays for itself.':'One service, one project lead, a fixed price before work starts.');el.appendChild(tip);
+    var t='Hello Wintech, here is my plan.\nStage: '+(st.stage||'-')+'\nNeed: '+rows.map(function(r){return r.name}).join(', ')+'\nWhen: '+(st.when||'-')+'\nBudget: '+(st.budget||'-');
+    document.getElementById('send').href='https://wa.me/2349134071813?text='+encodeURIComponent(t);try{localStorage.setItem('wt-plan',JSON.stringify(st))}catch(e){}}
+  sync();
+})();
+</script>
+<style>
+  .pl{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start}
+  fieldset{border:0;padding:0;margin:32px 0 0}legend{font-weight:500;margin-bottom:12px}legend span{color:var(--fg-2);font-weight:400;font-size:13px}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}.opt{font:400 14px var(--font);padding:10px 14px;background:var(--card);border:1px solid var(--rule);color:var(--fg);cursor:pointer}.opt:hover{border-color:var(--ash)}.opt[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+  .out{position:sticky;top:120px;display:grid;gap:12px}.out :global(ol){padding:0;margin:0;list-style:none;display:grid;gap:10px}.out :global(li){display:grid;border-bottom:1px solid var(--rule);padding-bottom:10px}.out :global(li span){color:var(--fg-2);font-size:14px}.out :global(b){font-weight:600}
+  .out :global(.tip){font-size:14px;color:var(--fg-2);margin:4px 0 0}.out :global(.empty){color:var(--fg-2)}
+  @media (max-width:1023px){.pl{grid-template-columns:1fr}.out{position:static}}
+</style>

@@ -1,0 +1,42 @@
+---
+import Page from '../../layouts/Page.astro';
+import Icon from '../../components/Icon.astro';
+import services from '../../data/services.json';
+import { services as names } from '../../data/site';
+const paths = [['starting', 'Starting something', 'An idea, maybe a waitlist. You need a brand, a page to test demand and a first version.', ['brand', 'websites', 'apps']], ['adding-tech', 'Adding tech to my business', 'It already sells. You need a store, replies at any hour and less work on your phone.', ['websites', 'ai-assistant', 'automation']], ['refresh', 'Refreshing my brand', 'It works but looks dated or leaks customers. You want it sharper, faster, premium.', ['brand', 'websites', 'motion']]] as const;
+---
+<Page title="Services · Wintech Studio" description="Brand, websites and stores, AI assistants, automation, apps and motion, from one team in Lagos." crumbs={[['Services', '/services']]}>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono">Services</p>
+      <h1 class="h1">One team for the brand,<br />the build and the AI.</h1>
+      <p class="lede">Pick one thing or the whole system. Every service is built, handed over, and run if you want us to.</p>
+      <div class="grid g3 list">
+        {services.map(s => (
+          <a class="card svc" href={`/services/${s.slug}`}>
+            <h2>{names.find(n => n.slug === s.slug)!.name}</h2>
+            <p>{s.intro}</p>
+            <p class="price"><strong>{s.price}</strong> · {s.timeline}</p>
+            <span class="link">See the service <Icon name="arrow-right" size={14} /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="sec alt">
+    <div class="wrap">
+      <p class="mono">Not sure where to start?</p>
+      <h2 class="h2">Start from where you are.</h2>
+      <div class="grid g3">
+        {paths.map(([id, t, d, ss]) => (
+          <div class="card" id={id}><h3>{t}</h3><p>{d}</p><p class="tags">{ss.map(x => <a href={`/services/${x}`}>{names.find(n => n.slug === x)!.name}</a>)}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Page>
+<style>
+  .list{margin-top:40px}.svc{text-decoration:none;display:grid;gap:12px;align-content:start}.svc:hover{border-color:var(--ash)}
+  .svc h2{font-size:22px}.price{font-size:14px}.price strong{color:var(--fg)}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px!important}.tags a{font-size:13px;border:1px solid var(--rule);padding:5px 10px;text-decoration:none;color:var(--fg)}
+</style>

@@ -1,0 +1,14 @@
+---
+import Page from '../layouts/Page.astro';
+import Faq from '../components/ui/Faq.astro';
+const groups: [string, [string, string][]][] = [
+  ['Prices and payment', [['What does it cost?', 'Websites from $1,200, brand systems from $1,500, brand and website from $2,500, the AI assistant from $1,800 plus $60 a month, apps from $4,000. Every project has a fixed price before work starts.'], ['Can I pay in naira?', 'Yes. Every price shows in dollars with naira beside it, and your proposal can be invoiced in naira.'], ['How do payments work?', '50% to start, 40% at design approval, 10% at handover. Monthly plans are billed monthly.'], ['Can I start smaller?', 'Yes. Start with the $200 diagnostic or one service, then add more when it pays for itself. Wintech Templates gives you a free site to start today.']]],
+  ['The brief and the call', [['Do I have to book a call?', 'No. You can send the brief on WhatsApp or by email and we reply in writing. A call is faster for bigger projects.'], ['What happens to the brief I tick?', 'Your picks are saved in your browser. They reach us only when you send them or book a call, and we read them before we talk.']]],
+  ['Accounts and ownership', [['Who owns the work?', 'You do. Accounts are in your name from day one, and every file, asset and line of code is yours on the final payment.'], ['Will I be able to edit my site?', 'Yes. We hand over with training, and you can edit words, photos and prices yourself.']]],
+  ['Timelines', [['How long does a project take?', 'Motion 1 to 3 weeks, websites 2 to 6 weeks, brand 3 to 4 weeks, AI assistants 4 to 6 weeks, apps 4 to 8 weeks. You see something new every Friday.']]],
+];
+---
+<Page jsonld={[{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: groups.flatMap(g => g[1]).map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }]} title="FAQ · Wintech Studio" description="Answers on prices, payment, ownership, timelines and how a Wintech Studio project runs." crumbs={[['FAQ', '/faq']]}>
+  <section class="sec"><div class="wrap"><p class="mono">FAQ</p><h1 class="h1">Questions people ask<br />before they book.</h1></div></section>
+  {groups.map(([t, items], i) => <Faq items={items} title={t} ld={false} plain={i % 2 === 1} />)}
+</Page>

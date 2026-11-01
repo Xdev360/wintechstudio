@@ -1,0 +1,47 @@
+---
+import Page from '../layouts/Page.astro';
+import Icon from '../components/Icon.astro';
+const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About Wintech Studio', mainEntity: { '@type': 'Person', name: 'Oladele Ibraheem', jobTitle: 'Founder and project lead', worksFor: { '@type': 'Organization', name: 'Wintech Studio' } } };
+---
+<Page title="About · Wintech Studio" description="A Lagos design and build studio. We make the brand, the website or store, the AI and the automation a business runs on." crumbs={[['About', '/about']]} jsonld={[ld]}>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono">About Wintech</p>
+      <h1 class="h1">The team founders<br />never had.</h1>
+      <p class="lede">A Lagos design and build studio. We make the brand, the website or store, the AI and the automation a business runs on.</p>
+      <dl class="facts">{[['Lagos', 'working worldwide'], ['2020', 'when Wintech started'], ['One', 'project lead per client'], ['A few', 'projects at a time']].map(([a, b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl>
+    </div>
+  </section>
+  <section class="sec alt">
+    <div class="wrap note">
+      <p class="mono">A note from the founder</p>
+      <div>
+        <h2 class="h2">Built to be the team I never had.</h2>
+        <p>Good ideas don't die because they were bad. They die because one person is doing six jobs, or managing five freelancers who never talk to each other.</p>
+        <p>So you talk to one project lead. Behind that person sit the designers, developers, film crew and the AI. One plan, one price, something new every week.</p>
+        <p>We take a few projects at a time and say no when we are not the right fit.</p>
+        <p class="sig"><strong>Oladele Ibraheem</strong> · Founder and project lead</p>
+      </div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono">Who we build for</p><h2 class="h2">Good fits, and poor ones.</h2>
+      <div class="grid g2 fit">
+        <div class="card"><p class="mono">We build for</p><ul>{['Owners whose product already sells', 'Businesses running before tech was part of it', 'Founders with proof of demand or money in hand', 'People who will keep running it after launch'].map(t => <li><Icon name="check" size={16} />{t}</li>)}</ul></div>
+        <div class="card"><p class="mono">We are a poor fit if</p><ul>{['You want the cheapest quote in town', 'You need it yesterday with no plan', 'You want us to run the business for you', 'You cannot spare two hours a week'].map(t => <li><Icon name="x" size={16} />{t}</li>)}</ul></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec alt">
+    <div class="wrap bench"><div><p class="mono">The bench</p><h2 class="h2">Specialists behind the curtain.</h2><p class="lede">Wintech keeps the relationship, the strategy and the standard. Named partners produce under our brief and our review.</p><a class="btn btn-outline" href="/join-the-bench">Join the bench</a></div>
+      <ul>{['Brand designers', 'Product designers', 'Developers', 'Film and photo', 'AI engineers'].map(t => <li>{t}</li>)}</ul></div>
+  </section>
+</Page>
+<style>
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:48px 0 0;border-top:1px solid var(--rule);padding-top:24px}.facts dt{font-size:32px;font-weight:600;letter-spacing:-.02em}.facts dd{margin:0;color:var(--fg-2);font-size:14px}
+  .note{display:grid;grid-template-columns:300px 1fr;gap:40px}.note p{font-size:18px;line-height:1.6;color:var(--fg-2);max-width:680px}.note .sig{color:var(--fg);font-size:15px}
+  .fit{margin-top:40px}.fit ul{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:12px}.fit li{display:flex;gap:10px;align-items:center}.fit li :global(svg){color:var(--sig);flex:none}
+  .bench{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}.bench ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}.bench li{padding:10px 16px;background:var(--card);border:1px solid var(--rule)}
+  @media (max-width:1023px){.facts{grid-template-columns:1fr 1fr}.note,.bench{grid-template-columns:1fr}}
+</style>

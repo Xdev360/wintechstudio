@@ -1,0 +1,20 @@
+---
+import type { Case } from '../../data/cases';
+interface Props { c: Case; big?: boolean; eager?: boolean }
+const { c, big = false, eager = false } = Astro.props;
+---
+<div class:list={['poster', { big }]} style={`--c1:${c.colors[0]};--c2:${c.colors[1]}`}>
+  {c.image ? <img src={c.image} alt={`${c.name}: ${c.line}`} loading={eager ? 'eager' : 'lazy'} decoding="async" width="1000" height="600" /> : (
+    <div class="type"><span class="mono">{c.kind}</span><strong>{c.name}</strong><span>{c.line}</span></div>
+  )}
+</div>
+<style>
+  .poster{aspect-ratio:16/10;background:linear-gradient(135deg,var(--c1),color-mix(in srgb,var(--c1) 70%,var(--c2)));overflow:hidden;position:relative}
+  .poster img{width:100%;height:100%;object-fit:cover;display:block}
+  .type{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;padding:clamp(20px,4vw,40px);color:#fff}
+  .type .mono{color:rgba(255,255,255,.7);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .type strong{font-size:clamp(28px,4vw,48px);font-weight:600;letter-spacing:-.02em;line-height:1}
+  .type span:last-child{max-width:440px;color:rgba(255,255,255,.82);font-size:15px;line-height:1.45}
+  .type::before{content:"";position:absolute;right:-8%;top:-20%;width:55%;aspect-ratio:1;border-radius:50%;background:var(--c2);opacity:.85;filter:blur(2px)}
+  .big .type strong{font-size:clamp(36px,6vw,72px)}
+</style>

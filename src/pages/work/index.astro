@@ -1,0 +1,29 @@
+---
+import Page from '../../layouts/Page.astro';
+import Poster from '../../components/work/Poster.astro';
+import Icon from '../../components/Icon.astro';
+import { cases } from '../../data/cases';
+---
+<Page title="Work · Wintech Studio" description="Seven projects: brands, apps, stores and films built by Wintech Studio in Lagos, from Mylo to Tobel Pearls." crumbs={[['Work', '/work']]}>
+  <section class="sec">
+    <div class="wrap">
+      <p class="mono">Work</p>
+      <h1 class="h1">Seven projects.<br />Real screens, real brands.</h1>
+      <p class="lede">Client projects and our own products, each with the work, the thinking and where it stands today.</p>
+      <div class="grid g2 list">
+        {cases.map((c, i) => (
+          <a class="item" href={`/work/${c.slug}`}>
+            <Poster c={c} eager={i < 2} />
+            <div class="meta"><div><h2>{c.name}</h2><p>{c.line}</p></div><span class="mono">{c.kind}</span></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Page>
+<style>
+  .list{margin-top:48px;gap:40px 24px}.item{text-decoration:none;color:var(--fg);display:grid;gap:16px}
+  .item:hover :global(.poster){opacity:.92}
+  .meta{display:flex;justify-content:space-between;gap:16px;align-items:start}.meta h2{font-size:20px;margin:0 0 4px}.meta p{margin:0;color:var(--fg-2);font-size:15px}
+  .meta .mono{white-space:nowrap;font-size:11px;color:var(--fg-2)}
+</style>

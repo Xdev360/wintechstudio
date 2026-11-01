@@ -1,0 +1,53 @@
+---
+import Page from '../../layouts/Page.astro';
+const qs: [string, [string, number][]][] = [
+  ['How fast do you usually reply to a new DM or WhatsApp?', [['Under 5 minutes', 20], ['Within an hour', 14], ['Same day', 7], ['When I can', 0]]],
+  ['Do you reply at night and on weekends?', [['Yes, always', 15], ['Sometimes', 8], ['No', 0]]],
+  ['Can customers see prices without asking?', [['Yes, on a site or catalogue', 20], ['Some of them', 10], ['No, they have to DM', 0]]],
+  ['How do customers pay?', [['Checkout link or website', 15], ['Bank transfer, confirmed by me', 7], ['It depends', 2]]],
+  ['How many people handle messages?', [['A team or an assistant', 15], ['Me and one other', 8], ['Just me', 3]]],
+  ['Do you follow up with people who asked but did not buy?', [['Yes, every time', 15], ['Sometimes', 7], ['Never', 0]]],
+];
+---
+<Page title="Inbox check · Free tool · Wintech Studio" description="Score how many customers you lose in Instagram DMs and WhatsApp, and get the first three things to fix. Free, no sign-up." crumbs={[['Free tools', '/tools'], ['Inbox check', '/tools/inbox-check']]}>
+  <section class="sec">
+    <div class="wrap ic">
+      <div>
+        <p class="mono">Free tool · 2 minutes</p>
+        <h1 class="h1">How many customers<br />does your inbox lose?</h1>
+        <p class="lede">Six questions about your DMs and WhatsApp. Get a score and what to fix first.</p>
+        <div id="qs">{qs.map(([q, opts], i) => <fieldset data-i={i}><legend>{i + 1}. {q}</legend><div class="opts">{opts.map(([o, p]) => <button type="button" class="opt" data-p={p}>{o}</button>)}</div></fieldset>)}</div>
+      </div>
+      <aside class="card out" aria-live="polite">
+        <p class="mono">Your score</p>
+        <p class="big"><span id="score">0</span><small> / 100</small></p>
+        <div class="bar"><span id="fill"></span></div>
+        <p id="verdict" class="v">Answer all six to see your result.</p>
+        <ul id="fixes"></ul>
+        <a class="btn btn-primary" href="/services/ai-assistant">See the AI assistant</a>
+        <a class="btn btn-outline" id="send" href="https://wa.me/2349134071813" target="_blank" rel="noopener">Send my score</a>
+      </aside>
+    </div>
+  </section>
+</Page>
+<script is:inline>
+(function(){var ans={},tips=['Reply in minutes: an assistant can answer prices and stock instantly.','Cover nights and weekends: most missed orders arrive after hours.','Show prices before the DM: a simple site or catalogue cuts "how much?" messages.','Add a checkout link: fewer transfers to confirm by hand.','Share the load: one inbox for the team, with the assistant handling the repeats.','Follow up: a polite reminder the next day wins back a share of lost buyers.'];
+  document.querySelectorAll('#qs fieldset').forEach(function(f){f.querySelectorAll('.opt').forEach(function(b,bi){b.onclick=function(){f.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');ans[f.dataset.i]={p:+b.dataset.p,best:bi===0};r()}})});
+  function r(){var k=Object.keys(ans),s=0;k.forEach(function(i){s+=ans[i].p});document.getElementById('score').textContent=s;document.getElementById('fill').style.width=s+'%';
+    var v=document.getElementById('verdict'),ul=document.getElementById('fixes');ul.innerHTML='';
+    if(k.length<6){v.textContent='Answer all six to see your result. '+k.length+' of 6 done.';return}
+    v.textContent=s>=80?'Strong. Your inbox is working for you.':s>=50?'Leaking. You are losing some customers every week.':'Losing customers. Many people give up before you reply.';
+    var weak=k.filter(function(i){return !ans[i].best}).sort(function(a,b){return ans[a].p-ans[b].p}).slice(0,3);
+    weak.forEach(function(i){var li=document.createElement('li');li.textContent=tips[i];ul.appendChild(li)});
+    document.getElementById('send').href='https://wa.me/2349134071813?text='+encodeURIComponent('Hello Wintech, my inbox check score is '+s+'/100. Can you help me fix it?')}
+})();
+</script>
+<style>
+  .ic{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start}
+  fieldset{border:0;padding:0;margin:28px 0 0}legend{font-weight:500;margin-bottom:12px}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}.opt{font:400 14px var(--font);padding:10px 14px;background:var(--card);border:1px solid var(--rule);color:var(--fg);cursor:pointer}.opt[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+  .out{position:sticky;top:120px;display:grid;gap:12px}.big{font-size:48px;font-weight:600;margin:0;letter-spacing:-.03em}.big small{font-size:18px;color:var(--fg-2);font-weight:400}
+  .bar{height:6px;background:var(--surface)}.bar span{display:block;height:100%;width:0;background:var(--sig);transition:width .4s}
+  .v{margin:0;font-weight:500}#fixes{margin:0;padding-left:18px;display:grid;gap:8px;color:var(--fg-2);font-size:14px}
+  @media (max-width:1023px){.ic{grid-template-columns:1fr}.out{position:static}}
+</style>
