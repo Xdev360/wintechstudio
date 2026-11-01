@@ -25,6 +25,7 @@ const menus = [
       <a class="nav-item" href="/contact">Contact</a>
     </nav>
     <div class="actions">
+      <button class="icon-btn sound" id="sound-toggle" aria-label="Sound effects" aria-pressed="false" title="Sound effects"><Icon name="volume-x" size={18} class="off" /><Icon name="volume-2" size={18} class="onn" /></button>
       <button class="icon-btn" id="theme-toggle" aria-label="Switch light and dark"><Icon name="moon" size={18} /></button>
       <a class="btn btn-primary book" href="/book">Book a call</a>
       <button class="icon-btn burger" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><Icon name="menu" size={22} /></button>
@@ -60,10 +61,11 @@ const menus = [
   .actions{display:flex;align-items:center;gap:12px}
   .icon-btn{background:none;border:0;color:var(--fg);padding:8px;cursor:pointer;display:inline-flex}
   .burger{display:none}
+  .sound :global(.onn){display:none}:global(:root[data-sound="on"]) .sound :global(.onn){display:block}:global(:root[data-sound="on"]) .sound :global(.off){display:none}
   .sheet{display:flex;flex-direction:column;padding:8px 16px 24px;border-top:1px solid var(--rule)}
   .sheet[hidden]{display:none}
   .sheet a,.sheet summary{padding:14px 0;border-bottom:1px solid var(--rule);text-decoration:none;font-size:17px;font-weight:500;list-style:none;display:flex;justify-content:space-between;align-items:center}
   .sheet details a{padding-left:12px;font-weight:400;color:var(--fg-2)}
   .sheet .btn{margin-top:16px;border:0;justify-content:center;color:#fff}
-  @media (max-width:1023px){.nav,.book,#theme-toggle{display:none}.burger{display:inline-flex}.bar{height:61px}}
+  @media (max-width:1023px){.nav,.book,#theme-toggle,.sound{display:none}.burger{display:inline-flex}.bar{height:61px}}
 </style>

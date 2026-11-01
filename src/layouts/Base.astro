@@ -48,6 +48,8 @@ const org = {
     <meta property="og:image" content={og} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@wintechstudio_" />
+    <script is:inline>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+    <script src="/ui-sound.js" defer></script>
     <script type="application/ld+json" set:html={JSON.stringify([org, ...jsonld])} />
   </head>
   <body>
