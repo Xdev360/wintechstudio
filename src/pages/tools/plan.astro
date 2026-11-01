@@ -1,53 +1,207 @@
 ---
 import Page from '../../layouts/Page.astro';
+import Icon from '../../components/Icon.astro';
+import Bi from '../../components/tools/Bi.astro';
+import ToolHero from '../../components/tools/ToolHero.astro';
 import services from '../../data/services.json';
-import { services as names } from '../../data/site';
-const svc = services.map(s => ({ slug: s.slug, name: names.find(n => n.slug === s.slug)!.name, price: s.price, timeline: s.timeline }));
+import '../../components/tools/tools.css';
+
+// Every figure comes from services.json starting prices; nothing is typed in by hand.
+const num = (s: string) => Number(((s || '').match(/[\d,]+/) || ['0'])[0].replace(/,/g, ''));
+const monthly = (s: string) => { const m = (s || '').match(/\+\s*[$₦]([\d,]+)\/mo/); return m ? Number(m[1].replace(/,/g, '')) : 0; };
+const weeks = (s: string) => (s.match(/\d+/g) || ['0', '0']).map(Number);
+const svc = Object.fromEntries(services.map(s => [s.slug, { usd: num(s.price), ngn: num(s.priceNgn), usdMo: monthly(s.price), ngnMo: monthly(s.priceNgn), wk: weeks(s.timeline), priced: /\$\d/.test(s.price) }]));
+
+const stages = [
+  { v: 'starting', icon: 'rocket', t: 'Starting something', s: 'An idea or a waitlist' },
+  { v: 'adding-tech', icon: 'store', t: 'Adding tech to my business', s: 'It already sells' },
+  { v: 'refresh', icon: 'refresh', t: 'Refreshing my brand', s: 'Refresh what works' },
+];
+const needs = [
+  { v: 'brand', svc: 'brand', icon: 'palette', t: 'Brand', m: 'Brand', d: 'Logo, colours, type, guidelines' },
+  { v: 'website', svc: 'websites', icon: 'website', t: 'Website', m: 'Website', d: 'fast on mobile data', sized: 'pages' },
+  { v: 'store', svc: 'websites', icon: 'store', t: 'Store with checkout', m: 'Store', d: 'Paystack, delivery fees', sized: 'products' },
+  { v: 'ai', svc: 'ai-assistant', icon: 'message', t: 'AI assistant', m: 'AI assistant', d: 'Site and WhatsApp, trained on your catalogue' },
+  { v: 'automation', svc: 'automation', icon: 'bolt', t: 'Automation', m: 'Automation', d: 'With the AI plan, or quoted per workflow' },
+  { v: 'app', svc: 'apps', icon: 'code', t: 'App or MVP', m: 'App', d: 'sized to your scope', sized: 'screens' },
+  { v: 'film', svc: 'motion', icon: 'image', t: 'Launch film', m: 'Film', d: 'Motion and film' },
+  { v: 'packaging', svc: 'brand', icon: 'box', t: 'Packaging', m: 'Packaging', d: 'Boxes, labels, print files' },
+];
+const stops = [1, 10, 20, 50, 100, 200];
+const whens = ['This month', 'In 1 to 2 months', 'No rush'];
+const diag = 200;
 ---
-<Page title="Plan your project · Free tool · Wintech Studio" description="Answer four questions and get the services, timeline and starting budget that fit your business. Free, no sign-up." crumbs={[['Free tools', '/tools'], ['Plan your project', '/tools/plan']]}>
-  <section class="sec">
-    <div class="wrap pl">
-      <div>
-        <p class="mono">Free tool · 3 minutes</p>
-        <h1 class="h1">Plan your project.</h1>
-        <p class="lede">Four questions. You get a plan you can send us, or keep.</p>
-        <div id="qs">
-          <fieldset data-k="stage"><legend>1. Where are you?</legend><div class="opts">{['Starting something', 'Adding tech to my business', 'Refreshing my brand'].map((o, i) => <button type="button" class="opt" data-v={['starting', 'adding-tech', 'refresh'][i]}>{o}</button>)}</div></fieldset>
-          <fieldset data-k="need" data-multi="1"><legend>2. What do you need? <span>pick any</span></legend><div class="opts">{svc.map(s => <button type="button" class="opt" data-v={s.slug}>{s.name}</button>)}<button type="button" class="opt" data-v="unsure">Not sure</button></div></fieldset>
-          <fieldset data-k="when"><legend>3. When do you need it?</legend><div class="opts">{['This month', 'In 1 to 3 months', 'Just exploring'].map(o => <button type="button" class="opt" data-v={o}>{o}</button>)}</div></fieldset>
-          <fieldset data-k="budget"><legend>4. Budget</legend><div class="opts">{['Under $1,000', '$1,000 to $3,000', '$3,000+', 'Not sure'].map(o => <button type="button" class="opt" data-v={o}>{o}</button>)}</div></fieldset>
+<Page title="Plan your project · Free tool · Wintech Studio" description="Tap where you are and what you need to see the scope, a price range in dollars or naira and a timeline. Free, no sign up, send it as a brief." crumbs={[['Free tools', '/tools'], ['Plan your project', '/tools/plan']]} theme="dark">
+  <ToolHero class="hide-m" label="Free tool · No call needed" title="Plan your project<br />in three minutes" text="Tell us where you are and tap what you need. You see the scope, a price range and a timeline as you go. Send it to us when it looks right; the project lead replies within one working day." />
+  <section class="tl-body planner">
+    <div class="m-head"><p class="tl-mono">Free tool</p><h2>Plan your project<br />in three minutes</h2></div>
+    <div class="wrap"><div class="tl-grid pl">
+      <div class="tl-panel form">
+        <div class="tl-head">
+          <h2>Your project</h2>
+          <div class="tl-seg cur" role="group" aria-label="Currency"><button type="button" data-cur="usd" aria-pressed="true">USD</button><button type="button" data-cur="ngn" aria-pressed="false">NGN</button></div>
+        </div>
+        <div class="tl-q" role="group" data-k="stage">
+          <p class="tl-qh"><span class="n">01</span><span class="m-n">01 </span>Where are you?</p>
+          <div class="opts o3">{stages.map(o => (
+            <button type="button" class="opt" data-v={o.v} aria-pressed="false">
+              <span class="ot"><Bi name={o.icon} size={33} /><span class="tl-box"><Icon name="check" size={14} stroke={2.5} /></span></span>
+              <b>{o.t}</b><small>{o.s}</small>
+            </button>))}</div>
+        </div>
+        <div class="tl-q" role="group" data-k="need">
+          <p class="tl-qh"><span class="n">02</span><span class="m-n">02 </span>What do you need?<span class="d-only">&nbsp;Pick all that apply</span></p>
+          <div class="opts o4">{needs.map(o => (
+            <button type="button" class="opt sm" data-v={o.v} aria-pressed="false" data-m={o.v === 'packaging' ? '1' : undefined}>
+              <span class="ot"><Bi name={o.icon} size={33} /><span class="tl-box"><Icon name="check" size={14} stroke={2.5} /></span></span>
+              <b><span class="d-only">{o.t}</span><span class="m-only">{o.m}</span></b>
+            </button>))}</div>
+          <p class="tl-hint d-only">Not sure? Pick "Refreshing my brand" and the <a href="/diagnostic">paid diagnostic</a>, and we tell you what to fix first.</p>
+        </div>
+        <div class="tl-q d-only">
+          <div class="tl-qrow"><p class="tl-qh"><span class="n">03</span>How big is it?</p><output id="size-out">10 pages</output></div>
+          <input class="tl-range" id="size" type="range" min="0" max="5" step="1" value="1" aria-label="How big is it?" />
+          <div class="tl-ticks" aria-hidden="true">{stops.map((s, i) => <span>{i === 5 ? '200+' : s}</span>)}</div>
+        </div>
+        <div class="tl-q" role="group" data-k="when">
+          <p class="tl-qh"><span class="n">04</span><span class="m-n">03 </span>When do you need it?</p>
+          <div class="tl-seg when">{whens.map(w => <button type="button" data-v={w} aria-pressed="false">{w}</button>)}</div>
+        </div>
+        <div class="tl-q d-only">
+          <p class="tl-qh"><span class="n">05</span>After launch</p>
+          <button type="button" class="care" id="care" role="switch" aria-checked="false">
+            <span><b>Keep it running for me</b><small>AI care plan: retraining, fixes and a monthly report</small></span>
+            <span class="sw" aria-hidden="true"><i></i></span>
+          </button>
         </div>
       </div>
-      <aside class="card out" aria-live="polite">
-        <p class="mono">Your plan</p>
-        <div id="plan"><p class="empty">Answer the questions to see your plan.</p></div>
-        <a class="btn btn-primary" id="send" href="https://wa.me/2349134071813" target="_blank" rel="noopener">Send this plan on WhatsApp</a>
-        <a class="btn btn-outline" href="/book">Book a call instead</a>
+      <aside class="tl-panel tl-est" aria-live="polite">
+        <div class="tl-est-in">
+          <div class="eh"><p class="tl-mono">Your scope</p><p class="tl-mono d-only" id="cur-l">USD, starting points</p></div>
+          <div class="tl-bar d-only" id="bar"></div>
+          <div class="tl-rows" id="rows"><p class="empty">Tap what you need to see your scope.</p></div>
+          <div class="tl-rule d-only"></div>
+          <div class="tl-kv d-only"><span>Typical timeline</span><b id="tl">-</b></div>
+          <div class="tl-total"><p class="tl-mono d-only">Project range</p><p class="big" id="big">-</p><p class="sub" id="sub">Pick at least one service</p></div>
+          <a class="tl-btn" id="send" href="https://wa.me/2349134071813" target="_blank" rel="noopener">Send this brief to Wintech <Icon name="arrow-right" size={14} /></a>
+          <a class="tl-btn ghost d-only" id="book" href="/book?service=plan">Book a call with it attached <Icon name="arrow-right" size={14} /></a>
+          <p class="tl-fine d-only">Ranges, not quotes. Your fixed price comes after the <a href="/diagnostic">paid diagnostic</a> (${diag}, credited to the build).</p>
+        </div>
       </aside>
-    </div>
+    </div></div>
   </section>
 </Page>
-<script is:inline define:vars={{ svc }}>
+<script is:inline define:vars={{ svc, needs, stops }}>
 (function(){
-  var st={need:[]},rec={starting:['brand','websites','apps'],'adding-tech':['websites','ai-assistant','automation'],refresh:['brand','websites','motion']};
-  var p=new URLSearchParams(location.search).get('start');if(p&&rec[p])st.stage=p;
-  document.querySelectorAll('#qs fieldset').forEach(function(f){var k=f.dataset.k,m=f.dataset.multi;f.querySelectorAll('.opt').forEach(function(b){
-    b.onclick=function(){if(m){var i=st[k].indexOf(b.dataset.v);i>-1?st[k].splice(i,1):st[k].push(b.dataset.v)}else st[k]=b.dataset.v;sync()}})});
-  function sync(){document.querySelectorAll('#qs fieldset').forEach(function(f){var k=f.dataset.k;f.querySelectorAll('.opt').forEach(function(b){var on=Array.isArray(st[k])?st[k].indexOf(b.dataset.v)>-1:st[k]===b.dataset.v;b.setAttribute('aria-pressed',on)})});render()}
-  function render(){var el=document.getElementById('plan');var picks=st.need.filter(function(x){return x!=='unsure'});if(!picks.length&&st.stage)picks=rec[st.stage];if(!picks.length){el.innerHTML='<p class="empty">Answer the questions to see your plan.</p>';return}
-    var rows=picks.map(function(s){var x=svc.find(function(v){return v.slug===s});return x});var h='<ol>';rows.forEach(function(x,i){h+='<li><b></b><span></span></li>'});h+='</ol>';el.innerHTML=h;
-    el.querySelectorAll('li').forEach(function(li,i){li.firstChild.textContent=rows[i].name;li.lastChild.textContent=rows[i].price+' · '+rows[i].timeline});
-    var tip=document.createElement('p');tip.className='tip';tip.textContent=st.budget==='Under $1,000'?'Tip: start with the $200 diagnostic or a free Wintech Templates site, then build up.':(rows.length>1?'Start with the first item. The rest can follow once it pays for itself.':'One service, one project lead, a fixed price before work starts.');el.appendChild(tip);
-    var t='Hello Wintech, here is my plan.\nStage: '+(st.stage||'-')+'\nNeed: '+rows.map(function(r){return r.name}).join(', ')+'\nWhen: '+(st.when||'-')+'\nBudget: '+(st.budget||'-');
-    document.getElementById('send').href='https://wa.me/2349134071813?text='+encodeURIComponent(t);try{localStorage.setItem('wt-plan',JSON.stringify(st))}catch(e){}}
-  sync();
+  var F=[1,1,1.25,1.5,1.75,2],COL=['#F4F6FA','#B9C1CF','#7C93FF','#3B5BFF','#2F4A6B','#E3E7EE','#9AA3B2'];
+  var rec={starting:['brand','website'],'adding-tech':['store','ai'],refresh:['brand','website']};
+  var st={stage:'',need:[],size:1,when:'',care:false,cur:'usd'};
+  try{var sv=JSON.parse(localStorage.getItem('wt-plan')||'null');if(sv&&Array.isArray(sv.need))st=Object.assign(st,sv)}catch(e){}
+  var q=new URLSearchParams(location.search).get('start');if(q&&rec[q]){st.stage=q;if(!st.need.length)st.need=rec[q].slice()}
+  var $=function(s){return document.querySelector(s)};
+  var usd=function(n){return '$'+Math.round(n).toLocaleString('en-US')};
+  var ngn=function(n){return n>=1e6?'₦'+(Math.round(n/1e5)/10)+'m':'₦'+Math.round(n).toLocaleString('en-US')};
+  var r100=function(n){return Math.round(n/50)*50};
+  document.querySelectorAll('[data-k="stage"] .opt').forEach(function(b){b.onclick=function(){st.stage=b.dataset.v;if(!st.need.length)st.need=rec[st.stage].slice();render()}});
+  document.querySelectorAll('[data-k="need"] .opt').forEach(function(b){b.onclick=function(){var i=st.need.indexOf(b.dataset.v);i>-1?st.need.splice(i,1):st.need.push(b.dataset.v);render()}});
+  document.querySelectorAll('.when button').forEach(function(b){b.onclick=function(){st.when=st.when===b.dataset.v?'':b.dataset.v;render()}});
+  document.querySelectorAll('.cur button').forEach(function(b){b.onclick=function(){st.cur=b.dataset.cur;render()}});
+  $('#care').onclick=function(){st.care=!st.care;render()};
+  $('#size').oninput=function(){st.size=+this.value;render()};
+  function lines(){
+    var picked=needs.filter(function(n){return st.need.indexOf(n.v)>-1}),out=[],hasBrand=st.need.indexOf('brand')>-1,hasStore=st.need.indexOf('store')>-1;
+    var unit=hasStore?'products':(st.need.indexOf('app')>-1&&st.need.indexOf('website')<0?'screens':'pages');
+    var sizeTxt=(st.size===5?'200+':stops[st.size])+' '+unit;
+    picked.forEach(function(n){
+      var s=svc[n.svc],f=n.sized?F[st.size]:1,row={k:n.v,name:n.t,desc:n.d,usd:0,ngn:0,wk:s.wk};
+      if(n.v==='website'&&hasStore)return; // the store already includes the site
+      if(n.v==='packaging'&&hasBrand){row.label='With brand';row.wk=[0,0]}
+      else if(!s.priced){row.label='Quoted';row.wk=s.wk}
+      else{row.usd=r100(s.usd*f);row.ngn=Math.round(s.ngn*f/50000)*50000}
+      if(n.sized)row.desc=sizeTxt+', '+n.d;
+      out.push(row)});
+    return {rows:out,sizeTxt:sizeTxt,unit:unit};
+  }
+  function render(){
+    document.querySelectorAll('[data-k="stage"] .opt').forEach(function(b){b.setAttribute('aria-pressed',st.stage===b.dataset.v)});
+    document.querySelectorAll('[data-k="need"] .opt').forEach(function(b){b.setAttribute('aria-pressed',st.need.indexOf(b.dataset.v)>-1)});
+    document.querySelectorAll('.when button').forEach(function(b){b.setAttribute('aria-pressed',st.when===b.dataset.v)});
+    document.querySelectorAll('.cur button').forEach(function(b){b.setAttribute('aria-pressed',st.cur===b.dataset.cur)});
+    $('#care').setAttribute('aria-checked',st.care);
+    var L=lines(),rows=L.rows,el=$('#rows'),bar=$('#bar'),ai=svc['ai-assistant'];
+    $('#size').value=st.size;$('#size').style.setProperty('--p',(st.size/5*100)+'%');$('#size-out').textContent=L.sizeTxt;
+    $('#cur-l').textContent=(st.cur==='usd'?'USD':'NGN')+', starting points';
+    el.innerHTML='';bar.innerHTML='';
+    var lo=0,ln=0,wlo=0,whi=0,n=0;
+    rows.forEach(function(r,i){lo+=r.usd;ln+=r.ngn;if(r.wk[1]){wlo=Math.max(wlo,r.wk[0]);whi=Math.max(whi,r.wk[1]);n++}
+      var c=COL[i%COL.length],d=document.createElement('div');d.className='tl-row';
+      d.innerHTML='<span class="l"><span class="dot"></span><span><b></b><small></small></span></span><span class="v"></span>';
+      d.querySelector('.dot').style.background=c;d.querySelector('b').textContent=r.name;d.querySelector('small').textContent=r.desc;
+      d.querySelector('.v').textContent=r.label||(st.cur==='usd'?usd(r.usd):ngn(r.ngn));el.appendChild(d);
+      if(r.usd){var s=document.createElement('span');s.style.background=c;s.style.flexGrow=r.usd;bar.appendChild(s)}});
+    if(st.care){var d=document.createElement('div');d.className='tl-row';d.innerHTML='<span class="l"><span class="dot" style="background:#5E6678"></span><span><b>AI care plan</b><small>Starts after launch</small></span></span><span class="v"></span>';d.querySelector('.v').textContent=st.cur==='usd'?usd(ai.usdMo)+'/mo':ngn(ai.ngnMo)+'/mo';el.appendChild(d)}
+    if(!rows.length&&!st.care)el.innerHTML='<p class="empty">Tap what you need to see your scope.</p>';
+    if(n>1){wlo++;whi++}
+    var tl=whi?wlo+' to '+whi+' weeks':'-';$('#tl').textContent=tl;
+    var hi=r100(lo*1.5),hn=Math.round(ln*1.5/50000)*50000,mo=st.care?' plus '+usd(ai.usdMo)+' or '+ngn(ai.ngnMo)+' a month':'';
+    var big,sub;
+    if(lo){big=st.cur==='usd'?usd(lo)+' to '+usd(hi):ngn(ln)+' to '+ngn(hn);sub=(st.cur==='usd'?ngn(ln)+' to '+ngn(hn):usd(lo)+' to '+usd(hi))+mo}
+    else if(rows.length){big='Quoted';sub='We price this after a short call'+mo}
+    else{big='-';sub='Pick at least one service'}
+    $('#big').textContent=big;$('#sub').textContent=sub;$('#sub').dataset.tl=tl!=='-'?' · '+tl:'';
+    var brief={Stage:[st.stage?document.querySelector('[data-k="stage"] [data-v="'+st.stage+'"] b').textContent:'-'],Need:rows.map(function(r){return r.name}).concat(st.care?['AI care plan']:[]),Size:[L.sizeTxt],When:[st.when||'-'],Estimate:[lo?usd(lo)+' to '+usd(hi)+' ('+ngn(ln)+' to '+ngn(hn)+')':'Quoted'],Timeline:[tl]};
+    var t='Hello Wintech, here is my project plan.\n'+Object.keys(brief).map(function(k){return k+': '+brief[k].join(', ')}).join('\n');
+    $('#send').href='https://wa.me/2349134071813?text='+encodeURIComponent(t);
+    try{localStorage.setItem('wt-plan',JSON.stringify(st));if(rows.length)localStorage.setItem('wt-brief-plan',JSON.stringify(brief))}catch(e){}
+  }
+  render();
 })();
 </script>
 <style>
-  .pl{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start}
-  fieldset{border:0;padding:0;margin:32px 0 0}legend{font-weight:500;margin-bottom:12px}legend span{color:var(--fg-2);font-weight:400;font-size:13px}
-  .opts{display:flex;flex-wrap:wrap;gap:8px}.opt{font:400 14px var(--font);padding:10px 14px;background:var(--card);border:1px solid var(--rule);color:var(--fg);cursor:pointer}.opt:hover{border-color:var(--ash)}.opt[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
-  .out{position:sticky;top:120px;display:grid;gap:12px}.out :global(ol){padding:0;margin:0;list-style:none;display:grid;gap:10px}.out :global(li){display:grid;border-bottom:1px solid var(--rule);padding-bottom:10px}.out :global(li span){color:var(--fg-2);font-size:14px}.out :global(b){font-weight:600}
-  .out :global(.tip){font-size:14px;color:var(--fg-2);margin:4px 0 0}.out :global(.empty){color:var(--fg-2)}
-  @media (max-width:1023px){.pl{grid-template-columns:1fr}.out{position:static}}
+  .planner{padding:0 0 128px}
+  .pl{grid-template-columns:776px 400px}
+  .m-head,.m-only,.m-n{display:none}
+  .form{min-width:0}
+  .cur{width:140px}.cur button{padding:12px 0}
+  .opts{display:grid;gap:10px}.o3{grid-template-columns:repeat(3,1fr)}.o4{grid-template-columns:repeat(4,1fr)}
+  .opt{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:16px;background:none;border:1px solid rgba(255,255,255,.09);color:#F4F6FA;text-align:left;font:inherit;cursor:pointer;transition:border-color .15s,background .15s}
+  .opt:hover{border-color:rgba(255,255,255,.22)}
+  .opt[aria-pressed="true"]{background:rgba(59,91,255,.12);border-color:#7C93FF}
+  .opt[aria-pressed="true"] .tl-box{width:18px;height:18px;margin:1px;border:0;background:#7C93FF}.opt[aria-pressed="true"] .tl-box :global(svg){opacity:1}
+  .ot{display:flex;justify-content:space-between;align-items:center;width:100%;height:33px}
+  .opt b{font-weight:500;font-size:15px;line-height:18px;white-space:nowrap}
+  .opt small{font-size:13px;line-height:1.4;color:#9AA3B2}
+  .tl-hint a{color:#B9C1CF}
+  .care{display:flex;justify-content:space-between;align-items:center;gap:16px;width:100%;padding:14px 16px;background:none;border:1px solid rgba(255,255,255,.09);color:#F4F6FA;text-align:left;font:inherit;cursor:pointer}
+  .care b{display:block;font-weight:500;font-size:15px;line-height:18px}.care small{display:block;margin-top:2px;font-size:13px;color:#9AA3B2}
+  .sw{flex:none;width:44px;height:24px;padding:3px;background:rgba(255,255,255,.12);transition:background .15s}.sw i{display:block;width:18px;height:18px;background:#F4F6FA;transition:transform .15s}
+  .care[aria-checked="true"] .sw{background:#3B5BFF}.care[aria-checked="true"] .sw i{transform:translateX(20px)}
+  .eh{display:flex;justify-content:space-between}
+  .tl-rows :global(.empty){margin:0;font-size:14px;color:#9AA3B2}
+  @media (max-width:1023px){
+    .planner{padding:40px 0 56px}.planner .wrap{padding:0 16px}
+    :global(.hide-m){display:none}
+    .m-head{display:grid;gap:12px;padding:0 16px 22px}.m-head .tl-mono{font-size:10px}
+    .m-head h2{margin:0;font-size:30px;line-height:1.06;letter-spacing:-.015em;font-weight:600;color:#F4F6FA}
+    .d-only{display:none !important}.m-only,.m-n{display:inline}
+    .form{background:none;border:0}
+    .form .tl-head{display:none}
+    .tl-q{border:0;padding:0 0 22px;gap:10px}
+    .tl-qh{font-size:15px}.tl-qh .n{display:none}
+    .opts{display:flex;flex-wrap:wrap;gap:8px}
+    .opt{flex-direction:row;padding:9px 12px;background:#111723;gap:0}
+    .opt .ot,.opt small{display:none}
+    .opt b{font-weight:400;font-size:14px;line-height:17px}
+    .opt[aria-pressed="true"]{background:rgba(59,91,255,.18)}.opt[aria-pressed="true"] b{font-weight:500}
+    .when{flex-direction:row;flex-wrap:wrap;gap:8px;border:0;padding:0}
+    .when button{flex:none;min-height:0;padding:9px 12px;background:#111723;border:1px solid rgba(255,255,255,.09);color:#F4F6FA;font-weight:400;font-size:14px;line-height:17px}
+    .when button[aria-pressed="true"]{background:rgba(59,91,255,.18);border-color:#7C93FF;color:#F4F6FA;font-weight:500}
+    .tl-est-in{padding:16px;gap:8px}.eh .tl-mono{font-size:10px}
+    .tl-rows{gap:8px}
+    :global(.tl-row small),:global(.tl-row .dot){display:none}:global(.tl-row b){font-weight:400 !important;font-size:14px !important;line-height:17px !important}:global(.tl-row .v){font-size:14px !important}
+    .tl-total{background:none;padding:0;gap:8px}
+    .tl-total .big{font-size:26px;line-height:31px}
+    .tl-total .sub::after{content:attr(data-tl)}
+    .tl-btn{min-height:47px;font-size:16px}
+  }
 </style>

@@ -1,0 +1,31 @@
+---
+import Icon from '../Icon.astro';
+interface Props { items: [string, string][]; title?: string; id?: string }
+const { items, title = 'Short answers', id = 'questions' } = Astro.props;
+---
+<section class="s-sec s-alt sfaq" id={id}>
+  <div class="wrap">
+    <p class="s-k mute">Questions</p>
+    <h2>{title}</h2>
+    <div class="qs">{items.map(([q, a], i) => <details open={i === 0}><summary>{q}<span class="pm"><Icon name="plus" size={18} stroke={1.5} class="p" /><Icon name="minus" size={18} stroke={1.5} class="m" /></span></summary><p>{a}</p></details>)}</div>
+  </div>
+</section>
+<script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })} />
+<style>
+  .sfaq{padding:96px 0}
+  h2{margin:12px 0 35px;font-size:36px;font-weight:600;letter-spacing:-.8px;line-height:43px}
+  .qs{display:grid;gap:8px}
+  details{background:var(--card);border:1px solid var(--rule);padding:22px 24px}
+  summary{display:flex;justify-content:space-between;align-items:center;gap:20px;list-style:none;cursor:pointer;font-size:18px;font-weight:500;line-height:22px}
+  summary::-webkit-details-marker{display:none}
+  details p{margin:12px 0 0;max-width:1000px;font-size:15px;line-height:24px;color:var(--fg-2)}
+  .pm{flex:none;display:grid}.pm :global(.m){display:none}details[open] .pm :global(.m){display:block}details[open] .pm :global(.p){display:none}
+  @media (max-width:1023px){
+    .sfaq{padding:48px 0}
+    h2{margin:16px 0 20px;font-size:26px;line-height:31px}
+    .qs{gap:16px}
+    details{padding:16px}
+    summary{font-size:15px;line-height:18px;align-items:flex-start}
+    details p{font-size:14px;line-height:21px}
+  }
+</style>

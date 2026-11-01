@@ -1,40 +1,191 @@
 ---
 import Page from '../layouts/Page.astro';
-import Field from '../components/ui/Field.astro';
+import Bi from '../components/tools/Bi.astro';
+import Icon from '../components/Icon.astro';
 import { services } from '../data/site';
+const names = Object.fromEntries([...services.map(s => [s.slug, s.name]), ['plan', 'Project plan'], ['diagnostic', 'Paid diagnostic ($200)']]);
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const times = ['10:00', '11:30', '13:00', '15:00', '16:30'];
+const expect = [['clock', '25 minutes', 'We read your brief before the call.'], ['user', 'With the project lead', 'The person who would run your project.'], ['check', 'One next step', 'The diagnostic, a proposal or a quick job.']];
 ---
-<Page title="Book a call · Wintech Studio" description="Book a 25 minute call with the Wintech project lead. Bring your brief, leave with a clear next step." crumbs={[['Book a call', '/book']]} closing={false}>
-  <section class="sec">
-    <div class="wrap grid2">
-      <div>
-        <p class="mono">Book a call</p>
-        <h1 class="h1">25 minutes with the project lead.</h1>
-        <p class="lede">Pick a service and a time that suits you. If you built a brief on a service page, it is attached automatically.</p>
-        <ol class="what">
-          <li><strong>Before</strong> We read your brief and look at your business.</li>
-          <li><strong>On the call</strong> Your goals, what to build first, and a rough budget and timeline.</li>
-          <li><strong>After</strong> A written next step within one working day. No pressure to sign.</li>
-        </ol>
+<Page title="Book a call · Wintech Studio" description="Pick a time for a 25 minute call with the Wintech project lead. Your brief comes with you, so the call goes on your business, not on questions." crumbs={[['Book a call', '/book']]} closing={false} theme="dark">
+  <section class="bk">
+    <div class="wrap">
+      <div class="hd">
+        <p class="mono-l">Book a 25 minute call</p>
+        <h1>Pick a time.<br />Your brief comes with you.</h1>
+        <p class="lede-d">The project lead reads your picks before the call, so the 25 minutes go on your business, not on questions.</p>
       </div>
-      <form class="card form" data-send="Call request from wintechstudio.com">
-        <Field label="Your name" name="Name" required />
-        <Field label="Email or WhatsApp" name="Contact" required />
-        <Field label="What is it about?" name="Service" options={[...services.map(s => s.name), 'Not sure yet']} />
-        <Field label="Best time" name="Time" options={['Weekday morning', 'Weekday afternoon', 'Evening', 'Weekend']} />
-        <Field label="Your time zone" name="Time zone" placeholder="Lagos, London, New York..." />
-        <Field label="Anything we should read first?" name="Notes" rows={3} placeholder="A link, a deadline, or one line about the business" />
-        <div class="send"><button class="btn btn-primary" type="submit" value="whatsapp">Request on WhatsApp</button><button class="btn btn-outline" type="submit" value="email">Request by email</button></div>
-        <p class="sent" hidden>Your request is ready to send. We confirm a time within one working day.</p>
+      <form class="grid" id="bk" data-send="Call request from wintechstudio.com">
+        <div class="cal">
+          <div class="mg">
+            <div class="mh"><button type="button" class="nav" id="prev" aria-label="Previous month"><Icon name="chevron-right" size={18} class="flip" /></button><h2 id="mlabel">-</h2><button type="button" class="nav" id="next" aria-label="Next month"><Icon name="arrow-right" size={18} /></button></div>
+            <div class="wd">{days.map(d => <span>{d}</span>)}</div>
+            <div class="days" id="days" role="grid" aria-label="Pick a day"></div>
+            <p class="tz"><Bi name="globe" size={24} />Africa/Lagos (WAT)</p>
+          </div>
+          <div class="strip" id="strip" aria-label="Pick a day"></div>
+          <div class="times">
+            <p class="dl" id="dlabel">Pick a day</p>
+            <div class="tl" id="times">{times.map(t => <button type="button" data-t={t} aria-pressed="false" disabled>{t}</button>)}</div>
+          </div>
+        </div>
+        <div class="brief">
+          <div class="bh"><span class="bt"><Bi name="receipt" size={30} class="d-only" /><span id="btitle">Your brief</span></span><span class="att" id="att" hidden>Attached</span></div>
+          <div id="rows"></div>
+          <div class="pick" id="pick" hidden>
+            <p class="pl">What is it about?</p>
+            <div class="chips">{[...services.map(s => s.name), 'Not sure yet'].map(n => <label><input type="radio" name="Service" value={n} data-label="Service" /><span>{n}</span></label>)}</div>
+            <p class="nob">No brief attached. <a href="/services">Build one on a service page</a> or <a href="/tools/plan">plan your project</a> first, it takes three minutes.</p>
+          </div>
+          <div class="links" id="links" hidden><a id="edit" href="/services">Edit picks</a><a href="/services">Add another service</a></div>
+          <div class="fields">
+            <label class="f"><span>Your name</span><input name="Name" data-label="Name" required placeholder="Ada Okafor" autocomplete="name" /></label>
+            <label class="f"><span>Email or WhatsApp</span><input name="Contact" data-label="Contact" required placeholder="ada@business.com" autocomplete="email" /></label>
+            <input type="hidden" name="Call" data-label="Call" id="callf" />
+            <input type="hidden" name="Brief ID" data-label="Brief ID" id="idf" />
+            <input type="hidden" name="Brief for" data-label="Brief for" id="svcf" />
+            <button class="go" type="submit" value="whatsapp" id="confirm">Send request</button>
+            <button class="alt" type="submit" value="email">Or send it by email</button>
+          </div>
+        </div>
       </form>
     </div>
   </section>
+  <section class="ex">
+    <div class="wrap">
+      <p class="mono-l">What to expect</p>
+      <h2>25 minutes, one next step</h2>
+      <div class="eg">{expect.map(([i, t, d]) => <div class="ec"><Bi name={i} size={39} /><h3>{t}</h3><p>{d}</p></div>)}</div>
+    </div>
+  </section>
 </Page>
-<script is:inline>
-  (function(){var s=new URLSearchParams(location.search).get('service');if(!s)return;var map={brand:'Brand and packaging',websites:'Websites and stores','ai-assistant':'AI assistant',automation:'Automation',apps:'Apps and MVPs',motion:'Motion and film'};document.querySelectorAll('input[name="Service"]').forEach(function(i){if(i.value===map[s])i.checked=true})})();
+<script is:inline define:vars={{ names, times }}>
+(function(){
+  var $=function(s){return document.getElementById(s)};
+  var slug=new URLSearchParams(location.search).get('service')||'',brief=null;
+  try{brief=JSON.parse(localStorage.getItem('wt-brief-'+slug)||'null')}catch(e){}
+  var LBL={'What do you have now?':'What you have now','What do you need?':'What you need','How should it feel?':'How it should feel','Who buys from you?':'Who buys','When do you need it?':'When','_note':'Note','Need':'What you need'};
+  var rows=$('rows'),svcName=names[slug]||'';
+  function row(k,v,cls){var d=document.createElement('div');d.className='br'+(cls?' '+cls:'');d.innerHTML='<span></span><b></b>';d.firstChild.textContent=k;d.lastChild.textContent=v;rows.appendChild(d)}
+  if(brief&&Object.keys(brief).length){
+    $('att').hidden=false;$('links').hidden=false;$('edit').href=slug==='plan'?'/tools/plan':'/services/'+slug+'#brief';
+    row('Service',svcName||slug,'keep');
+    Object.keys(brief).forEach(function(k){var v=brief[k];v=Array.isArray(v)?v.join(', '):v;if(!v||v==='-')return;var l=LBL[k]||k.replace(/\?$/,'');row(l,v,/need|budget|estimate/i.test(l)?'keep':'')});
+    $('svcf').value=svcName;
+  }else{
+    $('btitle').textContent='Your details';
+    var match=false;if(svcName)document.querySelectorAll('input[name="Service"]').forEach(function(i){if(i.value===svcName){i.checked=true;match=true}});
+    if(svcName&&!match){row('Service',svcName,'keep');$('svcf').value=svcName}else $('pick').hidden=false;
+  }
+  // calendar: weekdays from tomorrow, six weeks ahead, times in WAT
+  var now=new Date(),start=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1),end=new Date(start.getTime()+42*864e5);
+  var view=new Date(start.getFullYear(),start.getMonth(),1),sel=null,time=null;
+  var M=['January','February','March','April','May','June','July','August','September','October','November','December'],D=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var ok=function(d){var w=d.getDay();return d>=start&&d<=end&&w!==0&&w!==6};
+  var fmt=function(d){return D[d.getDay()]+' '+d.getDate()+' '+M[d.getMonth()].slice(0,3)};
+  function first(){var d=new Date(start);while(!ok(d))d.setDate(d.getDate()+1);return d}
+  sel=first();
+  function cal(){
+    $('mlabel').textContent=M[view.getMonth()]+' '+view.getFullYear();
+    var g=$('days');g.innerHTML='';var off=(view.getDay()+6)%7,n=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+    for(var i=0;i<off;i++)g.appendChild(document.createElement('span'));
+    for(var d=1;d<=n;d++){var dt=new Date(view.getFullYear(),view.getMonth(),d),b=document.createElement('button');b.type='button';b.textContent=d;
+      if(ok(dt)){b.className='av';b.onclick=(function(x){return function(){sel=x;time=null;upd()}})(dt);if(sel&&+sel===+dt)b.setAttribute('aria-pressed','true')}else b.disabled=true;g.appendChild(b)}
+    $('prev').disabled=view<=new Date(start.getFullYear(),start.getMonth(),1);$('next').disabled=new Date(view.getFullYear(),view.getMonth()+1,1)>end;
+    var s=$('strip');s.innerHTML='';var x=new Date(start),c=0;while(c<5&&x<=end){if(ok(x)){var bb=document.createElement('button');bb.type='button';bb.innerHTML='<small></small><b></b>';bb.firstChild.textContent=D[x.getDay()].toUpperCase();bb.lastChild.textContent=x.getDate();if(sel&&+sel===+x)bb.setAttribute('aria-pressed','true');bb.onclick=(function(y){return function(){sel=y;time=null;view=new Date(y.getFullYear(),y.getMonth(),1);upd()}})(new Date(x));s.appendChild(bb);c++}x.setDate(x.getDate()+1)}
+  }
+  function upd(){cal();$('dlabel').textContent=sel?fmt(sel):'Pick a day';
+    document.querySelectorAll('#times button').forEach(function(b){b.disabled=!sel;b.setAttribute('aria-pressed',b.dataset.t===time)});
+    var when=sel&&time?fmt(sel)+', '+time:'';$('callf').value=when?when+' WAT':'';$('confirm').textContent=when?'Confirm '+when:'Send request';}
+  document.querySelectorAll('#times button').forEach(function(b){b.onclick=function(){time=b.dataset.t;upd()}});
+  $('prev').onclick=function(){view=new Date(view.getFullYear(),view.getMonth()-1,1);cal()};
+  $('next').onclick=function(){view=new Date(view.getFullYear(),view.getMonth()+1,1);cal()};
+  upd();
+  var id='WT-'+String(now.getFullYear()).slice(2)+String(now.getMonth()+1).padStart(2,'0')+'-'+String(Math.floor(Math.random()*900)+100);$('idf').value=id;
+  // after form-send.js opens WhatsApp or email, show the B2 confirmation
+  $('bk').addEventListener('submit',function(e){if(!this.checkValidity())return;var svc=$('svcf').value||((document.querySelector('input[name="Service"]:checked')||{}).value)||'';
+    try{sessionStorage.setItem('wt-sent',JSON.stringify({id:id,service:svc,slug:slug,when:$('callf').value,iso:sel&&time?sel.toISOString().slice(0,10)+'T'+time:''}))}catch(_){}
+    var via=(e.submitter&&e.submitter.value)||'whatsapp';setTimeout(function(){location.href='/brief-sent'},via==='email'?900:400)});
+})();
 </script>
 <style>
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
-  .what{padding:0;list-style:none;margin:40px 0 0;display:grid;gap:16px;counter-reset:w}.what li{display:grid;gap:4px;color:var(--fg-2);padding-left:20px;border-left:2px solid var(--rule)}.what strong{color:var(--fg)}
-  .form{display:grid;gap:22px;padding:32px}.send{display:flex;gap:10px;flex-wrap:wrap}.sent{color:#1A7F4B;font-size:14px;margin:0}
-  @media (max-width:1023px){.grid2{grid-template-columns:1fr;gap:40px}}
+  .bk{position:relative;background:#0A0E17;padding:96px 0 112px;color:#F4F6FA}
+  .bk::before,.bk::after,.ex::before,.ex::after{content:'';position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.09);left:calc(50% - 640px)}
+  .bk::after,.ex::after{left:calc(50% + 639px)}
+  .hd{display:grid;gap:16px;max-width:800px}
+  .mono-l{margin:0;font:400 11px/14px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#9AA3B2}
+  h1{margin:0;font-size:56px;line-height:1.05;letter-spacing:-.02em;font-weight:600;color:#F4F6FA}
+  .lede-d{margin:0;max-width:640px;font-size:18px;line-height:1.5;color:#9AA3B2}
+  .grid{display:grid;grid-template-columns:796px 380px;gap:24px;margin-top:40px;align-items:start}
+  .cal{display:flex;gap:24px;padding:28px;background:#111723;border:1px solid rgba(255,255,255,.09)}
+  .mg{flex:1;display:grid;gap:16px;align-content:start}
+  .mh{display:flex;align-items:center;gap:8px}.mh h2{order:-1;flex:1;margin:0;font-size:20px;font-weight:600;line-height:24px;letter-spacing:0;color:#F4F6FA}
+  .nav{background:none;border:0;padding:3px;color:#F4F6FA;cursor:pointer;display:grid}.nav:disabled{opacity:.25;cursor:default}
+  .nav :global(.flip){transform:rotate(180deg)}
+  .wd,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:16px 6px}
+  .wd span{text-align:center;font:400 10px/13px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:#9AA3B2}
+  .days :global(button){height:48px;background:none;border:0;color:rgba(154,163,178,.5);font:400 15px/18px var(--font)}
+  .days :global(button.av){background:rgba(255,255,255,.06);color:#F4F6FA;font-weight:500;cursor:pointer}
+  .days :global(button.av:hover){background:rgba(255,255,255,.12)}
+  .days :global(button[aria-pressed="true"]){background:#3B5BFF;color:#fff}
+  .tz{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;color:#9AA3B2}
+  .strip{display:none}
+  .times{width:200px;display:grid;gap:8px;align-content:start}
+  .dl{margin:0;font-size:16px;font-weight:600;line-height:19px}
+  .tl{display:grid;gap:8px}
+  .tl button{height:46px;background:none;border:1px solid rgba(255,255,255,.09);color:#F4F6FA;font:500 15px/18px var(--font);cursor:pointer}
+  .tl button:hover:not(:disabled){border-color:rgba(255,255,255,.25)}.tl button:disabled{opacity:.4;cursor:default}
+  .tl button[aria-pressed="true"]{background:rgba(59,91,255,.15);border-color:#7C93FF}
+  .brief{background:#161D2A;border:1px solid rgba(124,147,255,.5)}
+  .bh{display:flex;justify-content:space-between;align-items:center;padding:20px 24px}
+  .bt{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:600;line-height:22px}
+  .att{background:rgba(91,212,154,.15);color:#5BD49A;font-size:12px;line-height:14px;padding:3px 7px}
+  #rows :global(.br){display:grid;gap:2px;padding:11px 24px;border-top:1px solid rgba(255,255,255,.09)}
+  #rows :global(.br span){font-size:12px;line-height:14px;color:#9AA3B2}
+  #rows :global(.br b){font-weight:500;font-size:15px;line-height:18px;color:#F4F6FA}
+  .links{display:flex;gap:16px;padding:16px 24px 20px;border-top:1px solid rgba(255,255,255,.09)}
+  .links a{color:#7C93FF;font-size:14px;font-weight:500;text-decoration:none}.links a:hover{text-decoration:underline}
+  .pick{padding:16px 24px 20px;border-top:1px solid rgba(255,255,255,.09);display:grid;gap:12px}
+  .pick[hidden],.links[hidden],.att[hidden]{display:none}
+  .pl{margin:0;font-size:13px;font-weight:500}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}.chips label{position:relative}.chips input{position:absolute;opacity:0;pointer-events:none}
+  .chips span{display:inline-block;padding:7px 10px;font-size:13px;border:1px solid rgba(255,255,255,.09);cursor:pointer}
+  .chips input:checked+span{background:rgba(59,91,255,.18);border-color:#7C93FF}.chips input:focus-visible+span{box-shadow:var(--ring)}
+  .nob{margin:0;font-size:13px;line-height:1.45;color:#9AA3B2}.nob a{color:#B9C1CF}
+  .fields{display:grid;gap:12px;padding:4px 24px 24px}
+  .f{display:grid;gap:6px}.f span{font-size:13px;font-weight:500;line-height:16px}
+  .f input{height:41px;padding:11px 12px;background:#0A0E17;border:1px solid rgba(255,255,255,.09);color:#F4F6FA;font:400 14px var(--font)}
+  .f input::placeholder{color:rgba(154,163,178,.6)}.f input:focus{outline:none;border-color:#7C93FF}
+  .go{height:45px;background:#3B5BFF;color:#fff;border:0;font:500 16px/19px var(--font);cursor:pointer}.go:hover{background:#2F4BE6}
+  .alt{background:none;border:0;color:#9AA3B2;font:400 13px var(--font);cursor:pointer;padding:0}.alt:hover{color:#F4F6FA}
+  .ex{position:relative;background:#111723;padding:96px 0;color:#F4F6FA}
+  .ex h2{margin:16px 0 48px;font-size:40px;line-height:1.05;letter-spacing:-.02em;font-weight:600}
+  .eg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .ec{display:grid;gap:10px;padding:24px;background:#161D2A;border:1px solid rgba(255,255,255,.09)}
+  .ec h3{margin:0;font-size:19px;font-weight:600;line-height:23px;letter-spacing:0}.ec p{margin:0;font-size:14px;color:#9AA3B2}
+  @media (max-width:1023px){
+    .bk{padding:40px 0 56px}.bk .wrap{padding:0 16px}
+    .bk::before,.bk::after,.ex::before,.ex::after{display:none}
+    .hd{gap:12px}.mono-l{font-size:10px;line-height:13px}
+    h1{font-size:28px;line-height:1.06;letter-spacing:-.015em}
+    .lede-d{display:none}
+    .grid{grid-template-columns:1fr;gap:18px;margin-top:18px}
+    .cal{flex-direction:column;gap:18px;padding:0;background:none;border:0}
+    .mg{display:none}
+    .strip{display:flex;gap:8px}
+    .strip :global(button){flex:1;display:grid;gap:4px;justify-items:center;padding:10px 0;background:#111723;border:1px solid rgba(255,255,255,.09);color:#F4F6FA;cursor:pointer}
+    .strip :global(small){font:400 10px/13px var(--mono);color:#9AA3B2}.strip :global(b){font-size:18px;font-weight:600;line-height:22px}
+    .strip :global(button[aria-pressed="true"]){background:#3B5BFF}.strip :global(button[aria-pressed="true"] small){color:#fff}
+    .times{width:auto}.dl{display:none}
+    .tl{display:flex;flex-wrap:wrap;gap:8px}.tl button{height:42px;padding:11px 18px}
+    .bh{padding:14px 16px 0}.bt{font-size:16px;line-height:19px}.att{background:none;padding:0}
+    :global(.d-only){display:none}
+    #rows{padding:0 16px}#rows :global(.br){padding:11px 0}#rows :global(.br:not(.keep)){display:none}
+    .links{display:none !important}
+    .pick{padding:14px 16px}
+    .fields{padding:14px 16px 16px}
+    .go{height:47px}
+    .ex{display:none}
+  }
 </style>

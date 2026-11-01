@@ -1,0 +1,27 @@
+---
+import Icon from '../Icon.astro';
+interface Props { items: [string, string, string][] }
+const { items } = Astro.props;
+---
+<section class="s-sec srel">
+  <div class="wrap">
+    <p class="s-k mute">Keep reading</p>
+    <div class="g">{items.map(([k, t, h]) => <a href={h}><p class="s-k">{k}</p><h3>{t}</h3><span class="rd">Read <Icon name="arrow-up-right" size={14} stroke={1.5} /></span></a>)}</div>
+  </div>
+</section>
+<style>
+  .srel{padding:96px 0}
+  .g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+  a{display:flex;flex-direction:column;gap:14px;min-height:170px;padding:24px;background:var(--card);border:1px solid var(--rule);text-decoration:none;color:var(--fg);transition:border-color .2s}
+  a:hover{border-color:var(--ash)}
+  h3{margin:0;font-size:19px;font-weight:600;line-height:25px;letter-spacing:0;max-width:341px}
+  .rd{margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:500;line-height:17px}
+  a:hover .rd{color:var(--sig)}
+  @media (max-width:1023px){
+    .srel{padding:48px 0}
+    .g{grid-template-columns:1fr;margin-top:16px}
+    a{min-height:0;padding:16px;gap:6px}
+    h3{font-size:16px;line-height:22px}
+    .rd{margin-top:10px;font-size:13px}
+  }
+</style>

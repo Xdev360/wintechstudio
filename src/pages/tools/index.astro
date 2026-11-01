@@ -1,10 +1,40 @@
 ---
 import Page from '../../layouts/Page.astro';
 import Icon from '../../components/Icon.astro';
-const tools = [['/tools/plan', 'Plan your project', '3 minutes', 'Answer a few questions and get the services, timeline and starting budget that fit where you are.'], ['/tools/cost-calculator', 'Cost calculator', '1 minute', 'Pick what you need and see an estimated range in dollars and naira before you talk to anyone.'], ['/tools/inbox-check', 'Inbox check', '2 minutes', 'Score how many customers you lose in DMs and WhatsApp, and what to fix first.']];
+import Bi from '../../components/tools/Bi.astro';
+import ToolHero from '../../components/tools/ToolHero.astro';
+import '../../components/tools/tools.css';
+const tools = [
+  { href: '/tools/plan', icon: 'rocket', title: 'Plan your project', text: 'Where you are, what you need, a price range and a timeline. Send it as a brief.', badge: 'Most used' },
+  { href: '/tools/cost-calculator', icon: 'chart', title: 'Website cost calculator', text: 'Pages, platform and extras to a year one cost, in dollars or naira.' },
+  { href: '/tools/inbox-check', icon: 'message', title: 'Is your inbox losing orders?', text: 'A score out of 100 and the three fixes that matter most.' },
+];
 ---
-<Page title="Free tools · Wintech Studio" description="Free planning tools for business owners: plan your project, estimate the cost and check how many customers you lose in your inbox." crumbs={[['Free tools', '/tools']]}>
-  <section class="sec"><div class="wrap"><p class="mono">Free tools</p><h1 class="h1">Plan it before<br />you pay for it.</h1><p class="lede">No sign-up. Your answers stay in your browser unless you choose to send them.</p>
-    <div class="grid g3 list">{tools.map(([h, t, m, d]) => <a class="card tool" href={h}><p class="mono">{m}</p><h2>{t}</h2><p>{d}</p><span class="link">Start <Icon name="arrow-right" size={14} /></span></a>)}</div></div></section>
+<Page title="Free tools · Wintech Studio" description="Free planning tools for business owners: plan your project, estimate a website's year one cost and check whether your inbox is losing orders." crumbs={[['Free tools', '/tools']]} theme="dark">
+  <ToolHero label="Free tools" title="Clarity before<br />you book a call" text="Three tools that answer the first questions owners and founders ask us. Free, no sign up, and you can send the result straight to the project lead." />
+  <section class="tl-body list">
+    <div class="wrap cards">
+      {tools.map(t => (
+        <a class="tl-panel card" href={t.href}>
+          <div class="top"><Bi name={t.icon} size={48} />{t.badge && <span class="badge">{t.badge}</span>}</div>
+          <h2>{t.title}</h2>
+          <p>{t.text}</p>
+          <span class="go">Open the tool <Icon name="arrow-right" size={14} /></span>
+        </a>
+      ))}
+    </div>
+  </section>
 </Page>
-<style>.list{margin-top:40px}.tool{text-decoration:none;display:grid;gap:10px;align-content:start}.tool:hover{border-color:var(--ash)}.tool h2{font-size:22px;margin:0}</style>
+<style>
+  .list{padding:0 0 128px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .card{display:flex;flex-direction:column;gap:16px;padding:28px;text-decoration:none;color:#F4F6FA;transition:border-color .2s,background .2s}
+  .card:hover{border-color:rgba(255,255,255,.22);background:#141B29}
+  .top{display:flex;justify-content:space-between;align-items:center;height:48px}
+  .badge{background:rgba(59,91,255,.18);color:#7C93FF;font-size:12px;line-height:14px;padding:3px 7px}
+  h2{margin:0;font-size:22px;font-weight:600;letter-spacing:0;line-height:26px}
+  p{margin:0;font-size:15px;line-height:1.5;color:#9AA3B2;max-width:320px}
+  .go{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:500;line-height:17px}
+  .card:hover .go :global(svg){transform:translateX(3px)}.go :global(svg){transition:transform .2s}
+  @media (max-width:1023px){.list{padding-bottom:72px}.cards{grid-template-columns:1fr}.card{padding:24px}}
+</style>

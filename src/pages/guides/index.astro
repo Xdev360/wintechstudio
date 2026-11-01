@@ -1,9 +1,68 @@
 ---
 import Page from '../../layouts/Page.astro';
-const items = [['/guides/paystack-payments-on-your-website', 'Payments', 'How to take Paystack payments on your website in Nigeria'], ['/compare/custom-website-vs-wintech-templates', 'Compare', 'Custom website or Wintech Templates: which one fits?'], ['/industries/salons', 'Industry', 'Websites and AI for salons in Lagos'], ['/glossary', 'Glossary', 'Website and AI words, in plain English']];
+import Icon from '../../components/Icon.astro';
+import '../../components/search/search.css';
+// Layout from Figma I1 (Insights). Only pages that exist are listed.
+const posts = [
+  { href: '/guides/paystack-payments-on-your-website', cat: 'Payments', min: '6 min read', t: 'How to take Paystack payments on your website in Nigeria', d: 'Open an account, verify the business, add checkout and test before you go live. Card, bank transfer and USSD.' },
+  { href: '/compare/custom-website-vs-wintech-templates', cat: 'Compare', min: '4 min', t: 'Custom website or Wintech Templates: which one fits?' },
+  { href: '/industries/salons', cat: 'Industries', min: '4 min', t: 'Websites and AI for salons in Lagos' },
+  { href: '/glossary', cat: 'Glossary', min: '3 min', t: 'Website and AI words, in plain English' },
+];
+const cats = ['All', ...new Set(posts.map(p => p.cat))];
+const [lead, ...rest] = posts;
 ---
-<Page title="Guides · Wintech Studio" description="Plain-English guides for business owners in Nigeria: payments, websites, AI assistants and more." crumbs={[['Guides', '/guides']]}>
-  <section class="sec"><div class="wrap"><p class="mono">Guides</p><h1 class="h1">Short answers for<br />business owners.</h1>
-    <div class="list">{items.map(([h, k, t]) => <a href={h}><span class="mono">{k}</span><strong>{t}</strong></a>)}</div></div></section>
+<Page title="Guides · Plain answers for owners and founders · Wintech Studio" description="Plain-English guides for business owners in Nigeria: taking payments, choosing a website, AI for your industry and the words you will hear." crumbs={[['Guides', '/guides']]}>
+  <section class="s-sec gh">
+    <div class="wrap">
+      <p class="s-k mute">Guides</p>
+      <h1>Plain answers for<br />owners and founders.</h1>
+      <p class="ld">What to set up, what to pick and what the words mean. Written by the studio.</p>
+      <div class="chips" role="group" aria-label="Filter guides">{cats.map((c, i) => <button type="button" data-c={c} aria-pressed={i === 0 ? 'true' : 'false'}>{c}</button>)}</div>
+    </div>
+  </section>
+  <section class="s-sec gp">
+    <div class="wrap">
+      <a class="feat post" href={lead.href} data-c={lead.cat}>
+        <div class="cover big" data-todo-image="823:6026" aria-hidden="true"></div>
+        <div class="ft"><p class="s-k">{lead.cat} · {lead.min}</p><h2>{lead.t}</h2><p class="d">{lead.d}</p><span class="rd">Read the guide <Icon name="arrow-right" size={14} /></span></div>
+      </a>
+      <div class="pg">{rest.map(p => <a class="post" href={p.href} data-c={p.cat}><div class="cover" data-todo-image="823:6040" aria-hidden="true"></div><p class="s-k">{p.cat} · {p.min}</p><h3>{p.t}</h3></a>)}</div>
+    </div>
+  </section>
 </Page>
-<style>.list{margin-top:40px;border-top:1px solid var(--rule)}.list a{display:grid;grid-template-columns:160px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--fg)}.list a:hover strong{color:var(--sig)}.list strong{font-size:20px;font-weight:600}@media (max-width:700px){.list a{grid-template-columns:1fr;gap:4px}}</style>
+<script is:inline>
+(function(){var bs=document.querySelectorAll('.chips button');bs.forEach(function(b){b.onclick=function(){bs.forEach(function(x){x.setAttribute('aria-pressed',x===b)});var c=b.dataset.c;document.querySelectorAll('.post').forEach(function(p){p.hidden=c!=='All'&&p.dataset.c!==c})}})})();
+</script>
+<style>
+  .gh{padding:56px 0 48px}
+  h1{margin:16px 0;max-width:900px;font-size:68px;line-height:1.05;letter-spacing:-.02em;font-weight:600}
+  .ld{margin:0 0 48px;max-width:640px;font-size:18px;line-height:1.5;color:var(--fg-2)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips button{padding:9px 14px;background:var(--surface);border:0;color:var(--fg);font:500 14px/17px var(--font);cursor:pointer}
+  .chips button:hover{background:var(--rule)}
+  .chips button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  :root[data-theme="dark"] .chips button[aria-pressed="true"]{background:#F4F4F5;color:#0A0E17}
+  .gp{padding:24px 0 112px}
+  .post{text-decoration:none;color:var(--fg)}.post[hidden]{display:none}
+  .cover{background:var(--surface);aspect-ratio:384/230}
+  .cover.big{width:640px;flex:none;aspect-ratio:auto;height:380px}
+  .feat{display:flex;gap:32px;align-items:flex-start;margin-bottom:40px}
+  .ft{display:grid;gap:14px;max-width:528px}
+  .ft h2{margin:0;font-size:34px;line-height:1.12;letter-spacing:-.01em;font-weight:600}
+  .d{margin:0;font-size:16px;line-height:1.55;color:var(--fg-2)}
+  .rd{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:500}
+  .post:hover h2,.post:hover h3{color:var(--sig)}
+  .pg{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 24px}
+  .pg .post{display:grid;gap:12px;align-content:start}
+  .pg h3{margin:0;max-width:370px;font-size:20px;line-height:1.25;letter-spacing:0;font-weight:600}
+  @media (max-width:1023px){
+    .gh{padding:30px 0 24px}
+    h1{font-size:34px;line-height:1.06;letter-spacing:-.015em}
+    .ld{margin-bottom:24px;font-size:15px}
+    .gp{padding:8px 0 56px}
+    .feat{flex-direction:column;gap:16px}.cover.big{width:100%;height:auto;aspect-ratio:384/230}
+    .ft h2{font-size:24px}
+    .pg{grid-template-columns:1fr;gap:32px}
+  }
+</style>

@@ -1,0 +1,67 @@
+---
+import Page from '../layouts/Page.astro';
+import services from '../data/services.json';
+import { services as names } from '../data/site';
+// "Likely starting point" comes straight from services.json.
+const start = Object.fromEntries(services.map(s => [s.slug, `${s.price.replace(/^from /, '').replace(/ \+ .*/, '')} · ${s.timeline}`]));
+const byName = Object.fromEntries(names.map(n => [n.name, n.slug]));
+---
+<Page title="Brief sent · Wintech Studio" description="Your brief is on its way to the Wintech project lead, who replies within one working day." closing={false} theme="dark">
+  <section class="sent">
+    <div class="wrap in">
+      <svg class="face" width="116" height="106" viewBox="0 0 116 106" fill="none" aria-hidden="true"><path d="M28.8 7.2h57.6a24 24 0 0 1 24 24V60a24 24 0 0 1-24 24H36L20.16 94.56a1.08 1.08 0 0 1-2.64-1.44V82.08A24 24 0 0 1 4.8 60V31.2a24 24 0 0 1 24-24Z" fill="url(#fa)"/><path d="M28.8 7.2h57.6a24 24 0 0 1 24 24V60a24 24 0 0 1-24 24H36L20.16 94.56a1.08 1.08 0 0 1-2.64-1.44V82.08A24 24 0 0 1 4.8 60V31.2a24 24 0 0 1 24-24Z" fill="url(#fb)"/><path d="M33.6 42c2.88-7.2 11.52-7.2 14.4 0m19.2 0c2.88-7.2 11.52-7.2 14.4 0" stroke="#F4F6FA" stroke-width="5.76" stroke-linecap="round"/><path d="m48 57.6 9.6 8.16 9.6-8.16" stroke="#F4F6FA" stroke-width="5.04" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="fa" x1="4.8" y1="7.2" x2="90.9" y2="111" gradientUnits="userSpaceOnUse"><stop stop-color="#1E2A44"/><stop offset="1" stop-color="#0A0E17"/></linearGradient><linearGradient id="fb" x1="4.8" y1="7.2" x2="4.8" y2="94.9" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity=".18"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs></svg>
+      <p class="lb">Brief sent</p>
+      <h1>Got it. We read it<br />before we talk.</h1>
+      <p class="tx">Your message opened in WhatsApp or your email app; once you press send it reaches us. The project lead replies within one working day with a time, or a question if something is unclear.</p>
+      <div class="card" id="card">
+        <div class="r"><span>Brief ID</span><b id="bid">-</b></div>
+        <div class="r" id="r-svc"><span>Service</span><b id="bsvc">-</b></div>
+        <div class="r" id="r-call"><span>Call</span><b id="bcall">-</b></div>
+        <div class="r" id="r-start"><span>Likely starting point</span><b id="bstart">-</b></div>
+      </div>
+      <div class="ctas"><a class="b1" id="ics" href="#" download="wintech-call.ics">Add it to my calendar</a><a class="b2" href="/">Back to home</a></div>
+    </div>
+  </section>
+</Page>
+<script is:inline define:vars={{ start, byName }}>
+(function(){
+  var s=null;try{s=JSON.parse(sessionStorage.getItem('wt-sent')||'null')}catch(e){}
+  var $=function(i){return document.getElementById(i)};
+  if(!s){$('card').hidden=true;$('ics').hidden=true;return}
+  $('bid').textContent=s.id;
+  var slug=s.slug&&start[s.slug]?s.slug:byName[s.service];
+  if(s.service)$('bsvc').textContent=s.service;else $('r-svc').hidden=true;
+  if(s.when)$('bcall').textContent=s.when;else{$('bcall').textContent='The project lead proposes a time'}
+  if(slug)$('bstart').textContent=start[slug];else $('r-start').hidden=true;
+  if(!s.iso){$('ics').hidden=true;return}
+  // the call time is in WAT (UTC+1)
+  var d=new Date(s.iso+':00+01:00'),e=new Date(d.getTime()+25*6e4),z=function(x){return x.toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'')};
+  var ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Wintech Studio//Booking//EN','BEGIN:VEVENT','UID:'+s.id+'@wintechstudio.com','DTSTAMP:'+z(new Date()),'DTSTART:'+z(d),'DTEND:'+z(e),'SUMMARY:Call with Wintech Studio','DESCRIPTION:25 minute call with the project lead. Brief '+s.id+'. Time to be confirmed by Wintech.','END:VEVENT','END:VCALENDAR'].join('\r\n');
+  $('ics').href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
+})();
+</script>
+<style>
+  .sent{background:#0A0E17;color:#F4F6FA;padding:140px 0 160px}
+  .in{display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
+  .face{width:115px;height:106px}
+  .lb{margin:0;font:400 11px/14px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#9AA3B2}
+  h1{margin:0;font-size:64px;line-height:1.04;letter-spacing:-.025em;font-weight:600}
+  .tx{margin:0;max-width:620px;font-size:18px;line-height:1.5;color:#9AA3B2}
+  .card{width:560px;max-width:100%;background:#111723;border:1px solid rgba(255,255,255,.09);text-align:left}
+  .r{display:flex;justify-content:space-between;gap:16px;padding:14px 20px;font-size:14px;line-height:17px;border-bottom:1px solid rgba(255,255,255,.09)}
+  .r:last-child{border-bottom:0}.r span{color:#9AA3B2}.r b{font-weight:500;text-align:right}
+  .card[hidden],.r[hidden],.b1[hidden]{display:none}
+  .ctas{display:flex;gap:10px}
+  .b1,.b2{display:inline-flex;align-items:center;padding:13px 20px;font-size:16px;font-weight:500;line-height:19px;text-decoration:none}
+  .b1{background:#3B5BFF;color:#fff}.b1:hover{background:#2F4BE6}
+  .b2{background:#161D2A;border:1px solid rgba(255,255,255,.09);color:#F4F6FA}.b2:hover{background:#1C2434}
+  @media (max-width:1023px){
+    .sent{padding:80px 0}.sent .wrap{padding:0 16px}.in{gap:18px}
+    .face{width:96px;height:88px}.lb{font-size:10px;line-height:13px}
+    h1{font-size:32px;line-height:1.06;letter-spacing:-.015em}
+    .tx{font-size:15px;padding:0 14px}
+    .card{padding:4px 16px}.r{flex-direction:column;gap:2px;padding:11px 0;border-bottom:0;border-top:1px solid rgba(255,255,255,.09)}.r b{text-align:left;font-size:15px;line-height:18px}.r span{font-size:12px}
+    #r-svc,#r-start{display:none}
+    .ctas{width:100%;flex-direction:column}.b1{justify-content:center;min-height:47px}.b2{display:none}
+  }
+</style>

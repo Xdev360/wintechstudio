@@ -1,0 +1,23 @@
+/* Shared styles for the light search pages (Figma G1, CP, IN, GL, I1, X1). Prefixed s- so nothing leaks. */
+.s-sec{position:relative;background:var(--bg);color:var(--fg)}
+.s-sec.s-alt{background:var(--surface)}
+.s-sec::before,.s-sec::after{content:'';position:absolute;top:0;bottom:0;width:1px;background:var(--rule);left:calc(50% - 640px);pointer-events:none}
+.s-sec::after{left:calc(50% + 639px)}
+.s-k{margin:0;font:400 11px/14px var(--mono);letter-spacing:.055em;text-transform:uppercase;color:var(--sig)}
+.s-k.mute{color:var(--fg-2)}
+.s-h1{margin:0;font-size:52px;line-height:58px;letter-spacing:-1.4px;font-weight:600;color:var(--fg)}
+.s-short{background:var(--soft);padding:22px 24px 24px;display:grid;gap:10px}
+.s-short p:last-child{margin:0;font-size:17px;line-height:27px;color:var(--fg)}
+:root[data-theme="dark"] .s-short{background:#151B33}
+.s-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;font:500 15px/18px var(--font);text-decoration:none;border:1px solid transparent;transition:background .15s}
+.s-btn.p{background:var(--sig);color:#fff}.s-btn.p:hover{background:var(--sig-hover)}
+.s-btn.d{background:var(--ink);color:#fff}.s-btn.d:hover{background:#1C2230}
+.s-btn.o{background:var(--card);color:var(--fg);border-color:var(--rule)}.s-btn.o:hover{background:var(--surface)}
+:root[data-theme="dark"] .s-btn.d{background:#F4F4F5;color:#0A0E17}
+@media (max-width:1023px){
+  .s-sec::before,.s-sec::after{display:none}
+  .s-sec .wrap{padding-left:16px;padding-right:16px}
+  .s-k{font-size:10px;line-height:13px}
+  .s-h1{font-size:30px;line-height:36px;letter-spacing:-.6px}
+  .s-short{padding:16px;gap:8px}.s-short p:last-child{font-size:15px;line-height:23px}
+}

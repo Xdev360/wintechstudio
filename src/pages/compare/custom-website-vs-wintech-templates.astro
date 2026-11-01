@@ -1,28 +1,77 @@
 ---
 import Page from '../../layouts/Page.astro';
-import Faq from '../../components/ui/Faq.astro';
-import Related from '../../components/ui/Related.astro';
-const rows = [['Best for', 'Brands that need to stand out and rank', 'Small businesses going live fast'], ['Cost to start', 'From $1,200', 'Free site at yourname.wintechstudio.com'], ['Time to launch', '2 to 6 weeks', 'Today'], ['Design freedom', 'Anything you can picture', 'Pick a design, change words and photos'], ['Payments', 'Card, bank transfer and USSD', 'Bank transfer checkout'], ['You own the code', 'Yes, in your accounts', 'Site stays on our platform'], ['Good on Google', 'Built for it', 'Basic']];
+import SFaq from '../../components/search/SFaq.astro';
+import SRelated from '../../components/search/SRelated.astro';
+import services from '../../data/services.json';
+import { contact } from '../../data/site';
+import '../../components/search/search.css';
+// Two columns only: the Figma frame also has a Bumpa column, left out until those facts are verified.
+const web = services.find(s => s.slug === 'websites')!;
+const cols = ['Custom website', 'Wintech Templates'];
+const rows: [string, string, string][] = [
+  ['Best for', 'Brands that need to stand out and rank', 'Small businesses going live fast'],
+  ['Cost to start', `From ${web.price.replace(/^from /, '')}`, 'Free site at yourname.wintechstudio.com'],
+  ['Time to launch', web.timeline, 'Today'],
+  ['Design freedom', 'Anything you can picture', 'Pick a design, change words and photos'],
+  ['Payments', 'Card, bank transfer and USSD', 'Bank transfer checkout'],
+  ['You own the code', 'Yes, in your accounts', 'Site stays on our platform'],
+  ['Good on Google', 'Built for it', 'Basic'],
+];
+const title = 'Custom website or Wintech Templates: which one fits your business?';
 ---
-<Page title="Custom website or Wintech Templates: which fits your business? · Wintech Studio" description="Compare a custom website with a free Wintech Templates site: cost, time to launch, design freedom, payments, ownership and Google." crumbs={[['Compare', '/guides'], ['Website options', '/compare/custom-website-vs-wintech-templates']]}>
-  <section class="sec">
+<Page title="Custom website or Wintech Templates: which fits your business? · Wintech Studio" description="Compare a custom website with a free Wintech Templates site: cost, time to launch, design freedom, payments, ownership and Google." crumbs={[['Compare', '/guides'], ['Website options', '/compare/custom-website-vs-wintech-templates']]} closing={false}>
+  <section class="s-sec cmp">
     <div class="wrap">
-      <p class="mono k">Compare</p>
-      <h1 class="h1">Custom website or Wintech Templates: which one fits your business?</h1>
-      <div class="short"><p class="mono">Short answer</p><p>Selling a few products and need to start this week: a template. Need a site that proves your work, ranks on Google or does something no template can: a custom build.</p></div>
-      <div class="tw"><table><thead><tr><th></th><th class="ours">Custom website</th><th>Wintech Templates</th></tr></thead><tbody>{rows.map(r => <tr><th scope="row">{r[0]}</th><td>{r[1]}</td><td>{r[2]}</td></tr>)}</tbody></table></div>
-      <div class="grid g2 picks">
-        <div class="card"><h2>Pick a template if</h2><p>You sell a handful of things, you want to be live today, and you are happy with a proven layout.</p><a class="btn btn-dark" href="https://app.wintechstudio.com" target="_blank" rel="noopener">Browse templates</a></div>
-        <div class="card dark"><h2>Pick custom if</h2><p>Your site has to win trust, rank on Google, take bookings or orders your way, or connect to your tools.</p><a class="btn btn-primary" href="/services/websites#brief">Build your brief</a></div>
+      <p class="s-k">Compare</p>
+      <h1>{title}</h1>
+      <div class="s-short"><p class="s-k">Short answer</p><p>Selling a few products and need to start this week: a template. Need a site that proves your work, ranks on Google or does something no template can: a custom build.</p></div>
+      <table class="tb">
+        <thead><tr><td></td>{cols.map((c, i) => <th scope="col" class:list={{ ours: i === 0 }}>{c}</th>)}</tr></thead>
+        <tbody>{rows.map(r => <tr><th scope="row">{r[0]}</th><td>{r[1]}</td><td>{r[2]}</td></tr>)}</tbody>
+      </table>
+      <div class="mc">{cols.map((c, ci) => (
+        <div class:list={['opt', { ours: ci === 0 }]}><h2>{c}</h2>{rows.map(r => <div class="mr"><b>{r[0]}</b><span>{r[ci + 1]}</span></div>)}</div>))}</div>
+      <div class="picks">
+        <div class="pk lt"><h2>Pick a template if</h2><p>You sell a handful of things, you want to be live today, and you are happy with a proven layout.</p><a class="s-btn d" href={contact.templates} target="_blank" rel="noopener">Browse templates</a></div>
+        <div class="pk dk"><h2>Pick custom if</h2><p>Your site has to win trust, rank on Google, take bookings or orders your way, or connect to your tools.</p><a class="s-btn p" href="/services/websites#brief">Build your brief</a></div>
       </div>
     </div>
   </section>
-  <Faq items={[['Can I start on a template and move to custom later?', 'Yes. We can carry your products, words and photos over when you are ready.'], ['Do templates take a cut of my sales?', 'No. Wintech Templates charges in naira for the plan, never a percentage of what you sell.'], ['Which one is best for Google?', 'A custom Astro site, because every page can be written and structured for the searches your customers make.']]} />
-  <Related items={[['Guide · Payments', 'How to take Paystack payments on your website', '/guides/paystack-payments-on-your-website'], ['Service', 'Websites and stores', '/services/websites'], ['Glossary', 'Website and AI words, in plain English', '/glossary']]} />
+  <SFaq items={[['Can I start on a template and move to custom later?', 'Yes. We can carry your products, words and photos over when you are ready.'], ['Do templates take a cut of my sales?', 'No. Wintech Templates charges in naira for the plan, never a percentage of what you sell.'], ['Which one is best for Google?', 'A custom Astro site, because every page can be written and structured for the searches your customers make.']]} />
+  <SRelated items={[['Guide · Payments', 'How to take Paystack payments on your website in Nigeria', '/guides/paystack-payments-on-your-website'], ['Industry', 'Websites and AI for salons in Lagos', '/industries/salons'], ['Glossary', 'Website and AI words, in plain English', '/glossary']]} />
 </Page>
 <style>
-  .k{color:var(--sig)}.h1{max-width:900px}.short{background:#EEF1FF;padding:24px;margin:32px 0 40px}.short p:last-child{margin:8px 0 0;font-size:17px}:root[data-theme="dark"] .short{background:#161C33}
-  .tw{overflow-x:auto;border:1px solid var(--rule)}table{width:100%;border-collapse:collapse;min-width:640px}th,td{text-align:left;padding:18px 24px;border-top:1px solid var(--rule);vertical-align:top;font-size:15px}thead th{background:var(--surface);border-top:0;font-size:16px}
-  td{color:var(--fg-2)}tbody th{font-weight:500}.ours{box-shadow:inset 0 3px 0 var(--sig)}
-  .picks{margin-top:40px}.picks h2{font-size:22px;margin:0 0 8px}.picks .btn{margin-top:12px}.dark{background:#0A0E17;color:#fff;border-color:#0A0E17}.dark p{color:#A1A1AA}
+  .cmp{padding:48px 0 96px}
+  h1{margin:14px 0 32px;max-width:900px;font-size:48px;line-height:54px;letter-spacing:-1.2px;font-weight:600}
+  .tb{width:100%;margin-top:40px;border-collapse:collapse;border:1px solid var(--rule);background:var(--card);table-layout:fixed}
+  .tb thead tr{background:var(--surface)}
+  .tb thead th,.tb thead td{height:64px;padding:0 24px;text-align:left;font-size:16px;font-weight:600;line-height:19px;position:relative}
+  .tb thead td{width:300px}
+  .tb .ours::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:var(--sig)}
+  .tb tbody th,.tb tbody td{padding:18px 24px;border-top:1px solid var(--rule);text-align:left;vertical-align:top;font-size:15px;line-height:22px}
+  .tb tbody th{font-weight:500;color:var(--fg)}.tb tbody td{color:var(--fg-2)}
+  .tb tbody td > *{max-width:252px}
+  .mc{display:none}
+  .picks{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:72px}
+  .pk{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:28px;min-height:206px}
+  .pk h2{margin:0;font-size:22px;font-weight:600;line-height:26px;letter-spacing:0}
+  .pk p{margin:0 0 12px;max-width:520px;font-size:15px;line-height:23px}
+  .pk .s-btn{margin-top:auto}
+  .lt{background:var(--surface)}.lt p{color:var(--fg-2)}
+  .dk{background:#0A0E17;color:#fff}.dk p{color:#A1A1AA}
+  :root[data-theme="dark"] .dk{background:#121722;border:1px solid var(--rule)}
+  @media (max-width:1023px){
+    .cmp{padding:30px 0 48px}
+    h1{margin:16px 0 20px;font-size:30px;line-height:36px;letter-spacing:-.6px}
+    .tb{display:none}
+    .mc{display:grid;gap:16px;margin-top:16px}
+    .opt{position:relative;background:var(--card);border:1px solid var(--rule)}
+    .opt.ours::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:var(--sig)}
+    .opt h2{margin:0;padding:17px 16px 13px;font-size:17px;font-weight:600;line-height:20px;letter-spacing:0}
+    .mr{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:10px 16px;border-top:1px solid var(--rule);font-size:13px;line-height:16px}
+    .mr b{font-weight:500}.mr span{color:var(--fg-2)}
+    .picks{grid-template-columns:1fr;margin-top:16px}
+    .pk{padding:16px;min-height:0;gap:8px}.pk h2{font-size:18px;line-height:22px}.pk p{font-size:14px;line-height:21px}
+    .pk .s-btn{width:100%;margin-top:6px}
+  }
 </style>
