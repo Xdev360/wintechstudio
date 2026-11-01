@@ -17,3 +17,15 @@
 
 ## Products
 - Wintech Templates: website templates for Nigerian businesses at https://app.wintechstudio.com
+
+## Key pages
+- Services: https://www.wintechstudio.com/services
+- Work (7 case studies): https://www.wintechstudio.com/work
+- Pricing: https://www.wintechstudio.com/pricing
+- How we work: https://www.wintechstudio.com/how-we-work
+- FAQ: https://www.wintechstudio.com/faq
+- Guide, Paystack payments: https://www.wintechstudio.com/guides/paystack-payments-on-your-website
+- Compare, custom website vs Wintech Templates: https://www.wintechstudio.com/compare/custom-website-vs-wintech-templates
+- Salons: https://www.wintechstudio.com/industries/salons
+- Glossary: https://www.wintechstudio.com/glossary
+- Free tools: https://www.wintechstudio.com/tools
