@@ -46,14 +46,14 @@ const logos: { name: string; icon?: string }[] = [
     <div class="trust">
       <ul class="facts">{facts.map(([v, l]) => <li><strong>{v}</strong> <span>{l}</span></li>)}</ul>
       <div class="band" aria-label="Clients and products we have designed and built">
-        <ul class="track">
+        <div class="cells"><ul class="track">
           {[...logos, ...logos].map((l, i) => (
             <li aria-hidden={i >= logos.length ? 'true' : undefined}>
               {l.icon ? <img src={l.icon} alt="" width="22" height="22" loading="lazy" /> : <span class="mono" aria-hidden="true">MR</span>}
               <span class="wm">{l.name}</span>
             </li>
           ))}
-        </ul>
+        </ul></div>
       </div>
     </div>
   </div>
@@ -97,7 +97,9 @@ const logos: { name: string; icon?: string }[] = [
   .trust{display:flex;flex-direction:column;gap:24px}
   .facts{list-style:none;display:flex;flex-wrap:wrap;gap:8px 24px;padding:0;margin:0;font-size:14px;line-height:21px}
   .facts strong{font-weight:600;color:var(--h-fg)}.facts span{color:var(--h-mute)}
-  .band{height:74px;border-top:1px solid var(--h-rule);border-bottom:1px solid var(--h-rule);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+  /* DesignMe: band hairlines run edge to edge; the cells sit in the 1200 container with a hairline either side */
+  .band{height:74px;width:100vw;margin-left:calc(50% - 50vw);border-top:1px solid var(--h-rule);border-bottom:1px solid var(--h-rule)}
+  .cells{max-width:1200px;height:100%;margin:0 auto;border-left:1px solid var(--h-rule);border-right:1px solid var(--h-rule);overflow:hidden}
   .track{list-style:none;margin:0;padding:0;display:flex;width:max-content;height:100%;animation:slide 48s linear infinite}
   .band:hover .track{animation-play-state:paused}
   @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -122,7 +124,7 @@ const logos: { name: string; icon?: string }[] = [
     .now{max-width:none}.media{width:100%;height:auto;aspect-ratio:358/201}
     .trust{gap:20px}
     .facts{flex-direction:column;gap:4px}
-    .band{margin:0 -16px;-webkit-mask-image:none;mask-image:none}
+    .cells{border-left:0;border-right:0}
     .track{animation-duration:36s}
     .track li{width:auto;min-width:115px;padding:0 20px}
     .wm{font-size:14px}

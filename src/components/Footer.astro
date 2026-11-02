@@ -20,22 +20,24 @@ const cols: { h: string; links: [string, string, boolean?][] }[] = [
 const clocks: [string, string][] = [['Lagos', 'Africa/Lagos'], ['London', 'Europe/London']];
 ---
 <footer class="site-footer">
-  <div class="wrap clocks" aria-label="Local times">
-    {clocks.map(([c, tz]) => <p class="ck"><span>{c}</span><time data-tz={tz}>--:--</time></p>)}
+  <div class="clocks-row">
+    <div class="wrap clocks" aria-label="Local times">
+      {clocks.map(([c, tz]) => <p class="ck"><span>{c}</span><i aria-hidden="true"></i><time data-tz={tz}>--:--</time></p>)}
+    </div>
   </div>
-  <div class="hr"></div>
-  <div class="wrap brand">
-    <div class="bl"><Logo /><p class="tagline">Brand, websites, AI and automation, from one studio in Lagos.</p></div>
-    <button class="top" type="button" id="to-top" aria-label="Back to top" title="Back to top"><Icon name="arrow-up" size={16} /></button>
+  <div class="wrap">
+    <div class="brand">
+      <Logo />
+      <p class="tagline">Brand, websites, AI and automation, from one studio in Lagos.</p>
+    </div>
   </div>
-  <div class="hr"></div>
   <div class="wrap main">
     <div class="left">
       <h2>Design, build and run it, with one project lead.</h2>
       <div class="contact">
-        <a href="/book">Book a call</a>
-        <a href={`mailto:${contact.email}`}>{contact.email}</a>
-        <a href={contact.whatsappLink} target="_blank" rel="noopener">WhatsApp {contact.whatsapp}</a>
+        <div><p class="fh">Let's talk</p><a href="/book">Book a call</a></div>
+        <div><p class="fh">Send email</p><a href={`mailto:${contact.email}`}>{contact.email}</a></div>
+        <div><p class="fh">WhatsApp</p><a href={contact.whatsappLink} target="_blank" rel="noopener">{contact.whatsapp}</a></div>
       </div>
       <div class="ask">
         <p>Ask AI about Wintech</p>
@@ -49,68 +51,73 @@ const clocks: [string, string][] = [['Lagos', 'Africa/Lagos'], ['London', 'Europ
         ))}
       </nav>
       <div class="addr">
-        <p class="fh">Location</p>
+        <p class="fh">Address</p>
         <p>Lagos, Nigeria</p>
         <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
       </div>
     </div>
   </div>
-  <div class="hr"></div>
-  <div class="wrap legal">
-    <div class="ll"><span>© 2026 Wintech Studio</span><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/llms.txt">llms.txt</a></div>
-    <div class="ll"><a href="https://www.instagram.com/wintechstudio" target="_blank" rel="noopener">Instagram</a><a href="https://x.com/wintechstudio_" target="_blank" rel="noopener">X</a><a href={contact.whatsappLink} target="_blank" rel="noopener">WhatsApp</a></div>
+  <div class="bottom">
+    <div class="legal">
+      <div class="ll"><span>© 2026 Wintech Studio. All rights reserved.</span><a href="/privacy">Privacy policy</a><a href="/terms">Terms of service</a><a href="/llms.txt">llms.txt</a></div>
+      <div class="ll"><a href="https://www.instagram.com/wintechstudio" target="_blank" rel="noopener">Instagram</a><a href="https://x.com/wintechstudio_" target="_blank" rel="noopener">X</a><a href={contact.whatsappLink} target="_blank" rel="noopener">WhatsApp</a><a href="/book">Book a call</a></div>
+    </div>
   </div>
 </footer>
 <script is:inline>
   (function(){var els=document.querySelectorAll('[data-tz]');function f(tz){return new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:tz}).format(new Date())}function t(){els.forEach(function(e){e.textContent=f(e.dataset.tz)})}t();setInterval(t,30000);
-    document.getElementById('to-top')?.addEventListener('click',function(){scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})})();
+})();
 </script>
 <style>
-  .site-footer{background:var(--bg);color:var(--fg)}
-  .hr{height:1px;background:var(--rule)}
-  /* clock row */
-  .clocks{display:flex;gap:40px;padding-top:16px;padding-bottom:16px}
-  .ck{display:flex;gap:8px;margin:0;font:500 11px/14.3px var(--font);letter-spacing:.66px;text-transform:uppercase;color:var(--fg-3)}
-  .ck time{color:var(--fg);font-variant-numeric:tabular-nums}
-  /* brand row */
-  .brand{display:flex;justify-content:space-between;align-items:center;gap:24px;padding-top:40px;padding-bottom:40px}
-  .bl{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  /* DesignMe footer: always dark, hairlines at 12% white */
+  .site-footer{--fg:#F5F5F5;--fg-2:rgba(245,245,245,.75);--fg-3:rgba(245,245,245,.62);--rule:rgba(245,245,245,.12);--rule-2:rgba(245,245,245,.24);--hover:rgba(245,245,245,.06);background:#0F0F0F;color:var(--fg);border-top:1px solid rgba(255,255,255,.06)}
+  /* clock row: hairline runs edge to edge */
+  .clocks-row{border-bottom:1px solid var(--rule)}
+  .clocks{display:flex;justify-content:space-between;padding-top:16px;padding-bottom:16px}
+  .ck{display:flex;align-items:center;gap:8px;margin:0;font:500 11px/14.3px var(--font);letter-spacing:.66px;text-transform:uppercase;color:var(--fg-3)}
+  .ck i{width:1px;height:11px;background:var(--rule-2)}
+  .ck time{color:var(--fg-2);font-variant-numeric:tabular-nums}
+  /* brand row: centred, hairline at container width */
+  .brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:40px 0;border-bottom:1px solid var(--rule)}
+  .brand :global(.logo){height:22px;font-size:22px}.brand :global(.logo-m){width:30px;height:22px}
   .tagline{margin:0;font-size:18px;line-height:27px;font-weight:500;color:var(--fg-2)}
-  .top{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--rule);border-radius:2px;background:none;color:var(--fg-2);cursor:pointer}
-  .top:hover{background:var(--hover);color:var(--fg)}
   /* main */
   .main{display:grid;grid-template-columns:minmax(0,506fr) minmax(0,598fr);gap:96px;padding-top:48px;padding-bottom:80px}
-  .left h2{font-size:32px;line-height:38.4px;letter-spacing:-.64px;font-weight:600;margin:0;max-width:506px}
-  .contact{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:32px}
+  .left h2{font-size:32px;line-height:36.8px;letter-spacing:-.64px;font-weight:600;margin:0;max-width:420px}
+  .contact{display:flex;flex-wrap:wrap;gap:24px 56px;margin-top:40px;padding-bottom:32px;border-bottom:1px solid var(--rule)}
+  .contact .fh{margin-bottom:12px}
   .contact a{font-size:16px;line-height:24px;font-weight:500;color:var(--fg);text-decoration:underline;text-decoration-color:var(--rule-2);text-underline-offset:3px}
   .contact a:hover{text-decoration-color:currentColor}
   .ask{margin-top:48px}
   .ask p{font-size:24px;line-height:31.2px;letter-spacing:-.24px;font-weight:600;margin:0 0 16px}
   .ais{display:flex;flex-wrap:wrap;gap:12px}
-  .ais a{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--rule);border-radius:2px;color:var(--fg-2);font:600 11px/1 var(--font);letter-spacing:.44px;text-decoration:none;transition:background .15s,color .15s}
-  .ais a:hover{background:var(--hover);color:var(--fg)}
-  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-  .fc{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-  .fh{margin:0 0 8px;font:500 11px/14.3px var(--font);letter-spacing:.66px;text-transform:uppercase;color:var(--fg-3)}
+  .ais a{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:rgba(245,245,245,.06);border-radius:2px;color:var(--fg-2);font:600 11px/1 var(--font);letter-spacing:.44px;text-decoration:none;transition:background .15s,color .15s}
+  .ais a:hover{background:rgba(245,245,245,.12);color:var(--fg)}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;padding-bottom:40px;border-bottom:1px solid var(--rule)}
+  .fc{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+  .fh{margin:0 0 6px;font:500 11px/14.3px var(--font);letter-spacing:.66px;text-transform:uppercase;color:var(--fg-3)}
   .fc a{display:inline-flex;align-items:center;gap:4px;font-size:14px;line-height:21px;font-weight:500;color:var(--fg);text-decoration:none}
   .fc a :global(svg){color:var(--fg-3)}
   .fc a:hover{text-decoration:underline;text-underline-offset:3px}
-  .addr{margin-top:48px}
+  .addr{margin-top:40px}
   .addr p:not(.fh){margin:0;font-size:14px;line-height:21px;font-weight:500;color:var(--fg-2)}
   .addr a{color:inherit;text-decoration:none}.addr a:hover{color:var(--fg)}
-  /* legal row */
-  .legal{display:flex;justify-content:space-between;align-items:center;gap:16px 32px;flex-wrap:wrap;padding-top:32px;padding-bottom:32px}
-  .ll{display:flex;gap:32px;flex-wrap:wrap;font-size:14px;line-height:21px;color:var(--fg-2)}
+  /* bottom row: hairline at 1280 */
+  .bottom{max-width:1280px;margin:0 auto;border-top:1px solid var(--rule)}
+  .legal{max-width:1200px;margin:0 auto;box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;gap:16px 32px;flex-wrap:wrap;padding:32px 0}
+  .ll{display:flex;gap:32px;flex-wrap:wrap;font:500 12px/18px var(--font);letter-spacing:.48px;text-transform:uppercase;color:var(--fg-2)}
   .ll a{color:inherit;text-decoration:none}.ll a:hover{color:var(--fg)}
   :global(body:has(#ask)) .legal{padding-bottom:88px}
+  @media (max-width:1279px){.bottom{margin:0 40px}.legal{margin:0}}
   @media (max-width:1023px){.main{grid-template-columns:1fr;gap:48px}}
   @media (max-width:767px){
-    .brand{padding-top:32px;padding-bottom:32px;align-items:flex-start}
-    .bl{flex-direction:column;align-items:flex-start;gap:12px}
+    .brand{padding:32px 0}
     .tagline{font-size:16px;line-height:24px}
     .main{padding-top:40px;padding-bottom:56px}
     .left h2{font-size:24px;line-height:28.8px;letter-spacing:-.48px}
+    .contact{flex-direction:column;gap:20px}
     .grid3{grid-template-columns:1fr 1fr;gap:32px 16px}
+    .bottom{margin:0 16px}
     .ll{gap:16px 24px}
   }
 </style>

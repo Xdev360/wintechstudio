@@ -1,4 +1,5 @@
 ---
+import FounderAv from './FounderAv.astro';
 // Home FAQ. Sizes from docs/DESIGNME-SPEC.md "FAQ".
 const faqs: [string, string][] = [
   ['What does it cost?', 'Websites from $1,200, brand systems from $1,500, the AI assistant from $1,800 plus $60 a month. Each service page shows its starting price before any call.'],
@@ -14,9 +15,9 @@ const faqs: [string, string][] = [
       <p class="h-eb">FAQ</p>
       <h2>Questions, answered</h2>
       <div class="ask">
-        <span class="av" aria-hidden="true">OI</span>
-        <p class="at">Still deciding?</p>
-        <p class="ax">Ask Wintech AI now, or talk to the project lead on a call.</p>
+        <FounderAv size={48} />
+        <p class="at">Can't find your answer?</p>
+        <p class="ax">Book a call with Oladele, founder and project lead.</p>
         <a class="h-btn primary" href="/book">Book a call</a>
         <p class="em">Or email us <span aria-hidden="true">→</span> <a href="mailto:hello@wintechstudio.com">hello@wintechstudio.com</a></p>
       </div>

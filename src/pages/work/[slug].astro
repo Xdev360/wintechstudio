@@ -55,7 +55,7 @@ const vt = c.slug === 'virtual-trades';
     </section>
     <div class="media">
       <figure class="film">
-        <img src={`/images/cases/film-${c.slug}.webp`} srcset={`/images/cases/film-${c.slug}-800.webp 800w, /images/cases/film-${c.slug}.webp ${c.film.w}w`} sizes="(max-width:1023px) calc(100vw - 32px), min(1360px, calc(100vw - 80px))" width={c.film.w} height={c.film.h} style={`max-width:min(100%,${c.film.w}px)`} alt={`${c.name}: ${c.film.label}`} fetchpriority="high" decoding="async" />
+        <img src={`/images/cases/film-${c.slug}.webp`} srcset={`/images/cases/film-${c.slug}-800.webp 1292w, /images/cases/film-${c.slug}.webp ${c.film.w * 2}w`} sizes="(max-width:1023px) calc(100vw - 32px), min(1360px, calc(100vw - 80px))" width={c.film.w} height={c.film.h} style={`max-width:min(100%,${c.film.w}px)`} alt={`${c.name}: ${c.film.label}`} fetchpriority="high" decoding="async" />
       </figure>
       <div class="gal"><Masonry slug={c.slug} name={c.name} cols={tiles[c.slug]} /></div>
     </div>
