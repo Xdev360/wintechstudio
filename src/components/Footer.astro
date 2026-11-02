@@ -3,8 +3,8 @@
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { services, contact } from '../data/site';
+import { aiMarks } from '../data/ai-marks';
 const q = encodeURIComponent('What does Wintech Studio (wintechstudio.com) do, and who is it for?');
-// Square buttons carry a short mark until official SVG marks are added.
 const ais: [string, string, string][] = [
   ['ChatGPT', 'GPT', `https://chatgpt.com/?q=${q}`],
   ['Claude', 'CL', `https://claude.ai/new?q=${q}`],
@@ -41,7 +41,7 @@ const clocks: [string, string][] = [['Lagos', 'Africa/Lagos'], ['London', 'Europ
       </div>
       <div class="ask">
         <p>Ask AI about Wintech</p>
-        <div class="ais">{ais.map(([n, m, h]) => <a href={h} target="_blank" rel="noopener" aria-label={`Ask ${n} about Wintech Studio`} title={n}>{m}</a>)}</div>
+        <div class="ais">{ais.map(([n, , h]) => <a href={h} target="_blank" rel="noopener" aria-label={`Ask ${n} about Wintech Studio`} title={`Ask ${n}`}><svg viewBox={aiMarks[n].vb} width="18" height="18" fill="currentColor" fill-rule="evenodd" aria-hidden="true" set:html={aiMarks[n].svg} /></a>)}</div>
       </div>
     </div>
     <div class="right">
@@ -91,7 +91,8 @@ const clocks: [string, string][] = [['Lagos', 'Africa/Lagos'], ['London', 'Europ
   .ask{margin-top:48px}
   .ask p{font-size:24px;line-height:31.2px;letter-spacing:-.24px;font-weight:600;margin:0 0 16px}
   .ais{display:flex;flex-wrap:wrap;gap:12px}
-  .ais a{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:rgba(245,245,245,.06);border-radius:2px;color:var(--fg-2);font:600 11px/1 var(--font);letter-spacing:.44px;text-decoration:none;transition:background .15s,color .15s}
+  .ais a{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:rgba(245,245,245,.06);border-radius:2px;color:var(--fg);text-decoration:none;transition:background .15s,transform .15s}
+  .ais a:hover{transform:translateY(-1px)}
   .ais a:hover{background:rgba(245,245,245,.12);color:var(--fg)}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;padding-bottom:40px;border-bottom:1px solid var(--rule)}
   .fc{display:flex;flex-direction:column;align-items:flex-start;gap:10px}

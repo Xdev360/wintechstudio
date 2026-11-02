@@ -5,7 +5,7 @@
 import Ico from './Ico.astro';
 import services from '../../data/services.json';
 import { services as names } from '../../data/site';
-const order = ['ai-assistant', 'websites', 'brand', 'automation', 'apps', 'motion'];
+const order = ['brand', 'websites', 'ai-assistant', 'apps', 'automation', 'motion'];
 const link: Record<string, string> = { 'ai-assistant': 'the AI assistant', websites: 'websites and stores', brand: 'brand and packaging', automation: 'automation', apps: 'apps and MVPs', motion: 'motion and film' };
 const items = order.map((slug) => {
   const s = services.find((x) => x.slug === slug)!;

@@ -2,8 +2,8 @@ export const services = [
   { slug: 'brand', name: 'Brand and packaging', short: 'Brand' },
   { slug: 'websites', name: 'Websites and stores', short: 'Websites and stores' },
   { slug: 'ai-assistant', name: 'AI assistant', short: 'AI assistant' },
-  { slug: 'automation', name: 'Automation', short: 'Automation' },
   { slug: 'apps', name: 'Apps and MVPs', short: 'Apps and MVPs' },
+  { slug: 'automation', name: 'Automation', short: 'Automation' },
   { slug: 'motion', name: 'Motion and film', short: 'Motion' },
 ];
 export const cases = [
