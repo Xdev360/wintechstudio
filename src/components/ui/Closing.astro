@@ -1,30 +1,43 @@
 ---
-// Closing band "light wave drifts" (Figma 807:2509): dark band, three blurred glows drifting at the bottom.
+// Closing band per docs/DESIGNME-SPEC.md: black, 252 padding, centred eyebrow + 72px H2 + sub + one button,
+// animated glow along the bottom (335 tall). Mobile: padding 196, H2 42, button 286 wide.
 ---
 <section class="closing">
-  <span class="glow g1" aria-hidden="true"></span><span class="glow g2" aria-hidden="true"></span><span class="glow g3" aria-hidden="true"></span>
+  <div class="glow" aria-hidden="true">
+    <span class="g g1"></span><span class="g g2"></span><span class="g g3"></span><span class="hz"></span>
+  </div>
   <div class="inner">
-    <p class="eyebrow">YOU'VE REACHED THE END, SO NOW…</p>
-    <h2>Tell us what<br />you're building.</h2>
+    <p class="eb">You've reached the end, so now</p>
+    <h2>Tell us what you're building.</h2>
     <p class="sub">We map the right scope, team, timeline and next step.</p>
-    <div class="ctas"><a class="b primary" href="/book">Book a call</a><a class="b ghost" href="/tools/plan">Plan your project</a></div>
+    <a class="btn btn-primary cta" href="/book">Book a call</a>
   </div>
 </section>
 <style>
-  .closing{position:relative;overflow:hidden;background:#0A0E17;min-height:480px;display:flex;justify-content:center;padding:96px 16px 120px}
-  .glow{position:absolute;border-radius:50%;filter:blur(140px);pointer-events:none}
-  .g1{width:900px;height:320px;left:calc(50% - 660px);top:320px;background:rgba(59,91,255,.7);animation:d1 14s ease-in-out infinite alternate}
-  .g2{width:760px;height:280px;left:calc(50% - 100px);top:350px;background:rgba(37,77,127,.9);animation:d2 17s ease-in-out infinite alternate}
-  .g3{width:600px;height:200px;left:calc(50% - 420px);top:400px;background:rgba(124,147,255,.35);animation:d1 12s ease-in-out infinite alternate-reverse}
-  @keyframes d1{to{transform:translateX(80px)}}@keyframes d2{to{transform:translateX(-90px)}}
-  @media (prefers-reduced-motion:reduce){.glow{animation:none}}
-  .inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
-  .eyebrow{font:400 11px var(--mono);letter-spacing:.66px;color:#9AA3B2;margin:0}
-  h2{font-size:76px;line-height:1;letter-spacing:-1.9px;font-weight:600;color:#F4F6FA;margin:0}
-  .sub{font-size:18px;color:#9AA3B2;margin:0}
-  .ctas{display:flex;gap:10px}
-  .b{font:500 16px var(--font);padding:13px 20px;text-decoration:none;border:1px solid transparent}
-  .primary{background:#3B5BFF;color:#fff}.primary:hover{background:var(--sig-hover)}
-  .ghost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#F4F6FA}.ghost:hover{background:rgba(255,255,255,.14)}
-  @media (max-width:767px){.closing{min-height:0;padding:72px 16px 96px}h2{font-size:44px;letter-spacing:-1px}.sub{font-size:16px}.ctas{flex-direction:column;width:100%;max-width:320px}.b{text-align:center}}
+  .closing{position:relative;overflow:hidden;background:#000;color:#F5F5F5;padding:252px 16px;display:flex;justify-content:center;isolation:isolate}
+  .inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;max-width:640px}
+  .eb{font:500 11px/14.3px var(--font);letter-spacing:.66px;text-transform:uppercase;color:rgba(245,245,245,.62);margin:0 0 24px}
+  h2{max-width:560px;font-size:72px;line-height:79.2px;letter-spacing:-1.44px;font-weight:600;color:#F5F5F5;margin:0}
+  .sub{font-size:18px;line-height:27px;font-weight:600;color:rgba(245,245,245,.75);margin:24px 0 40px}
+  .cta{min-width:140px}
+
+  /* glow: soft light drifting along the bottom edge */
+  .glow{position:absolute;left:0;right:0;bottom:0;height:335px;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent,#000 45%);mask-image:linear-gradient(180deg,transparent,#000 45%)}
+  .g{position:absolute;bottom:-60%;width:70%;height:120%;border-radius:50%;will-change:transform}
+  .g1{left:-10%;background:radial-gradient(closest-side,rgba(59,91,255,.75),rgba(59,91,255,0));animation:d1 14s ease-in-out infinite alternate}
+  .g2{left:35%;background:radial-gradient(closest-side,rgba(37,77,127,.9),rgba(37,77,127,0));animation:d2 17s ease-in-out infinite alternate}
+  .g3{left:15%;width:60%;bottom:-75%;background:radial-gradient(closest-side,rgba(160,178,255,.45),rgba(160,178,255,0));animation:d3 11s ease-in-out infinite alternate}
+  .hz{position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(160,178,255,.6) 30%,rgba(255,255,255,.8) 50%,rgba(160,178,255,.6) 70%,transparent);background-size:200% 100%;animation:hz 8s linear infinite}
+  @keyframes d1{to{transform:translateX(18%) scale(1.08)}}
+  @keyframes d2{to{transform:translateX(-22%) scale(.94)}}
+  @keyframes d3{0%{transform:translateX(-10%);opacity:.7}100%{transform:translateX(30%);opacity:1}}
+  @keyframes hz{to{background-position:-200% 0}}
+  @media (prefers-reduced-motion:reduce){.g,.hz{animation:none}}
+
+  @media (max-width:767px){
+    .closing{padding:196px 16px}
+    h2{font-size:42px;line-height:46.2px;letter-spacing:-.84px;max-width:340px}
+    .sub{font-size:16px;line-height:24px}
+    .cta{width:286px;max-width:100%}
+  }
 </style>

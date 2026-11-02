@@ -1,5 +1,5 @@
 ---
-// Legal page from Figma S15/S16: heading, sticky "On this page" list on the left, clauses on the right.
+// Legal page: heading, sticky "On this page" list on the left, clauses on the right.
 import Page from '../../layouts/Page.astro';
 import '../../styles/studio.css';
 interface Props { title: string; path: string; description: string; clauses: [string, string][]; updated?: string }
@@ -8,14 +8,14 @@ const id = (s: string) => s.toLowerCase().replace(/\W+/g, '-');
 const linkify = (s: string) => s.replace(/hello@wintechstudio\.com/g, '<a href="mailto:hello@wintechstudio.com">hello@wintechstudio.com</a>');
 ---
 <Page title={`${title} · Wintech Studio`} description={description} crumbs={[[title, path]]} closing={false}>
-  <div class="sp lg">
-    <section class="ls">
-      <div class="wrap">
-        <div class="hd"><p class="eb">Legal</p><h1 class="t1" style="--fs:56px;--fsm:30px">{title}</h1><p class="ld">Last updated {updated}. Draft for legal review.</p></div>
-        <div class="lgg">
-          <nav aria-label="On this page"><p class="eb">On this page</p>{clauses.map(([h], i) => <a href={`#${id(h)}`} class:list={{ on: i === 0 }}>{h}</a>)}</nav>
-          <div class="cl">{clauses.map(([h, b]) => <section id={id(h)}><h2>{h}</h2><p set:html={linkify(b)} /></section>)}</div>
-        </div>
+  <div class="dm lg">
+    <section class="dm-top">
+      <div class="wrap"><div class="dm-head"><p class="dm-eb">Legal</p><h1 class="dm-h1">{title}</h1><p class="dm-intro">Last updated {updated}. Draft for legal review.</p></div></div>
+    </section>
+    <section class="dm-sec">
+      <div class="wrap lgg">
+        <nav class="dm-toc dm-sticky" aria-label="On this page">{clauses.map(([h], i) => <a href={`#${id(h)}`} class:list={{ on: i === 0 }}>{h}</a>)}</nav>
+        <div class="cl">{clauses.map(([h, b]) => <section id={id(h)}><h2 class="dm-h3">{h}</h2><p set:html={linkify(b)} /></section>)}</div>
       </div>
     </section>
   </div>
@@ -29,25 +29,17 @@ const linkify = (s: string) => s.replace(/hello@wintechstudio\.com/g, '<a href="
   document.querySelectorAll('.lg .cl section').forEach(s => io.observe(s));
 </script>
 <style>
-  .ls{padding:104px 0 140px}
-  .lgg{display:grid;grid-template-columns:260px 1fr;gap:80px;align-items:start;margin-top:48px}
-  nav{position:sticky;top:96px;display:flex;flex-direction:column;gap:12px}
-  nav a{font-size:15px;line-height:18px;color:var(--fg-2);text-decoration:none}
-  nav a:hover{color:var(--fg)}
-  nav a.on{color:var(--fg);font-weight:500}
-  .cl{display:flex;flex-direction:column;gap:32px;max-width:720px}
-  .cl section{display:flex;flex-direction:column;gap:10px;scroll-margin-top:96px}
-  h2{font-size:22px;line-height:26px;font-weight:600;letter-spacing:0;margin:0}
-  .cl p{font-size:16px;line-height:1.65;color:var(--body-2);margin:0}
-  .cl p :global(a){color:inherit;text-underline-offset:3px}
+  .lgg{display:grid;grid-template-columns:240px minmax(0,672px);justify-content:space-between;gap:64px;align-items:start}
+  .cl{display:flex;flex-direction:column}
+  .cl section{display:flex;flex-direction:column;gap:8px;padding:24px 0;border-top:1px solid var(--hl);scroll-margin-top:96px}
+  .cl section:first-child{border-top:0;padding-top:0}
+  .cl p{font-size:16px;line-height:24px;color:var(--mute)}
+  .cl p :global(a){color:var(--fg);text-underline-offset:3px}
   .cl p :global(a:hover){color:var(--sig)}
   @media (max-width:1023px){
-    .ls{padding:40px 0 56px}
-    .lgg{grid-template-columns:1fr;gap:0;margin-top:28px}
+    .lgg{grid-template-columns:1fr;gap:0}
     nav{display:none}
-    .cl{gap:28px}
-    .cl section{gap:8px}
-    h2{font-size:18px;line-height:22px}
-    .cl p{font-size:15px;line-height:1.6}
+    .cl section{padding:20px 0}
+    .cl p{font-size:15px;line-height:22px}
   }
 </style>

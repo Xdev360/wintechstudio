@@ -1,7 +1,17 @@
 ---
-import Icon from '../Icon.astro';
-interface Props { items: [string, string, string][] }
-const { items } = Astro.props;
+// "Keep reading": three hairline cards (eyebrow, 20/600 title, 14/600 text link).
+interface Props { items: [string, string, string][]; title?: string }
+const { items, title = 'Keep reading' } = Astro.props;
 ---
-<section class="sec"><div class="wrap"><p class="mono">Keep reading</p><div class="grid g3 rel">{items.map(([k, t, h]) => <a class="card" href={h}><p class="mono k">{k}</p><h3>{t}</h3><span class="link">Read <Icon name="arrow-up-right" size={14} /></span></a>)}</div></div></section>
-<style>.rel{margin-top:20px}.rel a{text-decoration:none;display:grid;gap:10px;align-content:start}.rel a:hover{border-color:var(--ash)}.k{color:var(--sig)}.rel h3{font-size:19px;margin:0}</style>
+<section class="dm dm-sec line rel">
+  <div class="wrap">
+    <div class="dm-head"><p class="dm-eb">{title}</p></div>
+    <div class="dm-grid g3 g">{items.map(([k, t, h]) => <a class="dm-card" href={h}><p class="dm-eb">{k}</p><h3 class="dm-h3">{t}</h3><span class="dm-link">Read</span></a>)}</div>
+  </div>
+</section>
+<style>
+  .rel .g{margin-top:24px}
+  .rel .dm-card{min-height:180px}
+  .rel .dm-link{margin-top:auto}
+  @media (max-width:1023px){.rel .dm-card{min-height:0}.rel .g{margin-top:16px}}
+</style>

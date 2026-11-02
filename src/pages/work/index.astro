@@ -1,155 +1,91 @@
 ---
-// W1 · Work · dark (802:1282) and M · Work · dark (821:4016).
+// Work index, DesignMe /projects layout: centred head (eyebrow, H1 56, sub 18/500), filter chips,
+// 2-column grid of hairline cards. Light by default, follows the site theme.
+// Motion pieces section is left out until the videos exist (data kept in cases.ts as motionPieces).
 import Page from '../../layouts/Page.astro';
-import { cases, workOrder, motionPieces } from '../../data/cases';
+import Card from '../../components/work/Card.astro';
+import { cases, workOrder } from '../../data/cases';
 const list = workOrder.map(s => cases.find(c => c.slug === s)!);
-const filters = ['All', 'Branding', 'Apps', 'Websites', 'Motion'];
+const filters = ['All', 'Branding', 'Apps', 'Websites', 'Motion'].filter(f => f === 'All' || list.some(c => c.filters.includes(f)));
 const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Work from Wintech Studio', hasPart: list.map(c => ({ '@type': 'CreativeWork', name: c.name, url: `https://www.wintechstudio.com/work/${c.slug}` })) };
 ---
-<Page title="Work · Wintech Studio" description="Case studies from Wintech Studio in Lagos: client work, our own products and concepts, from Mylo to Tobel Pearls. Every card says which, and what we made." crumbs={[['Work', '/work']]} jsonld={[ld]} theme="dark">
-  <section class="hero">
-    <p class="eyebrow">Case studies</p>
-    <h1><span class="d">Work from the studio, for businesses<br />starting, adding tech and refreshing</span><span class="m">Work from the studio</span></h1>
-    <p class="sub">Client work, our own products and concepts. Every card says which, and what we made.</p>
-    <div class="filters" role="toolbar" aria-label="Filter work">
-      {filters.map((f, k) => <button type="button" class:list={['f', { on: k === 0 }]} data-f={f} aria-pressed={k === 0 ? 'true' : 'false'}>{f}</button>)}
-      <button type="button" class="srch" id="w-srch" aria-label="Search work" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
-    </div>
-    <label class="q" id="w-q" hidden><span class="sr-only">Search work</span><input type="search" placeholder="Search by name or what we made" autocomplete="off" /></label>
-  </section>
-
-  <section class="wgrid" aria-label="Case studies">
-    <div class="cards" id="w-cards">
-      {list.map((c, k) => (
-        <a class="card" href={`/work/${c.slug}`} data-cats={c.filters.join(',')} data-q={`${c.name} ${c.cardLine} ${c.did.join(' ')}`.toLowerCase()}>
-          <span class="cover" data-todo-image={c.coverId}><img src={`/images/cases/film-${c.slug}-800.webp`} alt="" width="800" height="450" loading={k < 3 ? 'eager' : 'lazy'} decoding="async" /></span>
-          <span class="meta"><span class="nm"><span>{c.name}</span><span class="tag">{c.tag}</span></span><span class="yr">{c.year}</span></span>
-          <span class="bd">
-            <span class="ln">{c.cardLine}</span>
-            <span class="go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-            <span class="svc">{c.cardServices.join(' · ')}</span>
-          </span>
-        </a>
-      ))}
-      <div class="yours">
-        <p class="lab">Next case study</p>
-        <h2>Your project<br />could be next.</h2>
-        <p>Branding, apps, websites and motion, by one team.</p>
-        <a class="btn btn-primary" href="/book">Book a call</a>
+<Page title="Work · Wintech Studio" description="Case studies from Wintech Studio in Lagos: client work, our own products and concepts, from Mylo to Tobel Pearls. Every card says which, and what we made." crumbs={[['Work', '/work']]} jsonld={[ld]}>
+  <div class="wx">
+    <section class="hd">
+      <p class="lb">Case studies</p>
+      <h1>Work from the studio, for businesses starting, adding tech and refreshing</h1>
+      <p class="sb">Client work, our own products and concepts. Every card says which, and what we made.</p>
+      <div class="chips" role="toolbar" aria-label="Filter work">
+        {filters.map((f, k) => <button type="button" class:list={['chip', { on: k === 0 }]} data-f={f} aria-pressed={k === 0 ? 'true' : 'false'}>{f}</button>)}
       </div>
-    </div>
-    <p class="none" id="w-none" hidden>Nothing matches that yet. Try another filter.</p>
+    </section>
 
-    <div class="motion" id="w-motion">
-      <h2>Motion pieces</h2>
-      <p class="msub">Spec ads and launch films. Shown under Motion, they open full screen.</p>
-      <div class="mcards">
-        {motionPieces.map(m => (
-          <article class="mc" data-todo-video={m.name}>
-            <div class="poster"><span class="pt">{m.name}</span><span class="play" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="#0B1120" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5Z"/></svg></span><span class="tm">{m.time}</span></div>
-            <h3>{m.name}</h3><p>{m.sub}</p>
-          </article>
-        ))}
+    <section class="gd" aria-label="Case studies">
+      <div class="grid" id="w-cards">
+        {list.map((c, k) => <Card c={c} eager={k < 2} filters />)}
+        <div class="yours" id="w-yours">
+          <p class="lb">Next case study</p>
+          <h2>Your project could be next.</h2>
+          <p>Branding, apps, websites and motion, by one team.</p>
+          <a class="bt" href="/book">Book a call</a>
+        </div>
       </div>
-    </div>
-  </section>
+      <p class="none" id="w-none" hidden>Nothing matches that yet. Try another filter.</p>
+    </section>
+  </div>
 </Page>
 
 <script>
-  const btns = [...document.querySelectorAll<HTMLButtonElement>('.filters .f')];
-  const cards = [...document.querySelectorAll<HTMLElement>('#w-cards .card')];
-  const motion = document.getElementById('w-motion')!;
+  const btns = [...document.querySelectorAll<HTMLButtonElement>('.chips .chip')];
+  const cards = [...document.querySelectorAll<HTMLElement>('#w-cards [data-cats]')];
   const none = document.getElementById('w-none')!;
-  const qWrap = document.getElementById('w-q')!; const q = qWrap.querySelector('input')!;
-  const srch = document.getElementById('w-srch')!;
-  let cur = 'All';
-  const apply = () => {
-    const term = q.value.trim().toLowerCase(); let shown = 0;
-    cards.forEach(c => { const ok = (cur === 'All' || (c.dataset.cats || '').split(',').includes(cur)) && (!term || (c.dataset.q || '').includes(term)); c.hidden = !ok; if (ok) shown++; });
-    motion.hidden = !(cur === 'All' || cur === 'Motion') || !!term;
+  const apply = (cur: string) => {
+    let shown = 0;
+    cards.forEach(c => { const ok = cur === 'All' || (c.dataset.cats || '').split(',').includes(cur); c.hidden = !ok; if (ok) shown++; });
     none.hidden = shown > 0;
   };
-  btns.forEach(b => b.addEventListener('click', () => { cur = b.dataset.f!; btns.forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', String(x === b)); }); apply(); }));
-  srch.addEventListener('click', () => { const open = qWrap.hidden; qWrap.hidden = !open; srch.setAttribute('aria-expanded', String(open)); if (open) q.focus(); else { q.value = ''; apply(); } });
-  q.addEventListener('input', apply);
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', String(x === b)); });
+    apply(b.dataset.f!);
+  }));
 </script>
 
 <style>
-  .hero{background:#0A0E17;padding:60px 16px 40px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
-  .eyebrow{margin:0;font:400 11px/14px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#9AA3B2}
-  h1{font-size:56px;line-height:1.05;letter-spacing:-.02em;font-weight:600;color:#F4F6FA;margin:0}
-  h1 .m{display:none}
-  .sub{margin:0;font-size:17px;line-height:20px;color:#9AA3B2}
-  .filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
-  .f{font:500 14px/17px var(--font);padding:10px 16px;border:0;background:#1C2432;color:#F4F6FA;cursor:pointer;transition:background .15s}
-  .f:hover{background:#263043}
-  .f.on{background:#F4F6FA;color:#0A0E17}
-  .srch{width:34px;height:34px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:transparent;color:#F4F6FA;display:grid;place-items:center;cursor:pointer;margin-left:0}
-  .srch:hover,.srch[aria-expanded="true"]{background:#1C2432}
-  .q{width:min(444px,100%)}.q[hidden]{display:none}
-  .q input{width:100%;box-sizing:border-box;background:#161D2A;border:1px solid rgba(255,255,255,.12);color:#F4F6FA;font:15px var(--font);padding:11px 14px;outline:none}
-  .q input:focus{border-color:var(--sig)}
+  .wx{--wk-bg:#FFFFFF;--wk-panel:#FAFAFA;--wk-fg:#0A0E17;--wk-line:rgba(10,14,23,.10);--wk-line2:rgba(10,14,23,.2);--wk-tint:rgba(10,14,23,.06);background:var(--wk-bg);color:var(--wk-fg)}
+  :root[data-theme="dark"] .wx{--wk-bg:#0F0F0F;--wk-panel:#151515;--wk-fg:#F5F5F5;--wk-line:rgba(245,245,245,.12);--wk-line2:rgba(245,245,245,.24);--wk-tint:rgba(245,245,245,.08)}
+  .hd,.gd{max-width:1200px;margin:0 auto;padding-left:40px;padding-right:40px;box-sizing:content-box}
 
-  .wgrid{background:#0A0E17;padding:24px var(--gutter) 80px}
-  .cards{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px 20px}
-  .card{display:flex;flex-direction:column;background:#161D2A;border:1px solid rgba(255,255,255,.09);padding:8px 8px 0;min-height:457px;box-sizing:border-box;text-decoration:none;color:#F4F6FA;transition:border-color .2s}
-  .card[hidden]{display:none}
-  .card:hover{border-color:rgba(255,255,255,.22)}
-  .cover{display:block;aspect-ratio:369/270;overflow:hidden;background:#1C2432}
-  .cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
-  .card:hover .cover img{transform:scale(1.03)}
-  .meta{display:flex;justify-content:space-between;align-items:center;padding:16px 12px}
-  .nm{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;line-height:18px}
-  .tag{font-size:12px;line-height:14px;font-weight:400;color:#7C93FF;background:rgba(59,91,255,.18);padding:3px 7px}
-  .yr{font:400 11px/14px var(--mono);color:#9AA3B2}
-  .bd{flex:1;display:grid;grid-template-columns:1fr 28px;grid-template-rows:1fr auto;column-gap:27px;padding:16px 12px 22px}
-  .ln{font-size:19px;line-height:1.3;font-weight:600;max-width:290px}
-  .go{width:28px;height:28px;background:#fff;color:#0A0E17;display:grid;place-items:center}
-  .svc{grid-column:1/-1;margin-top:12px;font:400 11px/14px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.5)}
-  .yours{grid-column:span 2;background:linear-gradient(135deg,#16243F,#0B1120);border:1px solid rgba(255,255,255,.09);padding:56px 48px;color:#fff}
-  .lab{margin:0;font:400 11px/14px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5)}
-  .yours h2{font-size:48px;line-height:54px;letter-spacing:-.02em;font-weight:600;margin:20px 0 18px}
-  .yours p:not(.lab){margin:0 0 34px;font-size:17px;line-height:20px;color:rgba(255,255,255,.65)}
-  .yours .btn{font-size:16px;padding:13px 20px}
-  .none{max-width:1200px;margin:24px auto 0;color:#9AA3B2}
+  .hd{padding-top:60px;padding-bottom:48px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+  .lb{margin:0;font-size:11px;line-height:14.3px;font-weight:500;letter-spacing:.66px;text-transform:uppercase;opacity:.62}
+  h1{margin:0;max-width:1104px;font-size:56px;line-height:64.4px;font-weight:600;letter-spacing:-1.12px}
+  .sb{margin:0;max-width:640px;font-size:18px;line-height:27px;font-weight:500;color:inherit}
+  .chips{display:flex;gap:8px;padding:4px 0;justify-content:center;flex-wrap:wrap}
+  .chip{height:40px;padding:0 16px;font:500 14px/21px var(--font);color:var(--wk-fg);background:var(--wk-bg);border:1px solid var(--wk-line2);border-radius:2px;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s}
+  .chip:hover{border-color:var(--wk-fg)}
+  .chip.on{background:var(--wk-fg);border-color:var(--wk-fg);color:var(--wk-bg)}
+
+  .gd{padding-bottom:128px}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+  .yours{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:12px;padding:40px 32px;background:var(--wk-panel);border:1px solid var(--wk-line);min-height:320px}
+  .yours h2{margin:0;font-size:32px;line-height:35.2px;font-weight:600;letter-spacing:-.64px}
+  .yours p:not(.lb){margin:0;font-size:16px;line-height:24px;opacity:.75}
+  .bt{margin-top:12px;display:inline-flex;align-items:center;height:40px;padding:0 24px;font-size:16px;font-weight:500;border-radius:2px;background:#3B5BFF;color:#fff;text-decoration:none;transition:background .15s}
+  .bt:hover{background:#2F4BE6}
+  .none{margin:24px 0 0;opacity:.75}
   .none[hidden]{display:none}
 
-  .motion{max-width:1200px;margin:64px auto 0}
-  .motion[hidden]{display:none}
-  .motion h2{font-size:28px;line-height:34px;font-weight:600;letter-spacing:0;color:#fff}
-  .msub{margin:8px 0 29px;font-size:16px;line-height:19px;color:rgba(255,255,255,.6)}
-  .mcards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-  .mc{background:#161D2A;border:1px solid rgba(255,255,255,.09);padding:8px 8px 20px}
-  .poster{position:relative;aspect-ratio:269/151;background:linear-gradient(135deg,#1E2A44,#0B1120);display:block}
-  .pt{position:absolute;left:16px;top:16px;font-size:22px;line-height:26px;font-weight:600;color:rgba(255,255,255,.9)}
-  .play{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center}
-  .play svg{margin-left:2px}
-  .tm{position:absolute;right:16px;bottom:12px;font:400 11px/14px var(--mono);color:rgba(255,255,255,.8)}
-  .mc h3{margin:17px 12px 0;font-size:15px;line-height:18px;font-weight:500;color:#fff;letter-spacing:0}
-  .mc p{margin:6px 12px 0;font-size:13px;line-height:16px;color:rgba(255,255,255,.55)}
-
   @media (max-width:1023px){
-    .hero{padding:32px 16px 20px;gap:20px}
-    .eyebrow{font-size:10px;line-height:13px;margin-bottom:-8px}
-    h1{font-size:34px;line-height:1.06;letter-spacing:-.015em}
-    h1 .d{display:none}h1 .m{display:inline}
-    .sub{font-size:15px;line-height:20px;max-width:358px}
-    .f{font-size:13px;line-height:16px;padding:9px 14px}
-    .wgrid{padding:0 16px 56px}
-    .cards{grid-template-columns:1fr;gap:20px}
-    .card{min-height:0;padding:6px 6px 0}
-    .cover{aspect-ratio:344/240}
-    .meta{padding:14px 10px}
-    .nm{font-size:14px}
-    .bd{padding:0 10px 16px;column-gap:16px}
-    .ln{font-size:17px}
-    .yours{grid-column:auto;padding:32px 24px}
-    .yours h2{font-size:34px;line-height:40px}
-    .motion{margin-top:48px}
-    .motion h2{font-size:24px;line-height:30px}
-    .msub{font-size:15px;margin-bottom:20px}
-    .mcards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -16px;padding:0 16px;scrollbar-width:none}
-    .mcards::-webkit-scrollbar{display:none}
-    .mc{flex:0 0 270px;scroll-snap-align:start}
+    .hd,.gd{padding-left:16px;padding-right:16px}
+    .hd{padding-top:40px;padding-bottom:32px;align-items:flex-start;text-align:left}
+    h1{font-size:36px;line-height:41.4px;letter-spacing:-.72px}
+    .sb{font-size:16px;line-height:24px}
+    .chips{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:4px 16px;box-sizing:border-box;width:calc(100% + 32px);max-width:none;align-self:stretch}
+    .chips::-webkit-scrollbar{display:none}
+    .chip{font-size:13px;line-height:19.5px;flex:none}
+    .gd{padding-bottom:64px}
+    .grid{grid-template-columns:1fr}
+    .yours{min-height:0;padding:32px 20px}
+    .yours h2{font-size:24px;line-height:28.8px;letter-spacing:-.48px}
+    .bt{width:100%;justify-content:center;font-size:15px}
   }
 </style>

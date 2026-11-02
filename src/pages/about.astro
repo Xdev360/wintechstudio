@@ -1,64 +1,53 @@
 ---
 import Page from '../layouts/Page.astro';
-import Icon from '../components/Icon.astro';
-import Bi from '../components/Bi.astro';
-import Glyph from '../components/ui/Glyph.astro';
+import Lc from '../components/ui/Lc.astro';
 import '../styles/studio.css';
 const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About Wintech Studio', mainEntity: { '@type': 'Person', name: 'Oladele Ibraheem', jobTitle: 'Founder and project lead', worksFor: { '@type': 'Organization', name: 'Wintech Studio' } } };
 const facts = [['Lagos', 'working worldwide'], ['2020', 'when Wintech started'], ['1', 'project lead per client'], ['A few', 'projects at a time']];
-const bench = [['palette', 'Brand designers'], ['edit', 'Product designers'], ['code', 'Developers'], ['image', 'Film and photo'], ['message', 'AI engineers']];
+const bench = [['palette', 'Brand designers'], ['pen', 'Product designers'], ['code', 'Developers'], ['camera', 'Film and photo'], ['bot', 'AI engineers']];
 ---
 <Page title="About · Wintech Studio" description="A Lagos design and build studio. We make the brand, the website or store, the AI and the automation a business runs on." crumbs={[['About', '/about']]} jsonld={[ld]}>
-  <div class="sp ab">
-    <section class="hero">
-      <div class="wrap hg">
-        <div class="hd">
-          <p class="eb">About Wintech</p>
-          <h1 class="t1" style="--fs:72px">The team founders<br /><span class="gt">never had.</span></h1>
-          <p class="ld"><span class="d">A Lagos design and build studio. We make the brand, the website or store, the AI and the automation a business runs on.</span><span class="m">A Lagos design and build studio.</span></p>
+  <div class="dm ab">
+    <section class="dm-top">
+      <div class="wrap">
+        <div class="dm-head c">
+          <p class="dm-eb">About Wintech</p>
+          <h1 class="dm-h1">The team founders never had.</h1>
+          <p class="dm-intro">A Lagos design and build studio. We make the brand, the website or store, the AI and the automation a business runs on.</p>
         </div>
-        <div class="photo" data-todo-image="809:3938" role="img" aria-label="Photo of the Wintech studio, coming soon"><span>Real photo needed</span></div>
+        <dl class="dm-grid g4 facts">{facts.map(([a, b]) => <div class="dm-stat"><dt><b>{a}</b></dt><dd><span>{b}</span></dd></div>)}</dl>
       </div>
     </section>
 
-    <section class="facts">
-      <div class="wrap"><dl>{facts.map(([a, b], i) => <div class:list={{ dm: i === 0 }}><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div>
-    </section>
-
-    <section class="s alt fn">
+    <section class="dm-sec alt">
       <div class="wrap">
-        <article class="note card2">
-          <p class="eb">A note from the founder</p>
-          <h2 class="t2">Built to be the team<br />I <span class="gt">never had.</span></h2>
-          <div class="body d">
-            <p>Good ideas don't die because they were bad. They die because one person is doing six jobs, or managing five freelancers who never talk to each other.</p>
-            <p>So you talk to one project lead. Behind that person sit the designers, developers, film crew and the AI. One plan, one price, something new every week.</p>
-            <p>We take a few projects at a time and say no when we are not the right fit.</p>
-          </div>
-          <p class="body m">Good ideas don't die because they were bad. They die because one person is doing six jobs. So you talk to one project lead, and the team works behind them.</p>
+        <article class="note">
+          <p class="dm-eb">A note from the founder</p>
+          <h2 class="dm-h2s">Built to be the team I never had.</h2>
+          <p>Good ideas don't die because they were bad. They die because one person is doing six jobs, or managing five freelancers who never talk to each other.</p>
+          <p>So you talk to one project lead. Behind that person sit the designers, developers, film crew and the AI. One plan, one price, something new every week.</p>
+          <p>We take a few projects at a time and say no when we are not the right fit.</p>
           <svg class="sig" width="160" height="52" viewBox="0 0 160 52" fill="none" aria-hidden="true"><path pathLength="1" d="M6 36.0006C16 18.0006 32 10.0006 36 22.0006C40 34.0006 22 44.0006 18 34.0006C14 24.0006 40 10.0006 48 14.0006C56 18.0006 42 40.0006 52 36.0006C62 32.0006 66 8.00064 72 12.0006C78 16.0006 64 34.0006 74 32.0006C84 30.0006 86 16.0006 92 18.0006C98 20.0006 88 30.0006 98 28.0006C106 26.0006 112 18.0006 120 18.0006C128 18.0006 124 28.0006 134 26.0006" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <p class="by">Oladele Ibraheem · Founder<span class="d"> and project lead</span></p>
+          <p class="by">Oladele Ibraheem · Founder and project lead</p>
         </article>
       </div>
     </section>
 
-    <section class="s fit">
+    <section class="dm-sec">
       <div class="wrap">
-        <div class="hd"><p class="eb">Who we build for</p><h2 class="t2" style="--fs:52px">Good fits, and <span class="gt">poor ones.</span></h2></div>
-        <div class="fg">
-          <div class="fc"><p class="k ok">We build for</p><ul class="ticks">{['Owners whose product already sells', 'Businesses running before tech was part of it', 'Founders with proof of demand or money in hand', 'People who will keep running it after launch'].map(t => <li><Icon name="check" size={16} stroke={1.75} />{t}</li>)}</ul></div>
-          <div class="fc no"><p class="k bad">We are a poor fit if</p><ul class="ticks">{['You want the cheapest quote in town', 'You need it yesterday with no plan', 'You want us to run the business for you', 'You cannot spare two hours a week'].map(t => <li><Icon name="x" size={16} stroke={1.75} />{t}</li>)}</ul></div>
+        <div class="dm-head c"><p class="dm-eb">Who we build for</p><h2 class="dm-h2">Good fits, and poor ones.</h2></div>
+        <div class="dm-grid g2 fg">
+          <div class="dm-card"><p class="dm-eb">We build for</p><ul class="dm-ticks">{['Owners whose product already sells', 'Businesses running before tech was part of it', 'Founders with proof of demand or money in hand', 'People who will keep running it after launch'].map(t => <li><Lc name="check" class="ok" />{t}</li>)}</ul></div>
+          <div class="dm-card"><p class="dm-eb">We are a poor fit if</p><ul class="dm-ticks">{['You want the cheapest quote in town', 'You need it yesterday with no plan', 'You want us to run the business for you', 'You cannot spare two hours a week'].map(t => <li><Lc name="x" class="no" />{t}</li>)}</ul></div>
         </div>
       </div>
     </section>
 
-    <section class="s alt bench">
+    <section class="dm-sec line">
       <div class="wrap">
-        <div class="bh">
-          <div class="hd" style="max-width:640px"><p class="eb">The bench</p><h2 class="t2" style="--fs:52px">Specialists behind<br />the curtain.</h2><p class="ld">Wintech keeps the relationship, the strategy and the standard. Named partners produce under our brief and our review.</p></div>
-          <a class="btn btn-dark" href="/join-the-bench">Join the bench</a>
-        </div>
-        <ul class="bl">{bench.map(([ic, t]) => <li class="card2">{ic === 'edit' ? <Glyph name={ic} size={52} /> : <Bi name={ic} size={52} />}<span>{t}</span></li>)}</ul>
+        <div class="dm-head c"><p class="dm-eb">The bench</p><h2 class="dm-h2">Specialists behind the curtain.</h2><p class="dm-intro">Wintech keeps the relationship, the strategy and the standard. Named partners produce under our brief and our review.</p></div>
+        <ul class="dm-cells c5 bl">{bench.map(([ic, t]) => <li><span class="dm-ib"><Lc name={ic} /></span><span>{t}</span></li>)}</ul>
+        <div class="bc"><a class="dm-btn s mw" href="/join-the-bench">Join the bench</a></div>
       </div>
     </section>
   </div>
@@ -68,59 +57,31 @@ const bench = [['palette', 'Brand designers'], ['edit', 'Product designers'], ['
   if (sig) new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { sig.classList.add('in'); o.disconnect(); } }), { threshold: .6 }).observe(sig);
 </script>
 <style>
-  .hero{padding-bottom:72px}
-  .hg{display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
-  .hg .hd{max-width:700px}
-  .photo{flex:none;width:400px;height:300px;background:var(--surface);position:relative}
-  .photo span{position:absolute;left:16px;bottom:14px;font-family:var(--mono);font-size:12px;line-height:16px;color:var(--fg-2)}
-  .facts{padding:0 0 96px}
-  .facts dl{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:0}
-  .facts dl div{border-top:1px solid var(--rule);padding-top:20px;display:flex;flex-direction:column;gap:4px}
-  .facts dt{font-size:36px;line-height:43px;font-weight:600;letter-spacing:-.015em}
-  .facts dd{margin:0;font-size:15px;line-height:18px;color:var(--fg-2)}
-  .fn .wrap{display:flex;justify-content:center}
-  .note{width:560px;padding:48px 48px 44px;display:flex;flex-direction:column;gap:18px}
-  .note .t2{--fs:40px;line-height:1.08;letter-spacing:-.015em}
-  .body.d{display:flex;flex-direction:column;gap:18px}
-  .body p,p.body{font-size:16px;line-height:1.6;color:var(--fg-2);margin:0}
-  .sig{color:var(--fg);display:block}
+  .facts{margin:64px 0 0}
+  .facts dd{margin:0}
+  .note{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+  .note h2{margin-bottom:8px}
+  .note>p:not(.dm-eb):not(.by){font-size:18px;line-height:27px;color:var(--mute)}
+  .sig{color:var(--fg);display:block;margin-top:8px}
   .sig path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s ease-out .2s forwards;animation-play-state:paused}
   .sig.in path{animation-play-state:running}
   @keyframes draw{to{stroke-dashoffset:0}}
   @media (prefers-reduced-motion:reduce){.sig path{animation:none;stroke-dashoffset:0}}
-  .by{font-size:14px;line-height:17px;color:var(--fg-2);margin:0}
-  .fit .hd{margin-bottom:48px}
-  .fg{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .fc{background:var(--surface);padding:32px;display:flex;flex-direction:column;gap:14px}
-  .fc .ticks{gap:14px}
-  .fc .k{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;margin:0}
-  .k.ok{color:#1E7B45}.k.bad{color:#B42318}
-  .fc .ticks :global(svg){color:#1E7B45}
-  .fc.no .ticks :global(svg){color:#B42318}
-  :root[data-theme="dark"] .k.ok,:root[data-theme="dark"] .fc .ticks :global(svg){color:#4ADE80}
-  :root[data-theme="dark"] .k.bad,:root[data-theme="dark"] .fc.no .ticks :global(svg){color:#F87171}
-  .bh{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:48px}
-  .bl{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-  .bl li{padding:20px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:19px;font-weight:500}
+  .by{font-size:14px;line-height:21px;color:var(--lab)}
+  .fg{margin-top:80px}
+  .fg .dm-card{padding:32px;gap:16px}
+  .fg :global(.ok){color:var(--ok)}
+  .fg :global(.no){color:var(--err)}
+  .bl{list-style:none;padding:0;margin-top:80px}
+  .bl li{flex-direction:row;align-items:center;gap:12px;padding:20px;font-size:16px;font-weight:500;line-height:24px}
+  .bc{display:flex;justify-content:center;margin-top:40px}
   @media (max-width:1023px){
-    .hero{padding-bottom:0}
-    .hg{flex-direction:column;align-items:stretch;gap:20px}
-    .photo{width:100%;height:240px}
-    .photo span{left:12px;bottom:10px;font-size:10px;line-height:13px}
-    .facts{padding:20px 0 56px}
-    .facts dl{grid-template-columns:1fr;gap:20px}
-    .facts dl div{padding-top:12px;gap:2px}
-    .facts dl div.dm{display:none}
-    .facts dt{font-size:28px;line-height:34px;letter-spacing:0}
-    .facts dd{font-size:13px;line-height:16px}
-    .note{width:auto;padding:0;background:none;border:0;gap:20px}
-    .note .t2,.sig,.body.d{display:none}
-    p.body{color:var(--fg)}
-    .by{font-size:13px;line-height:16px}
-    .fit .hd,.bh{margin-bottom:28px}
-    .fg{grid-template-columns:1fr}
-    .fc{padding:24px}
-    .bh{flex-direction:column;align-items:flex-start}
-    .bl{grid-template-columns:1fr 1fr}
+    .facts{margin-top:32px;grid-template-columns:1fr 1fr!important;gap:12px}
+    .facts .dm-stat{padding:16px}
+    .note>p:not(.dm-eb):not(.by){font-size:16px;line-height:24px}
+    .fg,.bl{margin-top:40px}
+    .fg .dm-card{padding:20px}
+    .bl li{padding:14px 16px}
+    .bc{margin-top:24px}
   }
 </style>

@@ -28,4 +28,4 @@
 - Compare, custom website vs Wintech Templates: https://www.wintechstudio.com/compare/custom-website-vs-wintech-templates
 - Salons: https://www.wintechstudio.com/industries/salons
 - Glossary: https://www.wintechstudio.com/glossary
-- Free tools: https://www.wintechstudio.com/tools
+- Book a call: https://www.wintechstudio.com/book

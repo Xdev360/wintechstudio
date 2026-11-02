@@ -6,66 +6,53 @@ const partner = [['Fee', 'A reduced project fee'], ['Payment', 'Agreed per proje
 const steps = [['Paid diagnostic', '$200. We study the business and the numbers.'], ['We decide together', 'If the numbers work, we offer a partner build in writing.'], ['Signed agreement', 'Share, period, cap and reporting, before any work.']];
 ---
 <Page title="Partner build · Wintech Studio" description="Pay less up front, we earn when it sells. A partner build is offered by invitation after the paid diagnostic." crumbs={[['Pricing', '/pricing'], ['Partner build', '/partner-build']]}>
-  <div class="sp pb">
-    <section class="hero">
+  <div class="dm pb">
+    <section class="dm-top">
       <div class="wrap">
-        <div class="hd" style="max-width:1000px">
-          <p class="eb">Partner build · By invitation</p>
-          <h1 class="t1">Pay less up front.<br /><span class="gt">We earn when it sells.</span></h1>
-          <p class="ld">For businesses ready to grow but not ready for the whole cost. Offered only after the paid diagnostic, when we both believe the numbers.</p>
+        <div class="dm-head c">
+          <p class="dm-eb">Partner build · By invitation</p>
+          <h1 class="dm-h1">Pay less up front. We earn when it sells.</h1>
+          <p class="dm-intro">For businesses ready to grow but not ready for the whole cost. Offered only after the paid diagnostic, when we both believe the numbers.</p>
         </div>
       </div>
     </section>
 
-    <section class="s alt cmp">
+    <section class="dm-sec alt">
       <div class="wrap">
-        <div class="hd"><p class="eb">Two ways to work with us</p><h2 class="t2">Build or partner build</h2></div>
-        <div class="cg">
-          <div class="cc card2"><p class="k">Pay the full price</p><h3>Build</h3><dl>{build.map(([a, b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div>
-          <div class="cc ink"><p class="k">By invitation</p><h3>Partner build</h3><dl>{partner.map(([a, b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div>
+        <div class="dm-head c"><p class="dm-eb">Two ways to work with us</p><h2 class="dm-h2">Build or partner build</h2></div>
+        <div class="dm-grid g2 cg">
+          <div class="dm-card cc"><p class="dm-eb">Pay the full price</p><h3>Build</h3><dl>{build.map(([a, b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div>
+          <div class="dm-card cc hi"><div class="ct"><p class="dm-eb">By invitation</p><span class="dm-tag b">After the diagnostic</span></div><h3>Partner build</h3><dl>{partner.map(([a, b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div>
         </div>
       </div>
     </section>
 
-    <section class="s st">
+    <section class="dm-sec">
       <div class="wrap">
-        <div class="hd"><p class="eb">How you get one</p><h2 class="t2">Three steps, no promises up front</h2></div>
-        <ol class="sg">{steps.map(([t, d], i) => <li><p class="num">{String(i + 1).padStart(2, '0')}</p><h3>{t}</h3><p>{d}</p></li>)}</ol>
-        <a class="btn btn-primary" href="/book">Start with the diagnostic</a>
+        <div class="dm-head c"><p class="dm-eb">How you get one</p><h2 class="dm-h2">Three steps, no promises up front</h2></div>
+        <ol class="dm-cells c3 sg">{steps.map(([t, d], i) => <li><span class="dm-num">{String(i + 1).padStart(2, '0')}</span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></li>)}</ol>
+        <div class="go"><a class="dm-btn p mw" href="/diagnostic">Start with the diagnostic</a><a class="dm-link" href="/book?service=diagnostic">Or book a call</a></div>
       </div>
     </section>
   </div>
 </Page>
 <style>
-  .hero{padding-bottom:72px}
-  .cmp{padding:96px 0}
-  .cg{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin-top:48px}
-  .cc{padding:32px;display:flex;flex-direction:column;gap:14px}
-  .cc .k{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--sig);margin:0}
-  .cc h3{font-size:30px;line-height:36px;font-weight:600;letter-spacing:-.01em;margin:0}
-  .cc dl{margin:0;display:flex;flex-direction:column;gap:14px}
-  .cc dl div{border-top:1px solid var(--rule);padding-top:12px;display:flex;flex-direction:column;gap:2px}
-  .cc dt{font-family:var(--mono);font-size:10px;line-height:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2)}
-  .cc dd{margin:0;font-size:16px;line-height:19px;font-weight:500;max-width:460px}
-  .cc.ink{border:1px solid var(--rule)}
-  .cc.ink .k{color:var(--inkc-eb)}
-  .cc.ink h3,.cc.ink dd{color:#F4F6FA}
-  .cc.ink dt{color:#9AA3B2}
-  .cc.ink dl div{border-top-color:var(--inkc-rule)}
-  :root[data-theme="dark"] .cc.ink{border-color:#2A3550}
-  .sg{list-style:none;padding:0;margin:48px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start}
-  .sg li{background:var(--surface);padding:24px;display:flex;flex-direction:column;gap:10px}
-  .sg h3{font-size:19px;line-height:23px;font-weight:600;letter-spacing:0;margin:0}
-  .sg li p:last-child{font-size:14px;line-height:1.5;color:var(--fg-2);margin:0;max-width:320px}
+  .cg{margin-top:80px;align-items:start}
+  .cc{padding:32px;gap:16px}
+  .cc.hi{border-color:var(--fg)}
+  .ct{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .cc h3{font-size:32px;line-height:38.4px;letter-spacing:-.64px}
+  .cc dl{margin:0;display:flex;flex-direction:column}
+  .cc dl div{border-top:1px solid var(--hl);padding:12px 0;display:flex;flex-direction:column;gap:2px}
+  .cc dt{font-size:13px;line-height:18px;color:var(--lab)}
+  .cc dd{margin:0;font-size:16px;line-height:24px;font-weight:500}
+  .sg{list-style:none;padding:0;margin-top:80px}
+  .go{display:flex;justify-content:center;align-items:center;gap:24px;margin-top:40px}
   @media (max-width:1023px){
-    .hero{padding-bottom:40px}
-    .cmp{padding:53px 0}
-    .cg{grid-template-columns:1fr;margin-top:26px}
-    .cc{padding:18px}
-    .cc h3{font-size:24px;line-height:29px}
-    .cc dd{font-size:15px;line-height:18px}
-    .st{padding:62px 0}
-    .sg{grid-template-columns:1fr;margin:26px 0}
-    .st .btn{font-size:15px;line-height:18px}
+    .cg,.sg{margin-top:40px}
+    .cc{padding:20px}
+    .cc h3{font-size:24px;line-height:31px}
+    .go{flex-direction:column;align-items:stretch;gap:16px;margin-top:24px}
+    .go .dm-link{align-self:flex-start}
   }
 </style>

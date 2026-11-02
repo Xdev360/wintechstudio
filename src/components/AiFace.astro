@@ -1,5 +1,5 @@
 ---
-// Wintech AI face v2 (Figma Kit 799:540). States shown here: awake and sleep (default), switched with data-state on a parent.
+// Wintech AI face. data-state on a parent switches awake / sleep. The .look group is moved by AskAI's script so the eyes follow the pointer; .eyes blinks.
 interface Props { size?: number; class?: string }
 const { size = 32, class: cls } = Astro.props;
 const id = 'f' + Math.random().toString(36).slice(2, 7);
@@ -13,8 +13,10 @@ const body = 'M24 6H72C74.6264 6 77.2272 6.51732 79.6537 7.52241C82.0802 8.5275 
   <path d={body} fill={`url(#${id}a)`} />
   <path d={body} fill={`url(#${id}b)`} />
   <g class="awake">
+    <g class="look"><g class="eyes">
     <path d="M37.757 25.6476C37.1424 23.1825 34.6458 21.6825 32.1808 22.2971C29.7157 22.9117 28.2157 25.4082 28.8303 27.8733L31.443 38.3525C32.0576 40.8175 34.5542 42.3176 37.0192 41.703C39.4843 41.0884 40.9843 38.5918 40.3697 36.1268L37.757 25.6476Z" fill="#F4F6FA"/>
     <path d="M67.1697 27.8732C67.7844 25.4082 66.2843 22.9117 63.8192 22.297C61.3542 21.6824 58.8576 23.1825 58.243 25.6476L55.6303 36.1268C55.0157 38.5918 56.5157 41.0884 58.9808 41.703C61.4458 42.3176 63.9424 40.8175 64.557 38.3524L67.1697 27.8732Z" fill="#F4F6FA"/>
+    </g></g>
     <path d="M42 51L48 55.8L54 51" stroke="#F4F6FA" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
   <g class="sleep">
@@ -25,6 +27,11 @@ const body = 'M24 6H72C74.6264 6 77.2272 6.51732 79.6537 7.52241C82.0802 8.5275 
 <style>
   .ai-face{flex:none;display:block}
   .ai-face .sleep{display:none}
+  /* dark theme: brand blue body so the face reads on dark surfaces */
+  :global(:root[data-theme="dark"]) .ai-face>path:first-of-type{fill:#3B5BFF}
   :global([data-state="sleep"]) .ai-face .awake{display:none}
   :global([data-state="sleep"]) .ai-face .sleep{display:inline}
+  .ai-face .eyes{transform-box:fill-box;transform-origin:50% 50%}
+  :global(.blink) .ai-face .eyes{animation:blink .32s ease-in-out}
+  @keyframes blink{0%,100%{transform:scaleY(1)}45%,55%{transform:scaleY(.1)}}
 </style>

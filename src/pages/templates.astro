@@ -1,6 +1,7 @@
 ---
 import Page from '../layouts/Page.astro';
 import { contact } from '../data/site';
+import Lc from '../components/ui/Lc.astro';
 import '../styles/studio.css';
 // Tile colours from the Figma gallery. Each tile is a placeholder until real template screenshots are exported.
 const kinds = [
@@ -14,88 +15,63 @@ const kinds = [
 const plans = [['Free', '$0', '', 'A live site on a Wintech link'], ['Starter', '$4', '/mo', '₦6,000 a month'], ['Grow', '$10', '/mo', '₦15,000 a month'], ['Business', '$25', '/mo', '₦37,500 a month']];
 ---
 <Page title="Wintech Templates · Free website for your business · Wintech Studio" description="Not ready for a full build? Pick a Wintech template, describe your business in your own words and go live the same afternoon at yourname.wintechstudio.com." crumbs={[['Templates', '/templates']]}>
-  <div class="sp tp">
-    <section class="hero">
+  <div class="dm tp">
+    <section class="dm-top">
       <div class="wrap">
-        <div class="hd c" style="max-width:1000px">
-          <p class="eb">Wintech Templates</p>
-          <h1 class="t1" style="--fs:64px"><span class="d">Not ready for a full build?<br /></span>Start with a <span class="gt">template.</span></h1>
-          <p class="ld"><span class="d">Pick a template, describe your business in your own words, and go live the same afternoon. Made by the studio, run by you.</span><span class="m">Pick, describe, go live the same afternoon.</span></p>
+        <div class="dm-head c">
+          <p class="dm-eb">Wintech Templates</p>
+          <h1 class="dm-h1">Not ready for a full build? Start with a template.</h1>
+          <p class="dm-intro">Pick a template, describe your business in your own words, and go live the same afternoon. Made by the studio, run by you.</p>
+          <div class="dm-ctas cc">
+            <a class="dm-btn p" href={contact.templates} target="_blank" rel="noopener">Open Wintech Templates</a>
+            <a class="dm-btn s" href="#plans">See plans</a>
+          </div>
         </div>
-        <div class="ctas">
-          <a class="btn btn-primary" href={contact.templates} target="_blank" rel="noopener">Open Wintech Templates</a>
-          <a class="btn btn-soft d" href="#plans">See plans</a>
-        </div>
-        <p class="url">app.wintechstudio.com</p>
       </div>
     </section>
 
-    <section class="gal">
-      <div class="wrap gg">{kinds.map(([k, bg, fg, id, mid], i) => (
-        <a class:list={['tc', { dk: i > 2 }]} href={contact.templates} target="_blank" rel="noopener">
+    <section class="dm-sec flush">
+      <div class="wrap dm-grid g3">{kinds.map(([k, bg, fg, id, mid]) => (
+        <a class="tc" href={contact.templates} target="_blank" rel="noopener">
           <div class="pv" style={`--tb:${bg};--tf:${fg}`} data-todo-image={id} data-todo-image-mobile={mid || undefined}><span>{k}</span><i></i></div>
-          <strong>{k}</strong>
-          <small>Preview  ·  Use this template</small>
+          <span class="tm"><strong>{k}</strong><span class="dm-arrow"><Lc name="arrow-up-right" /></span></span>
         </a>
       ))}</div>
     </section>
 
-    <section class="s alt pl" id="plans">
+    <section class="dm-sec alt" id="plans">
       <div class="wrap">
-        <div class="hd"><p class="eb">Plans</p><h2 class="t2">Start free. Upgrade when it sells.</h2></div>
-        <div class="pg">{plans.map(([n, p, per, d], i) => (
-          <div class:list={['pc', { ink: i === 2 }]}>
-            <p class="k">{n}</p>
+        <div class="dm-head c"><p class="dm-eb">Plans</p><h2 class="dm-h2">Start free. Upgrade when it sells.</h2><p class="dm-intro">0% cut of your sales on every plan.</p></div>
+        <div class="dm-cells c4 pg">{plans.map(([n, p, per, d]) => (
+          <div>
+            <p class="dm-eb">{n}</p>
             <p class="pr">{p}{per && <small>{per}</small>}</p>
-            <p class="dd">{d}</p>
+            <p class="dm-small">{d}</p>
           </div>
         ))}</div>
-        <p class="note">0% cut of your sales on every plan. Plans are a proposal and may change before launch.</p>
+        <p class="note">Plans are a proposal and may change before launch.</p>
       </div>
     </section>
   </div>
 </Page>
 <style>
-  .hero{padding-bottom:72px;text-align:center}
-  .ctas{display:flex;justify-content:center;gap:10px;margin-top:48px}
-  .url{font-family:var(--mono);font-size:13px;line-height:17px;color:var(--fg-2);margin:48px 0 0}
-  .gal{padding:0 0 96px}
-  .gg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .tc{display:flex;flex-direction:column;gap:12px;text-decoration:none;color:var(--fg)}
-  .pv{height:231px;background:var(--tb);padding:20px;display:flex;flex-direction:column;gap:10px;transition:transform .25s}
-  .pv span{font-size:26px;line-height:31px;font-weight:600;letter-spacing:-.01em;color:var(--tf)}
-  .pv i{flex:1;background:var(--tf);opacity:.12}
-  .tc:hover .pv{transform:translateY(-3px)}
-  .tc strong{font-size:17px;line-height:20px;font-weight:500}
-  .tc small{font-size:14px;line-height:17px;color:var(--fg-2);white-space:pre}
-  .tc:hover small{color:var(--sig)}
-  :root[data-theme="dark"] .pv{filter:brightness(.92)}
-  .pl{padding:96px 0}
-  .pg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:48px}
-  .pc{background:var(--card);border:1px solid var(--rule);padding:24px;display:flex;flex-direction:column;gap:10px}
-  .pc .k{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--sig);margin:0}
-  .pr{display:flex;align-items:baseline;gap:4px;margin:0;font-size:40px;line-height:48px;font-weight:600;letter-spacing:-.02em}
-  .pr small{font-size:15px;line-height:18px;font-weight:400;letter-spacing:0;color:var(--fg-2)}
-  .dd{font-size:14px;line-height:17px;color:var(--fg-2);margin:0}
-  .pc.ink{background:var(--inkc);border-color:var(--inkc)}
-  .pc.ink .k{color:var(--inkc-eb)}.pc.ink .pr{color:#fff}.pc.ink small,.pc.ink .dd{color:var(--inkc-2)}
-  :root[data-theme="dark"] .pc.ink{border-color:#2A3550}
-  .note{font-size:14px;line-height:17px;color:var(--fg-2);margin:48px 0 0}
+  .cc{justify-content:center;margin-top:16px}
+  .tc{display:flex;flex-direction:column;border:1px solid var(--hl);padding:8px;text-decoration:none;color:var(--fg);transition:border-color .15s}
+  .tc:hover{border-color:var(--hl2)}
+  .pv{aspect-ratio:4/3;background:var(--tb);padding:20px;display:flex;flex-direction:column;gap:10px}
+  .pv span{font-size:20px;line-height:26px;font-weight:600;color:var(--tf)}
+  .pv i{flex:1;background:var(--tf);opacity:.1}
+  :global(:root[data-theme="dark"]) .pv{filter:brightness(.9)}
+  .tm{display:flex;justify-content:space-between;align-items:center;padding:12px 8px 4px}
+  .tm strong{font-size:16px;line-height:24px;font-weight:600}
+  .pg{margin-top:80px}
+  .pr{display:flex;align-items:baseline;gap:4px;font-size:42px;line-height:48.3px;font-weight:600;letter-spacing:-.84px;margin:4px 0}
+  .pr small{font-size:14px;line-height:21px;font-weight:400;letter-spacing:0;color:var(--mute)}
+  .note{margin-top:24px;font-size:13px;line-height:18px;color:var(--lab);text-align:center}
   @media (max-width:1023px){
-    .hero{padding-bottom:20px}
-    .hero .hd.c{align-items:center;text-align:center}
-    .ctas{margin-top:20px}
-    .ctas .btn{width:100%;padding:14px 0}
-    .url{font-size:12px;line-height:16px;margin-top:20px}
-    .gal{padding:0 0 56px}
-    .gg{grid-template-columns:1fr;gap:20px}
-    .tc strong,.tc small{display:none}
-    .tc{gap:0}
-    .pv{height:176px;padding:16px;gap:8px}
-    .pv span{font-size:22px;line-height:26px;letter-spacing:0}
-    .pl{padding:56px 0}
-    .pg{grid-template-columns:1fr 1fr;margin-top:28px}
-    .pr{font-size:32px;line-height:40px}
-    .note{margin-top:24px}
+    .cc{margin-top:8px}
+    .pg{margin-top:40px;grid-template-columns:1fr 1fr!important}
+    .pr{font-size:30px;line-height:34.5px}
+    .note{text-align:left}
   }
 </style>

@@ -1,59 +1,116 @@
 ---
+// Footer per docs/DESIGNME-SPEC.md: clock row, brand row, main (heading + contact + Ask AI | link grid), legal row.
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
 import { services, contact } from '../data/site';
 const q = encodeURIComponent('What does Wintech Studio (wintechstudio.com) do, and who is it for?');
-const ais = [
-  ['ChatGPT', `https://chatgpt.com/?q=${q}`],
-  ['Claude', `https://claude.ai/new?q=${q}`],
-  ['Perplexity', `https://www.perplexity.ai/search?q=${q}`],
-  ['Gemini', 'https://gemini.google.com/app'],
-  ['Grok', `https://grok.com/?q=${q}`],
+// Square buttons carry a short mark until official SVG marks are added.
+const ais: [string, string, string][] = [
+  ['ChatGPT', 'GPT', `https://chatgpt.com/?q=${q}`],
+  ['Claude', 'CL', `https://claude.ai/new?q=${q}`],
+  ['Perplexity', 'PX', `https://www.perplexity.ai/search?q=${q}`],
+  ['Gemini', 'GE', 'https://gemini.google.com/app'],
+  ['Grok', 'GK', `https://grok.com/?q=${q}`],
 ];
-const cols = [
-  { h: 'Services', links: [['/services#starting', 'Starting something'], ['/services#adding-tech', 'Adding tech to my business'], ['/services#refresh', 'Refreshing my brand'], ...services.map(s => [`/services/${s.slug}`, s.short])] },
-  { h: 'Studio', links: [['/work', 'Work'], ['/how-we-work', 'How we work'], ['/about', 'About'], ['/faq', 'FAQ'], ['/join-the-bench', 'Join the bench']] },
-  { h: 'Free tools', links: [['/tools/plan', 'Plan your project'], ['/tools/cost-calculator', 'Cost calculator'], ['/tools/inbox-check', 'Inbox check'], [contact.templates, 'Templates · live']] },
-  { h: 'More', links: [['/pricing', 'Pricing'], ['/contact', 'Contact'], ['/privacy', 'Privacy'], ['/terms', 'Terms'], ['/llms.txt', 'llms.txt']] },
+const cols: { h: string; links: [string, string, boolean?][] }[] = [
+  { h: 'Services', links: [['/services#starting', 'Starting something'], ['/services#adding-tech', 'Adding tech to my business'], ['/services#refresh', 'Refreshing my brand'], ...services.map(s => [`/services/${s.slug}`, s.name] as [string, string]), ['/services', 'All services']] },
+  { h: 'Work', links: [['/work', 'Case studies'], ['/work/mylo', 'Mylo'], ['/work/virelle', 'Virelle Wellness'], ['/work/tobel-pearls', 'Tobel Pearls'], ['/work/manzeelatur-ridho', 'Manzeelatur Ridho'], ['/work/lets-hang', "Let's Hang"]] },
+  { h: 'Studio', links: [['/about', 'About'], ['/how-we-work', 'How we work'], ['/faq', 'FAQ'], ['/join-the-bench', 'Join the bench'], ['/pricing', 'Pricing'], ['/contact', 'Contact'], [contact.templates, 'Templates', true]] },
 ];
+const clocks: [string, string][] = [['Lagos', 'Africa/Lagos'], ['London', 'Europe/London']];
 ---
 <footer class="site-footer">
-  <div class="wrap top">
-    <div class="intro">
-      <p class="mono clock" id="clock">Lagos · London</p>
-      <h2>Built for momentum.</h2>
-      <p class="sub">Design, build and run with one project lead.</p>
-      <div class="contacts">
-        <div><p class="mono">Let's talk</p><a href="/book">Book a strategy call</a></div>
-        <div><p class="mono">Send email</p><a href={`mailto:${contact.email}`}>{contact.email}</a></div>
+  <div class="wrap clocks" aria-label="Local times">
+    {clocks.map(([c, tz]) => <p class="ck"><span>{c}</span><time data-tz={tz}>--:--</time></p>)}
+  </div>
+  <div class="hr"></div>
+  <div class="wrap brand">
+    <div class="bl"><Logo /><p class="tagline">Brand, websites, AI and automation, from one studio in Lagos.</p></div>
+    <button class="top" type="button" id="to-top" aria-label="Back to top" title="Back to top"><Icon name="arrow-up" size={16} /></button>
+  </div>
+  <div class="hr"></div>
+  <div class="wrap main">
+    <div class="left">
+      <h2>Design, build and run it, with one project lead.</h2>
+      <div class="contact">
+        <a href="/book">Book a call</a>
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        <a href={contact.whatsappLink} target="_blank" rel="noopener">WhatsApp {contact.whatsapp}</a>
+      </div>
+      <div class="ask">
+        <p>Ask AI about Wintech</p>
+        <div class="ais">{ais.map(([n, m, h]) => <a href={h} target="_blank" rel="noopener" aria-label={`Ask ${n} about Wintech Studio`} title={n}>{m}</a>)}</div>
       </div>
     </div>
-    <nav class="cols" aria-label="Footer">
-      {cols.map(c => (<div><p class="mono">{c.h}</p>{c.links.map(([h, l]) => <a href={h}>{l}</a>)}</div>))}
-    </nav>
-  </div>
-  <div class="wrap bottom">
-    <div>
-      <p class="ask">Ask AI about Wintech</p>
-      <div class="chips">{ais.map(([n, h]) => <a href={h} target="_blank" rel="noopener">{n}</a>)}</div>
+    <div class="right">
+      <nav class="grid3" aria-label="Footer">
+        {cols.map(c => (
+          <div class="fc"><p class="fh">{c.h}</p>{c.links.map(([h, l, ext]) => <a href={h} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l}{ext && <Icon name="arrow-up-right" size={12} />}</a>)}</div>
+        ))}
+      </nav>
+      <div class="addr">
+        <p class="fh">Location</p>
+        <p>Lagos, Nigeria</p>
+        <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+      </div>
     </div>
-    <p class="mono legal">© Wintech Studio 2026 · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href={contact.whatsappLink}>WhatsApp {contact.whatsapp}</a></p>
+  </div>
+  <div class="hr"></div>
+  <div class="wrap legal">
+    <div class="ll"><span>© 2026 Wintech Studio</span><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/llms.txt">llms.txt</a></div>
+    <div class="ll"><a href="https://www.instagram.com/wintechstudio" target="_blank" rel="noopener">Instagram</a><a href="https://x.com/wintechstudio_" target="_blank" rel="noopener">X</a><a href={contact.whatsappLink} target="_blank" rel="noopener">WhatsApp</a></div>
   </div>
 </footer>
 <script is:inline>
-  (function(){var el=document.getElementById('clock');if(!el)return;function f(tz){return new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:tz}).format(new Date())}function t(){el.textContent='LAGOS '+f('Africa/Lagos')+'  ·  LONDON '+f('Europe/London')}t();setInterval(t,30000)})();
+  (function(){var els=document.querySelectorAll('[data-tz]');function f(tz){return new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:tz}).format(new Date())}function t(){els.forEach(function(e){e.textContent=f(e.dataset.tz)})}t();setInterval(t,30000);
+    document.getElementById('to-top')?.addEventListener('click',function(){scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})})();
 </script>
 <style>
-  .site-footer{background:#0A0E17;color:#F4F4F5;padding:80px 0 36px}
-  .site-footer .mono{color:#9AA3B2;letter-spacing:.66px}
-  .top{display:flex;justify-content:space-between;gap:48px;flex-wrap:wrap}
-  .intro h2{font-size:40px;letter-spacing:-.6px;margin-top:18px;color:#F4F6FA}
-  .sub{color:#9AA3B2;font-size:16px;margin:18px 0 18px}
-  .contacts{display:flex;gap:40px}.contacts a{color:#F4F6FA;font-size:16px;text-decoration:none;font-weight:500}.contacts .mono{margin:0 0 4px}
-  .cols{display:flex;gap:48px;flex-wrap:wrap}
-  .cols div{display:flex;flex-direction:column;gap:11px}.cols .mono{margin:0 0 4px}
-  .cols a{color:#F4F6FA;text-decoration:none;font-size:14px}.cols a:hover{color:#fff}
-  .bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-top:56px}
-  .ask{font-weight:600;font-size:18px;margin:0 0 12px}
-  .chips{display:flex;gap:8px;flex-wrap:wrap}.chips a{color:#B9C1CF;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);padding:8px 12px;font-size:13px;text-decoration:none}.chips a:hover{background:rgba(255,255,255,.1);color:#fff}
-  .legal a{color:inherit;text-decoration:none}
-  @media (max-width:767px){.site-footer{padding:48px 0 32px}.intro h2{font-size:30px}.cols{gap:28px}.contacts{flex-direction:column;gap:16px}}
+  .site-footer{background:var(--bg);color:var(--fg)}
+  .hr{height:1px;background:var(--rule)}
+  /* clock row */
+  .clocks{display:flex;gap:40px;padding-top:16px;padding-bottom:16px}
+  .ck{display:flex;gap:8px;margin:0;font:500 11px/14.3px var(--font);letter-spacing:.66px;text-transform:uppercase;color:var(--fg-3)}
+  .ck time{color:var(--fg);font-variant-numeric:tabular-nums}
+  /* brand row */
+  .brand{display:flex;justify-content:space-between;align-items:center;gap:24px;padding-top:40px;padding-bottom:40px}
+  .bl{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .tagline{margin:0;font-size:18px;line-height:27px;font-weight:500;color:var(--fg-2)}
+  .top{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--rule);border-radius:2px;background:none;color:var(--fg-2);cursor:pointer}
+  .top:hover{background:var(--hover);color:var(--fg)}
+  /* main */
+  .main{display:grid;grid-template-columns:minmax(0,506fr) minmax(0,598fr);gap:96px;padding-top:48px;padding-bottom:80px}
+  .left h2{font-size:32px;line-height:38.4px;letter-spacing:-.64px;font-weight:600;margin:0;max-width:506px}
+  .contact{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:32px}
+  .contact a{font-size:16px;line-height:24px;font-weight:500;color:var(--fg);text-decoration:underline;text-decoration-color:var(--rule-2);text-underline-offset:3px}
+  .contact a:hover{text-decoration-color:currentColor}
+  .ask{margin-top:48px}
+  .ask p{font-size:24px;line-height:31.2px;letter-spacing:-.24px;font-weight:600;margin:0 0 16px}
+  .ais{display:flex;flex-wrap:wrap;gap:12px}
+  .ais a{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--rule);border-radius:2px;color:var(--fg-2);font:600 11px/1 var(--font);letter-spacing:.44px;text-decoration:none;transition:background .15s,color .15s}
+  .ais a:hover{background:var(--hover);color:var(--fg)}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+  .fc{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+  .fh{margin:0 0 8px;font:500 11px/14.3px var(--font);letter-spacing:.66px;text-transform:uppercase;color:var(--fg-3)}
+  .fc a{display:inline-flex;align-items:center;gap:4px;font-size:14px;line-height:21px;font-weight:500;color:var(--fg);text-decoration:none}
+  .fc a :global(svg){color:var(--fg-3)}
+  .fc a:hover{text-decoration:underline;text-underline-offset:3px}
+  .addr{margin-top:48px}
+  .addr p:not(.fh){margin:0;font-size:14px;line-height:21px;font-weight:500;color:var(--fg-2)}
+  .addr a{color:inherit;text-decoration:none}.addr a:hover{color:var(--fg)}
+  /* legal row */
+  .legal{display:flex;justify-content:space-between;align-items:center;gap:16px 32px;flex-wrap:wrap;padding-top:32px;padding-bottom:32px}
+  .ll{display:flex;gap:32px;flex-wrap:wrap;font-size:14px;line-height:21px;color:var(--fg-2)}
+  .ll a{color:inherit;text-decoration:none}.ll a:hover{color:var(--fg)}
+  :global(body:has(#ask)) .legal{padding-bottom:88px}
+  @media (max-width:1023px){.main{grid-template-columns:1fr;gap:48px}}
+  @media (max-width:767px){
+    .brand{padding-top:32px;padding-bottom:32px;align-items:flex-start}
+    .bl{flex-direction:column;align-items:flex-start;gap:12px}
+    .tagline{font-size:16px;line-height:24px}
+    .main{padding-top:40px;padding-bottom:56px}
+    .left h2{font-size:24px;line-height:28.8px;letter-spacing:-.48px}
+    .grid3{grid-template-columns:1fr 1fr;gap:32px 16px}
+    .ll{gap:16px 24px}
+  }
 </style>

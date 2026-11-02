@@ -3,6 +3,7 @@ import Page from '../../layouts/Page.astro';
 import SFaq from '../../components/search/SFaq.astro';
 import SRelated from '../../components/search/SRelated.astro';
 import Icon from '../../components/Icon.astro';
+import Lc from '../../components/ui/Lc.astro';
 import { contact } from '../../data/site';
 import '../../components/search/search.css';
 const pairs = [['Clients DM "how much?" all day', 'A price list and booking page they can see first'], ['No-shows waste your chair', 'Deposits at booking and a reminder the day before'], ['Messages pile up after hours', 'An assistant that answers prices and books slots on WhatsApp'], ['Your page does not look like your work', 'A brand and site that match the standard of your salon']];
@@ -10,15 +11,15 @@ const get = [['Booking website', 'Services, prices, durations and time slots', '
 const tiles = [['Salon & beauty', '#F4EDE6', '#0A0E17', '#B07A5A', true], ['Consultant', '#EEF1FF', '#0A0E17', '#3B5BFF'], ['Restaurant', '#1A1D26', '#FFFFFF', '#E8B04B']] as const;
 ---
 <Page title="Websites and AI for salons in Lagos · Wintech Studio" description="Booking websites, WhatsApp assistants and automatic reminders for salons and beauty businesses in Lagos." crumbs={[['Industries', '/industries'], ['Salons and beauty', '/industries/salons']]} closing={false}>
-  <section class="s-sec ind">
-    <div class="wrap">
-      <div class="top">
-        <div class="tx">
-          <p class="s-k">For salons and beauty</p>
-          <h1>Websites and AI for salons in Lagos</h1>
-          <p class="ld">Bookings that fill themselves, prices clients can see before they DM, and replies at 11pm when you are closed.</p>
-          <div class="ctas"><a class="s-btn p" href="/services/websites#brief">Build your brief</a><a class="s-btn o" href="/book?service=websites">Book a call</a></div>
-        </div>
+  <div class="dm">
+  <section class="dm-top ind">
+    <div class="wrap top">
+      <div class="dm-head">
+        <p class="dm-eb">For salons and beauty</p>
+        <h1 class="dm-h1">Websites and AI for salons in Lagos</h1>
+        <p class="dm-intro">Bookings that fill themselves, prices clients can see before they DM, and replies at 11pm when you are closed.</p>
+        <div class="dm-ctas"><a class="dm-btn p" href="/services/websites#brief">Build your brief</a><a class="dm-btn s" href="/book?service=websites">Book a call</a></div>
+      </div>
         <div class="stage" aria-label="Wintech Templates: pick a template and go live today">
           <div class="artimg" data-todo-image="1064:23720" aria-hidden="true"></div>
           <div class="shade" aria-hidden="true"></div>
@@ -41,23 +42,25 @@ const tiles = [['Salon & beauty', '#F4EDE6', '#0A0E17', '#B07A5A', true], ['Cons
           </div>
         </div>
       </div>
-      <p class="s-k mute sub">What we fix</p>
-      <div class="pairs">{pairs.map(([a, b]) => <div><span>{a}</span><Icon name="arrow-up-right" size={16} stroke={1.5} /><strong>{b}</strong></div>)}</div>
-      <p class="s-k mute sub">What you get</p>
-      <div class="get">{get.map(([t, d, l, h]) => <a href={h}><h2>{t}</h2><p>{d}</p><span class="lk">{l} <Icon name="arrow-up-right" size={14} stroke={1.5} /></span></a>)}</div>
-      <div class="nudge"><p>Just starting out? The Salon &amp; beauty template is live today at yourname.wintechstudio.com.</p><a class="s-btn p" href={contact.templates} target="_blank" rel="noopener">See the template <Icon name="arrow-up-right" size={16} stroke={1.5} /></a></div>
+  </section>
+  <section class="dm-sec line">
+    <div class="wrap">
+      <div class="dm-head c"><p class="dm-eb">What we fix</p><h2 class="dm-h2">From busy inbox to booked chairs.</h2></div>
+      <ul class="dm-rows pairs">{pairs.map(([a, b]) => <li><span>{a}</span><Lc name="arrow-right" /><strong>{b}</strong></li>)}</ul>
     </div>
   </section>
+  <section class="dm-sec alt">
+    <div class="wrap">
+      <div class="dm-head c"><p class="dm-eb">What you get</p><h2 class="dm-h2">Three pieces that work together.</h2></div>
+      <div class="dm-grid g3 get">{get.map(([t, d, l, h]) => <a class="dm-card" href={h}><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p><span class="dm-link">{l}</span></a>)}</div>
+      <div class="nudge"><p>Just starting out? The Salon &amp; beauty template is live today at yourname.wintechstudio.com.</p><a class="dm-btn d mw" href={contact.templates} target="_blank" rel="noopener">See the template <Lc name="arrow-up-right" /></a></div>
+    </div>
+  </section>
+  </div>
   <SFaq title="Salon owners ask" items={[['Can clients pay a deposit when they book?', 'Yes. Bookings can take a deposit through Paystack, and the rest is paid at the salon.'], ['Will the assistant sound like a robot?', 'It replies in your tone, from your real price list, and hands over to you for anything it should not handle.'], ['Do I need a big budget?', 'No. Start on a salon template, then move to a custom site when the bookings justify it.']]} />
-  <SRelated items={[['Guide · Payments', 'How to take Paystack payments on your website in Nigeria', '/guides/paystack-payments-on-your-website'], ['Case study', 'Virelle Wellness: imported wellness you can trust', '/work/virelle'], ['Free tool', 'Is your inbox losing you orders?', '/tools/inbox-check']]} />
+  <SRelated items={[['Guide · Payments', 'How to take Paystack payments on your website in Nigeria', '/guides/paystack-payments-on-your-website'], ['Case study', 'Virelle Wellness: imported wellness you can trust', '/work/virelle'], ['Templates', 'Start with a Wintech template today', '/templates']]} />
 </Page>
 <style>
-  .ind{padding:48px 0 80px}
-  .top{display:flex;justify-content:space-between;gap:40px}
-  .tx{max-width:720px;padding-top:12px}
-  h1{margin:14px 0 20px;font-size:56px;line-height:60px;letter-spacing:-1.5px;font-weight:600;max-width:720px}
-  .ld{margin:0 0 32px;max-width:600px;font-size:18px;line-height:28px;color:var(--fg-2)}
-  .ctas{display:flex;gap:12px;flex-wrap:wrap}
   .stage{position:relative;flex:none;width:560px;height:420px;overflow:hidden;background:#0A0E17;color:#fff;font-family:var(--font)}
   .artimg{position:absolute;inset:0;background:transparent}
   .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,23,.55),rgba(10,14,23,.15),rgba(10,14,23,.7))}
@@ -82,24 +85,19 @@ const tiles = [['Salon & beauty', '#F4EDE6', '#0A0E17', '#B07A5A', true], ['Cons
   .shot em{position:absolute;right:12px;top:12px;width:48px;height:86px}
   .use{position:absolute;right:4px;top:5px;padding:2px 5px;background:#3B5BFF;border-radius:999px;font-size:7.8px;font-weight:500;line-height:9px}
   .tl{display:flex;justify-content:space-between;align-items:center;padding:6px 1px 3px;font-size:9.3px;font-weight:500}.tl small{font-size:8.6px;font-weight:400;color:#B9C1CF}
-  .sub{margin:72px 0 18px}
-  .pairs > div{display:grid;grid-template-columns:536px 40px 1fr;align-items:center;min-height:72px;padding:0 24px}
-  .pairs > div:nth-child(odd){background:var(--surface)}
-  .pairs span{font-size:16px;color:var(--fg-2)}.pairs strong{font-size:16px;font-weight:500}.pairs :global(svg){color:var(--sig)}
-  .get{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .get a{display:flex;flex-direction:column;gap:10px;min-height:170px;padding:24px;background:var(--card);border:1px solid var(--rule);text-decoration:none;color:var(--fg);transition:border-color .2s}
-  .get a:hover{border-color:var(--ash)}
-  .get h2{margin:0;font-size:20px;font-weight:600;line-height:24px;letter-spacing:0}.get p{margin:0;font-size:15px;line-height:22px;color:var(--fg-2)}
-  .lk{margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:var(--sig)}
-  .nudge{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:40px;min-height:96px;padding:0 28px;background:#0A0E17;color:#fff}
-  :root[data-theme="dark"] .nudge{background:#121722;border:1px solid var(--rule)}
-  .nudge p{margin:0;font-size:17px;font-weight:500;line-height:20px}
+  .top{display:grid;grid-template-columns:minmax(0,1fr) 560px;gap:64px;align-items:center}
+  .ind .dm-ctas{margin-top:8px}
+  .pairs{margin-top:80px}
+  .pairs li{display:grid;grid-template-columns:minmax(0,1fr) 24px minmax(0,1fr);gap:24px;align-items:center;padding:20px 0}
+  .pairs span{font-size:16px;line-height:24px;color:var(--mute)}
+  .pairs strong{font-size:16px;line-height:24px;font-weight:500}
+  .pairs :global(svg){color:var(--sig)}
+  .get{margin-top:80px}
+  .get .dm-link{margin-top:auto;padding-top:8px}
+  .nudge{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:20px;padding:24px;border:1px solid var(--hl);background:var(--bg)}
+  .nudge p{font-size:16px;font-weight:500;line-height:24px}
   @media (max-width:1023px){
-    .ind{padding:30px 0 48px}
-    .top{flex-direction:column;gap:16px}.tx{padding:0}
-    h1{margin:16px 0 18px;font-size:30px;line-height:36px;letter-spacing:-.6px}
-    .ld{margin-bottom:20px;font-size:15px;line-height:23px}
-    .ctas{flex-direction:column;gap:16px}.ctas .s-btn{width:100%}
+    .top{grid-template-columns:1fr;gap:32px}
     .stage{width:100%;height:341px}
     .artimg,.shade{display:none}
     .sc{padding:17px 17px 0}
@@ -112,14 +110,10 @@ const tiles = [['Salon & beauty', '#F4EDE6', '#0A0E17', '#B07A5A', true], ['Cons
     .mt{font-size:7px;margin:9px 2px 7px}
     .tiles{grid-template-columns:1fr 1fr;gap:6px}.tile.m3{display:none}
     .shot{height:99px}.tl{font-size:7px}.tl small{font-size:7px}.use{font-size:6px}
-    .sub{margin:16px 0 13px}
-    .pairs{display:grid;gap:16px}
-    .pairs > div{grid-template-columns:1fr;gap:6px;padding:16px;min-height:0}
-    .pairs > div:nth-child(even){background:var(--bg)}
-    .pairs span{font-size:14px}.pairs strong{font-size:15px}.pairs :global(svg){display:none}
-    .get{grid-template-columns:1fr}
-    .get a{min-height:0;padding:16px;gap:6px}.get h2{font-size:17px;line-height:20px}.get p{font-size:14px}.lk{margin-top:4px;font-size:13px}
-    .nudge{flex-direction:column;align-items:stretch;gap:16px;margin-top:16px;padding:16px}
-    .nudge p{font-size:15px;line-height:22px}
+    .pairs,.get{margin-top:40px}
+    .pairs li{grid-template-columns:1fr;gap:4px;padding:16px 0}
+    .pairs :global(svg){display:none}
+    .pairs span{font-size:14px;line-height:21px}
+    .nudge{flex-direction:column;align-items:stretch;gap:16px;padding:20px}
   }
 </style>

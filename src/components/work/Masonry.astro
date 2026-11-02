@@ -1,5 +1,5 @@
 ---
-// PXDX gallery (Figma "Grid · masonry (parallax columns)", 1280 wide, columns 352 / 544 / 352, gap 16).
+// PXDX gallery: columns 352 / 544 / 352 with DesignMe's 12px media gap, so tiles show at their pixel size (max 1272 wide).
 // Desktop: three columns, the side columns drift slightly against the middle one on scroll.
 // Mobile (M frames "Slider · project images (swipe)"): one swipe track, tiles fit 330 x 440, with a progress line.
 import type { Tile } from '../../data/cases';
@@ -28,17 +28,17 @@ const fit = ([, w, h]: Tile) => { const s = Math.min(330 / w, 440 / h); return [
   </div>
 </section>
 <style>
-  .pxdx{max-width:1280px;margin:0 auto;overflow:hidden}
-  .cols{display:grid;grid-template-columns:352fr 544fr 352fr;gap:16px;align-items:start;max-height:2440px}
-  .col{display:flex;flex-direction:column;gap:16px;will-change:transform}
-  .col img{display:block;width:100%;height:auto;background:var(--c-card)}
+  .pxdx{max-width:1272px;margin:0 auto;overflow:hidden}
+  .cols{display:grid;grid-template-columns:352fr 544fr 352fr;gap:12px;align-items:start;max-height:2440px}
+  .col{display:flex;flex-direction:column;gap:12px;will-change:transform}
+  .col img{display:block;width:100%;height:auto;background:var(--c-panel)}
   .mslider{display:none}
   @media (max-width:1023px){
     .cols{display:none}
     .mslider{display:block}
     .track{display:flex;align-items:center;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px;height:440px;scrollbar-width:none;overscroll-behavior-x:contain}
     .track::-webkit-scrollbar{display:none}
-    .track img{flex:none;scroll-snap-align:center;object-fit:cover;background:var(--c-card)}
+    .track img{flex:none;scroll-snap-align:center;object-fit:cover;background:var(--c-panel)}
     .prog{margin:14px 16px 0;height:2px;background:var(--c-line);position:relative}
     .prog i{position:absolute;left:0;top:0;height:2px;width:12%;background:var(--c-fg)}
   }

@@ -1,8 +1,7 @@
 ---
 import Page from '../layouts/Page.astro';
 import Faq from '../components/ui/Faq.astro';
-import Icon from '../components/Icon.astro';
-import Glyph from '../components/ui/Glyph.astro';
+import Lc from '../components/ui/Lc.astro';
 import services from '../data/services.json';
 import '../styles/studio.css';
 
@@ -19,20 +18,20 @@ const svc = (k: string, slug: string, name: string, icon: string, extra: Partial
 const first: Item = { k: 'diagnostic', name: 'Paid diagnostic', icon: 'search', usd: '$200', title: 'Paid diagnostic', intro: 'A working session on your business, money flows and what to build first. You leave with a written plan.', big: '$200', per: '/ session', how: [['One working session', 'Your business and money flows'], ['A written plan', 'What to build first']], get: ['A study of the business and the numbers', 'What to build first', 'A written plan you keep'], href: '/book' };
 const web = S('websites');
 const projects: Item[] = [
-  svc('website', 'websites', 'Website', 'website'),
+  svc('website', 'websites', 'Website', 'monitor'),
   svc('brand', 'brand', 'Brand system', 'palette'),
   // Store with checkout has no naira figure in services.json yet: USD shows in both modes.
-  { k: 'store', name: 'Store with checkout', icon: 'store', usd: 'from $1,500', title: 'Store with checkout', intro: web.cells[1].body, big: '$1,500', per: '/ project', how: [[web.timeline, 'Kickoff to launch'], ...lead], get: web.cells.map(c => c.title), brief: '/services/websites#brief', href: '/services/websites' },
+  { k: 'store', name: 'Store with checkout', icon: 'bag', usd: 'from $1,500', title: 'Store with checkout', intro: web.cells[1].body, big: '$1,500', per: '/ project', how: [[web.timeline, 'Kickoff to launch'], ...lead], get: web.cells.map(c => c.title), brief: '/services/websites#brief', href: '/services/websites' },
   // Brand + website: naira from the Figma frame (no combined figure in services.json).
   { k: 'brand-website', name: 'Brand + website', icon: 'rocket', usd: 'from $2,500', ngn: 'from ₦1,800,000', title: 'Brand + website', intro: 'A brand people remember and a website that proves it, by one team.', big: '$2,500', bigNgn: '₦1,800,000', per: '/ project', perNgn: '/ project', how: [['4 to 6 weeks', 'Kickoff to launch'], ...lead], get: ['Brand direction', 'Logo, colour and type', 'Website design and build', 'Google and AI search ready', 'Handover and training'], brief: '/services/brand#brief', href: '/services/brand' },
-  svc('ai', 'ai-assistant', 'AI assistant', 'message'),
+  svc('ai', 'ai-assistant', 'AI assistant', 'bot'),
   svc('app', 'apps', 'App or MVP', 'code'),
-  svc('film', 'motion', 'Launch film', 'image'),
+  svc('film', 'motion', 'Launch film', 'film'),
 ];
 const aiNgnMo = S('ai-assistant').priceNgn.split(' + ')[1];
 const plans = [
   { k: 'growth', name: 'Growth and content', icon: 'trend', price: '$600', per: '/mo', desc: '3 month minimum. Posts, films and campaigns.', items: ['12 posts and 2 short films a month', 'Captions and posting calendar', 'Monthly results call', 'Ads support, budget separate'] },
-  { k: 'care', name: 'AI care plan', icon: 'spark', price: '$60', ngnPrice: aiNgnMo.replace('/mo', ''), per: '/mo', desc: 'For every AI assistant we build.', items: ['Retraining when products change', 'Monthly report: chats, orders, questions', 'Fixes within one working day', 'Hosting and model costs included'] },
+  { k: 'care', name: 'AI care plan', icon: 'sparkles', price: '$60', ngnPrice: aiNgnMo.replace('/mo', ''), per: '/mo', desc: 'For every AI assistant we build.', items: ['Retraining when products change', 'Monthly report: chats, orders, questions', 'Fixes within one working day', 'Hosting and model costs included'] },
 ];
 const monthly: Item[] = plans.map(p => ({ k: p.k, name: p.name, icon: p.icon, usd: `${p.price}/mo`, ngn: p.ngnPrice ? `${p.ngnPrice}/mo` : undefined, title: p.name, intro: p.desc, big: p.price, bigNgn: p.ngnPrice, per: '/ month', perNgn: '/ month', how: [['Billed monthly', 'Cancel with 30 days notice'], ['Pause a month', 'One month at a time'], ...lead.slice(0, 1)], get: p.items, href: '/monthly-plans' }));
 const all = [first, ...projects, ...monthly];
@@ -43,61 +42,61 @@ const cards = [
   { name: 'Growth and content', price: '$600', per: '/mo', desc: plans[0].desc, items: plans[0].items, dark: true },
   { name: 'Run it for you', price: 'Custom', per: '', desc: 'For owners who want the whole system handled.', items: ['Store, AI, automation and content', 'One project lead, weekly check in', 'Priority on new features', 'Quoted after the diagnostic'] },
 ];
-const promises = [['lock', 'Accounts in your name', 'Domain, store and payments are registered to you.'], ['receipt', 'Written agreement first', 'Scope, price, dates and change orders, signed first.'], ['check', 'Nothing goes live without you', 'Every change has a preview you approve.'], ['tag', 'Changes are priced', 'Anything new gets a written change order.'], ['users', 'One person to call', 'The project lead answers, not a ticket queue.'], ['globe', 'Lagos hours, worldwide', 'We overlap with London and the US East Coast.']];
+const promises = [['lock', 'Accounts in your name', 'Domain, store and payments are registered to you.'], ['receipt', 'Written agreement first', 'Scope, price, dates and change orders, signed first.'], ['eye', 'Nothing goes live without you', 'Every change has a preview you approve.'], ['tag', 'Changes are priced', 'Anything new gets a written change order.'], ['user', 'One person to call', 'The project lead answers, not a ticket queue.'], ['globe', 'Lagos hours, worldwide', 'We overlap with London and the US East Coast.']];
 const faqs: [string, string][] = [['Why "from" prices?', 'Scope sets the price: pages, products, integrations and motion. After the brief and the call we send a fixed scope and price.'], ['Can I pay in naira?', 'Yes. Switch prices to naira at the top of this page, and your proposal can be invoiced in naira.'], ['What does the $60 a month cover?', 'Hosting and model costs for your AI assistant, retraining when your products change, a monthly report and fixes within one working day.'], ['Can I pause a monthly plan?', 'Yes, one month at a time. The AI care plan keeps running while content pauses. Cancel with 30 days notice.'], ['What if the scope changes?', 'Anything new gets a written change order with its own price before we build it.']];
 const P = (usd: string, ngn?: string) => ({ 'data-usd': usd, 'data-ngn': ngn ?? usd, ...(ngn ? {} : { 'data-nongn': '' }) });
 ---
 <Page title="Pricing · Wintech Studio" description="Websites from $1,200, brand systems from $1,500, brand and website from $2,500, AI assistants from $1,800 plus $60 a month, apps from $4,000. Dollars first, naira beside it." crumbs={[['Pricing', '/pricing']]}>
-  <div class="sp pr">
-    <section class="hero">
+  <div class="dm pr">
+    <section class="dm-top">
       <div class="wrap">
-        <div class="hd c">
-          <p class="eb">Pricing</p>
-          <h1 class="t1">Starting points,<br /><span class="gt">not surprises.</span></h1>
-          <p class="ld"><span class="d">A one-time project or a monthly plan. Dollars first, naira beside it. Every project gets a fixed price before work starts.</span><span class="m">Dollars first, naira beside it. A fixed price before work starts.</span></p>
+        <div class="dm-head c">
+          <p class="dm-eb">Pricing</p>
+          <h1 class="dm-h1">Starting points, not surprises.</h1>
+          <p class="dm-intro">A one-time project or a monthly plan. Dollars first, naira beside it. Every project gets a fixed price before work starts.</p>
         </div>
         <div class="tg">
-          <div class="seg kind" role="group" aria-label="Show"><a href="#projects" class="on" data-kind="projects">One-time projects</a><a href="#monthly" data-kind="monthly">Monthly plans</a></div>
-          <div class="seg cur" role="group" aria-label="Currency"><button type="button" class="on" data-cur="usd" aria-pressed="true">USD</button><button type="button" data-cur="ngn" aria-pressed="false">NGN</button></div>
+          <div class="dm-seg kind" role="group" aria-label="Show"><a href="#projects" class="on" data-kind="projects">One-time projects</a><a href="#monthly" data-kind="monthly">Monthly plans</a></div>
+          <div class="dm-seg cur" role="group" aria-label="Currency"><button type="button" class="on" data-cur="usd" aria-pressed="true">USD</button><button type="button" data-cur="ngn" aria-pressed="false">NGN</button></div>
         </div>
       </div>
     </section>
 
-    <section class="picker" id="projects">
+    <section class="dm-sec flush picker" id="projects">
       <div class="wrap pk">
         <div class="pk-l">
           {[['First step', [first]], ['Projects', projects], ['Monthly', monthly]].map(([label, list]) => (
             <div class="grp">
-              <p class="eb">{label as string}</p>
+              <p class="dm-eb gl">{label as string}</p>
               <div class="rows">{(list as Item[]).map(it => (
                 <a class:list={['row', { on: it.k === sel }]} href={it.href} data-k={it.k} aria-controls="pk-detail">
-                  <span class="rn"><Glyph name={it.icon} size={40} /><span>{it.name}</span></span>
+                  <span class="dm-ib s28"><Lc name={it.icon} /></span>
+                  <span class="rn">{it.name}</span>
                   <span class="rp" {...P(it.usd, it.ngn)}>{it.usd}</span>
+                  <Lc name="arrow-right" size={12} class="ra" />
                 </a>
               ))}</div>
             </div>
           ))}
-          <a class="btn btn-primary mplan" href="/tools/plan">Plan your project</a>
           <a class="pb" href="/partner-build">
-            <p class="pb-eb">By invitation</p>
-            <h3>Ready to start, but not with the whole cost?</h3>
-            <p>Partner build: a lower fee and a share of what the system sells. Offered after the diagnostic.</p>
+            <span class="dm-ib"><Lc name="handshake" /></span>
+            <span class="pb-t"><span class="dm-eb">By invitation</span><strong>Ready to start, but not with the whole cost?</strong><span>Partner build: a lower fee and a share of what the system sells. Offered after the diagnostic.</span></span>
           </a>
         </div>
         <div class="pk-r" id="pk-detail" aria-live="polite">
           {all.map(it => (
             <article class="dt" data-k={it.k} hidden={it.k !== sel}>
               <h2>{it.title}</h2>
-              <p class="dt-in">{it.intro}</p>
+              <p class="dm-body">{it.intro}</p>
               <div class="dt-p"><span class="big" {...P(it.big, it.bigNgn)}>{it.big}</span><span class="per"><span {...P(it.per, it.perNgn)}>{it.per}</span>{it.bigNgn && <span class="ng"><span class="dot">·</span><span data-usd={it.bigNgn} data-ngn={it.big}>{it.bigNgn}</span></span>}</span></div>
-              <div class="dt-c">
-                {it.brief ? <a class="btn btn-primary" href={it.brief}>Build your brief</a> : null}
-                <a class:list={['btn', it.brief ? 'btn-soft' : 'btn-primary']} href={it.k === 'diagnostic' ? '/book' : '/book'}>{it.k === 'diagnostic' ? 'Book the diagnostic' : 'Book a call'}</a>
-                {it.href === '/monthly-plans' && <a class="btn btn-soft" href="/monthly-plans">See monthly plans</a>}
+              <div class="dm-ctas">
+                {it.brief ? <a class="dm-btn p" href={it.brief}>Build your brief</a> : null}
+                <a class:list={['dm-btn', it.brief ? 's' : 'p']} href={it.k === 'diagnostic' ? '/book?service=diagnostic' : '/book'}>{it.k === 'diagnostic' ? 'Book the diagnostic' : 'Book a call'}</a>
+                {it.href === '/monthly-plans' && <a class="dm-btn s" href="/monthly-plans">See monthly plans</a>}
               </div>
               <div class="dt-cols">
-                <div><p class="eb">How it works</p><ul>{it.how.map(([a, b]) => <li><Icon name="check" size={16} stroke={1.75} /><span><strong>{a}</strong>{b && <small>{b}</small>}</span></li>)}</ul></div>
-                <div><p class="eb">What you get</p><ul>{it.get.map(g => <li><Icon name="check" size={16} stroke={1.75} /><span><strong>{g}</strong></span></li>)}</ul></div>
+                <div><p class="dm-eb">How it works</p><ul>{it.how.map(([a, b]) => <li><Lc name="check" /><span><strong>{a}</strong>{b && <small>{b}</small>}</span></li>)}</ul></div>
+                <div><p class="dm-eb">What you get</p><ul>{it.get.map(g => <li><Lc name="check" /><span><strong>{g}</strong></span></li>)}</ul></div>
               </div>
               <p class="dt-n">{it.href === '/monthly-plans' ? 'Billed monthly. Pause one month at a time, cancel with 30 days notice.' : it.k === 'diagnostic' ? 'Paid up front. Counts as the first step before any proposal.' : 'Paid 50% to start, 40% at design approval, 10% at handover.'}</p>
             </article>
@@ -106,33 +105,32 @@ const P = (usd: string, ngn?: string) => ({ 'data-usd': usd, 'data-ngn': ngn ?? 
       </div>
     </section>
 
-    <section class="mon" id="monthly">
+    <section class="dm-sec line mon" id="monthly">
       <div class="wrap">
-        <div class="hd"><p class="eb">Monthly plans</p><h2 class="t2">Or keep us on, month by month.</h2></div>
-        <div class="plans">{cards.map(c => (
-          <div class:list={['plan', { ink: c.dark }]}>
-            <p class="pl-eb">{c.name}</p>
+        <div class="dm-head c"><p class="dm-eb">Monthly plans</p><h2 class="dm-h2">Or keep us on, month by month.</h2></div>
+        <div class="dm-grid g3 plans">{cards.map(c => (
+          <div class:list={['dm-card', 'plan', { hi: c.dark }]}>
+            <div class="pl-top"><p class="dm-eb">{c.name}</p>{c.dark && <span class="dm-tag b">Most picked</span>}</div>
             <p class="pl-p"><span {...P(c.price, c.ngn)}>{c.price}</span>{c.per && <small>{c.per}</small>}</p>
-            <p class="pl-d">{c.desc}</p>
-            <ul class="ticks">{c.items.map(t => <li><Icon name="check" size={16} stroke={1.75} />{t}</li>)}</ul>
-            <a class:list={['btn', c.dark ? 'btn-primary' : 'btn-dark']} href="/book">Book a call</a>
+            <p class="dm-body">{c.desc}</p>
+            <ul class="dm-ticks">{c.items.map(t => <li><Lc name="check" />{t}</li>)}</ul>
+            <a class:list={['dm-btn', 'w', c.dark ? 'p' : 's']} href="/book">Book a call</a>
           </div>
         ))}</div>
-        <p class="mon-more"><a class="link" href="/monthly-plans">How monthly plans work <Icon name="arrow-right" size={14} /></a></p>
+        <p class="mon-more"><a class="dm-link" href="/monthly-plans">How monthly plans work</a></p>
       </div>
     </section>
 
-    <section class="s alt bys">
+    <section class="dm-sec alt">
       <div class="wrap">
-        <div class="hd"><p class="eb">Before you sign</p><h2 class="t2" style="--fs:44px">Your accounts.<br />Your files. <span class="gt">Your call.</span></h2></div>
-        <div class="pg">{promises.map(([ic, t, d], i) => (
-          <div class="pc card2"><div class="pc-t"><Glyph name={ic} size={48} /><span>{String(i + 1).padStart(2, '0')} / 06</span></div><h3>{t}</h3><p>{d}</p></div>
+        <div class="dm-head c"><p class="dm-eb">Before you sign</p><h2 class="dm-h2">Your accounts. Your files. Your call.</h2></div>
+        <div class="dm-cells c3 pg">{promises.map(([ic, t, d]) => (
+          <div><span class="dm-ib"><Lc name={ic} /></span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></div>
         ))}</div>
       </div>
     </section>
-
-    <Faq items={faqs} title="Pricing questions" />
   </div>
+  <Faq items={faqs} title="Pricing questions" />
 </Page>
 
 <script>
@@ -163,110 +161,71 @@ const P = (usd: string, ngn?: string) => ({ 'data-usd': usd, 'data-ngn': ngn ?? 
   const mon = document.getElementById('monthly')!;
   new IntersectionObserver(es => es.forEach(e => mark(e.isIntersecting || e.boundingClientRect.top < 0 ? 'monthly' : 'projects')), { rootMargin: '0px 0px -55% 0px' }).observe(mon);
 </script>
-
 <style>
-  .tg{display:flex;justify-content:center;gap:12px;margin-top:48px}
-  .seg{display:inline-flex;border:1px solid var(--rule);padding:3px;background:var(--bg)}
-  .seg a,.seg button{font:500 14px/17px var(--font);padding:9px 16px;color:var(--fg-2);text-decoration:none;background:none;border:0;cursor:pointer;transition:background .15s,color .15s}
-  .seg a:hover,.seg button:hover{color:var(--fg)}
-  .seg .on{background:var(--fg);color:var(--bg)}
-  .seg .on:hover{color:var(--bg)}
-  .hero{padding-bottom:48px}
-
-  .picker{padding:24px 0 96px}
-  .pk{display:grid;grid-template-columns:480px 1fr;gap:24px;align-items:start}
+  .tg{display:flex;justify-content:center;gap:8px;margin-top:40px}
+  .pk{display:grid;grid-template-columns:420px minmax(0,1fr);gap:20px;align-items:start}
   .pk-l{display:flex;flex-direction:column;gap:24px}
   .grp{display:flex;flex-direction:column;gap:8px}
-  .rows{border:1px solid var(--rule);background:var(--card)}
-  .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 18px 13px 16px;text-decoration:none;color:var(--fg);transition:background .15s}
-  .row+.row{border-top:1px solid var(--rule)}
-  .row:hover{background:var(--surface)}
-  .rn{display:flex;align-items:center;gap:12px;font-size:16px;line-height:19px;font-weight:500}
-  .rn :global(svg){flex:none}
-  .rp{font-size:15px;line-height:18px;color:var(--fg-2);white-space:nowrap}
+  .rows{border:1px solid var(--hl);padding:4px 0}
+  .row{display:flex;align-items:center;gap:12px;min-height:44px;padding:8px 16px;text-decoration:none;color:var(--fg);transition:background .15s}
+  .row:hover{background:var(--tint)}
+  .rn{flex:1;font-size:16px;line-height:24px;font-weight:500}
+  .rp{font-size:14px;line-height:21px;color:var(--mute);white-space:nowrap}
+  .row :global(.ra){color:var(--lab);opacity:0;transition:opacity .15s}
+  .row:hover :global(.ra){opacity:1}
   @media (min-width:1024px){
-    .row.on{background:var(--inkc);color:var(--inkc-fg);--bi-fill:#1F2B3D;--bi-stroke:#AEBED4}
-    .row.on .rn :global(svg){width:30px;height:30px}
-    .row.on .rp{color:var(--inkc-2)}
-    :root[data-theme="dark"] .row.on{background:#151C28}
-    :root[data-theme="dark"] .row.on .rp{color:var(--fg-2)}
+    .row.on{background:var(--tint)}
+    .row.on .rn{color:var(--fg)}
+    .row.on :global(.ra){opacity:1;color:var(--fg)}
+    .row.on .dm-ib{border-color:var(--fg);color:var(--fg)}
   }
-  .mplan{display:none}
-  .pb{display:flex;flex-direction:column;gap:8px;padding:22px;text-decoration:none;color:#fff;position:relative;overflow:hidden;background:linear-gradient(172deg,#0A0E17 0%,#0A0E17 30%,#0C1949 62%,#3B5BFF 100%)}
-  .pb::after{content:"";position:absolute;inset:auto -20% -60% 10%;height:120%;background:radial-gradient(60% 50% at 70% 50%,rgba(124,147,255,.55),transparent 70%);filter:blur(6px);pointer-events:none}
-  .pb>*{position:relative;z-index:1;margin:0}
-  .pb-eb{font-family:var(--mono);font-size:10px;line-height:13px;letter-spacing:.06em;text-transform:uppercase;color:#B9C1CF}
-  .pb h3{font-size:18px;line-height:22px;font-weight:600;letter-spacing:0;color:#fff}
-  .pb p:last-child{font-size:14px;line-height:1.5;color:#B9C1CF;max-width:420px}
-  .pb:hover h3{text-decoration:underline;text-underline-offset:3px}
+  .pb{display:flex;gap:12px;align-items:flex-start;padding:20px;background:var(--panel);text-decoration:none;color:var(--fg)}
+  .pb-t{display:flex;flex-direction:column;gap:4px}
+  .pb strong{font-size:16px;line-height:24px;font-weight:600;margin-top:2px}
+  .pb-t>span:last-child{font-size:14px;line-height:21px;color:var(--mute)}
+  .pb:hover strong{text-decoration:underline;text-underline-offset:3px}
 
-  .pk-r{position:sticky;top:96px;border:1px solid var(--rule);background:var(--card)}
+  .pk-r{position:sticky;top:96px;border:1px solid var(--hl)}
   .dt[hidden]{display:none}
-  .dt{padding:36px 40px;display:flex;flex-direction:column;gap:24px}
-  .dt h2{font-size:32px;line-height:38px;letter-spacing:-.01em;font-weight:600}
-  .dt-in{font-size:17px;line-height:1.45;color:var(--fg-2);margin:0;max-width:560px}
+  .dt{padding:32px;display:flex;flex-direction:column;gap:20px}
+  .dt h2{font-size:32px;line-height:38.4px;letter-spacing:-.64px}
+  .dt>.dm-body{margin-top:-8px;max-width:560px}
   .dt-p{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-  .big{font-size:56px;line-height:67px;font-weight:600;letter-spacing:-.03em;color:var(--fg)}
-  .per{font-size:17px;line-height:20px;color:var(--fg-2);display:inline-flex;gap:8px;flex-wrap:wrap}
+  .big{font-size:56px;line-height:64.4px;font-weight:600;letter-spacing:-1.12px}
+  .per{font-size:16px;line-height:24px;color:var(--mute);display:inline-flex;gap:8px;flex-wrap:wrap}
   .dot{margin-right:8px}
-  .dt-c{display:flex;gap:10px;flex-wrap:wrap}
-  .dt-cols{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-  .dt-cols .eb{margin-bottom:8px}
-  .dt-cols ul{list-style:none;padding:0;margin:0}
-  .dt-cols li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--rule)}
-  .dt-cols li :global(svg){flex:none;margin-top:1px;color:var(--fg)}
-  .dt-cols li span{display:flex;flex-direction:column;gap:2px}
-  .dt-cols strong{font-size:15px;line-height:18px;font-weight:500;color:var(--fg)}
-  .dt-cols small{font-size:13px;line-height:16px;color:var(--fg-2)}
-  .dt-n{font-size:13px;line-height:16px;color:var(--fg-2);margin:0}
+  .dt-cols{display:grid;grid-template-columns:1fr 1fr;gap:32px;padding-top:8px}
+  .dt-cols ul{list-style:none;padding:0;margin:8px 0 0}
+  .dt-cols li{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--hl)}
+  .dt-cols li :global(svg){flex:none;margin-top:3px}
+  .dt-cols li span{display:flex;flex-direction:column}
+  .dt-cols strong{font-size:14px;line-height:21px;font-weight:500}
+  .dt-cols small{font-size:13px;line-height:18px;color:var(--lab)}
+  .dt-n{font-size:13px;line-height:18px;color:var(--lab)}
 
-  .mon{padding:24px 0 112px}
-  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;align-items:start}
-  .plan{background:var(--surface);padding:32px;display:flex;flex-direction:column;gap:18px}
-  .pl-eb{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--sig);margin:0}
-  .pl-p{display:flex;align-items:baseline;gap:4px;margin:0;font-size:48px;line-height:58px;font-weight:600;letter-spacing:-.02em;color:var(--fg)}
-  .pl-p small{font-size:17px;line-height:20px;font-weight:400;letter-spacing:0;color:var(--fg-2)}
-  .pl-d{font-size:15px;line-height:1.5;color:var(--fg-2);margin:0;max-width:300px}
-  .plan .btn{width:100%}
-  .plan.ink{background:var(--inkc)}
-  .plan.ink .pl-eb{color:var(--inkc-eb)}
-  .plan.ink .pl-p{color:#fff}.plan.ink .pl-p small,.plan.ink .pl-d{color:var(--inkc-2)}
-  .plan.ink .ticks li{color:#fff}.plan.ink .ticks :global(svg){color:var(--inkc-eb)}
-  :root[data-theme="dark"] .plan:not(.ink){background:var(--card);border:1px solid var(--rule)}
-  :root[data-theme="dark"] .plan.ink{border:1px solid #2A3550}
-  .mon-more{margin:24px 0 0;font-size:15px}
-
-  .bys .hd{margin-bottom:48px}
-  .bys{padding:96px 0}
-  .pg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start}
-  .pc{padding:24px;display:flex;flex-direction:column;gap:10px}
-  .pc-t{display:flex;justify-content:space-between;align-items:center}
-  .pc-t span{font-family:var(--mono);font-size:11px;line-height:14px;color:var(--fg-2)}
-  .pc h3{font-size:18px;line-height:22px;font-weight:600;letter-spacing:0;margin:0}
-  .pc p{font-size:14px;line-height:1.5;color:var(--fg-2);margin:0;max-width:300px}
+  .plans{margin-top:80px;align-items:stretch}
+  .plan{padding:32px;gap:16px}
+  .plan.hi{border-color:var(--fg)}
+  .pl-top{display:flex;justify-content:space-between;align-items:center;min-height:29px}
+  .pl-p{display:flex;align-items:baseline;gap:4px;font-size:56px;line-height:64.4px;font-weight:600;letter-spacing:-1.12px}
+  .pl-p small{font-size:16px;line-height:24px;font-weight:400;letter-spacing:0;color:var(--mute)}
+  .plan .dm-ticks{margin-bottom:8px}
+  .plan .dm-btn{margin-top:auto}
+  .mon-more{margin-top:32px;text-align:center}
+  .pg{margin-top:80px}
 
   @media (max-width:1023px){
-    .hero{padding-bottom:0}
-    .tg{justify-content:flex-start;margin-top:20px}
+    .tg{justify-content:flex-start;margin-top:24px}
     .kind{display:none}
-    .seg button{font-size:13px;line-height:16px;padding:8px 16px}
-    .picker{padding:20px 0 56px}
     .pk{grid-template-columns:1fr}
-    .pk-l{gap:20px}
-    .grp{gap:20px}
-    .grp .eb{margin-bottom:0}
-    .row{padding:13px 14px}
-    .rn{gap:10px;font-size:15px;line-height:18px}
-    .rn :global(svg){width:36px;height:36px}
-    .rp{font-size:13px;line-height:16px}
-    .mplan{display:flex;width:100%;padding:14px 0}
     .pk-r{display:none}
-    .mon{padding:56px 0}
-    .plans{grid-template-columns:1fr;margin-top:28px}
-    .plan{padding:24px}
-    .pl-p{font-size:40px;line-height:48px}
-    .bys{padding:56px 0}
-    .bys .hd{margin-bottom:28px}
-    .pg{grid-template-columns:1fr}
+    .row{padding:8px 12px}
+    .row :global(.ra){opacity:1}
+    .rn{font-size:15px;line-height:22px}
+    .rp{font-size:13px}
+    .plans,.pg{margin-top:40px}
+    .plan{padding:20px}
+    .pl-p{font-size:36px;line-height:41.4px;letter-spacing:-.72px}
+    .mon-more{text-align:left}
   }
 </style>

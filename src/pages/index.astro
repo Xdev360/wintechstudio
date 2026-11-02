@@ -5,50 +5,64 @@ import AskAI from '../components/AskAI.astro';
 import Footer from '../components/Footer.astro';
 import Closing from '../components/ui/Closing.astro';
 import Hero from '../components/home/Hero.astro';
-import Sections from '../components/home/Sections.astro';
+import Services from '../components/home/Services.astro';
+import Cards from '../components/home/Cards.astro';
+import Cases from '../components/home/Cases.astro';
+import Team from '../components/home/Team.astro';
+import HomeFaq from '../components/home/HomeFaq.astro';
 ---
 <Base title="Wintech Studio · Design and build studio in Lagos" description="Brand, websites, stores, AI and automation for businesses starting out, adding tech, or refreshing their brand. One team in Lagos, working worldwide.">
   <Header />
   <main class="home">
     <Hero />
-    <Sections />
+    <Services />
+    <Cards />
+    <Cases />
+    <Team />
+    <HomeFaq />
     <Closing />
   </main>
   <Footer />
   <AskAI />
 </Base>
 <style is:global>
-  /* Home colour roles, from Figma H1 (light) and H2 (dark) */
+  /* Home tokens. Sizes and spacing follow docs/DESIGNME-SPEC.md; colours are Wintech's. */
   .home{
-    --h-fg:#0A0E17; --h-mute:#5E6678; --h-soft:#9AA3B2; --h-rule:#E3E7EE; --h-guide:#E3E7EE;
-    --h-bg:#FFFFFF; --h-alt:#F2F4F8; --h-card:#FFFFFF; --h-chip:#F2F4F8; --h-skel:#F5F7FA;
-    --h-accent:#3B5BFF; --h-ok-bg:#E7F6EC; --h-ok:#1A7F43; --h-dot:#9AA3B2;
-    --h-grad:linear-gradient(90deg,#254D7F,#3B5BFF);
-    --h-shadow:0 8px 24px rgba(10,15,26,.06);
+    --h-fg:#0A0E17; --h-rgb:10,14,23;
+    --h-mute:rgba(var(--h-rgb),.75); --h-label:rgba(var(--h-rgb),.62);
+    --h-rule:rgba(3,17,28,.10); --h-tint:rgba(var(--h-rgb),.06);
+    --h-bg:#FFFFFF; --h-panel:#FAFAFA; --h-panel2:#F4F5F7;
+    --h-accent:#3B5BFF; --h-accent-ink:#3B5BFF; --h-accent-tint:rgba(59,91,255,.10);
+    --h-warm:#C2410C; --h-warm-tint:rgba(234,88,12,.12);
+    background:var(--h-bg);color:var(--h-fg);
   }
   :root[data-theme="dark"] .home{
-    --h-fg:#F4F6FA; --h-mute:#9AA3B2; --h-soft:#5E6678; --h-rule:rgba(255,255,255,.09); --h-guide:rgba(255,255,255,.09);
-    --h-bg:#0A0E17; --h-alt:#111723; --h-card:#161D2A; --h-chip:#1C2432; --h-skel:#1C2432;
-    --h-accent:#7C93FF; --h-ok-bg:#12301F; --h-ok:#5FD38A; --h-dot:#5E6678;
-    --h-grad:linear-gradient(90deg,#8FA3FF,#D5DCFF);
-    --h-shadow:0 8px 24px rgba(0,0,0,.3);
+    --h-fg:#F5F5F5; --h-rgb:245,245,245;
+    --h-rule:rgba(245,245,245,.12);
+    --h-bg:#0F0F0F; --h-panel:#151515; --h-panel2:#1A1A1A;
+    --h-accent-ink:#8196FF; --h-accent-tint:rgba(129,150,255,.14);
+    --h-warm:#FB923C; --h-warm-tint:rgba(251,146,60,.14);
   }
-  .home{background:var(--h-bg);color:var(--h-fg)}
   .home .h-wrap{max-width:1200px;margin:0 auto;box-sizing:content-box;padding-left:120px;padding-right:120px}
-  .home .h-mono{font:400 11px/normal var(--mono);letter-spacing:.66px;text-transform:uppercase;color:var(--h-mute);margin:0}
-  .home .h-grad{background:var(--h-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .home .h-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:4px;font:500 16px/normal var(--font);text-decoration:none;white-space:nowrap;transition:background .15s}
+  .home .h-eb{font:500 11px/14.3px var(--font);letter-spacing:.66px;text-transform:uppercase;color:var(--h-label);margin:0}
+  .home .h-h2{font:600 56px/64.4px var(--font);letter-spacing:-1.12px;color:var(--h-fg);margin:0}
+  .home .h-intro{font:500 18px/27px var(--font);color:var(--h-mute);margin:0;max-width:640px}
+  .home .h-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+  .home .h-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 24px;border-radius:2px;font:500 16px/1 var(--font);text-decoration:none;white-space:nowrap;border:0;cursor:pointer;transition:background .15s}
   .home .h-btn.primary{background:#3B5BFF;color:#fff}.home .h-btn.primary:hover{background:#2F4BE6}
-  .home .h-btn.soft{background:#F2F4F8;color:#0A0E17}.home .h-btn.soft:hover{background:#E3E7EE}
-  :root[data-theme="dark"] .home .h-btn.soft{background:#fff;color:#0A0E17}
-  .home .h-link{display:inline-flex;align-items:center;gap:6px;font:500 15px/normal var(--font);color:var(--h-fg);text-decoration:none}
-  .home .h-link:hover{color:var(--h-accent)}
-  /* Figma guide rails at x=80 and x=1359 */
-  .home .rails{position:relative}
-  .home .rails::before,.home .rails::after{content:'';position:absolute;top:0;bottom:0;width:1px;background:var(--h-guide);pointer-events:none;z-index:1}
-  .home .rails::before{left:calc(50% - 640px)}.home .rails::after{left:calc(50% + 639px)}
-  @media (max-width:1359px){.home .rails::before,.home .rails::after{display:none}}
+  .home .h-btn.soft{background:var(--h-tint);color:var(--h-fg)}.home .h-btn.soft:hover{background:rgba(var(--h-rgb),.1)}
+  .home .h-link{display:inline-flex;align-items:center;gap:6px;font:600 14px/21px var(--font);color:var(--h-fg);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:rgba(var(--h-rgb),.35)}
+  .home .h-link:hover{color:var(--h-accent-ink);text-decoration-color:currentColor}
+  .home .h-link .ar{text-decoration:none;display:inline-block;transition:transform .15s}
+  .home .h-link:hover .ar{transform:translateX(2px)}
+  .home .h-sec{padding:128px 0}
   @media (max-width:1439px){.home .h-wrap{padding-left:clamp(16px,8.34vw,120px);padding-right:clamp(16px,8.34vw,120px)}}
-  @media (max-width:1023px){:root[data-theme="dark"] .home{--h-alt:#0A0E17}}
-  @media (max-width:1023px){.home .h-wrap{padding-left:16px;padding-right:16px}.home .h-mono{font-size:10px;letter-spacing:.6px}.home .h-btn{border-radius:0}}
+  @media (max-width:767px){
+    .home .h-wrap{padding-left:16px;padding-right:16px}
+    .home .h-sec{padding:64px 0}
+    .home .h-h2{font-size:36px;line-height:41.4px;letter-spacing:-.72px}
+    .home .h-intro{font-size:16px;line-height:24px}
+    .home .h-btn{font-size:15px}
+  }
+  @media (prefers-reduced-motion:reduce){.home *,.home *::before,.home *::after{animation:none!important}}
 </style>

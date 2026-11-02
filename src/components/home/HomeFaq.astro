@@ -1,66 +1,72 @@
 ---
-// Home FAQ (Figma 801:1325, dark 801:1886). Not in the M frames; stacks on mobile.
-import Icon from '../Icon.astro';
+// Home FAQ. Sizes from docs/DESIGNME-SPEC.md "FAQ".
 const faqs: [string, string][] = [
-  ['What does it cost?', 'Websites from $1,200, brand systems from $1,500, the AI assistant from $1,800 plus $60 a month. Plan your project shows the full range before any call.'],
+  ['What does it cost?', 'Websites from $1,200, brand systems from $1,500, the AI assistant from $1,800 plus $60 a month. Each service page shows its starting price before any call.'],
   ['Do I need to be a startup?', 'No. We work with founders starting out, businesses that already sell and want to add tech, and brands that need a refresh.'],
   ['Can you work with what I already have?', 'Yes. We keep what works, your logo, your site or your tools, and fix or extend the rest.'],
   ['Who owns the accounts and files?', 'You do. Domain, hosting and every account sit in your name from day one, and all design files, code and documents are yours on the final payment.'],
   ['How fast can you start?', 'We take on four projects at a time. Book a call and we will tell you the next start date, usually within two weeks.'],
 ];
 ---
-<section class="faq rails">
+<section class="faq h-sec">
   <div class="h-wrap cols">
     <div class="side">
-      <div class="head">
-        <p class="h-mono">FAQ</p>
-        <h2><a href="/faq">Read the FAQs</a></h2>
-      </div>
-      <div class="box">
-        <p class="bt">Still deciding?</p>
-        <p class="bx">Ask Wintech AI now, or the<br />project lead on a call.</p>
+      <p class="h-eb">FAQ</p>
+      <h2>Questions, answered</h2>
+      <div class="ask">
+        <span class="av" aria-hidden="true">OI</span>
+        <p class="at">Still deciding?</p>
+        <p class="ax">Ask Wintech AI now, or talk to the project lead on a call.</p>
         <a class="h-btn primary" href="/book">Book a call</a>
+        <p class="em">Or email us <span aria-hidden="true">→</span> <a href="mailto:hello@wintechstudio.com">hello@wintechstudio.com</a></p>
       </div>
     </div>
     <div class="list">
       {faqs.map((f, i) => (
         <details name="home-faq" open={i === 0}>
-          <summary>{f[0]}<span class="ic" aria-hidden="true"><Icon name="plus" size={20} stroke={1.5} class="p" /><Icon name="minus" size={20} stroke={1.5} class="m" /></span></summary>
+          <summary><span class="tile" aria-hidden="true"><i class="h"></i><i class="v"></i></span>{f[0]}</summary>
           <p>{f[1]}</p>
         </details>
       ))}
+      <p class="more"><a class="h-link" href="/faq">Read all FAQs <span class="ar">→</span></a></p>
     </div>
   </div>
 </section>
 <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } })) })} />
 <style>
-  .faq{background:var(--h-bg);padding:128px 0}
-  .cols{display:flex;gap:80px;align-items:flex-start}
-  .side{flex:none;width:380px;display:flex;flex-direction:column;gap:28px}
-  .head{display:flex;flex-direction:column;gap:16px}
-  h2{font-size:56px;line-height:1.05;letter-spacing:-1.12px;font-weight:600;margin:0}
-  h2 a{color:var(--h-fg);text-decoration:none}h2 a:hover{color:var(--h-accent)}
-  .box{background:var(--h-alt);padding:24px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-  :root[data-theme="dark"] .box{background:#161D2A}
-  .bt{font-size:20px;font-weight:600;color:var(--h-fg);margin:0;line-height:normal}
-  .bx{font-size:15px;line-height:1.5;color:var(--h-mute);margin:0}
-  .list{flex:1;min-width:0}
-  details{border-bottom:1px solid var(--h-rule);padding:22px 0}
-  summary{display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;list-style:none;font-size:19px;font-weight:500;line-height:normal;color:var(--h-fg)}
+  .faq{background:var(--h-bg)}
+  .cols{display:flex;justify-content:space-between;gap:48px;align-items:flex-start}
+  .side{flex:0 0 480px;display:flex;flex-direction:column;align-items:flex-start}
+  h2{font:600 42px/48.3px var(--font);letter-spacing:-.84px;color:var(--h-fg);margin:16px 0 0}
+  .ask{margin-top:32px;align-self:stretch;background:var(--h-panel);padding:24px;display:flex;flex-direction:column;align-items:flex-start}
+  .av{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#3B5BFF;color:#fff;font:600 15px/1 var(--font);letter-spacing:.4px}
+  .at{margin:16px 0 0;font:600 24px/31.2px var(--font);letter-spacing:-.24px;color:var(--h-fg)}
+  .ax{margin:8px 0 0;font:400 16px/24px var(--font);color:var(--h-mute)}
+  .ask .h-btn{margin-top:20px}
+  .em{margin:16px 0 0;font:400 14px/21px var(--font);color:var(--h-mute)}
+  .em a{color:var(--h-fg);font-weight:500;text-underline-offset:3px}
+  .em a:hover{color:var(--h-accent-ink)}
+  .list{flex:0 1 672px;min-width:0;display:flex;flex-direction:column;gap:12px}
+  details{background:var(--h-panel)}
+  summary{display:flex;align-items:center;gap:20px;min-height:68px;box-sizing:border-box;padding:20px;cursor:pointer;list-style:none;font:500 16px/24px var(--font);color:var(--h-fg)}
   summary::-webkit-details-marker{display:none}
-  summary:hover{color:var(--h-accent)}
-  .ic{display:flex;flex:none}
-  .ic :global(.m){display:none}details[open] .ic :global(.m){display:block}details[open] .ic :global(.p){display:none}
-  details p{margin:12px 0 0;font-size:16px;line-height:1.55;color:var(--h-mute);max-width:620px}
-  @media (max-width:1180px){.cols{gap:48px}.side{width:320px}}
-  @media (max-width:1023px){
-    .faq{padding:56px 0}
-    .cols{flex-direction:column;gap:20px}
-    .side{width:100%;display:contents}
-    .head{gap:12px}
-    h2{font-size:34px;line-height:1.06;letter-spacing:-.51px}
-    .list{width:100%}
-    .box{order:2;width:100%;box-sizing:border-box;margin-top:12px}
-    details{padding:18px 0}summary{font-size:17px}details p{font-size:15px}
+  summary:hover{color:var(--h-accent-ink)}
+  .tile{position:relative;flex:none;width:28px;height:28px;border:1px solid var(--h-rule);box-sizing:border-box;color:var(--h-fg)}
+  .tile i{position:absolute;left:50%;top:50%;background:currentColor;transition:transform .2s}
+  .tile .h{width:12px;height:1.5px;transform:translate(-50%,-50%)}
+  .tile .v{width:1.5px;height:12px;transform:translate(-50%,-50%)}
+  details[open] .tile .v{transform:translate(-50%,-50%) scaleY(0)}
+  details p{margin:0;padding:8px 20px 24px 68px;font:400 16px/24px var(--font);color:var(--h-mute)}
+  .more{margin:12px 0 0}
+  @media (max-width:1100px){.side{flex-basis:360px}}
+  @media (max-width:767px){
+    .cols{flex-direction:column;gap:0}
+    .side{display:contents}
+    .side .h-eb{order:1}
+    h2{order:2;font-size:30px;line-height:34.5px;letter-spacing:-.6px;margin:12px 0 32px}
+    .list{order:3;flex:none;width:100%}
+    .ask{order:4;margin-top:32px;width:100%;box-sizing:border-box}
+    .ask .h-btn{width:100%}
+    details p{padding:4px 20px 20px 68px}
   }
 </style>

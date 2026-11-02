@@ -1,60 +1,58 @@
 ---
 import Page from '../layouts/Page.astro';
 import Field from '../components/ui/Field.astro';
-import Icon from '../components/Icon.astro';
-import Bi from '../components/Bi.astro';
-import Glyph from '../components/ui/Glyph.astro';
+import Lc from '../components/ui/Lc.astro';
 import '../styles/studio.css';
-const roles = [['palette', 'Brand designer', 'Remote · per project', 'Identity, packaging, guidelines'], ['edit', 'Product designer', 'Remote · per project', 'Flows, UI and design systems'], ['code', 'Frontend developer', 'Remote · per project', 'Astro, Next.js, Tailwind'], ['database', 'Full stack developer', 'Remote · per project', 'Supabase, APIs, payments'], ['image', 'Motion designer', 'Remote · per project', 'Explainers and launch films'], ['message', 'AI and automation engineer', 'Remote · per project', 'Assistants, n8n, WhatsApp'], ['users', 'Film and photo crew', 'Lagos · per shoot', 'Product and studio shoots']];
-const own = ['edit', 'database'];
+const roles = [['palette', 'Brand designer', 'Remote · per project', 'Identity, packaging, guidelines'], ['pen', 'Product designer', 'Remote · per project', 'Flows, UI and design systems'], ['code', 'Frontend developer', 'Remote · per project', 'Astro, Next.js, Tailwind'], ['database', 'Full stack developer', 'Remote · per project', 'Supabase, APIs, payments'], ['film', 'Motion designer', 'Remote · per project', 'Explainers and launch films'], ['bot', 'AI and automation engineer', 'Remote · per project', 'Assistants, n8n, WhatsApp'], ['camera', 'Film and photo crew', 'Lagos · per shoot', 'Product and studio shoots']];
 const how = [['A clear brief', 'Scope, references, deadline and the rate, before you start.'], ['One project lead', 'No client chasing. Questions go to one person.'], ['Reviewed work', 'Feedback in one thread, twice a week.'], ['Paid on delivery', 'Within 5 working days of approval.']];
 ---
 <Page title="Join the bench · Wintech Studio" description="Designers, developers, film crews and AI engineers who want steady, well briefed projects. Wintech runs the client; you run the craft." crumbs={[['Join the bench', '/join-the-bench']]} closing={false}>
-  <div class="sp jb">
-    <section class="hero">
+  <div class="dm jb">
+    <section class="dm-top">
       <div class="wrap">
-        <div class="hd" style="max-width:1000px">
-          <p class="eb">Join the bench</p>
-          <h1 class="t1">Do your best work.<br /><span class="gt">We bring the clients.</span></h1>
-          <p class="ld">Designers, developers, film crews and AI engineers who want steady, well briefed projects. Wintech runs the client; you run the craft.</p>
+        <div class="dm-head c">
+          <p class="dm-eb">Join the bench</p>
+          <h1 class="dm-h1">Do your best work. We bring the clients.</h1>
+          <p class="dm-intro">Designers, developers, film crews and AI engineers who want steady, well briefed projects. Wintech runs the client; you run the craft.</p>
+          <div class="dm-ctas cc"><a class="dm-btn p" href="#apply">Apply</a></div>
         </div>
       </div>
     </section>
 
-    <section class="s alt roles">
+    <section class="dm-sec line">
       <div class="wrap">
-        <div class="hd"><p class="eb">Open roles</p><h2 class="t2">Who we work with</h2></div>
-        <ul class="rl">{roles.map(([ic, r, w, d]) => (
+        <div class="dm-head c"><p class="dm-eb">Open roles</p><h2 class="dm-h2">Who we work with</h2></div>
+        <ul class="dm-rows rl">{roles.map(([ic, r, w, d]) => (
           <li><a href="#apply" data-role={r}>
-            {own.includes(ic) ? <Glyph name={ic} size={48} /> : <Bi name={ic} size={48} />}
-            <span class="rt"><strong>{r}</strong><small>{d}</small><em class="wm">{w}</em></span>
-            <em class="wd">{w}</em>
-            <Icon name="arrow-right" size={16} />
+            <span class="dm-ib s36"><Lc name={ic} size={18} /></span>
+            <span class="rt"><strong>{r}</strong><small>{d}</small></span>
+            <span class="wd">{w}</span>
+            <span class="dm-arrow"><Lc name="arrow-right" /></span>
           </a></li>
         ))}</ul>
       </div>
     </section>
 
-    <section class="s how">
+    <section class="dm-sec alt">
       <div class="wrap">
-        <div class="hd"><p class="eb">How it works</p><h2 class="t2" style="--fs:44px;--fsm:30px">Briefed, reviewed, <span class="gt">paid on time.</span></h2></div>
-        <ol class="hg">{how.map(([t, d], i) => <li><p class="num">{String(i + 1).padStart(2, '0')}</p><h3>{t}</h3><p>{d}</p></li>)}</ol>
+        <div class="dm-head c"><p class="dm-eb">How it works</p><h2 class="dm-h2">Briefed, reviewed, paid on time.</h2></div>
+        <ol class="dm-cells c4 hg">{how.map(([t, d], i) => <li><span class="dm-num">{String(i + 1).padStart(2, '0')}</span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></li>)}</ol>
       </div>
     </section>
 
-    <section class="s alt ap" id="apply">
-      <div class="wrap ag">
-        <div class="hd"><p class="eb">Apply</p><h2 class="t2" style="--fs:44px;--fsm:30px">Show us three things<br />you are proud of.</h2></div>
-        <form class="form card2" data-send="Bench application from wintechstudio.com">
-          <Field label="Name" name="Name" placeholder="Your name" required />
+    <section class="dm-sec" id="apply">
+      <div class="wrap dm-split">
+        <div class="dm-head"><p class="dm-eb">Apply</p><h2 class="dm-h2s">Show us three things you are proud of.</h2><p class="dm-intro">A portfolio link is enough. We reply when a project fits your craft.</p></div>
+        <form class="dm-form form" data-send="Bench application from wintechstudio.com">
+          <Field label="Name" name="Name" placeholder="Your name" required autocomplete="name" />
           <Field label="Role" name="Role" placeholder="Brand designer" suggest={roles.map(r => r[1])} required />
           <Field label="Portfolio link" name="Portfolio" placeholder="Behance, Dribbble, GitHub or a site" required />
           <Field label="Rate" name="Rate" placeholder="Per project or per day, in USD or naira" />
-          <div class="send">
-            <button class="btn btn-primary" type="submit" value="whatsapp">Send application</button>
-            <button class="em" type="submit" value="email">or send by email</button>
+          <div class="dm-send">
+            <button class="dm-btn p" type="submit" value="whatsapp">Send application</button>
+            <p>Opens WhatsApp. <button class="dm-plain" type="submit" value="email">Send by email instead</button></p>
           </div>
-          <p class="sent" hidden>Your application is ready. Press send in WhatsApp or your email app.</p>
+          <p class="dm-sent sent" hidden>Your application is ready. Press send in WhatsApp or your email app.</p>
         </form>
       </div>
     </section>
@@ -68,52 +66,23 @@ const how = [['A clear brief', 'Scope, references, deadline and the rate, before
   }));
 </script>
 <style>
-  .hero{padding-bottom:72px}
-  .roles{padding:96px 0}
-  .rl{list-style:none;padding:0;margin:48px 0 0;background:var(--card);border:1px solid var(--rule)}
-  .rl li+li{border-top:1px solid var(--rule)}
-  .rl a{display:flex;align-items:center;gap:20px;padding:20px 24px;text-decoration:none;color:var(--fg);transition:background .15s}
-  .rl a:hover{background:var(--surface)}
-  .rl a:hover :global(.lucide-ar),.rl a:hover > :global(svg:last-child){transform:translateX(3px)}
-  .rl a > :global(svg){flex:none}
-  .rl a > :global(svg:last-child){color:var(--fg-2);transition:transform .2s}
-  .rt{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
-  .rt strong{font-size:19px;line-height:23px;font-weight:600}
-  .rt small{font-size:14px;line-height:17px;color:var(--fg-2)}
-  em{font-style:normal;font-family:var(--mono);font-size:13px;line-height:17px;color:var(--fg-2);white-space:nowrap}
-  .wm{display:none}
-  .how .hd{margin-bottom:48px}
-  .hg{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start}
-  .hg li{background:var(--surface);padding:24px;display:flex;flex-direction:column;gap:10px}
-  .hg h3{font-size:19px;line-height:23px;font-weight:600;letter-spacing:0;margin:0}
-  .hg li p:last-child{font-size:14px;line-height:1.5;color:var(--fg-2);margin:0;max-width:220px}
-  .ag{display:grid;grid-template-columns:460px 1fr;gap:64px;align-items:start}
-  .form{padding:32px;display:flex;flex-direction:column;gap:16px}
-  .form :global(.field){gap:6px}
-  .form :global(input:not([type=radio])){padding:12px 14px}
-  .send{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .em{font:400 14px/17px var(--font);color:var(--fg-2);background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-  .em:hover{color:var(--sig)}
-  .sent{margin:0;color:var(--ok);font-size:14px}
+  .cc{justify-content:center;margin-top:8px}
+  .rl{margin-top:80px}
+  .rl a{display:flex;align-items:center;gap:16px;padding:20px 0;text-decoration:none;color:var(--fg)}
+  .rt{flex:1;display:flex;flex-direction:column;min-width:0}
+  .rt strong{font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.2px}
+  .rt small{font-size:14px;line-height:21px;color:var(--mute)}
+  .rl a:hover strong{color:var(--sig)}
+  .wd{font-size:14px;line-height:21px;color:var(--lab);white-space:nowrap}
+  .hg{list-style:none;padding:0;margin-top:80px}
+  .form{background:var(--panel);padding:32px}
   @media (max-width:1023px){
-    .hero{padding-bottom:40px}
-    .roles{padding:53px 0}
-    .roles .t2{--fsm:28px}
-    .rl{margin-top:26px}
-    .rl a{gap:14px;padding:16px}
-    .rl a > :global(svg:first-child){width:40px;height:40px}
-    .rt{gap:4px}
-    .rt strong{font-size:18px;line-height:22px}
-    .wd{display:none}.wm{display:block}
-    .how{padding:62px 0}
-    .how .hd{margin-bottom:26px}
-    .hg{grid-template-columns:1fr}
-    .hg li{padding:18px;gap:6px}
-    .hg h3{font-size:18px;line-height:22px}
-    .hg li p:last-child{max-width:none}
-    .ap{padding:62px 0}
-    .ag{grid-template-columns:1fr;gap:28px}
-    .form{padding:18px}
-    .send .btn{font-size:15px;line-height:18px}
+    .cc{margin-top:16px}
+    .rl,.hg{margin-top:40px}
+    .rl a{gap:12px;padding:16px 0;align-items:flex-start}
+    .rl .dm-arrow{display:none}
+    .rt strong{font-size:17px;line-height:24px}
+    .wd{display:none}
+    .form{padding:20px 16px;margin:0 -16px}
   }
 </style>

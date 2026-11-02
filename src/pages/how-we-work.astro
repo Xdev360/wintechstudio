@@ -1,7 +1,6 @@
 ---
 import Page from '../layouts/Page.astro';
-import Bi from '../components/Bi.astro';
-import Glyph from '../components/ui/Glyph.astro';
+import Lc from '../components/ui/Lc.astro';
 import '../styles/studio.css';
 // [name, short (mobile), detail, the AI drafts, we decide, when]
 const steps = [
@@ -12,44 +11,43 @@ const steps = [
   ['Polish and ship', 'The last 10% that feels expensive.', 'The last 10% that makes it feel expensive.', 'Runs checks on every page.', 'Final QA and your sign off.', 'Launch'],
   ['Run it', 'Docs, training, care plan.', 'Docs, training, and a care plan if you want.', 'Answers customers, runs automations.', 'Retrain, report, improve.', 'After'],
 ];
-const team = [['palette', 'Brand'], ['edit', 'Design'], ['code', 'Development'], ['image', 'Film'], ['message', 'AI and automation']];
+const team = [['palette', 'Brand'], ['pen', 'Design'], ['code', 'Development'], ['film', 'Film'], ['bot', 'AI and automation']];
 const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'How Wintech Studio runs a project', step: steps.map(([n, , d], i) => ({ '@type': 'HowToStep', position: i + 1, name: n, text: d })) };
 ---
 <Page title="How we work · Wintech Studio" description="You talk to one project lead. Behind them sit designers, developers, a film crew and the AI. Six steps from brief to a system you can run." crumbs={[['How we work', '/how-we-work']]} jsonld={[ld]}>
-  <div class="sp hw">
-    <section class="hero">
+  <div class="dm hw">
+    <section class="dm-top">
       <div class="wrap">
-        <div class="hd" style="max-width:1000px">
-          <p class="eb">How we work</p>
-          <h1 class="t1" style="--fs:72px;--fsm:30px">AI does the legwork.<br /><span class="gt">People make the calls.</span></h1>
-          <p class="ld d">You talk to one project lead. Behind them sit designers, developers, a film crew and the AI. Nothing ships until you say yes.</p>
+        <div class="dm-head c">
+          <p class="dm-eb">How we work</p>
+          <h1 class="dm-h1">AI does the legwork. People make the calls.</h1>
+          <p class="dm-intro">You talk to one project lead. Behind them sit designers, developers, a film crew and the AI. Nothing ships until you say yes.</p>
         </div>
-        <ol class="msteps">{steps.map(([n, s], i) => <li><span class="mn">{String(i + 1).padStart(2, '0')}</span><span><strong>{n === 'Polish and ship' ? 'Ship' : n}</strong><small>{s}</small></span></li>)}</ol>
       </div>
     </section>
 
-    <section class="s alt model">
+    <section class="dm-sec alt">
       <div class="wrap">
-        <div class="hd"><p class="eb">The model</p><h2 class="t2">Who talks to whom</h2></div>
+        <div class="dm-head c"><p class="dm-eb">The model</p><h2 class="dm-h2">Who talks to whom</h2></div>
         <div class="dg">
-          <div class="nd card2"><Glyph name="user" size={56} /><h3>You</h3><p>Two check ins a week, one thread.</p></div>
-          <div class="ln"><span>One thread</span><i></i></div>
-          <div class="nd lead"><Glyph name="spark4" size={42} /><h3>Project lead</h3><p>Plans, briefs, reviews every piece.</p></div>
-          <div class="ln"><span>Briefs and reviews</span><i></i></div>
-          <ul class="tm">{team.map(([ic, t]) => <li class="card2">{ic === 'edit' ? <Glyph name={ic} size={36} /> : <Bi name={ic} size={36} />}<span>{t}</span></li>)}</ul>
+          <div class="dm-card nd"><span class="dm-ib s36"><Lc name="user" size={18} /></span><h3 class="dm-h3">You</h3><p class="dm-small">Two check ins a week, one thread.</p></div>
+          <div class="ln"><span class="dm-eb">One thread</span><i></i></div>
+          <div class="dm-card nd lead"><span class="dm-ib s36"><Lc name="sparkles" size={18} /></span><h3 class="dm-h3">Project lead</h3><p class="dm-small">Plans, briefs, reviews every piece.</p></div>
+          <div class="ln"><span class="dm-eb">Briefs and reviews</span><i></i></div>
+          <ul class="tm">{team.map(([ic, t]) => <li><span class="dm-ib s28"><Lc name={ic} /></span><span>{t}</span></li>)}</ul>
         </div>
       </div>
     </section>
 
-    <section class="s steps">
+    <section class="dm-sec">
       <div class="wrap">
-        <div class="hd"><p class="eb">Six steps</p><h2 class="t2" style="--fs:52px">From brief to a system<br /><span class="gt">you can run.</span></h2></div>
-        <ol class="st">{steps.map(([n, , d, ai, we, when], i) => (
+        <div class="dm-head c"><p class="dm-eb">Six steps</p><h2 class="dm-h2">From brief to a system you can run.</h2></div>
+        <ol class="dm-rows st">{steps.map(([n, , d, ai, we, when], i) => (
           <li>
-            <div class="st-n"><span>{String(i + 1).padStart(2, '0')}</span><small>{when}</small></div>
-            <div class="st-t"><h3>{n}</h3><p>{d}</p></div>
-            <div class="st-b ai"><p class="k">The AI drafts</p><p>{ai}</p></div>
-            <div class="st-b we"><p class="k">We decide</p><p>{we}</p></div>
+            <div class="st-n"><span class="dm-num">{String(i + 1).padStart(2, '0')}</span><span class="dm-eb">{when}</span></div>
+            <div class="st-t"><h3 class="dm-h3">{n}</h3><p class="dm-body">{d}</p></div>
+            <div class="st-b"><p class="dm-eb">The AI drafts</p><p>{ai}</p></div>
+            <div class="st-b we"><p class="dm-eb">We decide</p><p>{we}</p></div>
           </li>
         ))}</ol>
       </div>
@@ -57,50 +55,28 @@ const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'How Wint
   </div>
 </Page>
 <style>
-  .hero{padding-bottom:72px}
-  .msteps{display:none}
-  .model{padding:96px 0}
-  .dg{display:flex;justify-content:space-between;align-items:center;margin-top:48px}
-  .nd{width:250px;padding:24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
-  .nd h3{font-size:20px;line-height:24px;font-weight:600;letter-spacing:0;margin:0}
-  .nd p{font-size:14px;line-height:1.45;color:var(--fg-2);margin:0;max-width:200px}
-  .lead{background:var(--inkc);border:1px solid var(--rule);color:#fff;--bi-fill:#1F2B3D;--bi-stroke:#AEBED4}
-  .lead p{color:var(--inkc-2)}
-  :root[data-theme="dark"] .lead{border-color:#2A3550}
-  .ln{width:120px;display:flex;flex-direction:column;align-items:center;gap:8px}
-  .ln span{font-family:var(--mono);font-size:10px;line-height:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-2);white-space:nowrap}
-  .ln i{display:block;width:100%;height:2px;background:rgba(59,91,255,.5)}
-  .tm{list-style:none;padding:0;margin:0;width:205px;display:flex;flex-direction:column;gap:8px}
-  .tm li{display:flex;align-items:center;gap:10px;padding:10px 18px 10px 14px;font-size:15px;line-height:18px;font-weight:500}
-  .tm :global(svg){flex:none}
-
-  .st{list-style:none;padding:0;margin:48px 0 0}
-  .st li{display:grid;grid-template-columns:110px 340px 1fr 1fr;gap:32px;align-items:start;padding:28px 0;border-top:1px solid var(--rule)}
-  .st-n span{display:block;font-size:36px;line-height:43px;font-weight:600;letter-spacing:-.015em}
-  .st-n small{display:block;margin-top:6px;font-family:var(--mono);font-size:10px;line-height:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-2)}
-  .st-t h3{font-size:22px;line-height:26px;font-weight:600;letter-spacing:0;margin:0 0 8px}
-  .st-t p{font-size:15px;line-height:1.5;color:var(--fg-2);margin:0}
-  .st-b{padding:16px 18px;display:flex;flex-direction:column;gap:6px;background:var(--surface)}
-  .st-b.we{background:#EAF0FF}
-  :root[data-theme="dark"] .st-b.we{background:#141C33}
-  .st-b p{font-size:14px;line-height:1.45;margin:0;max-width:230px;color:var(--fg)}
-  .st-b .k{font-family:var(--mono);font-size:10px;line-height:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2)}
-
+  .dg{display:grid;grid-template-columns:1fr 140px 1fr 140px 1fr;align-items:center}
+  .nd{align-items:flex-start}
+  .lead{border-color:var(--fg)}
+  .ln{display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 12px}
+  .ln span{white-space:nowrap}
+  .ln i{display:block;width:100%;height:1px;background:var(--sig)}
+  .tm{list-style:none;padding:4px 0;margin:0;border:1px solid var(--hl);background:var(--bg)}
+  .tm li{display:flex;align-items:center;gap:12px;height:44px;padding:8px 16px;font-size:16px;font-weight:500;line-height:24px}
+  .st{margin-top:80px}
+  .st li{display:grid;grid-template-columns:120px minmax(0,1.3fr) 1fr 1fr;gap:32px;align-items:start;padding:28px 0}
+  .st-n{display:flex;flex-direction:column;gap:6px}
+  .st-n .dm-num{font-size:20px;line-height:26px;font-weight:600;color:var(--fg)}
+  .st-t{display:flex;flex-direction:column;gap:6px}
+  .st-b{padding:16px;display:flex;flex-direction:column;gap:6px;background:var(--panel)}
+  .st-b.we{background:color-mix(in srgb,var(--sig) 7%,var(--bg))}
+  .st-b p:last-child{font-size:14px;line-height:21px}
   @media (max-width:1023px){
-    .hero{padding-bottom:56px}
-    .msteps{display:block;list-style:none;padding:0;margin:20px 0 0}
-    .msteps li{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-top:1px solid var(--rule)}
-    .msteps li+li{margin-top:20px}
-    .mn{font-size:22px;line-height:26px;font-weight:600;min-width:24px}
-    .msteps span:last-child{display:flex;flex-direction:column;gap:2px}
-    .msteps strong{font-size:17px;line-height:20px;font-weight:600}
-    .msteps small{font-size:14px;line-height:17px;color:var(--fg-2)}
-    .model{padding:56px 0}
-    .dg{flex-direction:column;align-items:stretch;gap:12px;margin-top:28px}
-    .nd{width:auto}
-    .ln{width:auto;flex-direction:row;justify-content:center;gap:10px}
-    .ln i{width:2px;height:28px;order:-1}
-    .tm{width:auto}
-    .steps{display:none}
+    .dg{grid-template-columns:1fr;gap:0}
+    .ln{flex-direction:row;justify-content:flex-start;gap:12px;padding:12px 0 12px 16px}
+    .ln i{width:1px;height:24px;order:-1}
+    .st{margin-top:40px}
+    .st li{grid-template-columns:1fr;gap:12px;padding:20px 0}
+    .st-n{flex-direction:row;align-items:baseline;gap:12px}
   }
 </style>

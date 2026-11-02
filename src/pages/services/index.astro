@@ -1,54 +1,55 @@
 ---
-// Services index, Figma S0 · Services · light (807:1850), mobile M · Services (820:4021).
+// Services index on the DesignMe spec: page head, three "where are you" cards, the service list, quick jobs.
 import Page from '../../layouts/Page.astro';
-import Icon from '../../components/Icon.astro';
-import Bi from '../../components/Bi.astro';
+import Lc from '../../components/ui/Lc.astro';
 import services from '../../data/services.json';
 import { services as names, contact } from '../../data/site';
-const icons: Record<string, string> = { brand: 'palette', websites: 'website', 'ai-assistant': 'message', automation: 'bolt', apps: 'code', motion: 'image' };
+import '../../styles/studio.css';
+const icons: Record<string, string> = { brand: 'palette', websites: 'monitor', 'ai-assistant': 'bot', automation: 'zap', apps: 'code', motion: 'film' };
 const doors = [
   { id: 'starting', icon: 'rocket', t: 'Starting something', d: 'An idea or a waitlist. You need a brand, a page to test demand and a first version.', tags: [['Brand', 'brand'], ['Landing page', 'websites'], ['MVP', 'apps']] },
-  { id: 'adding-tech', icon: 'store', t: 'Adding tech to my business', d: 'It already sells. You want a store, replies at any hour and less work on your phone.', tags: [['Store', 'websites'], ['AI assistant', 'ai-assistant'], ['Automation', 'automation']], dark: true },
+  { id: 'adding-tech', icon: 'bag', t: 'Adding tech to my business', d: 'It already sells. You want a store, replies at any hour and less work on your phone.', tags: [['Store', 'websites'], ['AI assistant', 'ai-assistant'], ['Automation', 'automation']], badge: 'Most of our clients' },
   { id: 'refresh', icon: 'refresh', t: 'Refreshing my brand', d: 'It works but looks cheaper than it is. You want it sharper and more premium.', tags: [['Rebrand', 'brand'], ['New website', 'websites'], ['Packaging', 'brand']] },
 ];
 const words = [['WEBSITE', 'Sites and stores'], ['BRAND', 'Logo, identity, packaging'], ['MOTION', 'Films and explainers']];
-const lc = (p: string) => p.replace(/^With/, 'with');
 ---
 <Page title="Services · Wintech Studio" description="Brand, websites and stores, AI assistants, automation, apps and motion, from one team in Lagos." crumbs={[['Services', '/services']]}>
-  <div class="sx">
-    <section class="hero">
+  <div class="dm sx">
+    <section class="dm-top">
       <div class="wrap">
-        <p class="eb">Services</p>
-        <h1>Pick one thing,<br />or the <span class="grad">whole system.</span></h1>
-        <p class="lede">Every service has a page where you tick what you need and send us a brief.<span class="dk"> No call needed to get started.</span></p>
+        <div class="dm-head c">
+          <p class="dm-eb">Services</p>
+          <h1 class="dm-h1">Pick one thing, or the whole system.</h1>
+          <p class="dm-intro">Every service has a page where you tick what you need and send us a brief. No call needed to get started.</p>
+        </div>
       </div>
     </section>
 
-    <section class="where" aria-label="Where are you?">
-      <div class="wrap doors">
+    <section class="dm-sec flush" aria-label="Where are you?">
+      <div class="wrap dm-grid g3">
         {doors.map(o => (
-          <div class:list={['door', { dark: o.dark }]} id={o.id}>
-            <div class="dtop"><Bi name={o.icon} size={o.dark ? 42 : 56} />{o.dark && <span class="badge">Most of our clients</span>}</div>
-            <h2>{o.t}</h2>
-            <p>{o.d}</p>
-            <p class="tags">{o.tags.map(([l, h], i) => <>{i > 0 && <span aria-hidden="true"> · </span>}<a href={`/services/${h}`}>{l}</a></>)}</p>
+          <div class="dm-card door" id={o.id}>
+            <div class="dtop"><span class="dm-ib"><Lc name={o.icon} /></span>{o.badge && <span class="dm-tag b">{o.badge}</span>}</div>
+            <h2 class="dm-h3">{o.t}</h2>
+            <p class="dm-body">{o.d}</p>
+            <p class="tags">{o.tags.map(([l, h]) => <a href={`/services/${h}`}>{l}</a>)}</p>
           </div>
         ))}
       </div>
     </section>
 
-    <section class="all">
+    <section class="dm-sec line">
       <div class="wrap">
-        <p class="eb">All services</p>
-        <ul class="rows">
+        <div class="dm-head c"><p class="dm-eb">All services</p><h2 class="dm-h2">Six services, one team.</h2><p class="dm-intro">Starting prices and typical timelines. Your proposal fixes the real price before any work starts.</p></div>
+        <ul class="dm-rows list">
           {services.map((s, i) => (
             <li>
               <a class="row" href={`/services/${s.slug}`}>
-                <span class="num">{String(i + 1).padStart(2, '0')}</span>
-                <span class="ib"><Bi name={icons[s.slug]} size={48} /></span>
-                <span class="tx"><strong>{names.find(n => n.slug === s.slug)!.name}</strong><span class="ds">{s.intro}</span><span class="mp">{lc(s.price)}</span></span>
+                <span class="dm-num">{String(i + 1).padStart(2, '0')}</span>
+                <span class="dm-ib s36"><Lc name={icons[s.slug]} size={18} /></span>
+                <span class="tx"><strong>{names.find(n => n.slug === s.slug)!.name}</strong><span>{s.intro}</span><em class="mp">{s.price} · {s.timeline}</em></span>
                 <span class="pr"><b>{s.price}</b><span>{s.timeline}</span></span>
-                <span class="go"><Icon name="arrow-right" size={16} /></span>
+                <span class="dm-arrow"><Lc name="arrow-right" /></span>
               </a>
             </li>
           ))}
@@ -56,108 +57,52 @@ const lc = (p: string) => p.replace(/^With/, 'with');
       </div>
     </section>
 
-    <section class="quick">
-      <div class="wrap qg">
-        <div class="qh">
-          <p class="eb">Quick jobs</p>
-          <h2>Just need one thing?<br />Send <span class="grad">one word.</span></h2>
-          <p class="lede"><span class="dk">Message WEBSITE, BRAND or MOTION on Instagram or WhatsApp. We reply within the hour with three examples, the starting price and three questions.</span><span class="mb">Message WEBSITE, BRAND or MOTION on WhatsApp or Instagram.</span></p>
+    <section class="dm-sec alt">
+      <div class="wrap dm-split">
+        <div class="dm-head">
+          <p class="dm-eb">Quick jobs</p>
+          <h2 class="dm-h2">Just need one thing? Send one word.</h2>
+          <p class="dm-intro">Message WEBSITE, BRAND or MOTION on Instagram or WhatsApp. We reply within the hour with three examples, the starting price and three questions.</p>
         </div>
-        <ul class="words">
-          {words.map(([w, l]) => <li><a href={`${contact.whatsappLink}?text=${encodeURIComponent(w)}`} target="_blank" rel="noopener"><b>{w}</b><span>{l}</span></a></li>)}
+        <ul class="dm-rows words">
+          {words.map(([w, l]) => <li><a href={`${contact.whatsappLink}?text=${encodeURIComponent(w)}`} target="_blank" rel="noopener"><span class="dm-ib"><Lc name="message" /></span><b>{w}</b><span>{l}</span><Lc name="arrow-up-right" class="go" /></a></li>)}
         </ul>
       </div>
     </section>
   </div>
 </Page>
 <style>
-  .sx{position:relative}
-  .sx::before,.sx::after{content:'';position:absolute;top:0;bottom:0;width:1px;background:var(--rule);z-index:1;pointer-events:none}
-  .sx::before{left:calc(50% - 640px)}.sx::after{left:calc(50% + 639px)}
-  .eb{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2);margin:0}
-  .grad{background:linear-gradient(90deg,#254D7F,#3B5BFF);-webkit-background-clip:text;background-clip:text;color:transparent}
-  :global(:root[data-theme="dark"]) .grad{background-image:linear-gradient(90deg,#8FA3FF,#C9D1F5)}
-  .mb{display:none}
-  .lede{font-size:18px;line-height:1.5;color:var(--fg-2);margin:0}
+  .door{scroll-margin-top:120px}
+  .dtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .tags{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:auto;padding-top:8px}
+  .tags a{font-size:14px;font-weight:600;line-height:21px;color:var(--fg);text-underline-offset:3px}
+  .tags a:hover{color:var(--sig)}
 
-  .hero{padding:56px 0 48px;text-align:center}
-  .hero .wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
-  h1{font-size:68px;line-height:1.05;letter-spacing:-.02em;font-weight:600;margin:0;max-width:900px}
-  .hero .lede{max-width:640px}
+  .row{display:flex;align-items:center;gap:20px;padding:24px 0;text-decoration:none;color:var(--fg)}
+  .row .dm-num{width:24px}
+  .tx{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+  .tx strong{font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.2px}
+  .tx span{font-size:16px;line-height:24px;color:var(--mute);max-width:560px}
+  .row:hover strong{color:var(--sig)}
+  .mp{display:none;font-style:normal;font-size:13px;line-height:18px;color:var(--lab);margin-top:2px}
+  .pr{display:flex;flex-direction:column;gap:2px;width:200px;flex:none}
+  .pr b{font-size:14px;line-height:21px;font-weight:600}
+  .pr span{font-size:13px;line-height:18px;color:var(--lab)}
 
-  .where{padding:0 0 64px}
-  .doors{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
-  .door{background:var(--surface);padding:28px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:120px}
-  .door.dark{background:#0A0E17;--bi-fill:#1F2B3D;--bi-stroke:#AEBED4}
-  :global(:root[data-theme="dark"]) .door.dark{background:#161D2A}
-  .dtop{display:flex;justify-content:space-between;align-items:center}
-  .badge{background:var(--sig);color:#fff;font-size:12px;line-height:14px;padding:3px 7px}
-  .door h2{font-size:22px;line-height:26px;font-weight:600;letter-spacing:0;margin:0}
-  .door p{font-size:15px;line-height:1.5;color:var(--fg-2);margin:0;max-width:320px}
-  .door.dark h2{color:#F4F6FA}.door.dark p{color:#9AA3B2}
-  .door .tags{font-family:var(--mono);font-size:12px;line-height:16px;color:var(--sig)}
-  .tags a{color:inherit;text-decoration:none}.tags a:hover{text-decoration:underline;text-underline-offset:3px}
-  .door.dark .tags{color:#7C93FF}
-
-  .all{padding:48px 0 112px}
-  .rows{list-style:none;margin:48px 0 0;padding:0;border:1px solid var(--rule)}
-  .rows li+li{border-top:1px solid var(--rule)}
-  .row{display:flex;align-items:center;gap:24px;padding:24px 28px;text-decoration:none;color:var(--fg);transition:background .15s}
-  .row:hover{background:var(--surface)}
-  .num{font-family:var(--mono);font-size:13px;line-height:17px;color:var(--fg-2);width:16px;flex:none}
-  .ib{width:64px;height:64px;padding:8px;background:var(--surface);flex:none}
-  .row:hover .ib{background:var(--bg)}
-  .tx{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
-  .tx strong{font-size:22px;line-height:26px;font-weight:600}
-  .ds{font-size:14px;line-height:1.45;color:var(--fg-2);max-width:520px}
-  .mp{display:none}
-  .pr{display:flex;flex-direction:column;gap:2px;flex:none}
-  .pr b{font-size:15px;line-height:18px;font-weight:500}
-  .pr span{font-size:13px;line-height:16px;color:var(--fg-2)}
-  .go{width:32px;height:32px;display:grid;place-items:center;background:var(--ink);color:#fff;flex:none;transition:background .15s}
-  .row:hover .go{background:var(--sig)}
-  :global(:root[data-theme="dark"]) .go{background:#F4F6FA;color:#0A0E17}
-
-  .quick{padding:112px 0;background:var(--surface)}
-  .qg{display:flex;justify-content:space-between;align-items:center;gap:48px}
-  .qh{display:flex;flex-direction:column;gap:16px;max-width:580px}
-  .qh h2{font-size:44px;line-height:1.05;letter-spacing:-.02em;font-weight:600;margin:0}
-  .words{list-style:none;margin:0;padding:0;width:420px;display:flex;flex-direction:column;gap:10px;flex:none}
-  .words a{display:flex;align-items:center;gap:16px;padding:16px 24px 16px 20px;background:var(--card);border:1px solid var(--rule);text-decoration:none;transition:border-color .15s}
-  .words a:hover{border-color:var(--sig)}
-  .words b{font-family:var(--mono);font-size:18px;line-height:23px;font-weight:500;color:var(--sig)}
-  .words span{font-size:15px;line-height:18px;color:var(--fg-2)}
-
-  @media (max-width:1279px){.sx::before,.sx::after{display:none}}
+  .words{align-self:center}
+  .words a{display:flex;align-items:center;gap:12px;padding:16px 0;text-decoration:none;color:var(--fg)}
+  .words b{font-size:16px;line-height:24px;font-weight:600;color:var(--sig);width:96px}
+  :global(:root[data-theme="dark"]) .words b{color:#8FA3FF}
+  .words span:not(.dm-ib){flex:1;font-size:16px;line-height:24px;color:var(--mute)}
+  .words :global(.go){color:var(--lab);transition:transform .2s}
+  .words a:hover :global(.go){transform:translate(2px,-2px);color:var(--fg)}
   @media (max-width:1023px){
-    .wrap{padding-left:16px;padding-right:16px}
-    .dk,.words{display:none}.mb{display:inline}
-    .eb{font-size:10px;line-height:13px}
-    .lede{font-size:15px}
-    .hero{padding:32px 0 20px;text-align:left}
-    .hero .wrap{align-items:flex-start;gap:12px}
-    h1{font-size:34px;line-height:1.06;letter-spacing:-.015em}
-    .where{padding:0 0 8px}
-    .doors{grid-template-columns:1fr;gap:10px}
-    .door{padding:20px;gap:10px}
-    .door :global(.bi){width:40px;height:40px}
-    .door h2{font-size:18px;line-height:22px}
-    .door p{font-size:14px}
-    .all{padding:0 0 56px}
-    .all .eb{display:none}
-    .rows{margin:0;border:0}
-    .rows li+li{border-top:0}
-    .row{gap:14px;padding:16px 0;border-bottom:1px solid var(--rule)}
-    .row:hover{background:none}
-    .num,.ds,.pr{display:none}
-    .ib{width:58px;height:58px;padding:7px}
-    .ib :global(.bi){width:44px;height:44px}
-    .tx{gap:2px}
-    .tx strong{font-size:17px;line-height:20px}
-    .mp{display:block;font-size:13px;line-height:16px;color:var(--fg-2)}
-    .go{background:none!important;color:var(--fg)!important;width:16px;height:16px}
-    .quick{padding:56px 0}
-    .qh{gap:12px}
-    .qh h2{font-size:28px;line-height:1.06;letter-spacing:-.015em}
+    .row{gap:12px;padding:16px 0;align-items:flex-start}
+    .row .dm-num,.row .dm-arrow{display:none}
+    .tx strong{font-size:17px;line-height:24px}
+    .tx span{font-size:14px;line-height:21px}
+    .pr{display:none}
+    .mp{display:block}
+    .words b{width:80px}
   }
 </style>

@@ -1,15 +1,46 @@
-.sec{padding:96px 0;border-bottom:1px solid var(--rule)}.alt{background:var(--surface)}
-.h1{font-size:clamp(36px,5.6vw,64px);margin:16px 0 20px}
-.h2{font-size:clamp(28px,4vw,44px);margin:12px 0 16px}
-.lede{color:var(--fg-2);font-size:18px;max-width:600px;margin:0 0 28px}
-.ctas{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.grid{display:grid;gap:16px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
-.card{background:var(--card);border:1px solid var(--rule);padding:28px}
-.card h3{font-size:20px;margin:0 0 8px}.card p{color:var(--fg-2);margin:0}
-.prose{max-width:720px}.prose p,.prose li{color:var(--fg-2);font-size:17px;line-height:1.65}.prose h2{font-size:28px;margin:40px 0 12px}
-.short{background:var(--soft);padding:24px;margin:24px 0}:root[data-theme="dark"] .short{background:#151B33}
-.faqs details{background:var(--card);border:1px solid var(--rule);padding:0 24px;margin-bottom:8px}
-.faqs summary{display:flex;justify-content:space-between;align-items:center;padding:20px 0;cursor:pointer;list-style:none;font-size:18px;font-weight:500}
-.faqs summary::-webkit-details-marker{display:none}.faqs details p{color:var(--fg-2);margin:0 0 20px}
-.faqs details[open] summary svg{transform:rotate(45deg)}.faqs summary svg{transition:transform .2s}
-@media (max-width:1023px){.sec{padding:64px 0}.g2,.g3,.g4{grid-template-columns:1fr}}
+/* Shared page scale from docs/DESIGNME-SPEC.md. Class names kept from round 1; values retuned. */
+.sec{padding:var(--sec-y) 0}
+.sec-svc{padding:108px 0 128px}
+.alt{background:var(--surface)}
+.sec-head{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;max-width:800px;margin:0 auto}
+
+/* Hero H1: 77.76/600/1.0/-1.5552 (mobile 45.36/-0.907) */
+.h1{font-size:77.76px;line-height:1;letter-spacing:-1.5552px;font-weight:600;margin:16px 0 24px}
+/* Section H2: 56/600/64.4/-1.12 (mobile 36/41.4/-0.72) */
+.h2{font-size:56px;line-height:64.4px;letter-spacing:-1.12px;font-weight:600;margin:16px 0}
+/* Smaller H2 (FAQ): 42/600/48.3/-0.84 (mobile 30/34.5/-0.6) */
+.h2-s{font-size:42px;line-height:48.3px;letter-spacing:-.84px;font-weight:600;margin:16px 0}
+.h3{font-size:32px;line-height:38.4px;letter-spacing:-.64px;font-weight:600;margin:0}
+/* Intro under an H2: 18/500/27 at 75%, ~640 wide */
+.lede{font-size:18px;line-height:27px;font-weight:500;color:var(--fg-2);max-width:640px;margin:0 0 32px}
+
+.ctas{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;gap:20px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+
+/* Cards are square with a hairline */
+.card{background:var(--card);border:1px solid var(--rule);padding:24px}
+.card h3{font-size:20px;line-height:26px;letter-spacing:-.2px;margin:0 0 8px}.card p{color:var(--fg-2);margin:0}
+
+.prose{max-width:720px}.prose p,.prose li{color:var(--fg-2);font-size:16px;line-height:26px}.prose h2{font-size:30px;line-height:36px;letter-spacing:-.6px;margin:48px 0 12px}
+.short{background:var(--soft);padding:24px;margin:24px 0}:root[data-theme="dark"] .short{background:rgba(59,91,255,.12)}
+
+/* FAQ rows: panel bg, 68 tall, padding 20, gap 20, 28px hairline tile on the left holding +/- */
+.faqs{display:flex;flex-direction:column;gap:12px}
+.faqs details{background:var(--surface)}
+.faqs summary{display:flex;flex-direction:row-reverse;justify-content:flex-end;align-items:center;gap:20px;min-height:68px;padding:20px;cursor:pointer;list-style:none;font-size:16px;line-height:24px;font-weight:500}
+.faqs summary::-webkit-details-marker{display:none}
+.faqs summary svg{flex:none;width:28px;height:28px;padding:6px;border:1px solid var(--rule);background:var(--bg);transition:transform .2s}
+.faqs details[open] summary svg{transform:rotate(45deg)}
+.faqs details p{color:var(--fg-2);margin:0;padding:8px 20px 24px 68px}
+
+@media (max-width:1023px){.g2,.g3,.g4{grid-template-columns:1fr}}
+@media (max-width:767px){
+  .sec-svc{padding:44px 0 64px}
+  .h1{font-size:45.36px;letter-spacing:-.907px}
+  .h2{font-size:36px;line-height:41.4px;letter-spacing:-.72px}
+  .h2-s{font-size:30px;line-height:34.5px;letter-spacing:-.6px}
+  .h3{font-size:24px;line-height:28.8px;letter-spacing:-.48px}
+  .lede{font-size:16px;line-height:24px}
+  .ctas{flex-direction:column;align-items:stretch}
+  .ctas .btn{width:100%}
+}

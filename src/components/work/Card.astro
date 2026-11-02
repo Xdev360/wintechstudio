@@ -1,0 +1,61 @@
+---
+// Work card, DesignMe /projects proportions: hairline card, padding 8, media panel on top,
+// meta row (client 16/600 + tag + year label) with a hairline under it, then title 20/600 + 32x32 arrow.
+// Cover: public/images/cases/cover-<slug>.webp when it exists (fills the panel), otherwise
+// film-<slug>-800.webp inset and centred on the soft panel. Never shown above its pixel size.
+import fs from 'node:fs';
+import sharp from 'sharp';
+import type { Case } from '../../data/cases';
+import Icon from '../Icon.astro';
+interface Props { c: Case; eager?: boolean; ratio?: string; filters?: boolean }
+const { c, eager = false, ratio = '4 / 3', filters = false } = Astro.props;
+const coverFile = `/images/cases/cover-${c.slug}.webp`;
+const isCover = fs.existsSync(`public${coverFile}`);
+const src = isCover ? coverFile : `/images/cases/film-${c.slug}-800.webp`;
+let w = 800, h = 450;
+try { const m = await sharp(`public${src}`).metadata(); w = m.width ?? w; h = m.height ?? h; } catch {}
+// Fill the panel only with a real cover big enough not to upscale; otherwise inset it.
+const fill = isCover && w >= 580;
+const tagCls = c.tag === 'Our product' ? 'own' : c.tag === 'Concept' ? 'concept' : 'client';
+---
+<a class="wk" href={`/work/${c.slug}`} data-cats={filters ? c.filters.join(',') : undefined}>
+  <span class:list={['cv', { fill }]} style={`aspect-ratio:${ratio}`}>
+    <img src={src} alt="" width={w} height={h} style={`max-width:min(100%,${w}px)`} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  </span>
+  <span class="mt">
+    <span class="cl">{c.name}</span>
+    <span class:list={['tg', tagCls]}>{c.tag}</span>
+    <span class="yr">{c.year}</span>
+  </span>
+  <span class="ft">
+    <span class="tt">{c.cardLine}</span>
+    <span class="ar" aria-hidden="true"><Icon name="arrow-right" size={14} /></span>
+  </span>
+</a>
+<style>
+  .wk{display:flex;flex-direction:column;padding:8px;border:1px solid var(--wk-line,rgba(10,14,23,.10));background:var(--wk-bg,#fff);color:inherit;text-decoration:none;transition:border-color .2s}
+  .wk[hidden]{display:none}
+  .wk:hover{border-color:var(--wk-line2,rgba(10,14,23,.2))}
+  .cv{display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--wk-panel,#FAFAFA);padding:24px}
+  .cv img{display:block;width:100%;height:auto;max-height:100%;object-fit:contain;transition:transform .5s}
+  .cv.fill{padding:0}
+  .cv.fill img{width:100%;height:100%;max-width:100%!important;object-fit:cover}
+  .wk:hover .cv img{transform:scale(1.02)}
+  .mt{display:flex;align-items:center;gap:8px;padding:20px 12px 16px;border-bottom:1px solid var(--wk-line,rgba(10,14,23,.10))}
+  .cl{font-size:16px;line-height:24px;font-weight:600}
+  .tg{font-size:13px;line-height:19.5px;font-weight:400;padding:2px 8px;border-radius:2px;background:var(--wk-tint,rgba(10,14,23,.06))}
+  .tg.own{background:rgba(59,91,255,.10);color:#2F4BE6}
+  .tg.concept{background:rgba(242,117,31,.16);color:#A14A12}
+  .yr{margin-left:auto;font-size:11px;line-height:14.3px;font-weight:500;letter-spacing:.66px;text-transform:uppercase;opacity:.62}
+  .ft{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:16px 12px 12px;flex:1}
+  .tt{font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.2px;max-width:420px}
+  .ar{flex:none;width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--wk-line,rgba(10,14,23,.10));background:var(--wk-bg,#fff);transition:background .2s,color .2s}
+  .wk:hover .ar{background:var(--wk-fg,#0A0E17);color:var(--wk-bg,#fff)}
+  :global(:root[data-theme="dark"]) .tg.own{background:rgba(59,91,255,.22);color:#9DB0FF}
+  :global(:root[data-theme="dark"]) .tg.concept{background:rgba(242,117,31,.2);color:#F6A46B}
+  @media (max-width:1023px){
+    .cv{padding:16px}
+    .cl{font-size:15px;line-height:22.5px}
+    .tt{font-size:18px;line-height:23.4px;letter-spacing:-.18px}
+  }
+</style>

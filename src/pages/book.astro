@@ -1,28 +1,29 @@
 ---
 import Page from '../layouts/Page.astro';
-import Bi from '../components/tools/Bi.astro';
-import Icon from '../components/Icon.astro';
+import Lc from '../components/ui/Lc.astro';
+import '../styles/studio.css';
 import { services } from '../data/site';
 const names = Object.fromEntries([...services.map(s => [s.slug, s.name]), ['plan', 'Project plan'], ['diagnostic', 'Paid diagnostic ($200)']]);
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const times = ['10:00', '11:30', '13:00', '15:00', '16:30'];
 const expect = [['clock', '25 minutes', 'We read your brief before the call.'], ['user', 'With the project lead', 'The person who would run your project.'], ['check', 'One next step', 'The diagnostic, a proposal or a quick job.']];
 ---
-<Page title="Book a call · Wintech Studio" description="Pick a time for a 25 minute call with the Wintech project lead. Your brief comes with you, so the call goes on your business, not on questions." crumbs={[['Book a call', '/book']]} closing={false} theme="dark">
-  <section class="bk">
+<Page title="Book a call · Wintech Studio" description="Pick a time for a 25 minute call with the Wintech project lead. Your brief comes with you, so the call goes on your business, not on questions." crumbs={[['Book a call', '/book']]} closing={false}>
+  <div class="dm">
+  <section class="dm-top bk">
     <div class="wrap">
-      <div class="hd">
-        <p class="mono-l">Book a 25 minute call</p>
-        <h1>Pick a time.<br />Your brief comes with you.</h1>
-        <p class="lede-d">The project lead reads your picks before the call, so the 25 minutes go on your business, not on questions.</p>
+      <div class="dm-head">
+        <p class="dm-eb">Book a 25 minute call</p>
+        <h1 class="dm-h1">Pick a time. Your brief comes with you.</h1>
+        <p class="dm-intro">The project lead reads your picks before the call, so the 25 minutes go on your business, not on questions.</p>
       </div>
       <form class="grid" id="bk" data-send="Call request from wintechstudio.com">
         <div class="cal">
           <div class="mg">
-            <div class="mh"><button type="button" class="nav" id="prev" aria-label="Previous month"><Icon name="chevron-right" size={18} class="flip" /></button><h2 id="mlabel">-</h2><button type="button" class="nav" id="next" aria-label="Next month"><Icon name="arrow-right" size={18} /></button></div>
+            <div class="mh"><h2 id="mlabel">-</h2><button type="button" class="nav dm-ib" id="prev" aria-label="Previous month"><Lc name="chevron-left" /></button><button type="button" class="nav dm-ib" id="next" aria-label="Next month"><Lc name="chevron-right" /></button></div>
             <div class="wd">{days.map(d => <span>{d}</span>)}</div>
             <div class="days" id="days" role="grid" aria-label="Pick a day"></div>
-            <p class="tz"><Bi name="globe" size={24} />Africa/Lagos (WAT)</p>
+            <p class="tz"><Lc name="globe" />Africa/Lagos (WAT)</p>
           </div>
           <div class="strip" id="strip" aria-label="Pick a day"></div>
           <div class="times">
@@ -31,12 +32,12 @@ const expect = [['clock', '25 minutes', 'We read your brief before the call.'], 
           </div>
         </div>
         <div class="brief">
-          <div class="bh"><span class="bt"><Bi name="receipt" size={30} class="d-only" /><span id="btitle">Your brief</span></span><span class="att" id="att" hidden>Attached</span></div>
+          <div class="bh"><span class="bt"><span class="dm-ib s28"><Lc name="file" /></span><span id="btitle">Your brief</span></span><span class="dm-tag att" id="att" hidden>Attached</span></div>
           <div id="rows"></div>
           <div class="pick" id="pick" hidden>
             <p class="pl">What is it about?</p>
             <div class="chips">{[...services.map(s => s.name), 'Not sure yet'].map(n => <label><input type="radio" name="Service" value={n} data-label="Service" /><span>{n}</span></label>)}</div>
-            <p class="nob">No brief attached. <a href="/services">Build one on a service page</a> or <a href="/tools/plan">plan your project</a> first, it takes three minutes.</p>
+            <p class="nob">No brief attached. <a href="/services">Build one on a service page</a> first, it takes three minutes, or just send your details.</p>
           </div>
           <div class="links" id="links" hidden><a id="edit" href="/services">Edit picks</a><a href="/services">Add another service</a></div>
           <div class="fields">
@@ -45,20 +46,20 @@ const expect = [['clock', '25 minutes', 'We read your brief before the call.'], 
             <input type="hidden" name="Call" data-label="Call" id="callf" />
             <input type="hidden" name="Brief ID" data-label="Brief ID" id="idf" />
             <input type="hidden" name="Brief for" data-label="Brief for" id="svcf" />
-            <button class="go" type="submit" value="whatsapp" id="confirm">Send request</button>
-            <button class="alt" type="submit" value="email">Or send it by email</button>
+            <button class="dm-btn p w" type="submit" value="whatsapp" id="confirm">Send request</button>
+            <button class="em" type="submit" value="email">Or send it by email</button>
           </div>
         </div>
       </form>
     </div>
   </section>
-  <section class="ex">
+  <section class="dm-sec alt">
     <div class="wrap">
-      <p class="mono-l">What to expect</p>
-      <h2>25 minutes, one next step</h2>
-      <div class="eg">{expect.map(([i, t, d]) => <div class="ec"><Bi name={i} size={39} /><h3>{t}</h3><p>{d}</p></div>)}</div>
+      <div class="dm-head c"><p class="dm-eb">What to expect</p><h2 class="dm-h2">25 minutes, one next step</h2></div>
+      <div class="dm-cells c3 eg">{expect.map(([i, t, d]) => <div><span class="dm-ib"><Lc name={i} /></span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></div>)}</div>
     </div>
   </section>
+  </div>
 </Page>
 <script is:inline define:vars={{ names, times }}>
 (function(){
@@ -69,7 +70,7 @@ const expect = [['clock', '25 minutes', 'We read your brief before the call.'], 
   var rows=$('rows'),svcName=names[slug]||'';
   function row(k,v,cls){var d=document.createElement('div');d.className='br'+(cls?' '+cls:'');d.innerHTML='<span></span><b></b>';d.firstChild.textContent=k;d.lastChild.textContent=v;rows.appendChild(d)}
   if(brief&&Object.keys(brief).length){
-    $('att').hidden=false;$('links').hidden=false;$('edit').href=slug==='plan'?'/tools/plan':'/services/'+slug+'#brief';
+    $('att').hidden=false;$('links').hidden=false;$('edit').href=slug==='plan'?'/services':'/services/'+slug+'#brief';
     row('Service',svcName||slug,'keep');
     Object.keys(brief).forEach(function(k){var v=brief[k];v=Array.isArray(v)?v.join(', '):v;if(!v||v==='-')return;var l=LBL[k]||k.replace(/\?$/,'');row(l,v,/need|budget|estimate/i.test(l)?'keep':'')});
     $('svcf').value=svcName;
@@ -110,82 +111,65 @@ const expect = [['clock', '25 minutes', 'We read your brief before the call.'], 
 })();
 </script>
 <style>
-  .bk{position:relative;background:#0A0E17;padding:96px 0 112px;color:#F4F6FA}
-  .bk::before,.bk::after,.ex::before,.ex::after{content:'';position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.09);left:calc(50% - 640px)}
-  .bk::after,.ex::after{left:calc(50% + 639px)}
-  .hd{display:grid;gap:16px;max-width:800px}
-  .mono-l{margin:0;font:400 11px/14px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#9AA3B2}
-  h1{margin:0;font-size:56px;line-height:1.05;letter-spacing:-.02em;font-weight:600;color:#F4F6FA}
-  .lede-d{margin:0;max-width:640px;font-size:18px;line-height:1.5;color:#9AA3B2}
-  .grid{display:grid;grid-template-columns:796px 380px;gap:24px;margin-top:40px;align-items:start}
-  .cal{display:flex;gap:24px;padding:28px;background:#111723;border:1px solid rgba(255,255,255,.09)}
-  .mg{flex:1;display:grid;gap:16px;align-content:start}
-  .mh{display:flex;align-items:center;gap:8px}.mh h2{order:-1;flex:1;margin:0;font-size:20px;font-weight:600;line-height:24px;letter-spacing:0;color:#F4F6FA}
-  .nav{background:none;border:0;padding:3px;color:#F4F6FA;cursor:pointer;display:grid}.nav:disabled{opacity:.25;cursor:default}
-  .nav :global(.flip){transform:rotate(180deg)}
-  .wd,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:16px 6px}
-  .wd span{text-align:center;font:400 10px/13px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:#9AA3B2}
-  .days :global(button){height:48px;background:none;border:0;color:rgba(154,163,178,.5);font:400 15px/18px var(--font)}
-  .days :global(button.av){background:rgba(255,255,255,.06);color:#F4F6FA;font-weight:500;cursor:pointer}
-  .days :global(button.av:hover){background:rgba(255,255,255,.12)}
-  .days :global(button[aria-pressed="true"]){background:#3B5BFF;color:#fff}
-  .tz{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;color:#9AA3B2}
+  .bk{padding-bottom:128px}
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) 352px;gap:20px;margin-top:40px;align-items:start}
+  .cal{display:flex;gap:24px;padding:24px;border:1px solid var(--hl)}
+  .mg{flex:1;display:grid;gap:12px;align-content:start}
+  .mh{display:flex;align-items:center;gap:8px}
+  .mh h2{flex:1;font-size:16px;line-height:24px}
+  .nav{cursor:pointer;color:var(--fg)}.nav:disabled{opacity:.3;cursor:default}
+  .wd,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .wd span{text-align:center;font-size:11px;font-weight:500;line-height:14.3px;letter-spacing:.66px;text-transform:uppercase;color:var(--lab)}
+  .days :global(button){height:40px;background:none;border:0;border-radius:2px;color:var(--lab);opacity:.5;font:400 14px/1 var(--font)}
+  .days :global(button.av){opacity:1;background:var(--tint);color:var(--fg);font-weight:500;cursor:pointer}
+  .days :global(button.av:hover){background:color-mix(in srgb,var(--fg) 12%,transparent)}
+  .days :global(button[aria-pressed="true"]){background:var(--sig)!important;color:#fff}
+  .tz{display:flex;align-items:center;gap:8px;font-size:13px;line-height:18px;color:var(--lab);margin-top:4px}
   .strip{display:none}
-  .times{width:200px;display:grid;gap:8px;align-content:start}
-  .dl{margin:0;font-size:16px;font-weight:600;line-height:19px}
+  .times{width:176px;display:grid;gap:12px;align-content:start}
+  .dl{font-size:16px;font-weight:600;line-height:24px;height:32px;display:flex;align-items:center}
   .tl{display:grid;gap:8px}
-  .tl button{height:46px;background:none;border:1px solid rgba(255,255,255,.09);color:#F4F6FA;font:500 15px/18px var(--font);cursor:pointer}
-  .tl button:hover:not(:disabled){border-color:rgba(255,255,255,.25)}.tl button:disabled{opacity:.4;cursor:default}
-  .tl button[aria-pressed="true"]{background:rgba(59,91,255,.15);border-color:#7C93FF}
-  .brief{background:#161D2A;border:1px solid rgba(124,147,255,.5)}
-  .bh{display:flex;justify-content:space-between;align-items:center;padding:20px 24px}
-  .bt{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:600;line-height:22px}
-  .att{background:rgba(91,212,154,.15);color:#5BD49A;font-size:12px;line-height:14px;padding:3px 7px}
-  #rows :global(.br){display:grid;gap:2px;padding:11px 24px;border-top:1px solid rgba(255,255,255,.09)}
-  #rows :global(.br span){font-size:12px;line-height:14px;color:#9AA3B2}
-  #rows :global(.br b){font-weight:500;font-size:15px;line-height:18px;color:#F4F6FA}
-  .links{display:flex;gap:16px;padding:16px 24px 20px;border-top:1px solid rgba(255,255,255,.09)}
-  .links a{color:#7C93FF;font-size:14px;font-weight:500;text-decoration:none}.links a:hover{text-decoration:underline}
-  .pick{padding:16px 24px 20px;border-top:1px solid rgba(255,255,255,.09);display:grid;gap:12px}
+  .tl button{height:40px;background:var(--bg);border:1px solid var(--hl);border-radius:2px;color:var(--fg);font:500 14px/1 var(--font);cursor:pointer}
+  .tl button:hover:not(:disabled){border-color:var(--hl2)}.tl button:disabled{opacity:.4;cursor:default}
+  .tl button[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+  .brief{background:var(--panel)}
+  .bh{display:flex;justify-content:space-between;align-items:center;padding:16px 20px}
+  .bt{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;line-height:24px}
+  .att{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
+  #rows :global(.br){display:grid;gap:2px;padding:10px 20px;border-top:1px solid var(--hl)}
+  #rows :global(.br span){font-size:13px;line-height:18px;color:var(--lab)}
+  #rows :global(.br b){font-weight:500;font-size:14px;line-height:21px}
+  .links{display:flex;gap:16px;padding:12px 20px;border-top:1px solid var(--hl)}
+  .links a{font-size:14px;font-weight:600;line-height:21px;color:var(--fg);text-underline-offset:3px}
+  .pick{padding:16px 20px;border-top:1px solid var(--hl);display:grid;gap:12px}
   .pick[hidden],.links[hidden],.att[hidden]{display:none}
-  .pl{margin:0;font-size:13px;font-weight:500}
+  .pl{font-size:14px;font-weight:500;line-height:21px}
   .chips{display:flex;flex-wrap:wrap;gap:8px}.chips label{position:relative}.chips input{position:absolute;opacity:0;pointer-events:none}
-  .chips span{display:inline-block;padding:7px 10px;font-size:13px;border:1px solid rgba(255,255,255,.09);cursor:pointer}
-  .chips input:checked+span{background:rgba(59,91,255,.18);border-color:#7C93FF}.chips input:focus-visible+span{box-shadow:var(--ring)}
-  .nob{margin:0;font-size:13px;line-height:1.45;color:#9AA3B2}.nob a{color:#B9C1CF}
-  .fields{display:grid;gap:12px;padding:4px 24px 24px}
-  .f{display:grid;gap:6px}.f span{font-size:13px;font-weight:500;line-height:16px}
-  .f input{height:41px;padding:11px 12px;background:#0A0E17;border:1px solid rgba(255,255,255,.09);color:#F4F6FA;font:400 14px var(--font)}
-  .f input::placeholder{color:rgba(154,163,178,.6)}.f input:focus{outline:none;border-color:#7C93FF}
-  .go{height:45px;background:#3B5BFF;color:#fff;border:0;font:500 16px/19px var(--font);cursor:pointer}.go:hover{background:#2F4BE6}
-  .alt{background:none;border:0;color:#9AA3B2;font:400 13px var(--font);cursor:pointer;padding:0}.alt:hover{color:#F4F6FA}
-  .ex{position:relative;background:#111723;padding:96px 0;color:#F4F6FA}
-  .ex h2{margin:16px 0 48px;font-size:40px;line-height:1.05;letter-spacing:-.02em;font-weight:600}
-  .eg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  .ec{display:grid;gap:10px;padding:24px;background:#161D2A;border:1px solid rgba(255,255,255,.09)}
-  .ec h3{margin:0;font-size:19px;font-weight:600;line-height:23px;letter-spacing:0}.ec p{margin:0;font-size:14px;color:#9AA3B2}
+  .chips span{display:inline-flex;align-items:center;height:32px;padding:0 12px;font-size:14px;border:1px solid var(--hl);border-radius:2px;background:var(--bg);cursor:pointer}
+  .chips input:checked+span{background:var(--fg);border-color:var(--fg);color:var(--bg)}.chips input:focus-visible+span{box-shadow:var(--ring)}
+  .nob{font-size:13px;line-height:18px;color:var(--mute)}.nob a{color:var(--fg)}
+  .fields{display:grid;gap:12px;padding:16px 20px 20px;border-top:1px solid var(--hl)}
+  .f{display:grid;gap:6px}.f span{font-size:14px;font-weight:500;line-height:21px}
+  .f input{height:40px;padding:8px 12px;background:var(--bg);border:1px solid var(--hl);border-radius:2px;color:var(--fg);font:400 15px var(--font)}
+  .f input::placeholder{color:var(--lab);opacity:.7}.f input:focus{outline:none;border-color:var(--sig)}
+  .em{background:none;border:0;color:var(--mute);font:400 14px var(--font);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}.em:hover{color:var(--fg)}
+  .eg{margin-top:80px}
   @media (max-width:1023px){
-    .bk{padding:40px 0 56px}.bk .wrap{padding:0 16px}
-    .bk::before,.bk::after,.ex::before,.ex::after{display:none}
-    .hd{gap:12px}.mono-l{font-size:10px;line-height:13px}
-    h1{font-size:28px;line-height:1.06;letter-spacing:-.015em}
-    .lede-d{display:none}
-    .grid{grid-template-columns:1fr;gap:18px;margin-top:18px}
-    .cal{flex-direction:column;gap:18px;padding:0;background:none;border:0}
+    .bk{padding-bottom:64px}
+    .grid{grid-template-columns:1fr;gap:16px;margin-top:24px}
+    .cal{flex-direction:column;gap:16px;padding:0;border:0}
     .mg{display:none}
     .strip{display:flex;gap:8px}
-    .strip :global(button){flex:1;display:grid;gap:4px;justify-items:center;padding:10px 0;background:#111723;border:1px solid rgba(255,255,255,.09);color:#F4F6FA;cursor:pointer}
-    .strip :global(small){font:400 10px/13px var(--mono);color:#9AA3B2}.strip :global(b){font-size:18px;font-weight:600;line-height:22px}
-    .strip :global(button[aria-pressed="true"]){background:#3B5BFF}.strip :global(button[aria-pressed="true"] small){color:#fff}
+    .strip :global(button){flex:1;display:grid;gap:2px;justify-items:center;padding:8px 0;background:var(--bg);border:1px solid var(--hl);border-radius:2px;color:var(--fg);cursor:pointer}
+    .strip :global(small){font-size:11px;font-weight:500;letter-spacing:.66px;color:var(--lab)}.strip :global(b){font-size:16px;font-weight:600;line-height:24px}
+    .strip :global(button[aria-pressed="true"]){background:var(--sig);border-color:var(--sig);color:#fff}.strip :global(button[aria-pressed="true"] small){color:#fff}
     .times{width:auto}.dl{display:none}
-    .tl{display:flex;flex-wrap:wrap;gap:8px}.tl button{height:42px;padding:11px 18px}
-    .bh{padding:14px 16px 0}.bt{font-size:16px;line-height:19px}.att{background:none;padding:0}
-    :global(.d-only){display:none}
-    #rows{padding:0 16px}#rows :global(.br){padding:11px 0}#rows :global(.br:not(.keep)){display:none}
+    .tl{display:flex;flex-wrap:wrap;gap:8px}.tl button{padding:0 16px}
+    .brief{margin:0 -16px}
+    .bh{padding:16px}
+    #rows :global(.br){padding:10px 16px}#rows :global(.br:not(.keep)){display:none}
     .links{display:none !important}
-    .pick{padding:14px 16px}
-    .fields{padding:14px 16px 16px}
-    .go{height:47px}
-    .ex{display:none}
+    .pick,.fields{padding:16px}
+    .eg{margin-top:40px}
   }
 </style>

@@ -1,27 +1,31 @@
 ---
-// Ask Wintech AI: pill fixed bottom centre (Kit 799:592 sleep / 799:604 awake) and the chat sheet (822:4702).
+// Ask Wintech AI: pill fixed bottom centre and the chat sheet. Pill numbers from docs/DESIGNME-SPEC.md.
+// The face sleeps until hovered, then wakes, blinks and its eyes follow the pointer anywhere on the page.
 import AiFace from './AiFace.astro';
-import Bi from './Bi.astro';
+import Icon from './Icon.astro';
 const chips = ['Monthly plans', 'How fast can you start?', 'Do I need a store?', 'Can I pay in naira?'];
 ---
 <div id="ask" data-state="sleep">
   <button class="pill" id="ask-open" type="button" aria-expanded="false" aria-controls="ask-panel">
-    <span class="face"><AiFace size={26} /><span class="z" aria-hidden="true"><i>z</i><i>z</i><i>Z</i></span></span>
+    <span class="face"><AiFace size={24} /><span class="z" aria-hidden="true"><i>z</i><i>z</i></span></span>
     <span>Ask Wintech AI</span>
   </button>
   <div class="scrim" id="ask-scrim" hidden></div>
   <section class="sheet" id="ask-panel" role="dialog" aria-label="Wintech AI" hidden>
     <header>
-      <div class="who"><AiFace size={32} /><div><strong>Wintech AI</strong><span>Answers from this site · the team can also help</span></div></div>
-      <div class="hact"><button type="button" id="ask-clear">Clear</button><button type="button" id="ask-close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+      <div class="who"><AiFace size={24} /><div><strong>Wintech AI</strong><span>Answers from this site. The team can also help.</span></div></div>
+      <div class="hact">
+        <button type="button" id="ask-clear" aria-label="Clear chat" title="Clear chat"><Icon name="rotate-ccw" size={16} /></button>
+        <button type="button" id="ask-close" aria-label="Close" title="Close"><Icon name="x" size={16} /></button>
+      </div>
     </header>
     <div class="log" id="ask-log" aria-live="polite">
-      <div class="row bot"><AiFace size={24} /><p>Hi. Ask me about prices, timelines, or what we would fix first in your business.</p></div>
-      <div class="links"><a href="/pricing"><Bi name="receipt" size={32} />See pricing</a><a href="/tools/plan"><Bi name="rocket" size={32} />Plan your project</a></div>
+      <div class="row bot"><AiFace size={20} /><p>Hi. Ask me about prices, timelines, or what we would fix first in your business.</p></div>
+      <div class="links"><a href="/pricing"><Icon name="receipt" size={16} />See pricing</a><a href="/book"><Icon name="calendar" size={16} />Book a call</a></div>
     </div>
-    <div class="chips" id="ask-chips">{chips.map(c => <button type="button">{c}</button>)}<a href="/book">Book a call</a></div>
+    <div class="chips" id="ask-chips">{chips.map(c => <button type="button">{c}</button>)}</div>
     <form id="ask-form">
-      <div class="field"><input id="ask-in" autocomplete="off" placeholder="Your question" aria-label="Your question" maxlength="600" /><button type="submit" aria-label="Send"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+      <div class="field"><input id="ask-in" autocomplete="off" placeholder="Your question" aria-label="Your question" maxlength="600" /><button type="submit" aria-label="Send"><Icon name="arrow-right" size={16} /></button></div>
       <p class="foot">Wintech AI answers from wintechstudio.com. <a href="/privacy">Privacy policy</a></p>
     </form>
   </section>
@@ -29,13 +33,32 @@ const chips = ['Monthly plans', 'How fast can you start?', 'Do I need a store?',
 <script is:inline>
 (function(){var root=document.getElementById('ask'),panel=document.getElementById('ask-panel'),scrim=document.getElementById('ask-scrim'),btn=document.getElementById('ask-open'),log=document.getElementById('ask-log'),form=document.getElementById('ask-form'),inp=document.getElementById('ask-in'),hist=[],busy=false,first=log.innerHTML;
   var faceTpl=log.querySelector('.ai-face').outerHTML;
-  btn.addEventListener('mouseenter',function(){root.dataset.state='awake'});btn.addEventListener('mouseleave',function(){if(panel.hidden)root.dataset.state='sleep'});
-  function set(o){panel.hidden=!o;scrim.hidden=!o;root.classList.toggle('open',o);btn.setAttribute('aria-expanded',o);root.dataset.state=o?'awake':'sleep';if(o)setTimeout(function(){inp.focus()},50)}
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* wake / sleep: hover wakes and blinks; it dozes off again after 12s with no pointer movement */
+  var idle,blinkT;
+  function blink(){if(root.dataset.state!=='awake')return;root.classList.remove('blink');void root.offsetWidth;root.classList.add('blink');setTimeout(function(){root.classList.remove('blink')},340)}
+  function loopBlink(){clearTimeout(blinkT);blinkT=setTimeout(function(){blink();loopBlink()},2600+Math.random()*3200)}
+  function wake(){var was=root.dataset.state==='awake';root.dataset.state='awake';if(!was){setTimeout(blink,60);loopBlink()}nap()}
+  function nap(){clearTimeout(idle);idle=setTimeout(function(){if(panel.hidden&&!btn.matches(':hover')){root.dataset.state='sleep';clearTimeout(blinkT)}},12000)}
+  btn.addEventListener('mouseenter',wake);btn.addEventListener('focus',wake);
+
+  /* eyes follow the pointer: each face's eyes move up to 2px (screen) towards it, eased */
+  var px=-1,py=-1,raf=0;
+  function track(){raf=0;var faces=document.querySelectorAll('#ask .ai-face, .ai-face[data-look]'),moving=false;
+    faces.forEach(function(f){var g=f.querySelector('.look');if(!g)return;var r=f.getBoundingClientRect();if(!r.width)return;
+      var cx=r.left+r.width/2,cy=r.top+r.height*.4,dx=px-cx,dy=py-cy,d=Math.hypot(dx,dy)||1,k=Math.min(1,d/120),u=96/r.width,
+          tx=dx/d*2*k*u,ty=dy/d*2*k*u,c=g._p||[0,0];c[0]+=(tx-c[0])*.18;c[1]+=(ty-c[1])*.18;g._p=c;
+      g.style.transform='translate('+c[0].toFixed(2)+'px,'+c[1].toFixed(2)+'px)';if(Math.abs(tx-c[0])+Math.abs(ty-c[1])>.05)moving=true});
+    if(moving)raf=requestAnimationFrame(track)}
+  if(!reduce)document.addEventListener('pointermove',function(e){px=e.clientX;py=e.clientY;if(root.dataset.state==='awake')nap();if(!raf)raf=requestAnimationFrame(track)},{passive:true});
+
+  function set(o){panel.hidden=!o;scrim.hidden=!o;root.classList.toggle('open',o);btn.setAttribute('aria-expanded',o);if(o){wake();setTimeout(function(){inp.focus()},50)}else nap()}
   btn.onclick=function(){set(panel.hidden)};document.getElementById('ask-close').onclick=function(){set(false);btn.focus()};scrim.onclick=function(){set(false)};
   document.getElementById('ask-clear').onclick=function(){log.innerHTML=first;hist=[];document.getElementById('ask-chips').hidden=false};
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden)set(false)});
   function add(t,who){var d=document.createElement('div');d.className='row '+who;if(who==='bot')d.innerHTML=faceTpl;var p=document.createElement('p');p.textContent=t;d.appendChild(p);log.appendChild(d);log.scrollTop=log.scrollHeight;return p}
-  async function ask(q){if(busy||!q.trim())return;busy=true;add(q,'me');hist.push({role:'user',content:q});var p=add('Typing','bot');p.classList.add('typing');
+  async function ask(q){if(busy||!q.trim())return;busy=true;document.getElementById('ask-chips').hidden=true;add(q,'me');hist.push({role:'user',content:q});var p=add('Typing','bot');p.classList.add('typing');
     try{var r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:hist})});if(!r.ok||!r.body)throw 0;var rd=r.body.getReader(),dec=new TextDecoder(),t='';
       while(true){var x=await rd.read();if(x.done)break;t+=dec.decode(x.value,{stream:true});p.classList.remove('typing');p.textContent=t;log.scrollTop=log.scrollHeight}hist.push({role:'assistant',content:t})}
     catch(e){p.classList.remove('typing');p.textContent='The assistant is resting right now. ';var a=document.createElement('a');a.href='https://wa.me/2349134071813?text='+encodeURIComponent(q);a.target='_blank';a.rel='noopener';a.textContent='Ask us on WhatsApp';p.append(a);hist.pop()}
@@ -46,32 +69,47 @@ const chips = ['Monthly plans', 'How fast can you start?', 'Do I need a store?',
 })();
 </script>
 <style>
-  .pill{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;display:inline-flex;align-items:center;gap:10px;padding:10px 20px 10px 12px;border-radius:999px;background:rgba(255,255,255,.92);border:1px solid #E3E7EE;box-shadow:0 8px 28px rgba(0,0,0,.1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font:500 15px var(--font);color:#0A0E17;cursor:pointer}
+  /* Pill: 44 tall, radius 999, white 92% + blur 14, hairline, padding 0 18 0 14, 14/500 */
+  .pill{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:60;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px 0 14px;border-radius:999px;background:rgba(255,255,255,.92);border:1px solid rgba(10,14,23,.1);box-shadow:0 8px 28px rgba(0,0,0,.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font:500 14px/21px var(--font);color:#0A0E17;white-space:nowrap;cursor:pointer;transition:transform .2s,box-shadow .2s}
+  .pill:hover{box-shadow:0 10px 32px rgba(0,0,0,.14)}
   .face{position:relative;display:inline-flex}
-  .z{position:absolute;left:24px;top:-6px;display:flex;gap:1px;font:500 8px var(--font);color:#5E6678}
-  .z i{font-style:normal;animation:zz 2.7s ease-in-out infinite}.z i:nth-child(2){font-size:9px;animation-delay:.3s}.z i:nth-child(3){font-size:11px;animation-delay:.6s}
-  @keyframes zz{0%,100%{opacity:.2;transform:translateY(2px)}50%{opacity:1;transform:translateY(-2px)}}
+  .z{position:absolute;left:20px;top:-7px;display:flex;gap:1px;font:500 8px var(--font);color:rgba(10,14,23,.5)}
+  .z i{font-style:normal;animation:zz 2.7s ease-in-out infinite}.z i:nth-child(2){font-size:10px;animation-delay:.4s}
+  @keyframes zz{0%,100%{opacity:.15;transform:translateY(2px)}50%{opacity:1;transform:translateY(-2px)}}
   #ask[data-state="awake"] .z{display:none}
-  :root[data-theme="dark"] .pill{background:rgba(10,14,23,.92);border-color:rgba(255,255,255,.12);color:#F4F6FA;box-shadow:0 8px 28px rgba(0,0,0,.1),0 0 28px rgba(59,91,255,.32)}
+  :root[data-theme="dark"] .pill{background:rgba(26,26,26,.92);border-color:rgba(245,245,245,.12);color:#F5F5F5;box-shadow:0 8px 28px rgba(0,0,0,.4)}
+  :root[data-theme="dark"] .z{color:rgba(245,245,245,.5)}
   #ask.open .pill,:global(html.menu-open) .pill{display:none}
-  .scrim{position:fixed;inset:0;z-index:58;background:rgba(10,14,23,.24)}.scrim[hidden]{display:none}
-  .sheet{position:fixed;left:50%;bottom:83px;transform:translateX(-50%);z-index:61;width:min(672px,calc(100vw - 32px));max-height:calc(100dvh - 120px);display:flex;flex-direction:column;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border:1px solid #E3E7EE;box-shadow:0 28px 70px rgba(0,0,0,.14);color:#0A0E17}
+
+  /* Sheet: hairlines, 2px radius, small type */
+  .scrim{position:fixed;inset:0;z-index:58;background:rgba(10,14,23,.2)}.scrim[hidden]{display:none}
+  .sheet{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:61;width:min(560px,calc(100vw - 32px));max-height:min(640px,calc(100dvh - 120px));display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--rule);border-radius:2px;box-shadow:0 16px 48px rgba(0,0,0,.12);color:var(--fg)}
   .sheet[hidden]{display:none}
-  :root[data-theme="dark"] .sheet{background:rgba(19,26,38,.97);border-color:rgba(255,255,255,.1);color:#F4F6FA}
-  header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--rule)}
-  .who{display:flex;gap:10px;align-items:center}.who div{display:flex;flex-direction:column;gap:1px}.who strong{font-weight:600;font-size:15px}.who span{font-size:12px;color:var(--fg-2)}
-  .hact{display:flex;gap:14px;align-items:center}.hact button{background:none;border:0;color:var(--fg-2);font:13px var(--font);cursor:pointer;padding:0;display:inline-flex}.hact button:last-child{color:var(--fg)}
+  header{display:flex;justify-content:space-between;align-items:center;height:56px;padding:0 8px 0 16px;border-bottom:1px solid var(--rule)}
+  .who{display:flex;gap:10px;align-items:center}.who div{display:flex;flex-direction:column}
+  .who strong{font:600 14px/20px var(--font)}.who span{font-size:12px;line-height:16px;color:var(--fg-3)}
+  .hact{display:flex;gap:2px}
+  .hact button{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:0;border-radius:2px;background:none;color:var(--fg-2);cursor:pointer}
+  .hact button:hover{background:var(--hover);color:var(--fg)}
   .log{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:160px}
-  .row{display:flex;gap:8px;align-items:flex-end}.row p{margin:0;padding:10px 14px;font-size:14px;line-height:1.5;background:var(--surface);max-width:532px;white-space:pre-wrap}
-  .row.me{justify-content:flex-end}.row.me p{background:#3B5BFF;color:#fff;line-height:normal}
-  .row p.typing{background:none;padding:0 0 4px;font-size:12px;color:var(--fg-2)}
-  .links{display:flex;gap:8px;padding-left:32px;flex-wrap:wrap}.links a{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--rule);font:500 13px var(--font);color:inherit;text-decoration:none}.links a:hover{background:var(--surface)}
+  .row{display:flex;gap:8px;align-items:flex-end}
+  .row p{margin:0;padding:8px 12px;font-size:14px;line-height:21px;background:var(--surface);border:1px solid var(--rule);border-radius:2px;max-width:440px;white-space:pre-wrap}
+  .row p a{color:var(--sig);font-weight:500}
+  .row.me{justify-content:flex-end}.row.me p{background:var(--sig);border-color:var(--sig);color:#fff}
+  .row p.typing{background:none;border:0;padding:0 0 2px;font-size:12px;color:var(--fg-3)}
+  .links{display:flex;gap:8px;padding-left:28px;flex-wrap:wrap}
+  .links a{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border:1px solid var(--rule);border-radius:2px;font:500 13px/1 var(--font);color:inherit;text-decoration:none}
+  .links a :global(svg){color:var(--fg-3)}
+  .links a:hover{background:var(--hover)}
   .chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px}.chips[hidden]{display:none}
-  .chips button,.chips a{font:13px var(--font);padding:7px 11px;border:1px solid var(--rule);background:transparent;color:inherit;cursor:pointer;text-decoration:none}.chips button:hover,.chips a:hover{background:var(--surface)}
-  form{padding:0 16px 14px;display:flex;flex-direction:column;gap:8px}
-  .field{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--rule);padding:6px 6px 6px 14px}
-  .field input{flex:1;border:0;background:transparent;font:14px var(--font);color:inherit;outline:none;box-shadow:none!important;min-width:0}.field:focus-within{border-color:var(--sig)}.field input::placeholder{color:rgba(94,102,120,.7)}
-  .field button{background:#0A0E17;color:#fff;border:0;padding:9px;display:inline-flex;cursor:pointer}:root[data-theme="dark"] .field button{background:#F4F6FA;color:#0A0E17}
-  .foot{margin:0;font-size:11px;color:var(--fg-2)}.foot a{color:inherit}
-  @media (max-width:767px){.pill{bottom:16px}.sheet{bottom:0;width:100%;max-height:88dvh}.links{padding-left:0}}
+  .chips button{height:28px;padding:0 10px;font:400 13px/1 var(--font);border:1px solid var(--rule);border-radius:2px;background:transparent;color:var(--fg-2);cursor:pointer}
+  .chips button:hover{background:var(--hover);color:var(--fg)}
+  form{padding:12px 16px;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:8px}
+  .field{display:flex;align-items:center;gap:8px;height:40px;border:1px solid var(--rule-2);border-radius:2px;padding:0 4px 0 12px}
+  .field:focus-within{border-color:var(--sig)}
+  .field input{flex:1;min-width:0;border:0;background:transparent;font:400 14px/21px var(--font);color:inherit;outline:none;box-shadow:none!important}
+  .field input::placeholder{color:var(--fg-3)}
+  .field button{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:0;border-radius:2px;background:var(--fg);color:var(--bg);cursor:pointer}
+  .foot{margin:0;font-size:11px;line-height:16px;color:var(--fg-3)}.foot a{color:inherit}
+  @media (max-width:767px){.pill{bottom:16px}.sheet{bottom:0;width:100%;max-height:88dvh;border-left:0;border-right:0;border-bottom:0}.links{padding-left:0}}
 </style>

@@ -1,0 +1,51 @@
+---
+// "Meet Wintech". DesignMe's team layout, with a founder note in place of portrait rows (no team photos yet).
+import { cases } from '../../data/cases';
+import services from '../../data/services.json';
+const stats: [string, string][] = [['2020', 'The year Wintech started'], [String(cases.length), 'Case studies on this site'], [String(services.length), 'Services under one team']];
+---
+<section class="team h-sec">
+  <div class="h-wrap">
+    <div class="h-head">
+      <p class="h-eb">The studio</p>
+      <h2 class="h-h2">Meet Wintech</h2>
+      <p class="h-intro">A Lagos design and build studio. We make the brand, the website or store, the AI and the automation a business runs on.</p>
+    </div>
+    <figure class="note">
+      <blockquote>
+        <p>Good ideas don't die because they were bad. They die because one person is doing six jobs, or managing five freelancers who never talk to each other.</p>
+        <p>So you talk to one project lead. Behind that person sit the designers, developers, film crew and the AI. One plan, one price, something new every week.</p>
+      </blockquote>
+      <figcaption>
+        <span class="av" aria-hidden="true">OI</span>
+        <span class="who"><b>Oladele Ibraheem</b><small>Founder and project lead</small></span>
+      </figcaption>
+    </figure>
+    <dl class="stats">{stats.map(([v, l]) => <div><dt>{v}</dt><dd>{l}</dd></div>)}</dl>
+    <p class="cta"><a class="h-btn soft" href="/about">About Wintech</a></p>
+  </div>
+</section>
+<style>
+  .team{background:var(--h-bg)}
+  .note{margin:56px auto 0;max-width:752px;background:var(--h-panel);padding:40px;box-sizing:border-box}
+  blockquote{margin:0;display:flex;flex-direction:column;gap:16px}
+  blockquote p{margin:0;font:500 20px/30px var(--font);letter-spacing:-.2px;color:var(--h-fg)}
+  blockquote p + p{color:var(--h-mute)}
+  figcaption{margin-top:28px;display:flex;align-items:center;gap:12px}
+  .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#3B5BFF;color:#fff;font:600 14px/1 var(--font);letter-spacing:.4px}
+  .who{display:flex;flex-direction:column}
+  .who b{font:600 16px/22px var(--font);color:var(--h-fg)}
+  .who small{font:400 14px/20px var(--font);color:var(--h-label)}
+  .stats{margin:20px auto 0;max-width:752px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .stats div{border:1px solid var(--h-rule);padding:24px}
+  .stats dt{font:600 56px/64.4px var(--font);letter-spacing:-1.12px;color:var(--h-fg)}
+  .stats dd{margin:4px 0 0;font:400 14px/21px var(--font);color:var(--h-label)}
+  .cta{margin:40px 0 0;text-align:center}
+  @media (max-width:767px){
+    .note{margin-top:40px;padding:24px 20px}
+    blockquote p{font-size:17px;line-height:25.5px}
+    .stats{grid-template-columns:1fr;gap:12px}
+    .stats dt{font-size:44px;line-height:50px;letter-spacing:-.88px}
+    .cta .h-btn{width:100%}
+  }
+</style>

@@ -1,10 +1,11 @@
 ---
 import Page from '../layouts/Page.astro';
-import Bi from '../components/tools/Bi.astro';
-import Icon from '../components/Icon.astro';
+import Lc from '../components/ui/Lc.astro';
+import Faq from '../components/ui/Faq.astro';
+import '../styles/studio.css';
 const price = { usd: '$200', ngn: '₦150,000' };
 const ticks = ['5 working days', 'Written plan with priorities', 'A priced proposal for the build', 'Credited in full if you continue'];
-const look = [['trend', 'How do customers find you?', 'Instagram, referrals, walk ins, search. Which ones pay.'], ['naira', 'How does money move?', 'From the first message to delivery, and where it leaks.'], ['users', 'Why do competitors win?', 'Price, packaging, reply speed, proof.'], ['flag', 'What do we fix first?', 'The order of work, the price and the date.']];
+const look = [['trend', 'How do customers find you?', 'Instagram, referrals, walk ins, search. Which ones pay.'], ['banknote', 'How does money move?', 'From the first message to delivery, and where it leaks.'], ['users', 'Why do competitors win?', 'Price, packaging, reply speed, proof.'], ['flag', 'What do we fix first?', 'The order of work, the price and the date.']];
 const days = [['Kickoff', 'We get access, your numbers and 30 minutes with you.'], ['Customers', 'We message you like a customer and map every step.'], ['Competitors', 'Three competitors, side by side.'], ['The plan', 'Fixes in order, with what each one costs.'], ['Readout', '30 minutes on a call. The report is yours.']];
 const faqs: [string, string][] = [
   ['Is the fee really credited?', `Yes. If you go ahead within 30 days, the full ${price.usd} comes off the build.`],
@@ -13,102 +14,57 @@ const faqs: [string, string][] = [
 ];
 const ld = [{ '@context': 'https://schema.org', '@type': 'Service', name: 'Paid diagnostic', provider: { '@type': 'Organization', name: 'Wintech Studio' }, description: 'Five working days studying how customers find you, how money moves and why competitors win, ending in a written plan and a priced proposal.', offers: { '@type': 'Offer', price: '200', priceCurrency: 'USD' } }, { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }];
 ---
-<Page title="Paid diagnostic · Before we build, we study · Wintech Studio" description="Five working days for $200: how customers find you, how money moves and why competitors win. A written plan you can use even if you never hire us, credited in full if you continue." crumbs={[['Pricing', '/pricing'], ['Paid diagnostic', '/diagnostic']]} jsonld={ld} theme="dark">
-  <section class="dg hero">
-    <div class="wrap hg">
-      <div class="hd">
-        <p class="ml">The paid diagnostic</p>
-        <h1>Before we build,<br />we study.</h1>
-        <p class="lede-d"><span class="d-only">Five working days. We study how customers find you, how money moves, and why competitors win. You get a written plan you can use even if you never hire us.</span><span class="m-only">Five working days. A written plan you can use even if you never hire us.</span></p>
+<Page title="Paid diagnostic · Before we build, we study · Wintech Studio" description="Five working days for $200: how customers find you, how money moves and why competitors win. A written plan you can use even if you never hire us, credited in full if you continue." crumbs={[['Pricing', '/pricing'], ['Paid diagnostic', '/diagnostic']]} jsonld={ld}>
+  <div class="dm dg">
+    <section class="dm-top">
+      <div class="wrap hg">
+        <div class="dm-head">
+          <p class="dm-eb">The paid diagnostic</p>
+          <h1 class="dm-h1">Before we build, we study.</h1>
+          <p class="dm-intro">Five working days. We study how customers find you, how money moves, and why competitors win. You get a written plan you can use even if you never hire us.</p>
+        </div>
+        <div class="dm-card pc">
+          <p class="dm-eb">The diagnostic</p>
+          <p class="pr"><span class="u">{price.usd}</span><span class="n">{price.ngn}</span></p>
+          <ul class="dm-ticks">{ticks.map(t => <li><Lc name="check" />{t}</li>)}</ul>
+          <a class="dm-btn p w" href="/book?service=diagnostic">Start the diagnostic</a>
+        </div>
       </div>
-      <div class="pc">
-        <p class="ml d-only">The diagnostic</p>
-        <p class="pr"><span class="u">{price.usd}</span><span class="n"><span class="m-only">·&nbsp;</span>{price.ngn}</span></p>
-        <ul>{ticks.map((t, i) => <li class={i === 2 ? 'd-only' : undefined}><Icon name="check" size={16} />{t}</li>)}</ul>
-        <a class="btn-p" href="/book?service=diagnostic">Start the diagnostic</a>
+    </section>
+    <section class="dm-sec alt">
+      <div class="wrap">
+        <div class="dm-head c"><p class="dm-eb">What we look at</p><h2 class="dm-h2">Four questions, answered in writing.</h2></div>
+        <div class="dm-cells c4 lg">{look.map(([i, t, d]) => <div><span class="dm-ib"><Lc name={i} /></span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></div>)}</div>
       </div>
-    </div>
-  </section>
-  <section class="dg look d-only">
-    <div class="wrap">
-      <p class="ml">What we look at</p>
-      <h2>Four questions,<br />answered in writing.</h2>
-      <div class="lg">{look.map(([i, t, d]) => <div class="lc"><Bi name={i} size={42} /><h3>{t}</h3><p>{d}</p></div>)}</div>
-    </div>
-  </section>
-  <section class="dg days">
-    <div class="wrap">
-      <p class="ml">Five days</p>
-      <h2>What happens each day</h2>
-      <ol class="dl">{days.map(([t, d], i) => <li><span class="dn">Day {i + 1}</span><b>{t}</b><span class="dd">{d}</span></li>)}</ol>
-    </div>
-  </section>
-  <section class="dg faq d-only">
-    <div class="wrap fg">
-      <div class="fl">
-        <p class="ml">FAQ</p>
-        <h2>Diagnostic questions</h2>
-        <div class="still"><h3>Still deciding?</h3><p>Ask Wintech AI now, or the<br />project lead on a call.</p><a class="btn-p" href="/book?service=diagnostic">Book a call</a></div>
+    </section>
+    <section class="dm-sec">
+      <div class="wrap">
+        <div class="dm-head c"><p class="dm-eb">Five days</p><h2 class="dm-h2">What happens each day</h2></div>
+        <ol class="dm-rows dl">{days.map(([t, d], i) => <li><span class="dm-eb">Day {i + 1}</span><b>{t}</b><span class="dd">{d}</span></li>)}</ol>
       </div>
-      <div class="qs">{faqs.map(([q, a], i) => <details open={i === 0}><summary>{q}<span class="pm"><Icon name="plus" size={20} class="p" /><Icon name="minus" size={20} class="m" /></span></summary><p>{a}</p></details>)}</div>
-    </div>
-  </section>
+    </section>
+  </div>
+  <Faq items={faqs} title="Diagnostic questions" ld={false} service="diagnostic" />
 </Page>
 <style>
-  .dg{position:relative;color:#F4F6FA}
-  .dg::before,.dg::after{content:'';position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.09);left:calc(50% - 640px)}
-  .dg::after{left:calc(50% + 639px)}
-  .m-only{display:none}
-  .ml{margin:0;font:400 11px/14px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#9AA3B2}
-  .hero{background:#0A0E17;padding:104px 0 96px}
-  .hg{display:flex;justify-content:space-between;align-items:center;gap:40px;min-height:360px}
-  .hd{display:grid;gap:16px;max-width:640px}
-  h1{margin:0;font-size:68px;line-height:1.05;letter-spacing:-.02em;font-weight:600}
-  .lede-d{margin:0;font-size:18px;line-height:1.5;color:#9AA3B2}
-  .pc{flex:none;width:400px;display:grid;gap:16px;padding:32px;background:#111723;border:1px solid rgba(255,255,255,.09)}
-  .pr{display:flex;align-items:baseline;gap:10px;margin:0}
-  .pr .u{font-size:56px;font-weight:600;letter-spacing:-.03em;line-height:67px}.pr .n{font-size:17px;color:#9AA3B2}
-  .pc ul{list-style:none;margin:0;padding:0;display:grid;gap:16px}
-  .pc li{display:flex;align-items:center;gap:10px;font-size:15px;line-height:18px}.pc li :global(svg){color:#F4F6FA}
-  .btn-p{display:inline-flex;align-items:center;justify-content:center;padding:13px 20px;background:#3B5BFF;color:#fff;font-size:16px;font-weight:500;line-height:19px;text-decoration:none}.btn-p:hover{background:#2F4BE6}
-  h2{margin:16px 0 48px;font-size:44px;line-height:1.05;letter-spacing:-.02em;font-weight:600}
-  .look{background:#111723;padding:96px 0}
-  .lg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start}
-  .lc{display:grid;gap:12px;padding:24px;background:#161D2A;border:1px solid rgba(255,255,255,.09)}
-  .lc h3{margin:0;font-size:18px;font-weight:600;line-height:22px;letter-spacing:0;max-width:220px}.lc p{margin:0;font-size:14px;line-height:1.5;color:#9AA3B2;max-width:220px}
-  .days{background:#0A0E17;padding:112px 0}
-  .dl{list-style:none;margin:0;padding:0}
-  .dl li{display:grid;grid-template-columns:120px 260px 1fr;gap:40px;align-items:center;padding:22px 0;border-top:1px solid rgba(255,255,255,.09)}
-  .dn{font:400 12px/16px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:#7C93FF}
-  .dl b{font-size:22px;font-weight:600;line-height:26px}.dd{font-size:16px;line-height:19px;color:#9AA3B2}
-  .faq{background:#0A0E17;padding:112px 0}
-  .fg{display:grid;grid-template-columns:380px 1fr;gap:80px;align-items:start}
-  .fl h2{margin:16px 0 24px}
-  .still{display:grid;gap:12px;justify-items:start;padding:24px;background:#161D2A}
-  .still h3{margin:0;font-size:20px;font-weight:600;line-height:24px;letter-spacing:0}.still p{margin:0;font-size:15px;line-height:1.5;color:#9AA3B2}
-  .qs details{border-bottom:1px solid rgba(255,255,255,.09);padding:22px 0}
-  .qs summary{display:flex;justify-content:space-between;align-items:center;gap:20px;list-style:none;cursor:pointer;font-size:19px;font-weight:500;line-height:23px}
-  .qs summary::-webkit-details-marker{display:none}
-  .qs details p{margin:12px 0 0;max-width:620px;font-size:16px;line-height:1.55;color:#9AA3B2}
-  .pm :global(.m){display:none}details[open] .pm :global(.m){display:block}details[open] .pm :global(.p){display:none}
+  .hg{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:64px;align-items:center}
+  .pc{padding:32px;gap:16px}
+  .pr{display:flex;align-items:baseline;gap:10px}
+  .pr .u{font-size:56px;line-height:64.4px;font-weight:600;letter-spacing:-1.12px}
+  .pr .n{font-size:16px;line-height:24px;color:var(--mute)}
+  .pc .dm-ticks{margin-bottom:8px}
+  .lg{margin-top:80px}
+  .dl{margin-top:80px}
+  .dl li{display:grid;grid-template-columns:120px 260px 1fr;gap:32px;align-items:center;padding:20px 0}
+  .dl b{font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.2px}
+  .dd{font-size:16px;line-height:24px;color:var(--mute)}
   @media (max-width:1023px){
-    .dg::before,.dg::after{display:none}
-    .dg .wrap{padding:0 16px}
-    .d-only{display:none !important}.m-only{display:inline}
-    .ml{font-size:10px;line-height:13px}
-    .hero{padding:56px 0}
-    .hg{flex-direction:column;align-items:stretch;gap:20px;min-height:0}.hd{gap:12px}
-    h1{font-size:34px;line-height:1.06;letter-spacing:-.015em}
-    .lede-d{font-size:15px}
-    .pc{width:auto;padding:18px;gap:10px}
-    .pr .u,.pr .n{font-size:26px;font-weight:600;line-height:31px;letter-spacing:0;color:#F4F6FA}.pr{gap:8px}
-    .pc li{font-size:14px;line-height:17px;gap:8px}.pc li :global(svg){width:14px;height:14px}
-    .pc .btn-p{min-height:47px}
-    .days{background:#111723;padding:56px 0}
-    h2{font-size:26px;line-height:1.06;margin:12px 0 20px}
-    .dl li{grid-template-columns:1fr;gap:2px;padding:11px 0;margin-bottom:20px}
-    .dl li:last-child{margin-bottom:0}
-    .dn{font:400 12px/14px var(--font);letter-spacing:0;text-transform:none;color:#9AA3B2;order:0}
-    .dl b{font-size:15px;font-weight:500;line-height:18px}.dd{display:none}
+    .hg{grid-template-columns:1fr;gap:32px}
+    .pc{padding:20px}
+    .pr .u{font-size:36px;line-height:41.4px;letter-spacing:-.72px}
+    .lg,.dl{margin-top:40px}
+    .dl li{grid-template-columns:1fr;gap:4px;padding:16px 0}
+    .dl b{font-size:17px;line-height:24px}
+    .dd{font-size:15px;line-height:22px}
   }
 </style>

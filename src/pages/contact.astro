@@ -1,86 +1,68 @@
 ---
 import Page from '../layouts/Page.astro';
 import Field from '../components/ui/Field.astro';
-import Bi from '../components/Bi.astro';
-import Glyph from '../components/ui/Glyph.astro';
+import Lc from '../components/ui/Lc.astro';
 import { contact } from '../data/site';
 import '../styles/studio.css';
 const ld = { '@context': 'https://schema.org', '@type': 'ContactPage', name: 'Contact Wintech Studio' };
 const ways = [
   ['mail', 'Email', contact.email, `mailto:${contact.email}`],
-  ['whatsapp', 'WhatsApp', `${contact.whatsapp}  ·  send WEBSITE, BRAND or MOTION`, contact.whatsappLink],
+  ['message', 'WhatsApp', `${contact.whatsapp} · send WEBSITE, BRAND or MOTION`, contact.whatsappLink],
   ['calendar', 'Prefer to talk?', 'Book a 25 minute call', '/book'],
-  ['spark', 'Not sure what you need?', 'Plan your project in 3 minutes', '/tools/plan'],
+  ['eye', 'Want to see the work first?', 'Seven case studies', '/work'],
 ];
 ---
 <Page title="Contact · Wintech Studio" description="Tell us what you run and what is not working. We reply within one working day. Email hello@wintechstudio.com or WhatsApp +234 913 407 1813." crumbs={[['Contact', '/contact']]} jsonld={[ld]} closing={false}>
-  <div class="sp ct">
-    <section class="cs">
-      <div class="wrap cg">
+  <div class="dm ct">
+    <section class="dm-top cs">
+      <div class="wrap dm-split cg">
         <div class="cl">
-          <div class="hd">
-            <p class="eb">Contact</p>
-            <h1 class="t1" style="--fs:56px;--brm:none">Send us the<br /> <span class="gt">details.</span></h1>
-            <p class="ld"><span class="d">Tell us what you run and what is not working. We reply within one working day.</span><span class="m">We reply within one working day.</span></p>
+          <div class="dm-head">
+            <p class="dm-eb">Contact</p>
+            <h1 class="dm-h1">Send us the details.</h1>
+            <p class="dm-intro">Tell us what you run and what is not working. We reply within one working day.</p>
           </div>
-          <ul class="ways">{ways.map(([ic, t, d, h]) => (
+          <ul class="dm-rows ways">{ways.map(([ic, t, d, h]) => (
             <li><a href={h} target={h.startsWith('http') ? '_blank' : undefined} rel={h.startsWith('http') ? 'noopener' : undefined}>
-              <span class="ib">{ic === 'whatsapp' ? <Glyph name={ic} size={44} /> : <Bi name={ic} size={44} />}</span>
+              <span class="dm-ib"><Lc name={ic} /></span>
               <span class="wt"><strong>{t}</strong><small>{d}</small></span>
+              <Lc name="arrow-up-right" class="go" />
             </a></li>
           ))}</ul>
         </div>
-        <form class="form" data-send="New enquiry from wintechstudio.com">
+        <form class="dm-form form" data-send="New enquiry from wintechstudio.com">
           <div class="two">
-            <Field label="Your name" name="Name" placeholder="Ada Okafor" required />
+            <Field label="Your name" name="Name" placeholder="Ada Okafor" required autocomplete="name" />
             <Field label="Email or WhatsApp" name="Contact" placeholder="ada@business.com" required />
           </div>
           <Field label="Business and a link" name="Business" placeholder="Instagram, website or both" />
-          <Field label="Where are you?" name="Stage" options={['Starting something', 'Adding tech to my business', 'Refreshing my brand']} class="opt" />
-          <Field label="Budget" name="Budget" options={['Under $1,000', '$1,000 to $3,000', '$3,000+', 'Not sure']} class="opt" />
+          <Field label="Where are you?" name="Stage" options={['Starting something', 'Adding tech to my business', 'Refreshing my brand']} />
+          <Field label="Budget" name="Budget" options={['Under $1,000', '$1,000 to $3,000', '$3,000+', 'Not sure']} />
           <Field label="What is not working right now?" name="Problem" rows={4} placeholder="Orders come in on WhatsApp and we miss some at night" />
-          <div class="send">
-            <button class="btn btn-primary" type="submit" value="whatsapp">Send details</button>
-            <p>We reply within one working day. <button class="em" type="submit" value="email">Send by email instead</button></p>
+          <div class="dm-send">
+            <button class="dm-btn p" type="submit" value="whatsapp">Send details</button>
+            <p>Opens WhatsApp. <button class="dm-plain" type="submit" value="email">Send by email instead</button></p>
           </div>
-          <p class="sent" hidden>Your message is ready in WhatsApp or your email app. Press send there and we reply within one working day.</p>
+          <p class="dm-sent sent" hidden>Your message is ready in WhatsApp or your email app. Press send there and we reply within one working day.</p>
         </form>
-        <ul class="mways">
-          <li><a href={`mailto:${contact.email}`}><Bi name="mail" size={40} />{contact.email}</a></li>
-          <li><a href={contact.whatsappLink} target="_blank" rel="noopener"><Glyph name="whatsapp" size={40} />WhatsApp {contact.whatsapp}</a></li>
-        </ul>
       </div>
     </section>
   </div>
 </Page>
 <style>
-  .cs{padding:96px 0 120px}
-  .cg{display:grid;grid-template-columns:420px 1fr;gap:64px;align-items:start}
-  .cl{display:flex;flex-direction:column;gap:28px}
-  .ways{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:28px}
-  .ways a{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--fg)}
-  .ib{flex:none;width:60px;height:60px;display:grid;place-items:center;background:var(--surface);transition:background .15s}
-  .ways a:hover .ib{background:var(--rule)}
-  .wt{display:flex;flex-direction:column;gap:2px}
-  .wt strong{font-size:15px;line-height:18px;font-weight:500}
-  .wt small{font-size:14px;line-height:17px;color:var(--fg-2);white-space:pre}
+  .cs{padding-bottom:128px}
+  .cl{display:flex;flex-direction:column;gap:40px}
+  .ways a{display:flex;align-items:center;gap:12px;padding:16px 0;text-decoration:none;color:var(--fg)}
+  .wt{flex:1;display:flex;flex-direction:column}
+  .wt strong{font-size:14px;line-height:21px;font-weight:600}
+  .wt small{font-size:14px;line-height:21px;color:var(--mute)}
+  .ways :global(.go){color:var(--lab);transition:transform .2s}
+  .ways a:hover :global(.go){color:var(--fg);transform:translate(2px,-2px)}
   .ways a:hover strong{color:var(--sig)}
-  .form{background:var(--surface);padding:36px;display:flex;flex-direction:column;gap:20px}
-  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .send{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .send p{margin:0;font-size:14px;line-height:17px;color:var(--fg-2)}
-  .em{font:inherit;color:var(--fg-2);background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-  .em:hover{color:var(--sig)}
-  .sent{margin:0;color:var(--ok);font-size:14px}
-  .mways{display:none}
+  .form{background:var(--panel);padding:32px}
   @media (max-width:1023px){
-    .cs{padding:40px 0 56px}
-    .cg{grid-template-columns:1fr;gap:20px}
-    .ways{display:none}
-    .form{background:none;padding:0}
-    .two{grid-template-columns:1fr;gap:20px}
-    .send .btn{width:100%;padding:14px 0}
-    .mways{display:flex;flex-direction:column;gap:20px;list-style:none;padding:0;margin:0}
-    .mways a{display:flex;align-items:center;gap:10px;font-size:14px;line-height:17px;color:var(--fg);text-decoration:none}
+    .cs{padding-bottom:64px}
+    .cl{gap:24px}
+    .form{padding:20px 16px;margin:0 -16px}
   }
 </style>

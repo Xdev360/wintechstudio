@@ -1,6 +1,8 @@
 ---
 import Page from '../layouts/Page.astro';
-import Icon from '../components/Icon.astro';
+import Lc from '../components/ui/Lc.astro';
+import AiFace from '../components/AiFace.astro';
+import { contact } from '../data/site';
 import '../styles/studio.css';
 // Answers reuse facts already stated elsewhere on the site (pricing, how we work, services, partner build).
 const groups: [string, [string, string][]][] = [
@@ -37,19 +39,26 @@ const groups: [string, [string, string][]][] = [
 const id = (s: string) => s.toLowerCase().replace(/\W+/g, '-');
 ---
 <Page jsonld={[{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: groups.flatMap(g => g[1]).map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }]} title="FAQ · Wintech Studio" description="Answers on prices, payment, ownership, timelines and how a Wintech Studio project runs." crumbs={[['FAQ', '/faq']]}>
-  <div class="sp fp">
-    <section class="fs">
-      <div class="wrap">
-        <div class="hd"><p class="eb">FAQ</p><h1 class="t1" style="--fs:64px;--fsm:30px">Questions people ask<br /><span class="gt">before they book.</span></h1></div>
-        <div class="fg">
-          <nav class="fn" aria-label="FAQ topics">{groups.map(([t], i) => <a href={`#${id(t)}`} class:list={{ on: i === 0 }}>{t}</a>)}</nav>
-          <div class="fl">{groups.map(([t, items], gi) => (
-            <section id={id(t)} class="grp">
-              <p class="eb">{t}</p>
-              {items.map(([q, a], i) => <details open={gi === 0 && i < 3 || undefined}><summary><span>{q}</span><Icon name="plus" size={20} class="pl" /><Icon name="minus" size={20} class="mi" /></summary><p>{a}</p></details>)}
-            </section>
-          ))}</div>
+  <div class="dm fp">
+    <section class="dm-top fs">
+      <div class="wrap dm-side">
+        <div class="side dm-sticky">
+          <div class="dm-head"><p class="dm-eb">FAQ</p><h1 class="dm-h1 sm">Questions people ask before they book.</h1></div>
+          <nav class="dm-toc fn" aria-label="FAQ topics">{groups.map(([t], i) => <a href={`#${id(t)}`} class:list={{ on: i === 0 }}>{t}</a>)}</nav>
+          <div class="ask">
+            <AiFace size={48} />
+            <h2>Still deciding?</h2>
+            <p>Ask Wintech AI now, or the project lead on a 25 minute call.</p>
+            <a class="dm-btn p mw" href="/book">Book a call</a>
+            <p class="mail">Or email us <a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+          </div>
         </div>
+        <div class="fl">{groups.map(([t, items], gi) => (
+          <section id={id(t)} class="grp">
+            <p class="dm-eb">{t}</p>
+            {items.map(([q, a], i) => <details open={gi === 0 && i === 0 || undefined}><summary><span class="pm" aria-hidden="true"><Lc name="plus" class="p" /><Lc name="minus" class="m" /></span><span class="q">{q}</span></summary><p>{a}</p></details>)}
+          </section>
+        ))}</div>
       </div>
     </section>
   </div>
@@ -63,31 +72,34 @@ const id = (s: string) => s.toLowerCase().replace(/\W+/g, '-');
   document.querySelectorAll('.fl .grp').forEach(s => io.observe(s));
 </script>
 <style>
-  .fs{padding:104px 0 120px}
-  .fg{display:grid;grid-template-columns:260px 1fr;gap:64px;align-items:start;margin-top:48px}
-  .fn{position:sticky;top:96px;display:flex;flex-direction:column;gap:2px}
-  .fn a{padding:11px 14px;font-size:15px;line-height:18px;color:var(--fg-2);text-decoration:none;transition:background .15s,color .15s}
-  .fn a:hover{color:var(--fg)}
-  .fn a.on{background:var(--surface);color:var(--fg);font-weight:500}
-  .grp{scroll-margin-top:96px}
-  .grp+.grp{margin-top:48px}
-  details{border-bottom:1px solid var(--rule);padding:22px 0}
-  summary{display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;list-style:none;font-size:19px;line-height:23px;font-weight:500;color:var(--fg)}
+  .fs{padding-bottom:128px}
+  .side{display:flex;flex-direction:column;gap:40px}
+  .ask{background:var(--panel);padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+  .ask h2{font-size:24px;line-height:31.2px;letter-spacing:-.24px;margin-top:4px}
+  .ask>p{font-size:16px;line-height:24px;color:var(--mute)}
+  .ask .dm-btn{margin-top:8px}
+  .ask .mail{font-size:14px;line-height:21px}
+  .ask .mail a{color:var(--fg);font-weight:500;text-underline-offset:3px}
+  .fl{display:flex;flex-direction:column;gap:48px}
+  .grp{display:flex;flex-direction:column;gap:12px;scroll-margin-top:96px}
+  .grp .dm-eb{margin-bottom:4px}
+  details{background:var(--panel)}
+  summary{display:flex;align-items:center;gap:20px;min-height:68px;padding:20px;cursor:pointer;list-style:none;font-size:16px;font-weight:500;line-height:24px}
   summary::-webkit-details-marker{display:none}
-  summary :global(svg){flex:none}
-  summary :global(.mi),details[open] summary :global(.pl){display:none}
-  details[open] summary :global(.mi){display:block}
-  summary:hover span{color:var(--sig)}
-  details p{font-size:16px;line-height:1.55;color:var(--fg-2);margin:12px 0 0;max-width:640px}
+  .pm{flex:none;width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--hl);background:var(--bg)}
+  .pm :global(.m),details[open] .pm :global(.p){display:none}
+  details[open] .pm :global(.m){display:block}
+  summary:hover .q{color:var(--sig)}
+  details p{padding:0 20px 24px 68px;margin-top:-8px;font-size:16px;line-height:24px;color:var(--mute)}
   @media (max-width:1023px){
-    .fs{padding:40px 0 56px}
-    .fg{grid-template-columns:1fr;gap:0;margin-top:20px}
+    .fs{padding-bottom:64px}
+    .wrap{display:flex;flex-direction:column}
+    .side{display:contents}
+    .dm-head{order:1}
     .fn{display:none}
-    .grp+.grp{margin-top:32px}
-    .grp .eb{margin-bottom:4px}
-    details{padding:16px 0}
-    summary{font-size:16px;line-height:19px}
-    summary :global(svg){width:18px;height:18px}
-    details p{font-size:14px;line-height:1.5;margin-top:10px;max-width:330px}
+    .fl{order:2;margin-top:32px;gap:32px}
+    .ask{order:3;margin-top:32px}
+    summary{gap:16px;padding:16px;min-height:60px;font-size:15px;line-height:22px;align-items:flex-start}
+    details p{padding:0 16px 20px 60px;font-size:15px;line-height:22px}
   }
 </style>

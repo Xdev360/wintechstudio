@@ -1,7 +1,7 @@
 ---
 import Page from '../layouts/Page.astro';
 import Faq from '../components/ui/Faq.astro';
-import Icon from '../components/Icon.astro';
+import Lc from '../components/ui/Lc.astro';
 import services from '../data/services.json';
 import '../styles/studio.css';
 
@@ -19,51 +19,41 @@ const faqs: [string, string][] = [
 const ld = { '@context': 'https://schema.org', '@type': 'OfferCatalog', name: 'Wintech Studio monthly plans', itemListElement: cards.filter(c => c.price !== 'Custom').map(c => ({ '@type': 'Offer', name: c.name, price: c.price.replace('$', ''), priceCurrency: 'USD', description: c.desc })) };
 ---
 <Page title="Monthly plans · Wintech Studio" description="AI care plan $60 a month, growth and content $600 a month, or have the whole system run for you. Pause for a month when it is quiet, cancel with 30 days notice." crumbs={[['Pricing', '/pricing'], ['Monthly plans', '/monthly-plans']]} jsonld={[ld]}>
-  <div class="sp mp">
-    <section class="hero">
+  <div class="dm mp">
+    <section class="dm-top">
       <div class="wrap">
-        <div class="hd c">
-          <p class="eb">Monthly plans</p>
-          <h1 class="t1">We keep it running<br /><span class="gt">after launch.</span></h1>
-          <p class="ld">A system needs care. Pick a plan, pause for a month when it is quiet, cancel with 30 days notice.</p>
+        <div class="dm-head c">
+          <p class="dm-eb">Monthly plans</p>
+          <h1 class="dm-h1">We keep it running after launch.</h1>
+          <p class="dm-intro">A system needs care. Pick a plan, pause for a month when it is quiet, cancel with 30 days notice.</p>
         </div>
       </div>
     </section>
-    <section class="plans-s">
-      <div class="wrap plans">{cards.map(c => (
-        <div class:list={['plan', { ink: c.dark }]}>
-          <p class="pl-eb">{c.name}</p>
+    <section class="dm-sec flush">
+      <div class="wrap dm-grid g3 plans">{cards.map(c => (
+        <div class:list={['dm-card', 'plan', { hi: c.dark }]}>
+          <div class="pl-top"><p class="dm-eb">{c.name}</p>{c.dark && <span class="dm-tag b">Most picked</span>}</div>
           <p class="pl-p"><span>{c.price}</span>{c.per && <small>{c.per}</small>}</p>
-          <p class="pl-d">{c.desc}</p>
-          <ul class="ticks">{c.items.map(t => <li><Icon name="check" size={16} stroke={1.75} />{t}</li>)}</ul>
-          <a class:list={['btn', c.dark ? 'btn-primary' : 'btn-dark']} href="/book">Book a call</a>
+          <p class="dm-body">{c.desc}</p>
+          <ul class="dm-ticks">{c.items.map(t => <li><Lc name="check" />{t}</li>)}</ul>
+          <a class:list={['dm-btn', 'w', c.dark ? 'p' : 's']} href="/book">Book a call</a>
         </div>
       ))}</div>
     </section>
-    <Faq items={faqs} title="Plan questions" />
   </div>
+  <Faq items={faqs} title="Plan questions" />
 </Page>
 <style>
-  .hero{padding-bottom:56px}
-  .plans-s{padding:24px 0 112px}
-  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
-  .plan{background:var(--surface);padding:32px;display:flex;flex-direction:column;gap:18px}
-  .pl-eb{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--sig);margin:0}
-  .pl-p{display:flex;align-items:baseline;gap:4px;margin:0;font-size:48px;line-height:58px;font-weight:600;letter-spacing:-.02em;color:var(--fg)}
-  .pl-p small{font-size:17px;line-height:20px;font-weight:400;letter-spacing:0;color:var(--fg-2)}
-  .pl-d{font-size:15px;line-height:1.5;color:var(--fg-2);margin:0;max-width:300px}
-  .plan .btn{width:100%}
-  .plan.ink{background:var(--inkc)}
-  .plan.ink .pl-eb{color:var(--inkc-eb)}
-  .plan.ink .pl-p{color:#fff}.plan.ink .pl-p small,.plan.ink .pl-d{color:var(--inkc-2)}
-  .plan.ink .ticks li{color:#fff}.plan.ink .ticks :global(svg){color:var(--inkc-eb)}
-  :root[data-theme="dark"] .plan:not(.ink){background:var(--card);border:1px solid var(--rule)}
-  :root[data-theme="dark"] .plan.ink{border:1px solid #2A3550}
+  .plans{align-items:stretch}
+  .plan{padding:32px;gap:16px}
+  .plan.hi{border-color:var(--fg)}
+  .pl-top{display:flex;justify-content:space-between;align-items:center;min-height:29px}
+  .pl-p{display:flex;align-items:baseline;gap:4px;font-size:56px;line-height:64.4px;font-weight:600;letter-spacing:-1.12px}
+  .pl-p small{font-size:16px;line-height:24px;font-weight:400;letter-spacing:0;color:var(--mute)}
+  .plan .dm-ticks{margin-bottom:8px}
+  .plan .dm-btn{margin-top:auto}
   @media (max-width:1023px){
-    .hero{padding-bottom:0}
-    .plans-s{padding:28px 0 56px}
-    .plans{grid-template-columns:1fr}
-    .plan{padding:24px}
-    .pl-p{font-size:40px;line-height:48px}
+    .plan{padding:20px}
+    .pl-p{font-size:36px;line-height:41.4px;letter-spacing:-.72px}
   }
 </style>

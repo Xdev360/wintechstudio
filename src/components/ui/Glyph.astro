@@ -1,9 +1,0 @@
----
-// Duotone "bi" icon: looks in bi.ts first, then bi-extra.ts. Stroke width follows the Figma kit (viewBox / 15).
-import { bi } from '../../data/bi';
-import { biExtra } from '../../data/bi-extra';
-interface Props { name: string; size?: number; class?: string }
-const { name, size = 40, class: cls } = Astro.props;
-const [vb, inner] = biExtra[name] ?? bi[name] ?? bi.spark;
----
-<svg class:list={['bi', cls]} width={size} height={size} viewBox={`0 0 ${vb} ${vb}`} fill="none" stroke-width={+(vb / 15).toFixed(4)} stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={inner} />

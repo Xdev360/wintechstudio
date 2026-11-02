@@ -6,5 +6,12 @@ export default defineConfig({
   site: 'https://www.wintechstudio.com',
   trailingSlash: 'never',
   build: { format: 'file' },
+  // Free tools were removed on 2 Nov 2026.
+  redirects: {
+    '/tools': '/book',
+    '/tools/plan': '/book',
+    '/tools/cost-calculator': '/pricing',
+    '/tools/inbox-check': '/book',
+  },
   integrations: [sitemap({ filter: (page) => !page.includes('/archive/') })],
 });

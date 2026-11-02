@@ -1,47 +1,61 @@
 ---
-// FAQ band from Figma S7/S9 "faq": heading and a "Still deciding?" card on the left, an accordion on the right.
-// Props kept compatible: items, title, ld (FAQPage JSON-LD), plain (drop the "Still deciding?" card).
-import Icon from '../Icon.astro';
-interface Props { items: [string, string][]; title?: string; ld?: boolean; plain?: boolean }
-const { items, title = 'Short answers', ld = true, plain = false } = Astro.props;
+// FAQ band, DesignMe spec: side column (eyebrow, 42px H2, ask card) and 672px of 68px panel rows with a 28px +/- tile.
+// Props: items, title, ld (FAQPage JSON-LD), plain (no ask card), eyebrow, service (pre-fills /book).
+import Lc from './Lc.astro';
+import AiFace from '../AiFace.astro';
+import { contact } from '../../data/site';
+interface Props { items: [string, string][]; title?: string; ld?: boolean; plain?: boolean; eyebrow?: string; service?: string; id?: string }
+const { items, title = 'Short answers', ld = true, plain = false, eyebrow = 'FAQ', service, id = 'questions' } = Astro.props;
 ---
-<section class="fq">
-  <div class="wrap fq-g">
-    <div class="fq-l">
-      <div class="fq-h"><p class="fq-eb">FAQ</p><h2>{title}</h2></div>
-      {!plain && <div class="fq-c"><h3>Still deciding?</h3><p>Ask Wintech AI now, or the<br />project lead on a call.</p><a class="btn btn-primary" href="/book">Book a call</a></div>}
+<section class="dm fq" id={id}>
+  <div class="wrap dm-side">
+    <div class="fq-side">
+      <div class="dm-head"><p class="dm-eb">{eyebrow}</p><h2 class="dm-h2s">{title}</h2></div>
+      {!plain && (
+        <div class="ask">
+          <AiFace size={48} />
+          <h3>Still deciding?</h3>
+          <p>Ask Wintech AI now, or the project lead on a 25 minute call.</p>
+          <a class="dm-btn p mw" href={service ? `/book?service=${service}` : '/book'}>Book a call</a>
+          <p class="mail">Or email us <a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+        </div>
+      )}
     </div>
-    <div class="fq-list">{items.map(([q, a], i) => <details open={i === 0}><summary><span>{q}</span><Icon name="plus" size={20} class="pl" /><Icon name="minus" size={20} class="mi" /></summary><p>{a}</p></details>)}</div>
+    <div class="qs">{items.map(([q, a], i) => (
+      <details open={i === 0}>
+        <summary><span class="pm" aria-hidden="true"><Lc name="plus" class="p" /><Lc name="minus" class="m" /></span><span class="q">{q}</span></summary>
+        <p>{a}</p>
+      </details>
+    ))}</div>
   </div>
 </section>
 {ld && <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })} />}
 <style>
-  .fq{padding:112px 0;background:var(--bg)}
-  .fq-g{display:grid;grid-template-columns:380px 1fr;gap:80px;align-items:start}
-  .fq-l{display:flex;flex-direction:column;gap:24px}
-  .fq-h{display:flex;flex-direction:column;gap:16px}
-  .fq-eb{font-family:var(--mono);font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2);margin:0}
-  h2{font-size:44px;line-height:1.05;letter-spacing:-.02em;font-weight:600;margin:0}
-  .fq-c{background:var(--surface);padding:24px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-  .fq-c h3{font-size:20px;line-height:24px;font-weight:600;letter-spacing:0;margin:0}
-  .fq-c p{font-size:15px;line-height:1.5;color:var(--fg-2);margin:0}
-  .fq-c .btn{font-size:16px;line-height:19px;padding:13px 20px}
-  details{border-bottom:1px solid var(--rule);padding:22px 0}
-  summary{display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;list-style:none;font-size:19px;line-height:23px;font-weight:500;color:var(--fg)}
+  .fq{padding:var(--sec) 0;background:var(--bg)}
+  .fq-side{display:flex;flex-direction:column;gap:40px}
+  .ask{background:var(--panel);padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+  .ask h3{font-size:24px;line-height:31.2px;letter-spacing:-.24px;margin-top:4px}
+  .ask>p{font-size:16px;line-height:24px;color:var(--mute)}
+  .ask .dm-btn{margin-top:8px}
+  .ask .mail{font-size:14px;line-height:21px}
+  .ask .mail a{color:var(--fg);font-weight:500;text-underline-offset:3px}
+  .ask .mail a:hover{color:var(--sig)}
+  .qs{display:flex;flex-direction:column;gap:12px}
+  details{background:var(--panel)}
+  summary{display:flex;align-items:center;gap:20px;min-height:68px;padding:20px;cursor:pointer;list-style:none;font-size:16px;font-weight:500;line-height:24px;color:var(--fg)}
   summary::-webkit-details-marker{display:none}
-  summary :global(svg){flex:none;color:var(--fg)}
-  summary :global(.mi),details[open] summary :global(.pl){display:none}
-  details[open] summary :global(.mi){display:block}
-  details p{font-size:16px;line-height:1.55;color:var(--fg-2);margin:12px 0 0;max-width:620px}
-  summary:hover span{color:var(--sig)}
+  .pm{flex:none;width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--hl);background:var(--bg);color:var(--fg)}
+  .pm :global(.m),details[open] .pm :global(.p){display:none}
+  details[open] .pm :global(.m){display:block}
+  summary:hover .q{color:var(--sig)}
+  details p{padding:0 20px 24px 68px;margin-top:-8px;font-size:16px;line-height:24px;color:var(--mute)}
   @media (max-width:1023px){
-    .fq{padding:56px 0}
-    .fq-g{grid-template-columns:1fr;gap:24px}
-    h2{font-size:30px;letter-spacing:-.015em}
-    .fq-c{display:none}
-    details{padding:16px 0}
-    summary{font-size:16px;line-height:19px}
-    summary :global(svg){width:18px;height:18px}
-    details p{font-size:14px;line-height:1.5;margin-top:10px}
+    .wrap{display:flex;flex-direction:column}
+    .fq-side{display:contents}
+    .dm-head{order:1}
+    .qs{order:2;margin-top:24px}
+    .ask{order:3;margin-top:24px}
+    summary{gap:16px;padding:16px;min-height:60px;font-size:15px;line-height:22px;align-items:flex-start}
+    details p{padding:0 16px 20px 60px;font-size:15px;line-height:22px}
   }
 </style>

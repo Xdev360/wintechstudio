@@ -12,13 +12,13 @@ const faqs: [string, string][] = [['Do customers need a Paystack account to pay?
 const ld = [{ '@context': 'https://schema.org', '@type': 'Article', headline: title, datePublished: '2026-11-01', dateModified: '2026-11-01', author: { '@type': 'Person', name: 'Oladele Ibraheem' }, publisher: { '@type': 'Organization', name: 'Wintech Studio' } }, { '@context': 'https://schema.org', '@type': 'HowTo', name: title, step: steps.map(([n, t], i) => ({ '@type': 'HowToStep', position: i + 1, name: n, text: t })) }];
 ---
 <Page title={`${title} · Wintech Studio`} description="Open a Paystack account, verify your business, add checkout to your site and test before going live. Card, bank transfer and USSD." crumbs={[['Guides', '/guides'], ['Payments', '/guides/paystack-payments-on-your-website']]} jsonld={ld} closing={false}>
-  <section class="s-sec art">
+  <div class="dm">
+  <section class="dm-top art">
     <div class="wrap ag">
       <article>
-        <p class="s-k">Guide · Payments</p>
-        <h1 class="s-h1">{title}</h1>
-        <p class="meta"><span>Updated 1 Nov 2026</span><i>·</i><span>6 min read</span><i>·</i><b>By Oladele Ibraheem</b></p>
-        <div class="s-short" id="short"><p class="s-k">Short answer</p><p>Open a Paystack account, verify your business, then add Paystack checkout to your site. Customers can pay by card, bank transfer or USSD, and the money settles to your bank account. Test everything in test mode before you switch to live keys.</p></div>
+        <div class="dm-head"><p class="dm-eb">Guide · Payments</p><h1 class="dm-h1 sm">{title}</h1>
+        <p class="meta"><span>Updated 1 Nov 2026</span><i>·</i><span>6 min read</span><i>·</i><b>By Oladele Ibraheem</b></p></div>
+        <div class="dm-short" id="short"><p class="dm-eb">Short answer</p><p>Open a Paystack account, verify your business, then add Paystack checkout to your site. Customers can pay by card, bank transfer or USSD, and the money settles to your bank account. Test everything in test mode before you switch to live keys.</p></div>
         <h2 id="need">What you need before you start</h2>
         <p>A registered business (or a starter account for testing), a bank account in the business name, and a website you can edit. If your site is on Wintech Templates or Astro, the checkout is already built in.</p>
         <h2 id="steps">The steps</h2>
@@ -26,12 +26,13 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Article', headline: ti
         <h2 id="mistakes">Common mistakes</h2>
         <p>Leaving test keys on a live site, not showing delivery fees before checkout, and sending customers to a payment page that does not look like your brand.</p>
       </article>
-      <aside>
-        <nav class="toc" aria-label="On this page"><p class="s-k mute">On this page</p>{toc.map(([h, t]) => <a href={`#${h}`} data-to={h}>{t}</a>)}</nav>
-        <div class="cta"><h3>Want us to set it up for you?</h3><p>We build stores with Paystack checkout, delivery fees by area and receipts that send themselves. Websites and stores from {webFrom}.</p><a class="s-btn p" href="/services/websites#brief">Build your brief</a></div>
+      <aside class="dm-sticky">
+        <nav class="dm-toc toc" aria-label="On this page"><p class="dm-eb">On this page</p>{toc.map(([h, t]) => <a href={`#${h}`} data-to={h}>{t}</a>)}</nav>
+        <div class="cta"><h3>Want us to set it up for you?</h3><p>We build stores with Paystack checkout, delivery fees by area and receipts that send themselves. Websites and stores from {webFrom}.</p><a class="dm-btn p mw" href="/services/websites#brief">Build your brief</a></div>
       </aside>
     </div>
   </section>
+  </div>
   <SFaq items={faqs} />
   <SRelated items={[['Compare', 'Custom website or Wintech Templates', '/compare/custom-website-vs-wintech-templates'], ['Industry', 'Websites and AI for salons in Lagos', '/industries/salons'], ['Glossary', 'Website and AI words, in plain English', '/glossary']]} />
 </Page>
@@ -41,37 +42,33 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Article', headline: ti
   links.forEach(function(a){var t=document.getElementById(a.dataset.to);if(t)io.observe(t)});on('short')})();
 </script>
 <style>
-  .art{padding:48px 0 96px}
-  .ag{display:grid;grid-template-columns:760px 360px;justify-content:space-between;align-items:start}
-  article .s-h1{margin:14px 0 20px}
-  .meta{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 40px;font-size:14px;line-height:17px;color:var(--fg-2)}
-  .meta i{font-style:normal;font-weight:500;color:var(--ash)}.meta b{font-weight:500;color:var(--fg)}
-  .s-short,h2{scroll-margin-top:110px}
-  h2{margin:48px 0 16px;font-size:28px;font-weight:600;letter-spacing:-.5px;line-height:34px}
-  article > p:not(.s-k):not(.meta){margin:0;max-width:720px;font-size:17px;line-height:28px;color:var(--fg-2)}
-  .steps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-  .steps li{display:flex;gap:16px;padding:20px;background:var(--card);border:1px solid var(--rule);min-height:88px}
-  .num{flex:none;width:32px;height:32px;display:grid;place-items:center;background:var(--ink);color:#fff;font-size:14px;font-weight:600}
-  :root[data-theme="dark"] .num{background:#F4F4F5;color:#0A0E17}
-  .steps h3{margin:0 0 6px;font-size:17px;font-weight:600;line-height:20px;letter-spacing:0}
-  .steps p{margin:0;font-size:15px;line-height:22px;color:var(--fg-2)}
-  aside{position:sticky;top:110px;margin-top:260px;display:grid;gap:32px}
-  .toc{display:grid;gap:4px}.toc .s-k{margin-bottom:10px}
-  .toc a{display:flex;align-items:center;min-height:32px;padding-left:16px;border-left:2px solid var(--rule);font-size:15px;line-height:18px;color:var(--fg-2);text-decoration:none}
-  .toc a:hover{color:var(--fg)}.toc a.on{border-color:var(--sig);color:var(--fg);font-weight:500}
-  .cta{display:grid;gap:10px;padding:24px;background:#0A0E17;color:#fff}
-  :root[data-theme="dark"] .cta{background:#121722;border:1px solid var(--rule)}
-  .cta h3{margin:0;font-size:20px;font-weight:600;line-height:26px;letter-spacing:0}.cta p{margin:0 0 10px;font-size:14px;line-height:21px;color:#A1A1AA}
+  .art{padding-bottom:128px}
+  .ag{display:grid;grid-template-columns:minmax(0,720px) 320px;justify-content:space-between;gap:64px;align-items:start}
+  article{display:flex;flex-direction:column}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;font-size:14px;line-height:21px;color:var(--mute)}
+  .meta i{font-style:normal;color:var(--lab)}.meta b{font-weight:500;color:var(--fg)}
+  .dm-short{margin-top:40px}
+  .dm-short,h2{scroll-margin-top:110px}
+  h2{margin:48px 0 12px;font-size:24px;line-height:31.2px;letter-spacing:-.24px}
+  article>p{font-size:16px;line-height:26px;color:var(--mute)}
+  .steps{list-style:none;margin:0;padding:0;border-top:1px solid var(--hl)}
+  .steps li{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--hl)}
+  .num{flex:none;width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--hl);font-size:13px;font-weight:600}
+  .steps h3{font-size:16px;line-height:24px;font-weight:600;margin-top:2px}
+  .steps p{font-size:16px;line-height:24px;color:var(--mute)}
+  aside{display:flex;flex-direction:column;gap:32px;padding-top:8px}
+  .toc{gap:0}.toc .dm-eb{padding:0 0 8px 16px}
+  .cta{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:24px;background:var(--panel)}
+  .cta h3{font-size:20px;line-height:26px;letter-spacing:-.2px}
+  .cta p{font-size:14px;line-height:21px;color:var(--mute)}
   @media (max-width:1023px){
-    .art{padding:30px 0 48px}
-    .ag{grid-template-columns:1fr}
-    article .s-h1{margin:16px 0 18px}
-    .meta{gap:6px;margin-bottom:16px;font:400 10px/13px var(--mono);letter-spacing:.05em;text-transform:uppercase}.meta b{font-weight:400;color:var(--fg-2)}
-    h2{margin:16px 0 12px;font-size:22px;line-height:27px}
-    article > p:not(.s-k):not(.meta){font-size:15px;line-height:24px}
-    .steps{gap:16px}.steps li{padding:14px;gap:12px}.num{width:28px;height:28px;font-size:13px}
-    .steps h3{font-size:15px;line-height:18px;margin-bottom:4px}.steps p{font-size:14px;line-height:21px}
-    aside{position:static;margin-top:16px}.toc{display:none}
-    .cta{padding:20px 16px}.cta h3{font-size:18px;line-height:22px}
+    .art{padding-bottom:64px}
+    .ag{grid-template-columns:1fr;gap:32px}
+    .dm-short{margin-top:24px}
+    h2{margin:32px 0 8px;font-size:20px;line-height:26px}
+    article>p{font-size:15px;line-height:24px}
+    .steps p{font-size:15px;line-height:22px}
+    .toc{display:none}
+    .cta{padding:20px 16px}
   }
 </style>

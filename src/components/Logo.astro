@@ -1,11 +1,15 @@
 ---
+// Wintech Studio logo: mark + wordmark, 18px tall. Add class "mark-only" (or hide .logo-t in CSS) to show the mark alone.
 interface Props { class?: string }
 const { class: cls = '' } = Astro.props;
 ---
 <a href="/" class={`logo ${cls}`} aria-label="Wintech Studio home">
-  <svg width="26" height="18" viewBox="0 0 1452 1030" aria-hidden="true"><path fill="currentColor" d="M980.934 0C963.206 0 947.13 10.41 939.879 26.5869L715.176 527.851L490.47 26.5869C483.219 10.4103 467.143 0.000176976 449.416 0H45.0446C12.1774 0 -9.59748 34.0954 4.22627 63.9141L434.46 991.939C450.686 1026.94 500.552 1026.62 516.333 991.419L715.176 547.847L914.91 993.412C930.529 1028.25 979.715 1029.03 996.422 994.693L1448.96 64.6768C1463.5 34.793 1441.74 0.000315535 1408.5 0H980.934Z"/></svg>
-  <span>Wintech Studio</span>
+  <svg class="logo-m" width="25" height="18" viewBox="0 0 1452 1030" aria-hidden="true"><path fill="currentColor" d="M980.934 0C963.206 0 947.13 10.41 939.879 26.5869L715.176 527.851L490.47 26.5869C483.219 10.4103 467.143 0.000176976 449.416 0H45.0446C12.1774 0 -9.59748 34.0954 4.22627 63.9141L434.46 991.939C450.686 1026.94 500.552 1026.62 516.333 991.419L715.176 547.847L914.91 993.412C930.529 1028.25 979.715 1029.03 996.422 994.693L1448.96 64.6768C1463.5 34.793 1441.74 0.000315535 1408.5 0H980.934Z"/></svg>
+  <span class="logo-t">Wintech Studio</span>
 </a>
 <style>
-  .logo{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--fg);font-weight:500;font-size:20px;letter-spacing:-.02em}
+  .logo{display:inline-flex;align-items:center;gap:6px;height:18px;text-decoration:none;color:var(--fg);font-weight:600;font-size:18px;line-height:18px;letter-spacing:-.36px;white-space:nowrap}
+  .logo-m{flex:none;display:block}
+  .mark-only .logo-t{display:none}
+  .mark-only{height:auto}.mark-only .logo-m{width:28px;height:20px}
 </style>

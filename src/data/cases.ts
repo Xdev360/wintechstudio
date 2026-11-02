@@ -20,6 +20,8 @@ export type Case = {
   chapters: Chapter[];
   want: { label: string; href: string };
   services: string[];
+  // Testimonial slot: leave out until a real, approved quote exists. Never invent one.
+  // testimonial?: { quote: string; name: string; role: string; avatar?: string };
 };
 
 const brandApp = { label: 'Start a brief: Brand + App', href: '/services/apps#brief' };
@@ -190,6 +192,7 @@ export const workOrder = ['mylo', 'virtual-trades', 'virelle', 'manzeelatur-ridh
 // PXDX masonry tiles, cropped from grid-<slug>.webp into public/images/cases/tiles/. Three columns (352, 544, 352).
 export const tiles = tileData as Record<string, Tile[][]>;
 
+// Motion pieces: not rendered on /work until the videos exist. Kept for when they do.
 export const motionPieces = [
   { name: 'inDrive', sub: 'Spec ad · Feel the Fairness', time: '0:30' },
   { name: 'Lagos Life', sub: 'Explainer · browser game', time: '0:30' },
