@@ -56,7 +56,6 @@ Tobel Pearls (brand system and 55-page guideline for a Lagos clearing company), 
 map-first app for going out, demo live at letshang-henna.vercel.app), CardioRisk (heart risk tool redesign),
 Virtual Trades (app and brand for selling gift cards for naira).
 
-FREE TOOLS: plan your project (/tools/plan), cost calculator (/tools/cost-calculator), inbox check (/tools/inbox-check).
 CONTACT: hello@wintechstudio.com, WhatsApp +234 913 407 1813, book a call at /book.
 
 FIT
