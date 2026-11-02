@@ -21,7 +21,7 @@ const rowB = [9, 10, 11, 12, 13, 14, 15, 16].map(sq);
   </div>
   <div class="rows" aria-hidden="true">
     {[rowA, rowB].map((row, r) => (
-      <div class:list={['row', { rev: r === 1 }]}>
+      <div class:list={['row', { rev: r === 1 }]} data-parallax-x={r === 1 ? '48' : '-48'}>
         <ul>{[...row, ...row].map((s) => <li><img src={s} alt="" width="142" height="142" loading="lazy" decoding="async" /></li>)}</ul>
       </div>
     ))}
@@ -34,6 +34,8 @@ const rowB = [9, 10, 11, 12, 13, 14, 15, 16].map(sq);
 <style>
   .team{background:var(--h-bg)}
   .rows{margin:80px auto 0;max-width:1160px;display:flex;flex-direction:column;gap:40px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  /* rows overhang 64px each side so the scroll-linked X drift (scroll-fx.js, max 48px) never shows an empty edge */
+  .row{margin:0 -64px;will-change:transform}
   .row ul{list-style:none;margin:0;padding:0;display:flex;gap:6px;width:max-content;animation:roll 60s linear infinite}
   .row.rev ul{animation-direction:reverse;animation-duration:70s}
   .row li{flex:none;width:137px;height:137px;background:var(--h-panel2);overflow:hidden}

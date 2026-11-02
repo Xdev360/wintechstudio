@@ -32,14 +32,14 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Service', name: 'Paid 
       </div>
     </section>
     <section class="dm-sec alt">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">What we look at</p><h2 class="dm-h2">Four questions, answered in writing.</h2></div>
-        <div class="dm-cells c4 lg">{look.map(([i, t, d]) => <div><span class="dm-ib"><Lc name={i} /></span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></div>)}</div>
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">What we look at</p><h2 class="dm-h2s">Four questions, answered in writing.</h2></div>
+        <div class="dm-cells c2 lg">{look.map(([i, t, d]) => <div><span class="dm-ib"><Lc name={i} /></span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></div>)}</div>
       </div>
     </section>
     <section class="dm-sec">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">Five days</p><h2 class="dm-h2">What happens each day</h2></div>
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">Five days</p><h2 class="dm-h2s">What happens each day</h2><a class="dm-link" href="/book?service=diagnostic">Start the diagnostic</a></div>
         <ol class="dm-rows dl">{days.map(([t, d], i) => <li><span class="dm-eb">Day {i + 1}</span><b>{t}</b><span class="dd">{d}</span></li>)}</ol>
       </div>
     </section>
@@ -53,16 +53,13 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Service', name: 'Paid 
   .pr .u{font-size:56px;line-height:64.4px;font-weight:600;letter-spacing:-1.12px}
   .pr .n{font-size:16px;line-height:24px;color:var(--mute)}
   .pc .dm-ticks{margin-bottom:8px}
-  .lg{margin-top:80px}
-  .dl{margin-top:80px}
-  .dl li{display:grid;grid-template-columns:120px 260px 1fr;gap:32px;align-items:center;padding:20px 0}
+  .dl li{display:grid;grid-template-columns:80px 200px 1fr;gap:32px;align-items:center;padding:20px 0}
   .dl b{font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.2px}
   .dd{font-size:16px;line-height:24px;color:var(--mute)}
   @media (max-width:1023px){
     .hg{grid-template-columns:1fr;gap:32px}
     .pc{padding:20px}
     .pr .u{font-size:36px;line-height:41.4px;letter-spacing:-.72px}
-    .lg,.dl{margin-top:40px}
     .dl li{grid-template-columns:1fr;gap:4px;padding:16px 0}
     .dl b{font-size:17px;line-height:24px}
     .dd{font-size:15px;line-height:22px}

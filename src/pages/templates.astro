@@ -3,7 +3,8 @@ import Page from '../layouts/Page.astro';
 import { contact } from '../data/site';
 import Lc from '../components/ui/Lc.astro';
 import '../styles/studio.css';
-// Tile colours from the Figma gallery. Each tile is a placeholder until real template screenshots are exported.
+// Tile colours from the Figma gallery. Until real template screenshots are exported, each tile draws a simple page mock
+// in the template's colours; the page drifts inside its frame on scroll (data-pfx, public/scroll-fx.js).
 const kinds = [
   ['Fashion and beauty', '#F6E7DC', '#B7795A', '810:4104', '821:4867'],
   ['Food and drinks', '#FDF0D5', '#C98A1B', '810:4110', '821:4870'],
@@ -33,16 +34,23 @@ const plans = [['Free', '$0', '', 'A live site on a Wintech link'], ['Starter', 
     <section class="dm-sec flush">
       <div class="wrap dm-grid g3">{kinds.map(([k, bg, fg, id, mid]) => (
         <a class="tc" href={contact.templates} target="_blank" rel="noopener">
-          <div class="pv" style={`--tb:${bg};--tf:${fg}`} data-todo-image={id} data-todo-image-mobile={mid || undefined}><span>{k}</span><i></i></div>
+          <div class="pv" style={`--tb:${bg};--tf:${fg}`} data-figma={id} data-figma-mobile={mid || undefined} data-pfx="0.05" aria-hidden="true">
+            <div class="site" data-pfx-target>
+              <div class="nb"><i></i><b></b><b></b><b></b></div>
+              <div class="hx"><span>{k}</span><i class="l1"></i><i class="l2"></i><em></em></div>
+              <div class="pics"><u></u><u></u><u></u></div>
+            </div>
+          </div>
           <span class="tm"><strong>{k}</strong><span class="dm-arrow"><Lc name="arrow-up-right" /></span></span>
         </a>
       ))}</div>
     </section>
 
     <section class="dm-sec alt" id="plans">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">Plans</p><h2 class="dm-h2">Start free. Upgrade when it sells.</h2><p class="dm-intro">0% cut of your sales on every plan.</p></div>
-        <div class="dm-cells c4 pg">{plans.map(([n, p, per, d]) => (
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">Plans</p><h2 class="dm-h2s">Start free. Upgrade when it sells.</h2><p class="dm-intro">0% cut of your sales on every plan.</p></div>
+        <div>
+        <div class="dm-cells c2 pg">{plans.map(([n, p, per, d]) => (
           <div>
             <p class="dm-eb">{n}</p>
             <p class="pr">{p}{per && <small>{per}</small>}</p>
@@ -50,6 +58,7 @@ const plans = [['Free', '$0', '', 'A live site on a Wintech link'], ['Starter', 
           </div>
         ))}</div>
         <p class="note">Plans are a proposal and may change before launch.</p>
+        </div>
       </div>
     </section>
   </div>
@@ -58,20 +67,27 @@ const plans = [['Free', '$0', '', 'A live site on a Wintech link'], ['Starter', 
   .cc{justify-content:center;margin-top:16px}
   .tc{display:flex;flex-direction:column;border:1px solid var(--hl);padding:8px;text-decoration:none;color:var(--fg);transition:border-color .15s}
   .tc:hover{border-color:var(--hl2)}
-  .pv{aspect-ratio:4/3;background:var(--tb);padding:20px;display:flex;flex-direction:column;gap:10px}
-  .pv span{font-size:20px;line-height:26px;font-weight:600;color:var(--tf)}
-  .pv i{flex:1;background:var(--tf);opacity:.1}
+  .pv{position:relative;aspect-ratio:4/3;background:var(--tb);overflow:hidden}
+  .site{position:absolute;left:10%;right:10%;top:12%;height:100%;background:#fff;box-shadow:0 10px 30px rgba(10,14,23,.08);display:flex;flex-direction:column;gap:14px;padding:12px 16px;will-change:transform}
+  .nb{display:flex;align-items:center;gap:8px}
+  .nb i{width:18px;height:18px;border-radius:50%;background:var(--tf);margin-right:auto}
+  .nb b{width:28px;height:4px;background:var(--tf);opacity:.25}
+  .hx{display:flex;flex-direction:column;gap:6px;padding-top:8px}
+  .hx span{font-size:18px;line-height:22px;font-weight:600;color:var(--tf);letter-spacing:-.2px}
+  .hx i{display:block;height:5px;background:var(--tf);opacity:.18}
+  .hx .l1{width:72%}.hx .l2{width:54%}
+  .hx em{display:block;width:72px;height:18px;margin-top:6px;background:var(--tf)}
+  .pics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1}
+  .pics u{display:block;background:var(--tb);border:1px solid color-mix(in srgb,var(--tf) 14%,transparent)}
   :global(:root[data-theme="dark"]) .pv{filter:brightness(.9)}
   .tm{display:flex;justify-content:space-between;align-items:center;padding:12px 8px 4px}
   .tm strong{font-size:16px;line-height:24px;font-weight:600}
-  .pg{margin-top:80px}
   .pr{display:flex;align-items:baseline;gap:4px;font-size:42px;line-height:48.3px;font-weight:600;letter-spacing:-.84px;margin:4px 0}
   .pr small{font-size:14px;line-height:21px;font-weight:400;letter-spacing:0;color:var(--mute)}
-  .note{margin-top:24px;font-size:13px;line-height:18px;color:var(--lab);text-align:center}
+  .note{margin-top:24px;font-size:13px;line-height:18px;color:var(--lab)}
   @media (max-width:1023px){
     .cc{margin-top:8px}
-    .pg{margin-top:40px;grid-template-columns:1fr 1fr!important}
+    .pg{grid-template-columns:1fr 1fr!important}
     .pr{font-size:30px;line-height:34.5px}
-    .note{text-align:left}
   }
 </style>

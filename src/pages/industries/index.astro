@@ -14,24 +14,25 @@ const cards = [
 ---
 <Page title="Industries · Built for how your business sells · Wintech Studio" description="Websites, AI assistants and brands tuned to fashion and beauty, food, wellness, engineering, real estate and startups in Nigeria." crumbs={[['Industries', '/industries']]}>
   <div class="dm">
-  <section class="dm-top">
-    <div class="wrap">
-      <div class="dm-head c">
+  <section class="dm-top ix">
+    <div class="wrap dm-stick">
+      <div class="dm-head">
         <p class="dm-eb">Industries</p>
-        <h1 class="dm-h1">Built for how your business actually sells.</h1>
+        <h1 class="dm-h1 sm">Built for how your business actually sells.</h1>
         <p class="dm-intro">The same team, tuned to the questions your customers ask.</p>
+        <div class="dm-ctas"><a class="dm-btn p" href="/book">Book a call</a><a class="dm-btn s" href="/work">See our work</a></div>
       </div>
+      <div class="dm-grid g2">{cards.map(([i, t, d, tags, h]) => <a class="dm-card" href={h}><span class="ti"><span class="dm-ib"><Lc name={i} /></span><span class="dm-arrow"><Lc name="arrow-up-right" /></span></span><h2 class="dm-h3">{t}</h2><p class="dm-body">{d}</p><span class="tg">{tags}</span></a>)}</div>
     </div>
-  </section>
-  <section class="dm-sec flush">
-    <div class="wrap dm-grid g3">{cards.map(([i, t, d, tags, h]) => <a class="dm-card" href={h}><span class="ti"><span class="dm-ib"><Lc name={i} /></span><span class="dm-arrow"><Lc name="arrow-up-right" /></span></span><h2 class="dm-h3">{t}</h2><p class="dm-body">{d}</p><span class="tg">{tags}</span></a>)}</div>
   </section>
   </div>
 </Page>
 <style>
+  .ix{padding-bottom:128px}
+  .dm-head .dm-ctas{margin-top:8px}
   .dm-card{min-height:240px}
   .ti{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
   .tg{margin-top:auto;padding-top:8px;font-size:13px;line-height:18px;color:var(--lab)}
   a:hover h2{color:var(--sig)}
-  @media (max-width:1023px){.dm-card{min-height:0}}
+  @media (max-width:1023px){.dm-card{min-height:0}.ix{padding-bottom:64px}}
 </style>

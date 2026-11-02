@@ -4,6 +4,7 @@ import Lc from '../components/ui/Lc.astro';
 import '../styles/studio.css';
 const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About Wintech Studio', mainEntity: { '@type': 'Person', name: 'Oladele Ibraheem', jobTitle: 'Founder and project lead', worksFor: { '@type': 'Organization', name: 'Wintech Studio' } } };
 const facts = [['Lagos', 'working worldwide'], ['2020', 'when Wintech started'], ['1', 'project lead per client'], ['A few', 'projects at a time']];
+const films = [['mylo', 'Mylo', 'Our own product'], ['virelle', 'Virelle Wellness', 'Brand, store, packaging'], ['tobel-pearls', 'Tobel Pearls', 'Brand identity']];
 const bench = [['palette', 'Brand designers'], ['pen', 'Product designers'], ['code', 'Developers'], ['camera', 'Film and photo'], ['bot', 'AI engineers']];
 ---
 <Page title="About · Wintech Studio" description="A Lagos design and build studio. We make the brand, the website or store, the AI and the automation a business runs on." crumbs={[['About', '/about']]} jsonld={[ld]}>
@@ -16,14 +17,19 @@ const bench = [['palette', 'Brand designers'], ['pen', 'Product designers'], ['c
           <p class="dm-intro">A Lagos design and build studio. We make the brand, the website or store, the AI and the automation a business runs on.</p>
         </div>
         <dl class="dm-grid g4 facts">{facts.map(([a, b]) => <div class="dm-stat"><dt><b>{a}</b></dt><dd><span>{b}</span></dd></div>)}</dl>
+        <div class="dm-grid g3 films">{films.map(([s, n, t]) => (
+          <a class="film" href={`/work/${s}`}>
+            <span class="dm-media fmv" data-pfx="0.06"><img src={`/images/cases/film-${s}-800.webp`} alt={`${n} case study`} width="1292" height="727" loading="lazy" decoding="async" /></span>
+            <span class="fc"><strong>{n}</strong><span>{t}</span></span>
+          </a>
+        ))}</div>
       </div>
     </section>
 
     <section class="dm-sec alt">
-      <div class="wrap">
+      <div class="wrap dm-stick note-g">
+        <div class="dm-head"><p class="dm-eb">A note from the founder</p><h2 class="dm-h2s">Built to be the team I never had.</h2></div>
         <article class="note">
-          <p class="dm-eb">A note from the founder</p>
-          <h2 class="dm-h2s">Built to be the team I never had.</h2>
           <p>Good ideas don't die because they were bad. They die because one person is doing six jobs, or managing five freelancers who never talk to each other.</p>
           <p>So you talk to one project lead. Behind that person sit the designers, developers, film crew and the AI. One plan, one price, something new every week.</p>
           <p>We take a few projects at a time and say no when we are not the right fit.</p>
@@ -34,9 +40,9 @@ const bench = [['palette', 'Brand designers'], ['pen', 'Product designers'], ['c
     </section>
 
     <section class="dm-sec">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">Who we build for</p><h2 class="dm-h2">Good fits, and poor ones.</h2></div>
-        <div class="dm-grid g2 fg">
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">Who we build for</p><h2 class="dm-h2s">Good fits, and poor ones.</h2></div>
+        <div class="dm-grid fg">
           <div class="dm-card"><p class="dm-eb">We build for</p><ul class="dm-ticks">{['Owners whose product already sells', 'Businesses running before tech was part of it', 'Founders with proof of demand or money in hand', 'People who will keep running it after launch'].map(t => <li><Lc name="check" class="ok" />{t}</li>)}</ul></div>
           <div class="dm-card"><p class="dm-eb">We are a poor fit if</p><ul class="dm-ticks">{['You want the cheapest quote in town', 'You need it yesterday with no plan', 'You want us to run the business for you', 'You cannot spare two hours a week'].map(t => <li><Lc name="x" class="no" />{t}</li>)}</ul></div>
         </div>
@@ -44,10 +50,9 @@ const bench = [['palette', 'Brand designers'], ['pen', 'Product designers'], ['c
     </section>
 
     <section class="dm-sec line">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">The bench</p><h2 class="dm-h2">Specialists behind the curtain.</h2><p class="dm-intro">Wintech keeps the relationship, the strategy and the standard. Named partners produce under our brief and our review.</p></div>
-        <ul class="dm-cells c5 bl">{bench.map(([ic, t]) => <li><span class="dm-ib"><Lc name={ic} /></span><span>{t}</span></li>)}</ul>
-        <div class="bc"><a class="dm-btn s mw" href="/join-the-bench">Join the bench</a></div>
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">The bench</p><h2 class="dm-h2s">Specialists behind the curtain.</h2><p class="dm-intro">Wintech keeps the relationship, the strategy and the standard. Named partners produce under our brief and our review.</p><div class="bc"><a class="dm-btn s mw" href="/join-the-bench">Join the bench</a></div></div>
+        <ul class="dm-rows bl">{bench.map(([ic, t]) => <li><span class="dm-ib s36"><Lc name={ic} size={18} /></span><span>{t}</span></li>)}</ul>
       </div>
     </section>
   </div>
@@ -59,8 +64,15 @@ const bench = [['palette', 'Brand designers'], ['pen', 'Product designers'], ['c
 <style>
   .facts{margin:64px 0 0}
   .facts dd{margin:0}
-  .note{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-  .note h2{margin-bottom:8px}
+  .films{margin-top:20px}
+  .film{display:flex;flex-direction:column;border:1px solid var(--hl);padding:8px;text-decoration:none;color:var(--fg);transition:border-color .15s}
+  .film:hover{border-color:var(--hl2)}
+  .fmv{display:block;aspect-ratio:16/10}
+  .fmv img{will-change:transform}
+  .fc{display:flex;justify-content:space-between;gap:12px;padding:12px 8px 4px;font-size:14px;line-height:21px}
+  .fc strong{font-weight:600}.fc span{color:var(--mute)}
+  .film:hover strong{color:var(--sig)}
+  .note{max-width:640px;display:flex;flex-direction:column;gap:16px}
   .note>p:not(.dm-eb):not(.by){font-size:18px;line-height:27px;color:var(--mute)}
   .sig{color:var(--fg);display:block;margin-top:8px}
   .sig path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s ease-out .2s forwards;animation-play-state:paused}
@@ -68,20 +80,18 @@ const bench = [['palette', 'Brand designers'], ['pen', 'Product designers'], ['c
   @keyframes draw{to{stroke-dashoffset:0}}
   @media (prefers-reduced-motion:reduce){.sig path{animation:none;stroke-dashoffset:0}}
   .by{font-size:14px;line-height:21px;color:var(--lab)}
-  .fg{margin-top:80px}
   .fg .dm-card{padding:32px;gap:16px}
   .fg :global(.ok){color:var(--ok)}
   .fg :global(.no){color:var(--err)}
-  .bl{list-style:none;padding:0;margin-top:80px}
-  .bl li{flex-direction:row;align-items:center;gap:12px;padding:20px;font-size:16px;font-weight:500;line-height:24px}
-  .bc{display:flex;justify-content:center;margin-top:40px}
+  .bl li{display:flex;align-items:center;gap:16px;padding:24px 0;font-size:20px;font-weight:600;line-height:26px;letter-spacing:-.2px}
+  .bc{margin-top:8px}
   @media (max-width:1023px){
     .facts{margin-top:32px;grid-template-columns:1fr 1fr!important;gap:12px}
     .facts .dm-stat{padding:16px}
+    .films{margin-top:12px;gap:12px}
     .note>p:not(.dm-eb):not(.by){font-size:16px;line-height:24px}
-    .fg,.bl{margin-top:40px}
     .fg .dm-card{padding:20px}
-    .bl li{padding:14px 16px}
-    .bc{margin-top:24px}
+    .bl li{padding:14px 0;font-size:17px;line-height:24px}
+    .bc{margin-top:8px}
   }
 </style>

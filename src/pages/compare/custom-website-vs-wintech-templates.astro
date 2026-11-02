@@ -22,9 +22,12 @@ const title = 'Custom website or Wintech Templates: which one fits your business
 <Page title="Custom website or Wintech Templates: which fits your business? · Wintech Studio" description="Compare a custom website with a free Wintech Templates site: cost, time to launch, design freedom, payments, ownership and Google." crumbs={[['Compare', '/guides'], ['Website options', '/compare/custom-website-vs-wintech-templates']]} closing={false}>
   <div class="dm">
   <section class="dm-top cmp">
-    <div class="wrap">
+    <div class="wrap dm-stick">
+      <div class="side">
       <div class="dm-head"><p class="dm-eb">Compare</p><h1 class="dm-h1 sm">{title}</h1></div>
       <div class="dm-short"><p class="dm-eb">Short answer</p><p>Selling a few products and need to start this week: a template. Need a site that proves your work, ranks on Google or does something no template can: a custom build.</p></div>
+      </div>
+      <div class="body">
       <table class="tb">
         <thead><tr><td></td>{cols.map((c, i) => <th scope="col" class:list={{ ours: i === 0 }}>{c}</th>)}</tr></thead>
         <tbody>{rows.map(r => <tr><th scope="row">{r[0]}</th><td>{r[1]}</td><td>{r[2]}</td></tr>)}</tbody>
@@ -35,6 +38,7 @@ const title = 'Custom website or Wintech Templates: which one fits your business
         <div class="dm-card panel"><h2 class="dm-h3">Pick a template if</h2><p class="dm-body">You sell a handful of things, you want to be live today, and you are happy with a proven layout.</p><a class="dm-btn s mw" href={contact.templates} target="_blank" rel="noopener">Browse templates</a></div>
         <div class="dm-card hi"><h2 class="dm-h3">Pick custom if</h2><p class="dm-body">Your site has to win trust, rank on Google, take bookings or orders your way, or connect to your tools.</p><a class="dm-btn p mw" href="/services/websites#brief">Build your brief</a></div>
       </div>
+      </div>
     </div>
   </section>
   </div>
@@ -44,10 +48,10 @@ const title = 'Custom website or Wintech Templates: which one fits your business
 
 <style>
   .cmp{padding-bottom:128px}
-  .dm-short{margin-top:40px;max-width:880px}
-  .tb{width:100%;margin-top:40px;border-collapse:collapse;border:1px solid var(--hl);table-layout:fixed}
+  .dm-short{margin-top:32px}
+  .tb{width:100%;border-collapse:collapse;border:1px solid var(--hl);table-layout:fixed}
   .tb thead th,.tb thead td{height:56px;padding:0 24px;text-align:left;font-size:16px;font-weight:600;line-height:24px;position:relative;background:var(--panel)}
-  .tb thead td{width:280px}
+  .tb thead td{width:180px}
   .tb .ours::before{content:'';position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--sig)}
   .tb tbody th,.tb tbody td{padding:14px 24px;border-top:1px solid var(--hl);text-align:left;vertical-align:top;font-size:16px;line-height:24px}
   .tb tbody th{font-weight:500}.tb tbody td{color:var(--mute)}
@@ -60,7 +64,7 @@ const title = 'Custom website or Wintech Templates: which one fits your business
     .cmp{padding-bottom:64px}
     .dm-short{margin-top:24px}
     .tb{display:none}
-    .mc{display:grid;gap:16px;margin-top:24px}
+    .mc{display:grid;gap:16px}
     .opt{position:relative;border:1px solid var(--hl)}
     .opt.ours::before{content:'';position:absolute;left:-1px;right:-1px;top:-1px;height:2px;background:var(--sig)}
     .opt h2{padding:14px 16px;font-size:16px;line-height:24px}

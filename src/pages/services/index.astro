@@ -39,8 +39,8 @@ const words = [['WEBSITE', 'Sites and stores'], ['BRAND', 'Logo, identity, packa
     </section>
 
     <section class="dm-sec line">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">All services</p><h2 class="dm-h2">Six services, one team.</h2><p class="dm-intro">Starting prices and typical timelines. Your proposal fixes the real price before any work starts.</p></div>
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">All services</p><h2 class="dm-h2s">Six services, one team.</h2><p class="dm-intro">Starting prices and typical timelines. Your proposal fixes the real price before any work starts.</p></div>
         <ul class="dm-rows list">
           {services.map((s, i) => (
             <li>
@@ -80,12 +80,13 @@ const words = [['WEBSITE', 'Sites and stores'], ['BRAND', 'Logo, identity, packa
 
   .row{display:flex;align-items:center;gap:20px;padding:24px 0;text-decoration:none;color:var(--fg)}
   .row .dm-num{width:24px}
+  .list{border-top:1px solid var(--hl)}
   .tx{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
   .tx strong{font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.2px}
   .tx span{font-size:16px;line-height:24px;color:var(--mute);max-width:560px}
   .row:hover strong{color:var(--sig)}
   .mp{display:none;font-style:normal;font-size:13px;line-height:18px;color:var(--lab);margin-top:2px}
-  .pr{display:flex;flex-direction:column;gap:2px;width:200px;flex:none}
+  .pr{display:flex;flex-direction:column;gap:2px;width:150px;flex:none}
   .pr b{font-size:14px;line-height:21px;font-weight:600}
   .pr span{font-size:13px;line-height:18px;color:var(--lab)}
 

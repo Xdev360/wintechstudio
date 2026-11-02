@@ -17,6 +17,8 @@
   /* layout: 1200 content, 40 side padding on desktop (120 at 1440 by centring), 16 on phones */
   --w-max:1200px; --gutter:clamp(16px,calc((100vw - 390px) * .0381 + 16px),40px);
   --sec-y:128px;
+  /* sticky columns sit under the 75px bar (the 32px strip scrolls away: header is sticky at top:-32px) */
+  --stick:99px;
   --radius:2px;
   --ring:0 0 0 3px rgba(59,91,255,.28);
   color-scheme:light;

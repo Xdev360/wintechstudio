@@ -40,8 +40,8 @@ const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'How Wint
     </section>
 
     <section class="dm-sec">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">Six steps</p><h2 class="dm-h2">From brief to a system you can run.</h2></div>
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">Six steps</p><h2 class="dm-h2s">From brief to a system you can run.</h2><p class="dm-intro">Something new every Friday. Nothing ships until you say yes.</p><a class="dm-link" href="/book">Book a call</a></div>
         <ol class="dm-rows st">{steps.map(([n, , d, ai, we, when], i) => (
           <li>
             <div class="st-n"><span class="dm-num">{String(i + 1).padStart(2, '0')}</span><span class="dm-eb">{when}</span></div>
@@ -63,8 +63,9 @@ const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'How Wint
   .ln i{display:block;width:100%;height:1px;background:var(--sig)}
   .tm{list-style:none;padding:4px 0;margin:0;border:1px solid var(--hl);background:var(--bg)}
   .tm li{display:flex;align-items:center;gap:12px;height:44px;padding:8px 16px;font-size:16px;font-weight:500;line-height:24px}
-  .st{margin-top:80px}
-  .st li{display:grid;grid-template-columns:120px minmax(0,1.3fr) 1fr 1fr;gap:32px;align-items:start;padding:28px 0}
+  .st li{display:grid;grid-template-columns:96px minmax(0,1fr) minmax(0,1fr);gap:16px 20px;align-items:start;padding:32px 0}
+  .st-t{grid-column:2 / 4}
+  .st-n{grid-row:span 2}
   .st-n{display:flex;flex-direction:column;gap:6px}
   .st-n .dm-num{font-size:20px;line-height:26px;font-weight:600;color:var(--fg)}
   .st-t{display:flex;flex-direction:column;gap:6px}
@@ -75,8 +76,8 @@ const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'How Wint
     .dg{grid-template-columns:1fr;gap:0}
     .ln{flex-direction:row;justify-content:flex-start;gap:12px;padding:12px 0 12px 16px}
     .ln i{width:1px;height:24px;order:-1}
-    .st{margin-top:40px}
     .st li{grid-template-columns:1fr;gap:12px;padding:20px 0}
+    .st-t{grid-column:auto}.st-n{grid-row:auto}
     .st-n{flex-direction:row;align-items:baseline;gap:12px}
   }
 </style>

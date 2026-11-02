@@ -18,8 +18,8 @@ const steps = [['Paid diagnostic', '$200. We study the business and the numbers.
     </section>
 
     <section class="dm-sec alt">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">Two ways to work with us</p><h2 class="dm-h2">Build or partner build</h2></div>
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">Two ways to work with us</p><h2 class="dm-h2s">Build or partner build</h2><p class="dm-intro">Pay the full price and own it outright, or pay less up front and share what the system sells.</p></div>
         <div class="dm-grid g2 cg">
           <div class="dm-card cc"><p class="dm-eb">Pay the full price</p><h3>Build</h3><dl>{build.map(([a, b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div>
           <div class="dm-card cc hi"><div class="ct"><p class="dm-eb">By invitation</p><span class="dm-tag b">After the diagnostic</span></div><h3>Partner build</h3><dl>{partner.map(([a, b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div>
@@ -28,16 +28,18 @@ const steps = [['Paid diagnostic', '$200. We study the business and the numbers.
     </section>
 
     <section class="dm-sec">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">How you get one</p><h2 class="dm-h2">Three steps, no promises up front</h2></div>
-        <ol class="dm-cells c3 sg">{steps.map(([t, d], i) => <li><span class="dm-num">{String(i + 1).padStart(2, '0')}</span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></li>)}</ol>
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">How you get one</p><h2 class="dm-h2s">Three steps, no promises up front</h2></div>
+        <div>
+        <ol class="dm-rows sg">{steps.map(([t, d], i) => <li><span class="dm-num">{String(i + 1).padStart(2, '0')}</span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></li>)}</ol>
         <div class="go"><a class="dm-btn p mw" href="/diagnostic">Start with the diagnostic</a><a class="dm-link" href="/book?service=diagnostic">Or book a call</a></div>
+        </div>
       </div>
     </section>
   </div>
 </Page>
 <style>
-  .cg{margin-top:80px;align-items:start}
+  .cg{align-items:start}
   .cc{padding:32px;gap:16px}
   .cc.hi{border-color:var(--fg)}
   .ct{display:flex;justify-content:space-between;align-items:center;gap:12px}
@@ -46,10 +48,12 @@ const steps = [['Paid diagnostic', '$200. We study the business and the numbers.
   .cc dl div{border-top:1px solid var(--hl);padding:12px 0;display:flex;flex-direction:column;gap:2px}
   .cc dt{font-size:13px;line-height:18px;color:var(--lab)}
   .cc dd{margin:0;font-size:16px;line-height:24px;font-weight:500}
-  .sg{list-style:none;padding:0;margin-top:80px}
-  .go{display:flex;justify-content:center;align-items:center;gap:24px;margin-top:40px}
+  .sg li{display:grid;grid-template-columns:64px 220px minmax(0,1fr);gap:24px;align-items:baseline;padding:32px 0}
+  .sg .dm-num{font-size:20px;line-height:26px;font-weight:600;color:var(--fg)}
+  .go{display:flex;align-items:center;gap:24px;margin-top:40px}
   @media (max-width:1023px){
-    .cg,.sg{margin-top:40px}
+    .sg li{grid-template-columns:40px minmax(0,1fr);gap:4px 12px;padding:20px 0}
+    .sg .dm-num{font-size:16px;line-height:24px;grid-row:span 2}
     .cc{padding:20px}
     .cc h3{font-size:24px;line-height:31px}
     .go{flex-direction:column;align-items:stretch;gap:16px;margin-top:24px}

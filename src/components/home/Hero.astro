@@ -28,7 +28,7 @@ const logos: { name: string; icon?: string }[] = [
         <div class="ctas"><a class="h-btn primary" href="/book">Book a call</a><a class="h-btn soft" href="/work">See our work</a></div>
       </div>
       <aside class="now" id="now-playing" data-reel={JSON.stringify(reel)} aria-label="Now playing">
-        <a class="media" id="np-media" href={reel[0].href} tabindex="-1" aria-hidden="true">
+        <a class="media" id="np-media" data-pfx="0.05" href={reel[0].href} tabindex="-1" aria-hidden="true">
           <img id="np-poster" src={reel[0].poster} alt="" width="800" height="450" fetchpriority="high" />
           <video id="np-video" muted playsinline loop preload="none" hidden></video>
           <span class="chip"><Ico name="play" size={10} stroke={0} class="pl" />Play film</span>

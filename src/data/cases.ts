@@ -9,6 +9,7 @@ export type Visual =
   | { kind: 'swatches'; id: string; items: { name: string; hex: string; ink: string }[]; bg?: string };
 export type Chapter = { n: string; title: string; lead: string; body: string; list?: [string, string][]; visuals?: Visual[] };
 export type Tile = [file: string, w: number, h: number];
+export type CardMedia = { kind: 'motion' | 'image'; video?: string; poster: string };
 export type Case = {
   slug: string; name: string; kind: 'Client project' | 'Our own product';
   tag: 'Our product' | 'Client' | 'Concept'; year: string;
@@ -20,6 +21,10 @@ export type Case = {
   chapters: Chapter[];
   want: { label: string; href: string };
   services: string[];
+  // Card media. 'motion' plays public/videos/cards/<slug>.mp4 (and .webm) once the file exists,
+  // otherwise it shows the poster with a small "Film" chip. 'image' always shows the poster.
+  // Specs for each loop: docs/MOTION-LIST.md.
+  card: CardMedia;
   // Testimonial slot: leave out until a real, approved quote exists. Never invent one.
   // testimonial?: { quote: string; name: string; role: string; avatar?: string };
 };
@@ -33,6 +38,7 @@ const todo = (id: string, h: number, label: string, bg?: string, w = 1280): Visu
 export const cases: Case[] = [
   {
     slug: 'mylo', name: 'Mylo', kind: 'Our own product', tag: 'Our product', year: '2026',
+    card: { kind: 'motion', video: '/videos/cards/mylo.mp4', poster: '/images/cases/cover-mylo.webp' },
     cardLine: 'Goals, systems and private rooms. Brand, character, app and website.', cardServices: ['Branding', 'Apps', 'Websites', 'Motion'], filters: ['Branding', 'Apps', 'Websites', 'Motion'], coverId: '802:1365',
     headline: 'Designing Mylo, where getting things done feels like a game',
     line: 'A productivity app with games, friends and rewards built in.',
@@ -56,6 +62,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'virelle', name: 'Virelle Wellness', kind: 'Client project', tag: 'Client', year: '2026',
+    card: { kind: 'motion', video: '/videos/cards/virelle.mp4', poster: '/images/cases/cover-virelle.webp' },
     cardLine: 'The shop that was living in an Instagram inbox. Rebrand, store and assistant.', cardServices: ['Branding', 'Websites', 'Motion'], filters: ['Branding', 'Websites', 'Motion'], coverId: '880:12840',
     headline: 'Designing Virelle Wellness, imported wellness you can trust',
     line: 'Brand, store, packaging seal and launch content.',
@@ -77,6 +84,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'manzeelatur-ridho', name: 'Manzeelatur Ridho', kind: 'Client project', tag: 'Client', year: '2026',
+    card: { kind: 'motion', video: '/videos/cards/manzeelatur-ridho.mp4', poster: '/images/cases/cover-manzeelatur-ridho.webp' },
     cardLine: "Arabic and the Qur'an, live from home. Brand, learning app and website.", cardServices: ['Branding', 'Apps', 'Websites', 'Motion'], filters: ['Branding', 'Apps', 'Websites', 'Motion'], coverId: '880:12876',
     headline: 'Designing Manzeelatur Ridho, an online madrasah for families',
     line: 'A learning app for children and adults, with a parent space and an ustadh panel.',
@@ -99,6 +107,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'tobel-pearls', name: 'Tobel Pearls', kind: 'Client project', tag: 'Client', year: '2026',
+    card: { kind: 'image', poster: '/images/cases/cover-tobel-pearls.webp' },
     cardLine: 'A 55-page brand system for a Lagos clearing company.', cardServices: ['Branding', 'Websites'], filters: ['Branding', 'Websites'], coverId: '880:12895',
     headline: 'Designing Tobel Pearls, a brand that looks as fast as five days',
     line: 'Strategy, identity and a 55-page guideline for a Lagos clearing company.',
@@ -120,6 +129,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'lets-hang', name: "Let's Hang", kind: 'Our own product', tag: 'Our product', year: '2026',
+    card: { kind: 'image', poster: '/images/cases/cover-lets-hang.webp' },
     cardLine: 'Nigeria is outside tonight. A map-first app for group plans.', cardServices: ['Apps'], filters: ['Apps'], coverId: '880:12966',
     headline: "Designing Let's Hang, a map of people going out tonight",
     line: 'A map-first app for going out with strangers in Nigeria.',
@@ -142,6 +152,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'cardiorisk', name: 'CardioRisk', kind: 'Client project', tag: 'Client', year: '2026',
+    card: { kind: 'image', poster: '/images/cases/cover-cardiorisk.webp' },
     cardLine: 'Heart risk, made readable. A health AI product.', cardServices: ['Apps'], filters: ['Apps'], coverId: '880:13903',
     headline: 'Designing CardioRisk, a heart risk score anyone can read',
     line: 'A redesign that makes a 10-year heart risk score explainable.',
@@ -163,6 +174,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'virtual-trades', name: 'Virtual Trades', kind: 'Client project', tag: 'Client', year: '2026',
+    card: { kind: 'motion', video: '/videos/cards/virtual-trades.mp4', poster: '/images/cases/cover-virtual-trades.webp' },
     cardLine: 'Gift cards and crypto in, naira out. Brand, app, website and film.', cardServices: ['Branding', 'Apps', 'Websites', 'Motion'], filters: ['Branding', 'Apps', 'Websites', 'Motion'], coverId: '902:920',
     headline: 'Designing Virtual Trades, a calm way to sell gift cards for naira',
     line: 'Brand, app in dark and light, website and homepage film.',

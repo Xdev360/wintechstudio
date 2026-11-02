@@ -55,7 +55,7 @@ const vt = c.slug === 'virtual-trades';
     </section>
     <div class="media">
       <figure class="film">
-        <img src={`/images/cases/film-${c.slug}.webp`} srcset={`/images/cases/film-${c.slug}-800.webp 1292w, /images/cases/film-${c.slug}.webp ${c.film.w * 2}w`} sizes="(max-width:1023px) calc(100vw - 32px), min(1360px, calc(100vw - 80px))" width={c.film.w} height={c.film.h} style={`max-width:min(100%,${c.film.w}px)`} alt={`${c.name}: ${c.film.label}`} fetchpriority="high" decoding="async" />
+        <span class="fr" data-inframe style={`max-width:min(100%,${c.film.w}px)`}><img src={`/images/cases/film-${c.slug}.webp`} srcset={`/images/cases/film-${c.slug}-800.webp 1292w, /images/cases/film-${c.slug}.webp ${c.film.w * 2}w`} sizes="(max-width:1023px) calc(100vw - 32px), min(1360px, calc(100vw - 80px))" width={c.film.w} height={c.film.h} alt={`${c.name}: ${c.film.label}`} fetchpriority="high" decoding="async" /></span>
       </figure>
       <div class="gal"><Masonry slug={c.slug} name={c.name} cols={tiles[c.slug]} /></div>
     </div>
@@ -72,9 +72,9 @@ const vt = c.slug === 'virtual-trades';
                 {ch.list.map(([t, d], k) => <div class="pt"><span class="pn" aria-hidden="true">{String(k + 1).padStart(2, '0')}</span><dt>{t}</dt><dd>{d}</dd></div>)}
               </dl>
             )}
+            {ch.visuals && <div class="cmedia">{ch.visuals.map(v => <Visual v={v} />)}</div>}
           </div>
         </section>
-        {ch.visuals && <div class="media">{ch.visuals.map(v => <Visual v={v} />)}</div>}
       </>
     ))}
 
@@ -91,26 +91,32 @@ const vt = c.slug === 'virtual-trades';
 </Page>
 
 <script>
-  // Swipe slider (mobile gallery): progress line follows scroll.
-  document.querySelectorAll<HTMLElement>('[data-slider]').forEach(s => {
-    const t = s.querySelector<HTMLElement>('[data-track]'); const b = s.querySelector<HTMLElement>('[data-bar]');
-    if (!t || !b) return;
-    const up = () => { const vis = t.clientWidth / t.scrollWidth; const p = t.scrollLeft / Math.max(1, t.scrollWidth - t.clientWidth); b.style.width = `${Math.max(8, vis * 100)}%`; b.style.left = `${p * (100 - Math.max(8, vis * 100))}%`; };
-    t.addEventListener('scroll', up, { passive: true }); addEventListener('resize', up); up();
-  });
-  // Parallax columns (desktop, motion allowed): side columns drift against the middle one.
-  const par = document.querySelector<HTMLElement>('[data-parallax]');
-  if (par && matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches) {
-    const cols = [...par.querySelectorAll<HTMLElement>('[data-speed="1"]')];
+  // In-frame parallax: chapter images and the film move a few percent inside their frames as they cross
+  // the viewport. The image is scaled 1.06 (3% spare per edge) and travels at most 2.4%, so no edge shows.
+  const frames = [...document.querySelectorAll<HTMLElement>('[data-inframe]')];
+  if (frames.length && matchMedia('(prefers-reduced-motion:no-preference)').matches && 'IntersectionObserver' in window) {
+    const seen = new Set<HTMLElement>();
     let raf = 0;
-    const run = () => { raf = 0; const r = par.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height))); cols.forEach(c => { c.style.transform = `translateY(${(0.5 - p) * 48}px)`; }); };
-    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(run); }, { passive: true }); run();
+    const run = () => {
+      raf = 0;
+      const vh = innerHeight;
+      seen.forEach(f => {
+        const im = f.firstElementChild as HTMLElement | null; if (!im) return;
+        const r = f.getBoundingClientRect();
+        const p = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+        im.style.transform = `translate3d(0,${((p - 0.5) * -4.8).toFixed(2)}%,0) scale(1.06)`;
+      });
+    };
+    const ask = () => { if (!raf && seen.size) raf = requestAnimationFrame(run); };
+    const io = new IntersectionObserver(es => { es.forEach(e => { const f = e.target as HTMLElement; e.isIntersecting ? seen.add(f) : seen.delete(f); }); ask(); }, { rootMargin: '100px 0px' });
+    frames.forEach(f => { f.classList.add('fx'); io.observe(f); });
+    addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask);
   }
   // Chapter rule grows in when the chapter enters the viewport (as on DesignMe).
   const rules = document.querySelectorAll<HTMLElement>('.case .ch');
   if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -20% 0px' });
-    rules.forEach(r => io.observe(r));
+    const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); ro.unobserve(e.target); } }), { rootMargin: '0px 0px -20% 0px' });
+    rules.forEach(r => ro.observe(r));
   } else rules.forEach(r => r.classList.add('in-view'));
 </script>
 
@@ -138,7 +144,7 @@ const vt = c.slug === 'virtual-trades';
   .stat{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:4px;padding:20px;background:var(--c-card);border:1px solid var(--c-line)}
   .stat dd{margin:0;font-size:32px;line-height:35.2px;font-weight:600;letter-spacing:-.64px}
   .stat dt{font-size:14px;line-height:21px;font-weight:500;opacity:.75}
-  .status{display:flex;flex-direction:column;align-items:flex-start;gap:20px;padding:24px;background:var(--c-card);border:1px solid var(--c-line)}
+  .status{display:flex;flex-direction:column;align-items:flex-start;gap:20px;padding:24px;background:var(--c-card);border:1px solid var(--c-line);position:sticky;top:var(--stick);align-self:start;box-sizing:border-box}
   .ic{width:40px;height:40px;border-radius:9px;display:block}
   .status .lbl{margin-bottom:-8px}
   .st{margin:0;font-size:24px;line-height:32.4px;font-weight:600;letter-spacing:-.24px;max-width:544px}
@@ -154,15 +160,22 @@ const vt = c.slug === 'virtual-trades';
   .svc li :global(svg){opacity:.83}
 
   /* Chapters: 128 / 80 inside a 1280 container; index 389 + gap 32 + body 672 */
-  .ch{max-width:1200px;margin:0 auto;padding:128px 40px 80px;box-sizing:content-box;display:grid;grid-template-columns:389px minmax(0,672px);gap:32px}
-  .idx{display:flex;flex-direction:column;gap:16px}
+  .ch{max-width:1200px;margin:0 auto;padding:128px 40px 80px;box-sizing:content-box;display:grid;grid-template-columns:389px minmax(0,1fr);gap:32px}
+  /* Chapter images sit in the right column, so the chapter title holds while text and images scroll up to its end line */
+  .cmedia{margin-top:28px;display:flex;flex-direction:column;gap:12px}
+  .cmedia > :global(*){width:100%}
+  .cmedia :global(img){width:100%!important;max-width:none!important;height:auto}
+  /* Sticky chapter index: holds under the sticky header bar (75px; the 32px strip scrolls away) while the body scrolls past. */
+  .case{--stick:calc(75px + 32px)}
+  .idx{display:flex;flex-direction:column;gap:16px;position:sticky;top:var(--stick);align-self:start}
   .ln{margin:0;display:flex;align-items:baseline;gap:16px}
   .num{font-size:16px;line-height:24px;opacity:.62;font-variant-numeric:tabular-nums}
   .ch h2{margin:0;font-size:24px;line-height:31.2px;font-weight:600;letter-spacing:-.24px}
   .cr{display:block;width:0;height:2px;background:var(--c-fg);transition:width .6s cubic-bezier(.2,.7,.2,1)}
   .ch.in-view .cr{width:40px}
   @media (prefers-reduced-motion:reduce){.cr{transition:none;width:40px}}
-  .bd{display:flex;flex-direction:column;gap:20px}
+  .bd{display:flex;flex-direction:column;gap:20px;min-width:0}
+  .bd > .lead,.bd > .tx,.bd > .pts{max-width:672px}
   .lead{margin:0;font-size:18px;line-height:26.1px;font-weight:600;letter-spacing:-.18px}
   .tx{margin:0;font-size:16px;line-height:24px;opacity:.75}
   .pts{margin:0}
@@ -177,7 +190,9 @@ const vt = c.slug === 'virtual-trades';
   .media{padding:0 40px;display:flex;flex-direction:column;align-items:center;gap:12px}
   .media > :global(*){width:100%}
   .film{margin:0;display:flex;justify-content:center;background:transparent}
-  .film img{display:block;width:100%;height:auto;background:var(--c-panel)}
+  .fr{display:block;width:100%;overflow:hidden;background:var(--c-panel)}
+  .film img{display:block;width:100%;height:auto}
+  .fr.fx img{transform:scale(1.06);will-change:transform;backface-visibility:hidden}
   .gal{width:100%}
 
   /* Next case: section 128, centred head, 3 cards of 387 */
@@ -192,6 +207,7 @@ const vt = c.slug === 'virtual-trades';
     .ov h1{font-size:36px;line-height:41.4px;letter-spacing:-.72px}
     .sum{margin-top:16px;font-size:16px;line-height:22.4px}
     .grid{grid-template-columns:1fr;margin-top:32px}
+    .idx,.status{position:static}
     .stat dd{font-size:24px;line-height:26.4px;letter-spacing:-.48px}
     .st{font-size:20px;line-height:27px;letter-spacing:-.2px}
     .svc{margin-top:32px}

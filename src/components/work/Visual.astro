@@ -13,7 +13,7 @@ let w = v.kind === 'todo' ? v.w : 0, h = v.kind === 'todo' ? v.h : 0;
 if (has) { try { const m = await sharp(`public${file}`).metadata(); w = m.width ?? w; h = m.height ?? h; } catch {} }
 ---
 {v.kind === 'todo' ? (has ? (
-  <figure class="img" data-figma={v.id}><img src={file} alt={v.label} width={w} height={h} style={`max-width:min(100%,${w}px)`} loading="lazy" decoding="async" /></figure>
+  <figure class="img" data-figma={v.id}><span class="fr" data-inframe style={`max-width:min(100%,${w}px)`}><img src={file} alt={v.label} width={w} height={h} loading="lazy" decoding="async" /></span></figure>
 ) : null) : (
   <figure class="sw" data-figma={v.id} style={v.bg ? `--sw-bg:${v.bg}` : ''} aria-label="Colour palette">
     {v.items.map(i => <div class="chip" style={`background:${i.hex};color:${i.ink}`}><strong>{i.name}</strong><span>{i.hex}</span></div>)}
@@ -22,7 +22,9 @@ if (has) { try { const m = await sharp(`public${file}`).metadata(); w = m.width 
 <style>
   figure{margin:0}
   .img{display:flex;justify-content:center}
+  .fr{display:block;width:100%;overflow:hidden}
   .img img{display:block;width:100%;height:auto}
+  .fr:global(.fx) img{transform:scale(1.06);will-change:transform;backface-visibility:hidden}
   .sw{background:var(--sw-bg,var(--c-panel));padding:64px 56px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
   :root[data-theme="dark"] .sw{background:var(--c-panel)}
   .chip{aspect-ratio:208/129;border-radius:12px;padding:0 14px 14px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px}

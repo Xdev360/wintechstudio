@@ -28,12 +28,12 @@ const [lead, ...rest] = posts;
   <section class="dm-sec flush">
     <div class="wrap">
       <a class="feat post" href={lead.href} data-c={lead.cat}>
-        <div class="dm-media cover big" data-todo-image="823:6026" aria-hidden="true"><span class="dm-ib s36"><Lc name={icons[lead.cat]} size={18} /></span></div>
+        <div class="dm-media cover big" data-figma="823:6026" data-pfx="0.05" aria-hidden="true"><span class="pat" data-pfx-target></span><span class="ci"><Lc name={icons[lead.cat]} size={28} /></span></div>
         <div class="ft"><div class="meta"><span class="dm-tag">{lead.cat}</span><span class="mn">{lead.min}</span></div><h2 class="dm-h2s">{lead.t}</h2><p class="dm-body">{lead.d}</p><span class="dm-link">Read the guide</span></div>
       </a>
       <div class="dm-grid g3 pg">{rest.map(p => (
         <a class="post card" href={p.href} data-c={p.cat}>
-          <div class="dm-media cover" data-todo-image="823:6040" aria-hidden="true"><span class="dm-ib s36"><Lc name={icons[p.cat]} size={18} /></span></div>
+          <div class="dm-media cover" data-figma="823:6040" data-pfx="0.05" aria-hidden="true"><span class="pat" data-pfx-target></span><span class="ci"><Lc name={icons[p.cat]} size={24} /></span></div>
           <div class="meta"><span class="dm-tag">{p.cat}</span><span class="mn">{p.min}</span></div>
           <div class="tt"><h3 class="dm-h3">{p.t}</h3><span class="dm-arrow"><Lc name="arrow-up-right" /></span></div>
         </a>
@@ -48,7 +48,12 @@ const [lead, ...rest] = posts;
 <style>
   .fchips{justify-content:center}
   .post{text-decoration:none;color:var(--fg)}.post[hidden]{display:none}
-  .cover{display:grid;place-items:center;aspect-ratio:4/3}
+  /* covers: drawn, not placeholders. A hairline grid drifts behind a large line icon. */
+  .cover{display:grid;place-items:center;aspect-ratio:4/3;background:color-mix(in srgb,var(--sig) 6%,var(--bg))}
+  .pat{position:absolute;inset:0;background-image:linear-gradient(var(--hl) 1px,transparent 1px),linear-gradient(90deg,var(--hl) 1px,transparent 1px);background-size:32px 32px;background-position:center;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 10%,transparent 62%);mask-image:radial-gradient(circle at 50% 50%,#000 10%,transparent 62%)}
+  .ci{position:relative;display:grid;place-items:center;width:72px;height:72px;border:1px solid var(--hl2);background:var(--bg);color:var(--sig)}
+  .big .ci{width:96px;height:96px}
+  :global(:root[data-theme="dark"]) .ci{color:#8FA3FF}
   .feat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;border:1px solid var(--hl);padding:8px;margin-bottom:20px;transition:border-color .15s}
   .feat .cover{aspect-ratio:16/10}
   .ft{display:flex;flex-direction:column;gap:16px;padding:24px 32px 24px 0}

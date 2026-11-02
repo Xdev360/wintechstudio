@@ -120,7 +120,7 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
   textarea::placeholder{color:var(--lab);opacity:.8}
   textarea:focus{outline:none;border-color:var(--sig)}
 
-  .bb-sum{position:sticky;top:96px;border:1px solid var(--hl);background:var(--bg);padding:24px;display:flex;flex-direction:column;gap:16px}
+  .bb-sum{position:sticky;top:var(--stick,99px);border:1px solid var(--hl);background:var(--bg);padding:24px;display:flex;flex-direction:column;gap:16px}
   .sum-top{display:flex;justify-content:space-between;gap:12px}
   .cnt{font-size:13px;line-height:14.3px;color:var(--lab)}
   .sum-list,.sh-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}

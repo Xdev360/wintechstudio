@@ -21,8 +21,7 @@ const tiles = [['Salon & beauty', '#F4EDE6', '#0A0E17', '#B07A5A', true], ['Cons
         <div class="dm-ctas"><a class="dm-btn p" href="/services/websites#brief">Build your brief</a><a class="dm-btn s" href="/book?service=websites">Book a call</a></div>
       </div>
         <div class="stage" aria-label="Wintech Templates: pick a template and go live today">
-          <div class="artimg" data-todo-image="1064:23720" aria-hidden="true"></div>
-          <div class="shade" aria-hidden="true"></div>
+          <div class="glow" aria-hidden="true" data-parallax="-0.08" data-parallax-max="24"></div>
           <div class="sc">
             <span class="pill"><i></i>Free site at yourname.wintechstudio.com</span>
             <p class="sh">Pick a template. Go live today.</p>
@@ -44,16 +43,18 @@ const tiles = [['Salon & beauty', '#F4EDE6', '#0A0E17', '#B07A5A', true], ['Cons
       </div>
   </section>
   <section class="dm-sec line">
-    <div class="wrap">
-      <div class="dm-head c"><p class="dm-eb">What we fix</p><h2 class="dm-h2">From busy inbox to booked chairs.</h2></div>
+    <div class="wrap dm-stick">
+      <div class="dm-head"><p class="dm-eb">What we fix</p><h2 class="dm-h2s">From busy inbox to booked chairs.</h2></div>
       <ul class="dm-rows pairs">{pairs.map(([a, b]) => <li><span>{a}</span><Lc name="arrow-right" /><strong>{b}</strong></li>)}</ul>
     </div>
   </section>
   <section class="dm-sec alt">
-    <div class="wrap">
-      <div class="dm-head c"><p class="dm-eb">What you get</p><h2 class="dm-h2">Three pieces that work together.</h2></div>
-      <div class="dm-grid g3 get">{get.map(([t, d, l, h]) => <a class="dm-card" href={h}><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p><span class="dm-link">{l}</span></a>)}</div>
+    <div class="wrap dm-stick">
+      <div class="dm-head"><p class="dm-eb">What you get</p><h2 class="dm-h2s">Three pieces that work together.</h2></div>
+      <div>
+      <div class="dm-grid get">{get.map(([t, d, l, h]) => <a class="dm-card" href={h}><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p><span class="dm-link">{l}</span></a>)}</div>
       <div class="nudge"><p>Just starting out? The Salon &amp; beauty template is live today at yourname.wintechstudio.com.</p><a class="dm-btn d mw" href={contact.templates} target="_blank" rel="noopener">See the template <Lc name="arrow-up-right" /></a></div>
+      </div>
     </div>
   </section>
   </div>
@@ -62,8 +63,7 @@ const tiles = [['Salon & beauty', '#F4EDE6', '#0A0E17', '#B07A5A', true], ['Cons
 </Page>
 <style>
   .stage{position:relative;flex:none;width:560px;height:420px;overflow:hidden;background:#0A0E17;color:#fff;font-family:var(--font)}
-  .artimg{position:absolute;inset:0;background:transparent}
-  .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,23,.55),rgba(10,14,23,.15),rgba(10,14,23,.7))}
+  .glow{position:absolute;inset:-40px;background:radial-gradient(60% 50% at 50% 0%,rgba(59,91,255,.45),transparent 70%),radial-gradient(40% 40% at 85% 100%,rgba(176,122,90,.35),transparent 70%)}
   .sc{position:relative;display:flex;flex-direction:column;align-items:center;padding:22px 22px 0}
   .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;background:rgba(255,255,255,.08);border:.8px solid rgba(255,255,255,.16);border-radius:999px;font-size:10px;font-weight:500;line-height:12px}
   .pill i{width:5px;height:5px;border-radius:50%;background:#3DDC97}
@@ -87,19 +87,16 @@ const tiles = [['Salon & beauty', '#F4EDE6', '#0A0E17', '#B07A5A', true], ['Cons
   .tl{display:flex;justify-content:space-between;align-items:center;padding:6px 1px 3px;font-size:9.3px;font-weight:500}.tl small{font-size:8.6px;font-weight:400;color:#B9C1CF}
   .top{display:grid;grid-template-columns:minmax(0,1fr) 560px;gap:64px;align-items:center}
   .ind .dm-ctas{margin-top:8px}
-  .pairs{margin-top:80px}
   .pairs li{display:grid;grid-template-columns:minmax(0,1fr) 24px minmax(0,1fr);gap:24px;align-items:center;padding:20px 0}
   .pairs span{font-size:16px;line-height:24px;color:var(--mute)}
   .pairs strong{font-size:16px;line-height:24px;font-weight:500}
   .pairs :global(svg){color:var(--sig)}
-  .get{margin-top:80px}
   .get .dm-link{margin-top:auto;padding-top:8px}
   .nudge{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:20px;padding:24px;border:1px solid var(--hl);background:var(--bg)}
   .nudge p{font-size:16px;font-weight:500;line-height:24px}
   @media (max-width:1023px){
     .top{grid-template-columns:1fr;gap:32px}
     .stage{width:100%;height:341px}
-    .artimg,.shade{display:none}
     .sc{padding:17px 17px 0}
     .pill{font-size:8px;padding:8px 14px}
     .sh{margin:10px 0 12px;font-size:19px;line-height:23px}
@@ -110,7 +107,6 @@ const tiles = [['Salon & beauty', '#F4EDE6', '#0A0E17', '#B07A5A', true], ['Cons
     .mt{font-size:7px;margin:9px 2px 7px}
     .tiles{grid-template-columns:1fr 1fr;gap:6px}.tile.m3{display:none}
     .shot{height:99px}.tl{font-size:7px}.tl small{font-size:7px}.use{font-size:6px}
-    .pairs,.get{margin-top:40px}
     .pairs li{grid-template-columns:1fr;gap:4px;padding:16px 0}
     .pairs :global(svg){display:none}
     .pairs span{font-size:14px;line-height:21px}

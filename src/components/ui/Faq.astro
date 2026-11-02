@@ -32,7 +32,7 @@ const { items, title = 'Short answers', ld = true, plain = false, eyebrow = 'FAQ
 {ld && <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })} />}
 <style>
   .fq{padding:var(--sec) 0;background:var(--bg)}
-  .fq-side{display:flex;flex-direction:column;gap:40px}
+  .fq-side{display:flex;flex-direction:column;gap:40px;position:sticky;top:var(--stick,99px)}
   .ask{background:var(--panel);padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
   .ask h3{font-size:24px;line-height:31.2px;letter-spacing:-.24px;margin-top:4px}
   .ask>p{font-size:16px;line-height:24px;color:var(--mute)}

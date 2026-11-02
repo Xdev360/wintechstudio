@@ -18,7 +18,7 @@ const heroText = s.heroTitle.replace(/\*/g, '').replace(/\n/g, ' ');
 const ngn = s.priceNgn.replace(/^or /, '');
 const steps = [['Brief', 'Your picks, read before the call.'], ['Call', '25 minutes with the project lead.'], ['Proposal', 'Fixed scope, price and date.'], ['Build weekly', 'Something to see every Friday.']];
 const faqs: [string, string][] = [
-  [`How much does ${name.toLowerCase()} cost?`, `${s.price.replace(/^from/, 'From')}${s.priceNgn ? ` (${s.priceNgn})` : ''}. Your proposal fixes the real price before any work starts.`],
+  [`How much will ${name.toLowerCase()} cost?`, `${s.price.replace(/^from/, 'From')}${s.priceNgn ? ` (${s.priceNgn})` : ''}. Your proposal fixes the real price before any work starts.`],
   ['How do payments work?', '50% to start, 40% at design approval and 10% at handover. Monthly plans are billed monthly.'],
   ['Who owns the work?', 'You do. Accounts are in your name from day one, and every file, asset and line of code is yours on the final payment.'],
 ];
@@ -38,7 +38,7 @@ const svcLd = { '@context': 'https://schema.org', '@type': 'Service', name, serv
             <div><dt>{s.timeline}</dt><dd>typical timeline</dd></div>
           </dl>
         </div>
-        <div class="dm-media stage"><img src={`/images/services/${s.slug}-hero.webp`} alt={`${name}: example work`} width="1040" height="760" fetchpriority="high" /></div>
+        <div class="dm-media stage" data-pfx="0.05"><img src={`/images/services/${s.slug}-hero.webp`} alt={`${name}: example work`} width="1040" height="760" fetchpriority="high" /></div>
       </div>
     </section>
 
@@ -64,9 +64,9 @@ const svcLd = { '@context': 'https://schema.org', '@type': 'Service', name, serv
     <BriefBuilder slug={s.slug} name={name} label={s.briefLabel} starting={s.starting} questions={s.brief} />
 
     <section class="dm-sec line">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">How it runs</p><h2 class="dm-h2">Four steps, one project lead.</h2></div>
-        <ol class="dm-cells c4 steps">{steps.map(([t, d], i) => <li><span class="dm-num">{String(i + 1).padStart(2, '0')}</span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></li>)}</ol>
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">How it runs</p><h2 class="dm-h2s">Four steps, one project lead.</h2><a class="dm-link" href="/how-we-work">How we work</a></div>
+        <ol class="dm-rows steps">{steps.map(([t, d], i) => <li><span class="dm-num">{String(i + 1).padStart(2, '0')}</span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></li>)}</ol>
       </div>
     </section>
   </div>
@@ -78,9 +78,10 @@ const svcLd = { '@context': 'https://schema.org', '@type': 'Service', name, serv
   .hero .dm-ctas{margin-top:8px}
   .hero .dm-facts{margin-top:8px}
   .stage{width:520px;aspect-ratio:520/380}
-  .stage img{animation:rise .8s cubic-bezier(.2,.7,.2,1) .1s both}
+  .stage{animation:rise .8s cubic-bezier(.2,.7,.2,1) .1s both}
+  .stage img{will-change:transform}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}}
-  @media (prefers-reduced-motion:reduce){.stage img{animation:none}}
+  @media (prefers-reduced-motion:reduce){.stage{animation:none}}
 
   .case{display:flex;flex-direction:column;border:1px solid var(--hl);padding:8px;text-decoration:none;color:var(--fg);transition:border-color .15s}
   .case:hover{border-color:var(--hl2)}
@@ -92,7 +93,8 @@ const svcLd = { '@context': 'https://schema.org', '@type': 'Service', name, serv
   .ct{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 8px 4px}
   .ct>span:first-child{font-size:14px;line-height:21px;color:var(--mute)}
 
-  .steps{list-style:none;margin-top:80px;padding:0}
+  .steps li{display:grid;grid-template-columns:64px 200px minmax(0,1fr);gap:24px;align-items:baseline;padding:32px 0}
+  .steps .dm-num{font-size:20px;line-height:26px;font-weight:600;color:var(--fg)}
   @media (max-width:1023px){
     .hg{grid-template-columns:1fr;gap:32px}
     .sub{font-size:16px;line-height:24px}
@@ -103,6 +105,7 @@ const svcLd = { '@context': 'https://schema.org', '@type': 'Service', name, serv
     .ct{padding:10px 4px 2px}
     .ct .dm-arrow{display:none}
     .ct>span:first-child{font-size:13px;line-height:18px}
-    .steps{margin-top:40px}
+    .steps li{grid-template-columns:40px minmax(0,1fr);gap:4px 12px;padding:20px 0}
+    .steps .dm-num{font-size:16px;line-height:24px;grid-row:span 2}
   }
 </style>

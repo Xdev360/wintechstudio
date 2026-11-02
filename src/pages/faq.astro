@@ -7,7 +7,7 @@ import '../styles/studio.css';
 // Answers reuse facts already stated elsewhere on the site (pricing, how we work, services, partner build).
 const groups: [string, [string, string][]][] = [
   ['Prices and payment', [
-    ['What does it cost?', 'Websites from $1,200, brand systems from $1,500, brand and website from $2,500, the AI assistant from $1,800 plus $60 a month, apps from $4,000. Every project has a fixed price before work starts.'],
+    ['What does it cost?', 'Brand systems from $1,500, websites from $1,200, brand and website from $2,500, the AI assistant from $1,800 plus $60 a month, apps from $4,000. Every project has a fixed price before work starts.'],
     ['Can I pay in naira?', 'Yes. Every price shows in dollars and naira. Switch at the top of the pricing page, and your proposal can be invoiced in naira.'],
     ['How do payments work?', '50% to start, 40% at design approval, 10% at handover. Monthly plans are billed monthly.'],
     ['Can I start smaller?', 'Yes. Start with the $200 diagnostic or one service, then add more when it pays for itself. Wintech Templates gives you a free site to start today.'],
@@ -29,7 +29,7 @@ const groups: [string, [string, string][]][] = [
     ['What does the $60 a month cover?', 'Hosting and model costs for your AI assistant, retraining when your products change, a monthly report and fixes within one working day.'],
   ]],
   ['Timelines', [
-    ['How long does a project take?', 'Motion 1 to 3 weeks, websites 2 to 6 weeks, brand 3 to 4 weeks, AI assistants 4 to 6 weeks, apps 4 to 8 weeks. You see something new every Friday.'],
+    ['How long does a project take?', 'Brand 3 to 4 weeks, websites 2 to 6 weeks, AI assistants 4 to 6 weeks, apps 4 to 8 weeks, motion 1 to 3 weeks. You see something new every Friday.'],
   ]],
   ['Partner builds', [
     ['What is a partner build?', 'A lower fee and a share of what the system sells, for a set period or until a cap. Offered by invitation after the paid diagnostic.'],
@@ -73,6 +73,8 @@ const id = (s: string) => s.toLowerCase().replace(/\W+/g, '-');
 </script>
 <style>
   .fs{padding-bottom:128px}
+  /* the side column (title, topics, ask card) only sticks when the window is tall enough to show all of it */
+  @media (max-height:780px){.side.dm-sticky{position:static}}
   .side{display:flex;flex-direction:column;gap:40px}
   .ask{background:var(--panel);padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
   .ask h2{font-size:24px;line-height:31.2px;letter-spacing:-.24px;margin-top:4px}

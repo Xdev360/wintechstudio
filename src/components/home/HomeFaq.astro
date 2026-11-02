@@ -2,7 +2,7 @@
 import FounderAv from './FounderAv.astro';
 // Home FAQ. Sizes from docs/DESIGNME-SPEC.md "FAQ".
 const faqs: [string, string][] = [
-  ['What does it cost?', 'Websites from $1,200, brand systems from $1,500, the AI assistant from $1,800 plus $60 a month. Each service page shows its starting price before any call.'],
+  ['What does it cost?', 'Brand systems from $1,500, websites from $1,200, the AI assistant from $1,800 plus $60 a month. Each service page shows its starting price before any call.'],
   ['Do I need to be a startup?', 'No. We work with founders starting out, businesses that already sell and want to add tech, and brands that need a refresh.'],
   ['Can you work with what I already have?', 'Yes. We keep what works, your logo, your site or your tools, and fix or extend the rest.'],
   ['Who owns the accounts and files?', 'You do. Domain, hosting and every account sit in your name from day one, and all design files, code and documents are yours on the final payment.'],
@@ -37,7 +37,7 @@ const faqs: [string, string][] = [
 <style>
   .faq{background:var(--h-bg)}
   .cols{display:flex;justify-content:space-between;gap:48px;align-items:flex-start}
-  .side{flex:0 0 480px;display:flex;flex-direction:column;align-items:flex-start}
+  .side{flex:0 0 480px;display:flex;flex-direction:column;align-items:flex-start;position:sticky;top:var(--stick,99px)}
   h2{font:600 42px/48.3px var(--font);letter-spacing:-.84px;color:var(--h-fg);margin:16px 0 0}
   .ask{margin-top:32px;align-self:stretch;background:var(--h-panel);padding:24px;display:flex;flex-direction:column;align-items:flex-start}
   .av{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#3B5BFF;color:#fff;font:600 15px/1 var(--font);letter-spacing:.4px}

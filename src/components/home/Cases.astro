@@ -1,6 +1,11 @@
 ---
-// Case study rows. Sizes from docs/DESIGNME-SPEC.md "Case studies". No testimonial boxes until real quotes exist.
+// Home case rows, DesignMe "Case studies" sizes (docs/DESIGNME-SPEC.md): bordered rows 1200x491, media 646 wide
+// alternating sides, text side padding 32. The text side uses the same work-card parts as /work:
+// meta row (client, tag, year), 20/600 title + 32x32 arrow button, summary. Media = CardMedia (motion or image).
+// No testimonial boxes until real quotes exist.
 import { cases } from '../../data/cases';
+import CardMedia from '../work/CardMedia.astro';
+import Icon from '../Icon.astro';
 const pick = ['mylo', 'virelle', 'tobel-pearls', 'manzeelatur-ridho'];
 const rows = pick.map((slug) => cases.find((c) => c.slug === slug)!);
 ---
@@ -12,63 +17,68 @@ const rows = pick.map((slug) => cases.find((c) => c.slug === slug)!);
     </div>
     <div class="list">
       {rows.map((c, i) => (
-        <article class:list={['row', { flip: i % 2 === 1 }]}>
-          <a class="media" href={`/work/${c.slug}`} tabindex="-1" aria-hidden="true">
-            <img src={`/images/cases/film-${c.slug}.webp`} srcset={`/images/cases/film-${c.slug}-800.webp 1292w, /images/cases/film-${c.slug}.webp 2720w`} sizes="(max-width:767px) 100vw, 582px" alt="" loading="lazy" decoding="async" />
-          </a>
-          <div class="txt">
-            <div class="meta">
+        <a class:list={['row', { flip: i % 2 === 1 }]} href={`/work/${c.slug}`} aria-label={`${c.name} case study: ${c.headline}`}>
+          <span class="media"><CardMedia c={c} class="fillm" /></span>
+          <span class="txt">
+            <span class="meta">
               <strong>{c.name}</strong>
               <span class:list={['tag', c.tag === 'Our product' ? 'own' : 'client']}>{c.tag}</span>
               {c.cardServices.slice(0, 2).map((t) => <span class="tag">{t}</span>)}
               <span class="yr">{c.year}</span>
-            </div>
-            <div class="main">
-              <h3><a href={`/work/${c.slug}`}>{c.headline}</a></h3>
-              <p class="sum">{c.intro.replace(/^Client project\.\s*/, '')}</p>
-              <a class="h-link" href={`/work/${c.slug}`}>Read the case study <span class="ar">→</span></a>
-            </div>
-          </div>
-        </article>
+            </span>
+            <span class="main">
+              <span class="hd">
+                <span class="tt">{c.headline}</span>
+                <span class="ar" aria-hidden="true"><Icon name="arrow-right" size={14} /></span>
+              </span>
+              <span class="sum">{c.intro.replace(/^(Client project|Our own product)\.\s*/, '')}</span>
+              <span class="rd">Read the case study</span>
+            </span>
+          </span>
+        </a>
       ))}
     </div>
-    <p class="all"><a class="h-link" href="/work">See all case studies <span class="ar">→</span></a></p>
+    <p class="all"><a class="h-link" href="/work">See all case studies <span class="ar2">→</span></a></p>
   </div>
 </section>
 <style>
-  .cases{background:var(--h-bg)}
+  .cases{background:var(--h-bg);--wk-panel:var(--h-panel2,#FAFAFA)}
   .list{margin-top:80px;display:flex;flex-direction:column;gap:80px}
-  .row{display:flex;height:491px;box-sizing:border-box;border:1px solid var(--h-rule)}
+  .row{display:flex;height:491px;box-sizing:border-box;border:1px solid var(--h-rule);color:var(--h-fg);text-decoration:none;transition:border-color .25s}
+  .row:hover,.row:focus-visible{border-color:var(--h-mute)}
   .row.flip{flex-direction:row-reverse}
-  .media{flex:0 0 646px;height:100%;display:flex;align-items:center;justify-content:center;padding:32px;box-sizing:border-box;background:var(--h-panel2);overflow:hidden;border-right:1px solid var(--h-rule)}
+  .media{position:relative;flex:0 0 646px;height:100%;display:block;border-right:1px solid var(--h-rule)}
   .row.flip .media{border-right:0;border-left:1px solid var(--h-rule)}
-  .media img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;box-shadow:0 18px 40px rgba(0,0,0,.12);transition:transform .6s cubic-bezier(.2,.7,.2,1);animation:float 7s ease-in-out infinite}
-  .row:hover .media img{transform:scale(1.02)}
-  @keyframes float{0%,100%{translate:0 0}50%{translate:0 -6px}}
+  .media > :global(.fillm){position:absolute;inset:0}
   .txt{flex:1;min-width:0;padding:32px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
-  .meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+  .meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding-bottom:16px;border-bottom:1px solid var(--h-rule)}
   .meta strong{font:600 14px/21px var(--font);color:var(--h-fg);margin-right:4px}
   .tag{font:400 14px/21px var(--font);padding:4px 8px;border-radius:2px;background:var(--h-tint);color:var(--h-mute)}
   .tag.own{background:var(--h-warm-tint);color:var(--h-warm)}
   .tag.client{background:var(--h-accent-tint);color:var(--h-accent-ink)}
   .yr{margin-left:auto;font:400 13px/18px var(--font);color:var(--h-label)}
-  .main{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
-  h3{font:600 20px/26px var(--font);letter-spacing:-.2px;margin:0;max-width:460px}
-  h3 a{color:var(--h-fg);text-decoration:none}h3 a:hover{color:var(--h-accent-ink)}
-  .sum{font:400 16px/24px var(--font);color:var(--h-mute);margin:0}
-  .main .h-link{margin-top:8px}
+  .main{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+  .hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+  .tt{font:600 20px/26px var(--font);letter-spacing:-.2px;max-width:460px}
+  .ar{flex:none;width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--h-rule);transition:background .25s,color .25s,border-color .25s}
+  .ar :global(svg){transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .row:hover .ar,.row:focus-visible .ar{background:var(--h-fg);border-color:var(--h-fg);color:var(--h-bg)}
+  .row:hover .ar :global(svg),.row:focus-visible .ar :global(svg){transform:translateX(3px)}
+  .sum{font:400 16px/24px var(--font);color:var(--h-mute)}
+  .rd{margin-top:8px;font:600 14px/21px var(--font);text-decoration:underline;text-underline-offset:3px}
   .all{margin:56px 0 0;text-align:center}
+  @media (prefers-reduced-motion:reduce){.ar :global(svg){transition:none}.row:hover .ar :global(svg){transform:none}}
   @media (max-width:1279px){.media{flex-basis:54%}}
   @media (max-width:1023px){
     .row,.row.flip{flex-direction:column;height:auto}
-    .media,.row.flip .media{flex:none;width:100%;aspect-ratio:646/490;padding:24px;border:0;border-bottom:1px solid var(--h-rule)}
+    .media,.row.flip .media{flex:none;width:100%;height:auto;aspect-ratio:646/490;border:0;border-bottom:1px solid var(--h-rule)}
   }
   @media (max-width:767px){
     .list{margin-top:40px;gap:40px}
     .row{margin:0 -16px;border-left:0;border-right:0}
-    .media{aspect-ratio:390/294;padding:20px}
+    .media{aspect-ratio:390/294}
     .txt{padding:20px 16px;gap:20px}
-    h3{font-size:18px;line-height:24px}
+    .tt{font-size:18px;line-height:24px}
     .sum{font-size:15px;line-height:22.5px}
     .all{margin-top:40px}
   }

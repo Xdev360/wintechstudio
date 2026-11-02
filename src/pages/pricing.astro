@@ -18,8 +18,8 @@ const svc = (k: string, slug: string, name: string, icon: string, extra: Partial
 const first: Item = { k: 'diagnostic', name: 'Paid diagnostic', icon: 'search', usd: '$200', title: 'Paid diagnostic', intro: 'A working session on your business, money flows and what to build first. You leave with a written plan.', big: '$200', per: '/ session', how: [['One working session', 'Your business and money flows'], ['A written plan', 'What to build first']], get: ['A study of the business and the numbers', 'What to build first', 'A written plan you keep'], href: '/book' };
 const web = S('websites');
 const projects: Item[] = [
-  svc('website', 'websites', 'Website', 'monitor'),
   svc('brand', 'brand', 'Brand system', 'palette'),
+  svc('website', 'websites', 'Website', 'monitor'),
   // Store with checkout has no naira figure in services.json yet: USD shows in both modes.
   { k: 'store', name: 'Store with checkout', icon: 'bag', usd: 'from $1,500', title: 'Store with checkout', intro: web.cells[1].body, big: '$1,500', per: '/ project', how: [[web.timeline, 'Kickoff to launch'], ...lead], get: web.cells.map(c => c.title), brief: '/services/websites#brief', href: '/services/websites' },
   // Brand + website: naira from the Figma frame (no combined figure in services.json).
@@ -46,7 +46,7 @@ const promises = [['lock', 'Accounts in your name', 'Domain, store and payments 
 const faqs: [string, string][] = [['Why "from" prices?', 'Scope sets the price: pages, products, integrations and motion. After the brief and the call we send a fixed scope and price.'], ['Can I pay in naira?', 'Yes. Switch prices to naira at the top of this page, and your proposal can be invoiced in naira.'], ['What does the $60 a month cover?', 'Hosting and model costs for your AI assistant, retraining when your products change, a monthly report and fixes within one working day.'], ['Can I pause a monthly plan?', 'Yes, one month at a time. The AI care plan keeps running while content pauses. Cancel with 30 days notice.'], ['What if the scope changes?', 'Anything new gets a written change order with its own price before we build it.']];
 const P = (usd: string, ngn?: string) => ({ 'data-usd': usd, 'data-ngn': ngn ?? usd, ...(ngn ? {} : { 'data-nongn': '' }) });
 ---
-<Page title="Pricing · Wintech Studio" description="Websites from $1,200, brand systems from $1,500, brand and website from $2,500, AI assistants from $1,800 plus $60 a month, apps from $4,000. Dollars first, naira beside it." crumbs={[['Pricing', '/pricing']]}>
+<Page title="Pricing · Wintech Studio" description="Brand systems from $1,500, websites from $1,200, brand and website from $2,500, AI assistants from $1,800 plus $60 a month, apps from $4,000. Dollars first, naira beside it." crumbs={[['Pricing', '/pricing']]}>
   <div class="dm pr">
     <section class="dm-top">
       <div class="wrap">
@@ -122,9 +122,9 @@ const P = (usd: string, ngn?: string) => ({ 'data-usd': usd, 'data-ngn': ngn ?? 
     </section>
 
     <section class="dm-sec alt">
-      <div class="wrap">
-        <div class="dm-head c"><p class="dm-eb">Before you sign</p><h2 class="dm-h2">Your accounts. Your files. Your call.</h2></div>
-        <div class="dm-cells c3 pg">{promises.map(([ic, t, d]) => (
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">Before you sign</p><h2 class="dm-h2s">Your accounts. Your files. Your call.</h2></div>
+        <div class="dm-cells c2 pg">{promises.map(([ic, t, d]) => (
           <div><span class="dm-ib"><Lc name={ic} /></span><h3 class="dm-h3">{t}</h3><p class="dm-body">{d}</p></div>
         ))}</div>
       </div>
@@ -185,7 +185,7 @@ const P = (usd: string, ngn?: string) => ({ 'data-usd': usd, 'data-ngn': ngn ?? 
   .pb-t>span:last-child{font-size:14px;line-height:21px;color:var(--mute)}
   .pb:hover strong{text-decoration:underline;text-underline-offset:3px}
 
-  .pk-r{position:sticky;top:96px;border:1px solid var(--hl)}
+  .pk-r{position:sticky;top:var(--stick,99px);border:1px solid var(--hl)}
   .dt[hidden]{display:none}
   .dt{padding:32px;display:flex;flex-direction:column;gap:20px}
   .dt h2{font-size:32px;line-height:38.4px;letter-spacing:-.64px}
@@ -212,7 +212,6 @@ const P = (usd: string, ngn?: string) => ({ 'data-usd': usd, 'data-ngn': ngn ?? 
   .plan .dm-ticks{margin-bottom:8px}
   .plan .dm-btn{margin-top:auto}
   .mon-more{margin-top:32px;text-align:center}
-  .pg{margin-top:80px}
 
   @media (max-width:1023px){
     .tg{justify-content:flex-start;margin-top:24px}
@@ -223,7 +222,7 @@ const P = (usd: string, ngn?: string) => ({ 'data-usd': usd, 'data-ngn': ngn ?? 
     .row :global(.ra){opacity:1}
     .rn{font-size:15px;line-height:22px}
     .rp{font-size:13px}
-    .plans,.pg{margin-top:40px}
+    .plans{margin-top:40px}
     .plan{padding:20px}
     .pl-p{font-size:36px;line-height:41.4px;letter-spacing:-.72px}
     .mon-more{text-align:left}
