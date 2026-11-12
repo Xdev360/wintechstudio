@@ -52,9 +52,9 @@ const path = Astro.url.pathname;
 const cur = (h: string) => (h !== '/' && path.startsWith(h) ? 'page' : undefined);
 ---
 <header class="site-header" id="site-header">
-  <a class="announce" href={contact.templates} target="_blank" rel="noopener">
+  <a class="announce" href="/new-website">
     <span class="new">NEW</span>
-    <span class="at"><span class="at-l">Need a website today? </span>Start free with Wintech Templates</span>
+    <span class="at"><span class="at-l">Our new website is live. </span>See what changed</span>
     <svg class="aa" width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h14M11 1l4 4-4 4"/></svg>
   </a>
   <div class="bar">

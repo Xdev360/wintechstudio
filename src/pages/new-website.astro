@@ -1,0 +1,87 @@
+---
+// Launch note for the redesign (12 Nov 2026). Numbers measured on the build: page count and structured data from dist/,
+// Lighthouse mobile lab run on the home page (Performance 91, Accessibility 96, Best practices 100, SEO 100).
+import Page from '../layouts/Page.astro';
+import Lc from '../components/ui/Lc.astro';
+import '../styles/studio.css';
+const before = [
+  ['Built with', 'Hand-written HTML pages', 'Astro, a framework that sends plain HTML'],
+  ['Pages', '15', '35'],
+  ['Case studies', '3', '7 full stories'],
+  ['Pages Google and AI tools can read as data', '1', 'All 35'],
+  ['llms.txt for AI assistants', 'None', 'Yes'],
+  ['Dark mode, sound, Ask AI', 'No', 'Yes'],
+];
+const scores: [string, string][] = [['91', 'Performance'], ['96', 'Accessibility'], ['100', 'Best practices'], ['100', 'SEO']];
+const why: [string, string, string][] = [
+  ['zap', 'Fast on a phone and on data', 'Astro sends finished HTML and almost no JavaScript, so pages open quickly even on a slow mobile connection.'],
+  ['search', 'Found on Google and by AI', 'Every page carries structured data, and an llms.txt file tells ChatGPT, Claude and Perplexity who we are and what we do.'],
+  ['sparkles', 'Motion where it matters', 'Animation, sound and the Ask AI assistant load only on the parts of a page that use them, so the rest stays light.'],
+  ['pen', 'Changes in minutes', 'The site lives in code we edit with Claude. A new case study or price change goes live the same day, not next week.'],
+];
+const added = ['Seven full case studies with films and galleries', 'Service pages for brand, websites, AI assistant, apps, automation and motion', 'Guides, a glossary, comparisons and industry pages', 'Pricing, booking and a brief you can send without a call', 'The Bench: verified specialists you can hire', 'Dark mode, interface sounds and the Ask AI assistant'];
+const ld = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: 'We rebuilt wintechstudio.com on Astro', datePublished: '2026-11-12', author: { '@type': 'Person', name: 'Oladele Ibraheem' }, publisher: { '@type': 'Organization', name: 'Wintech Studio' } };
+---
+<Page title="Our new website · Wintech Studio" description="We rebuilt wintechstudio.com on Astro: 15 pages became 35, every page is readable by Google and AI assistants, and it is fast on a phone." crumbs={[['Our new website', '/new-website']]} jsonld={[ld]}>
+  <div class="dm nw">
+    <section class="dm-top">
+      <div class="wrap">
+        <div class="dm-head c">
+          <p class="dm-eb">Launch note · 12 November 2026</p>
+          <h1 class="dm-h1">We rebuilt our website on Astro.</h1>
+          <p class="dm-intro">Same studio, new home. We moved wintechstudio.com from hand-written pages to Astro so it is faster, easier to find, and quicker for us to keep up to date.</p>
+          <div class="dm-ctas"><a class="dm-btn p" href="/work">See the work</a><a class="dm-btn o" href="/archive/" rel="nofollow">See the old site</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dm-sec alt">
+      <div class="wrap">
+        <div class="dm-head c"><p class="dm-eb">Before and after</p><h2 class="dm-h2s">What changed</h2></div>
+        <div class="tbl">
+          <div class="tr th"><span></span><span>Old site</span><span>New site</span></div>
+          {before.map(([k, a, b]) => <div class="tr"><span class="k">{k}</span><span class="a">{a}</span><span class="b">{b}</span></div>)}
+        </div>
+        <dl class="dm-grid g4 sc">{scores.map(([v, l]) => <div class="dm-stat"><dt><b>{v}</b></dt><dd><span>{l}</span></dd></div>)}</dl>
+        <p class="note">Lighthouse scores for the new home page on a simulated phone. Counts taken from the site itself on launch day.</p>
+      </div>
+    </section>
+
+    <section class="dm-sec">
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">Why Astro</p><h2 class="dm-h2s">Built for how people find and use a studio today.</h2></div>
+        <div class="dm-grid g2 wy">{why.map(([ic, t, d]) => <div class="dm-card"><span class="dm-ib s36"><Lc name={ic} size={18} /></span><h3 class="dm-h3">{t}</h3><p class="dm-small">{d}</p></div>)}</div>
+      </div>
+    </section>
+
+    <section class="dm-sec line">
+      <div class="wrap dm-stick">
+        <div class="dm-head"><p class="dm-eb">New on the site</p><h2 class="dm-h2s">More to read, more to see.</h2><a class="dm-link" href="/services">Explore the services</a></div>
+        <ul class="dm-ticks ad">{added.map(t => <li><Lc name="check" />{t}</li>)}</ul>
+      </div>
+    </section>
+
+    <section class="dm-sec alt">
+      <div class="wrap">
+        <div class="dm-head c"><p class="dm-eb">The same thinking we sell</p><h2 class="dm-h2s">Want a site like this for your business?</h2><p class="dm-intro">We design and build websites and stores on the same approach: fast, findable, and easy to keep fresh.</p><div class="dm-ctas"><a class="dm-btn p" href="/services/websites">Websites and stores</a><a class="dm-btn o" href="/book">Book a call</a></div></div>
+      </div>
+    </section>
+  </div>
+</Page>
+<style>
+  .tbl{margin:40px auto 0;max-width:880px;border-top:1px solid var(--hl)}
+  .tr{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--hl);font-size:16px;line-height:24px}
+  .th{font-size:11px;font-weight:500;letter-spacing:.66px;text-transform:uppercase;color:var(--lab);padding:12px 0}
+  .k{font-weight:500}.a{color:var(--mute);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--mute) 50%,transparent)}.b{font-weight:600}
+  .sc{margin:40px auto 0;max-width:880px}
+  .sc dd{margin:0}
+  .note{margin:16px auto 0;max-width:880px;font-size:13px;line-height:20px;color:var(--lab);text-align:center}
+  .wy .dm-card{padding:28px}
+  .ad li{font-size:18px;line-height:27px}
+  @media (max-width:1023px){
+    .tr{grid-template-columns:1fr 1fr;gap:4px 12px}.tr .k{grid-column:1/-1}.th span:first-child{display:none}
+    .sc{grid-template-columns:1fr 1fr!important;gap:12px}
+    .wy{grid-template-columns:1fr!important}
+    .ad li{font-size:16px;line-height:24px}
+  }
+</style>
