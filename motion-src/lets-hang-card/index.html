@@ -1,0 +1,110 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 25 · Let's Hang card loop · "Pin rain". 1312x984, 8s, silent.
+     Built on the card cover itself (Figma kQl8LQLi5xdRVVyXF3R4NZ, "cover · Let's Hang" in storyboard panel 1140:3806,
+     exported at 2x of the stage scale):
+       bg2x.png      = the cover with the front phone's screen (img m_peek) and the three floating pins hidden
+       fp-*.png      = the floating pins Ilashe, Live room, Tech meetup (same export)
+       s-bare, pin-*, peek-ring, peek-card, s-hang = the real demo screens lh_m_map / lh_m_peek / lh_m_hang
+                       (from ../film-lets-hang, 672x1454); map + pins + ring + card rebuild the cover's m_peek screen.
+     Beats: 0:00 the cover (poster), 0:00.5 camera eases in on the front phone, Peek slides away and the pins lift,
+     0:01.8 the pins rain back onto the map, 0:03.45 tap 5-a-side and Peek opens, 0:04.65 Join opens the hang
+     ("Tobi wants to play 5-a-side tonight", 5/8 going), 0:05.95 back to the map with Peek, 0:07.3 the cover again. -->
+<style>
+  html,body{margin:0;background:#f5f3ff}
+  #stage{position:relative;width:1312px;height:984px;overflow:hidden;background:#f5f3ff}
+  #cam{position:absolute;left:0;top:0;width:1312px;height:984px;transform-origin:0 0;will-change:transform,filter}
+  #cam img,#cam div{position:absolute;left:0;top:0}
+  #scr{width:337.17px;height:730.05px;border-radius:43.98px;overflow:hidden;background:#f5f3ff;transform-origin:0 0}
+  .inner{width:672px;height:1454px;transform:scale(0.501741);transform-origin:0 0}
+  .s{width:672px;height:1454px}
+  .rip{width:100px;height:100px;border-radius:50%;margin:-50px 0 0 -50px;border:5px solid rgba(255,255,255,.95);background:rgba(131,77,251,.28);box-shadow:0 0 0 2px rgba(131,77,251,.35);opacity:0}
+  .fp{width:176px;height:185px;will-change:transform}
+</style></head>
+<body>
+<div id="stage">
+  <div id="cam">
+    <img src="a/bg2x.png" width="1344" height="984" style="left:-16px">
+    <img id="fp0" class="fp" src="a/fp-ilashe.png" style="left:75.2px;top:676.3px">
+    <img id="fp1" class="fp" src="a/fp-live.png" style="left:251.1px;top:793.6px">
+    <img id="fp2" class="fp" src="a/fp-tech.png" style="left:427.0px;top:749.6px">
+    <div id="scr"><div class="inner">
+      <div id="mapwrap" class="s">
+        <img src="a/s-bare.png" class="s">
+        <div id="pins"></div>
+        <img id="ring" src="a/peek-ring.png" class="s">
+        <img id="card" src="a/peek-card.png" class="s">
+        <div id="r1" class="rip"></div><div id="r2" class="rip"></div>
+      </div>
+      <div id="hang" class="s" style="background:url(a/s-hang.png) 0 0/100% 100%;box-shadow:-30px 0 60px rgba(27,16,51,.18)"></div>
+    </div></div>
+  </div>
+  <img id="poster" src="a/cover.png" width="1312" height="984" style="position:absolute;left:0;top:0">
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eOutCubic=t=>1-Math.pow(1-t,3);
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eOutBack=t=>{const c1=1.3,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+
+// front phone screen: absoluteTransform of img m_peek in the 2x export, halved, shifted by the -16px cover crop
+const C6=Math.cos(6*Math.PI/180), S6=Math.sin(6*Math.PI/180);
+const SX=1762.125/2-16, SY=716.683/2;
+$('scr').style.transform=`matrix(${C6},${-S6},${S6},${C6},${SX},${SY})`;
+const scrPt=(x,y)=>[C6*x+S6*y+SX,-S6*x+C6*y+SY]; // screen (stage units) -> stage
+
+const PINS=[{"n":"afro","x":5,"y":223,"w":258,"h":251,"ox":133,"oy":390},{"n":"live","x":225,"y":223,"w":217,"h":251,"ox":328,"oy":390},{"n":"paint","x":433,"y":223,"w":211,"h":251,"ox":530,"oy":390},{"n":"five","x":36,"y":418,"w":211,"h":253,"ox":133,"oy":585},{"n":"build","x":380,"y":418,"w":288,"h":253,"ox":523,"oy":585},{"n":"tech","x":191,"y":613,"w":248,"h":252,"ox":316,"oy":780},{"n":"girls","x":436,"y":613,"w":215,"h":252,"ox":537,"oy":780},{"n":"gallery","x":33,"y":810,"w":208,"h":251,"ox":127,"oy":977},{"n":"venue","x":320,"y":810,"w":224,"h":251,"ox":430,"oy":977},{"n":"ilashe","x":141,"y":1006,"w":208,"h":252,"ox":235,"oy":1173}];
+for(const p of PINS){const i=document.createElement('img');i.src=`a/pin-${p.n}.png`;i.width=p.w;i.height=p.h;
+  i.style.left=p.x+'px';i.style.top=p.y+'px';i.style.transformOrigin=`${p.ox-p.x}px ${p.oy-p.y}px`;i.id='pin-'+p.n;$('pins').appendChild(i);}
+const RAIN=[3,0,8,5,1,6,9,2,7,4]; // order the pins land in (index into PINS)
+
+// camera: push toward the front phone, centred on the screen
+// the push stays inside the cover artwork (its right edge is at x 1328, bottom at 984)
+const PUSH=1.3, PTX=-410, PTY=-290;
+const T={posterOut:[.3,.6], push:[.55,1.85], pull:[6.1,7.3], posterIn:[7.35,7.65],
+  cardOut:[1.1,1.55], pinsOut:[1.25,1.6], rain0:1.8, rainStep:.12, rainDur:.5,
+  tapFive:3.45, peekIn:[3.57,4.05], tapJoin:4.65, hangIn:[4.8,5.25], hangOut:[5.95,6.4]};
+
+function ripple(id,t,c,x,y){const u=(t-c)/.5;const el=$(id);
+  if(u<0||u>1){el.style.opacity=0;return;}
+  el.style.left=x+'px';el.style.top=y+'px';
+  el.style.transform=`scale(${.55+.9*eOutCubic(u)})`;el.style.opacity=(u<.15?u/.15:1-(u-.15)/.85)*.95;}
+
+window.render=function(t){
+  $('poster').style.opacity = window.NOPOSTER?0: t<4 ? 1-eSine(prog(t,...T.posterOut)) : eSine(prog(t,...T.posterIn));
+  // camera
+  const m=eIO(prog(t,...T.push))*(1-eIO(prog(t,...T.pull)));
+  const s=lerp(1,PUSH,m), tx=lerp(0,PTX,m), ty=lerp(0,PTY,m);
+  $('cam').style.transform=`translate(${tx}px,${ty}px) scale(${s})`;
+  $('cam').style.filter=`blur(${((window.BLUR??0.8)*(1-m)).toFixed(3)}px)`; // the poster is softer than a fresh render; match it at rest
+  // floating pins breathe a little while the camera is in
+  const env=eSine(prog(t,.7,1.5))*(1-eSine(prog(t,6.3,7.2)));
+  [0,1,2].forEach(i=>{$('fp'+i).style.transform=`translateY(${(-7*Math.sin(2*Math.PI*(t-1)/3.2+i*1.9)*env).toFixed(2)}px)`;});
+
+  // Peek slides away, pins lift, then rain back in
+  const co=eIO(prog(t,...T.cardOut)), ci=eOutExpo(prog(t,...T.peekIn));
+  const cardO = t<2.5 ? 1-co : cl(prog(t,...T.peekIn)*2.2);
+  $('card').style.opacity=cardO;
+  $('card').style.transform=`translateY(${t<2.5?420*co:300*(1-ci)}px)`;
+  $('ring').style.opacity=t<2.5?1-co:prog(t,3.53,3.75);
+  const po=prog(t,...T.pinsOut);
+  RAIN.forEach((pi,k)=>{const p=PINS[pi];const el=$('pin-'+p.n);
+    if(t<1.75){el.style.opacity=1-eOutCubic(po);el.style.transform=`translateY(${-30*eIO(po)}px) scale(${1-.25*po})`;return;}
+    const a=T.rain0+k*T.rainStep;const u=prog(t,a,a+T.rainDur);
+    el.style.opacity=cl(u/.35);el.style.transform=`translateY(${-150*(1-eOutCubic(u))}px) scale(${.7+.3*eOutBack(u)})`;});
+
+  // the hang pushes in from the right, then slides back out to the map
+  const hx=t<5.6?1-eOutExpo(prog(t,...T.hangIn)):eIO(prog(t,...T.hangOut));
+  $('hang').style.transform=`translateX(${720*hx}px)`;
+  $('mapwrap').style.transform=`translateX(${-90*(1-hx)}px)`;
+
+  ripple('r1',t,T.tapFive,140,520);ripple('r2',t,T.tapJoin,465,1221);
+};
+window.render(0);
+</script>
+</body></html>

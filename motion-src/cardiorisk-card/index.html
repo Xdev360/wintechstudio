@@ -1,0 +1,95 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 26 · CardioRisk card loop · "Heartbeat to answer", rebuilt on the real Result screen. 1312x984, 8s, silent.
+     Real Figma exports (file kQl8LQLi5xdRVVyXF3R4NZ, "D1 · Result" 952:23533, 2x, from ../film-cardiorisk):
+       d1full = the Result screen; d1base = the same with 23.4 %, the red gauge band and marker, the factor bars,
+                the Main driver card and the three heart labels hidden.
+       cover.png = the site poster cover-cardiorisk.webp scaled to fill the 4:3 stage (first and last frame).
+     The poster's heart is the same render as the Result screen's heart (template match 0.99 at 1:1, offset 820,27),
+     so the loop match-cuts: the poster shrinks onto the Result screen's heart and dissolves, and grows back out at the end.
+     The storyboard's arc gauge and ECG line are not in the designs, so the loop uses the screen's own linear gauge.
+     Every value on screen is from the design (23.4 %, the factor bars, SYSTOLIC BP +8.1, AGE +5.4, SMOKING +3.2).
+     Beats: 0:00 poster, 0:00.5 match-cut onto the heart, 0:01.6 the gauge band fills and the marker settles on 23.4 %,
+     0:02.3 the number, 0:03.0 the top three factor bars grow (BP, AGE, SMOKING) with their heart labels, the five
+     small bars after, 0:06.3 the poster grows back out of the heart. -->
+<style>
+  html,body{margin:0;background:#dcdddf}
+  #stage{position:relative;width:1312px;height:984px;overflow:hidden;background:linear-gradient(135deg,#dee0e2 0%,#d7d8da 55%,#cecfd3 100%)}
+  #cam{position:absolute;left:0;top:0;width:1312px;height:984px;transform-origin:0 0}
+  #dash{position:absolute;left:0;top:0;width:1680px;height:1174px;transform-origin:0 0}
+  .g{position:absolute;left:0;top:0;width:1680px;height:1174px}
+  .rg{position:absolute;overflow:hidden}
+  .rg>img{position:absolute;width:1680px;height:1174px}
+  #mk{position:absolute;left:626px;top:576px;width:8px;height:5px;background:#17181a;clip-path:polygon(0 0,100% 0,50% 100%)}
+  #poster{position:absolute;left:0;top:0;width:1312px;height:984px;transform-origin:0 0}
+</style></head>
+<body>
+<div id="stage">
+  <div id="cam"><div id="dash">
+    <img class="g" src="a/d1base.webp">
+    <div class="g" id="g1"></div>
+  </div></div>
+  <img id="poster" src="a/cover.png">
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eOutQuart=t=>1-Math.pow(1-t,4);
+const eOutCubic=t=>1-Math.pow(1-t,3);
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+const X=x=>80+2*x, Y=y=>48+2*y; // design units -> d1 image px
+
+// dashboard placement in the stage
+const S=0.93, DL=-133, DT=-24;
+$('dash').style.transform=`translate(${DL}px,${DT}px) scale(${S})`;
+// poster -> its heart on the dashboard: stage q -> S*((q+crop)/scale + (820,27)) + (DL,DT)
+const PS=1341/736, K=S/PS, HX=S*(14/PS+820)+DL, HY=S*27+DT;
+
+function region(src,x0,y0,x1,y1){const d=document.createElement('div');d.className='rg';
+  d.style.left=x0+'px';d.style.top=y0+'px';d.style.width=(x1-x0)+'px';d.style.height=(y1-y0)+'px';
+  const i=document.createElement('img');i.src=src;i.style.left=-x0+'px';i.style.top=-y0+'px';d.appendChild(i);$('g1').appendChild(d);return d;}
+const F='a/d1full.webp';
+const num=region(F,X(53),Y(150),X(276),Y(237));
+const band=region(F,374,583,760,591);
+const mk=document.createElement('div');mk.id='mk';$('g1').appendChild(mk);
+const BX=[55,90,125,159,194,229,264,299];
+const bars=BX.map(b=>region(F,X(b)-3,Y(316),X(b+2)+3,Y(354)));
+const ann=[[454,224,528,236],[633,324,680,336],[517,430,578,442]].map(([a,b,c,d])=>region(F,X(a)-4,Y(b)-2,X(c)+4,Y(d)+2));
+
+// camera breathes in toward the gauge and bars, and is back at rest before the poster returns
+const CO=[420,560];
+window.render=function(t){
+  // match-cut in (0.45-1.5) and out (6.3-7.55)
+  const mIn=eIO(prog(t,.45,1.5)), mOut=eIO(prog(t,6.45,7.55));
+  const m = t<4 ? mIn : 1-mOut;
+  const ps=lerp(1,K,m), px=lerp(0,HX,m), py=lerp(0,HY,m);
+  $('poster').style.transform=`translate(${px}px,${py}px) scale(${ps})`;
+  $('poster').style.opacity = t<4 ? 1-eSine(prog(t,.95,1.45)) : eSine(prog(t,6.3,6.8));
+  // a soft round mask closes in on the heart as the poster shrinks, so no hard poster edge shows
+  if(m<0.001){$('poster').style.webkitMaskImage='none';}
+  else{const e=eOutCubic(m), r0=lerp(760,330,e), r1=r0+lerp(300,330,e), fb=lerp(0,240,e);
+    const o=(1-cl(m/.2)).toFixed(3); // outside the circle the poster fades from opaque to clear, so the mask grows in
+    $('poster').style.webkitMaskImage=`radial-gradient(circle at 690px 640px, #000 ${r0.toFixed(1)}px, rgba(0,0,0,${o}) ${r1.toFixed(1)}px), linear-gradient(to top, rgba(0,0,0,${o}) 0px, #000 ${fb.toFixed(1)}px)`;
+    $('poster').style.webkitMaskComposite='source-in';}
+
+  const c=eSine(prog(t,1.6,4.8))*(1-eSine(prog(t,5.0,6.2)));
+  const cs=1+0.06*c;
+  $('cam').style.transform=`translate(${CO[0]*(1-cs)}px,${CO[1]*(1-cs)}px) scale(${cs})`;
+
+  // the gauge: band grows, marker travels from 0 % and settles on 23.4 %
+  const gb=eOutCubic(prog(t,1.6,2.4));band.style.width=(386*gb)+'px';
+  const gm=eOutExpo(prog(t,1.6,2.7));mk.style.transform=`translateX(${lerp(186-626,0,gm)}px)`;
+  mk.style.opacity=cl(prog(t,1.55,1.7));
+  const nu=eOutCubic(prog(t,2.2,2.8));num.style.opacity=nu;num.style.transform=`translateY(${(1-nu)*16}px)`;
+  // the top three factors grow first, each with its label on the heart; then the five small ones
+  const st=[3.0,3.25,3.5,4.0,4.06,4.12,4.18,4.24];
+  bars.forEach((b,i)=>{const u=eOutQuart(prog(t,st[i],st[i]+0.6));b.style.clipPath=`inset(${(1-u)*100}% 0 0 0)`;});
+  ann.forEach((a,i)=>{const s=st[i]+0.2;const u=eOutCubic(prog(t,s,s+0.45));a.style.opacity=u;a.style.transform=`translateX(${(1-u)*-8}px)`;});
+};
+window.render(0);
+</script>
+</body></html>

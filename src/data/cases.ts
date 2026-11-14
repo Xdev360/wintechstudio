@@ -130,7 +130,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'lets-hang', name: "Let's Hang", kind: 'Our own product', tag: 'Our product', year: '2026',
-    card: { kind: 'image', poster: '/images/cases/cover-lets-hang.webp' },
+    card: { kind: 'motion', video: '/videos/cards/lets-hang.mp4', poster: '/images/cases/cover-lets-hang.webp' },
     cardLine: 'Nigeria is outside tonight. A map-first app for group plans.', cardServices: ['Apps'], filters: ['Apps'], coverId: '880:12966',
     headline: "Designing Let's Hang, a map of people going out tonight",
     line: 'A map-first app for going out with strangers in Nigeria.',
@@ -153,7 +153,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'cardiorisk', name: 'CardioRisk', kind: 'Client project', tag: 'Client', year: '2026',
-    card: { kind: 'image', poster: '/images/cases/cover-cardiorisk.webp' },
+    card: { kind: 'motion', video: '/videos/cards/cardiorisk.mp4', poster: '/images/cases/cover-cardiorisk.webp' },
     cardLine: 'Heart risk, made readable. A health AI product.', cardServices: ['Apps'], filters: ['Apps'], coverId: '880:13903',
     headline: 'Designing CardioRisk, a heart risk score anyone can read',
     line: 'A redesign that makes a 10-year heart risk score explainable.',
