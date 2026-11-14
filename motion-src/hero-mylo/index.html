@@ -1,0 +1,116 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 5 · Hero film: Mylo · 1280x720 · 7s loop.
+     Base layer is the real poster (film-mylo.webp, the Mylo homepage film frame). New screens are real Figma exports
+     (Today, Chess, Play with Momo) placed on each phone with the affine measured from the poster (OpenCV SIFT fit on the status bar and chess screen).
+     Momo is exported with the Mylo Calm / Color collection set to Dark (the storyboard clone had lost its mode). -->
+<style>
+  html,body{margin:0;background:#131313}
+  #stage{position:relative;width:1280px;height:720px;overflow:hidden;background:#131313}
+  #cam{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:640px 360px;will-change:transform}
+  #cam > *{position:absolute;left:0;top:0}
+  #poster{width:1280px;height:720px}
+  #glow{mix-blend-mode:screen}
+  .scr{width:585px;height:1268px;transform-origin:0 0}
+  /* 9px dark lip past the measured screen edge so no sliver of the old screen shows at the rim */
+  .scr .in{position:absolute;left:-9px;top:-9px;width:603px;height:1286px;border-radius:95px;overflow:hidden;background:#161618}
+  .scr img{position:absolute;left:9px;top:9px}
+</style></head>
+<body>
+<div id="stage">
+  <div id="cam">
+    <img id="poster" src="a/poster.webp">
+    <img id="plate" src="a/plate.png">
+    <canvas id="glow" width="1280" height="720"></canvas>
+    <div class="scr" id="sL"><div class="in" id="iL"><img src="a/today.png" width="585" height="1268"></div></div>
+    <div class="scr" id="sC"><div class="in" id="iC"><img src="a/chess.png" width="585" height="1268"><img id="piece" src="a/piece.png" width="55.08" height="55.08"></div></div>
+    <div class="scr" id="sR"><div class="in" id="iR"><img src="a/momo.png" width="585" height="1268"></div></div>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eOutQuart=t=>1-Math.pow(1-t,4);
+const eInOutCubic=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+
+// screen-local (585x1268 px) -> video affine, measured on the poster (2720x1530) and scaled by 1280/2720
+const AFF={
+  L:[[0.36518,0.06436,236.29253],[-0.06436,0.36518,154.39668]],
+  C:[[0.37071,-0.00091,531.81661],[0.00091,0.37071,104.04679]],
+  R:[[0.36446,-0.06511,827.28086],[0.06511,0.36446,156.30475]]};
+const K=1280/2720;
+// clean plate over the baked "homepage film" label in the poster (poster px 36..720 x 1410..1494)
+$('plate').style.cssText+=`;left:${36*K}px;top:${1410*K}px;width:${684*K}px;height:${84*K}px`;
+for(const k of ['L','C','R']){const A=AFF[k];
+  $('s'+k).style.transform=`matrix(${A[0][0]},${A[1][0]},${A[0][1]},${A[1][1]},${A[0][2]},${A[1][2]})`;}
+
+// chess piece (white d-pawn) in screen px: d2 -> d3, one square = 67.3px
+const PIECE={x:237.33,y:688.92,sq:67.3};
+
+// stars (video px), kept inside the 3% margin and mostly in the open sky around the phones
+const STARS=[[70,60,1.4],[150,128,1.1],[262,44,1.3],[380,92,1.0],[468,40,1.5],[742,30,1.2],[820,82,1.0],
+  [1010,58,1.4],[1110,118,1.1],[1196,46,1.3],[1222,210,1.0],[1150,560,1.2],[96,420,1.1],[60,250,1.3],[1210,640,1.0],[214,660,1.1]];
+
+// light keyframes: t, x, y, radius, r,g,b, opacity
+const AMBER=[245,165,36], WHITE=[236,239,247], BLUE=[62,123,250];
+const LK=[
+  [0.5, 300,720,400, ...AMBER, 0],
+  [1.9, 300,660,400, ...AMBER, .45],
+  [3.5, 640,150,430, ...WHITE, .26],
+  [5.0, 940,250,430, ...BLUE, .42],
+  [6.0, 940,250,430, ...BLUE, .42],
+  [6.8, 940,250,430, ...BLUE, 0]];
+function light(t){
+  if(t<=LK[0][0]) return LK[0]; if(t>=LK[LK.length-1][0]) return LK[LK.length-1];
+  for(let i=0;i<LK.length-1;i++){const a=LK[i],b=LK[i+1]; if(t>=a[0]&&t<=b[0]){const u=eSine((t-a[0])/(b[0]-a[0]));
+    return a.map((v,j)=>j===0?t:lerp(v,b[j],u));}}
+}
+// arc for the 1.9-3.5 move: lift the midpoint so the light climbs over the top instead of cutting straight across
+function arcLift(t){const u=prog(t,1.9,3.5);return -90*Math.sin(Math.PI*u);}
+
+const g=$('glow').getContext('2d');
+function phoneBody(k){const A=AFF[k];
+  g.setTransform(A[0][0],A[1][0],A[0][1],A[1][1],A[0][2],A[1][2]);
+  g.beginPath();g.roundRect(-26,-26,585+52,1268+52,112);g.fill();}
+
+window.render=function(t){
+  // push-in: 100% -> 103% by 0:05, back to 100% at 0:07 (sine both ways, so the loop has no velocity jump)
+  const s = t<5 ? 1+.03*eSine(t/5) : 1+.03*(1-eSine(cl((t-5)/2)));
+  $('cam').style.transform=`scale(${s})`;
+
+  // baked label out at the start, back in for the last frames (poster match)
+  $('plate').style.opacity = t<4 ? eSine(prog(t,.3,.9)) : 1-eSine(prog(t,6.2,6.8));
+
+  // light + stars, cut out where the phones are so it reads as light behind them
+  g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,1280,720);
+  const L=light(t);const [_,lx,ly0,lr,cr,cg,cb,lo]=L;const ly=ly0+arcLift(t);
+  if(lo>0.001){const gr=g.createRadialGradient(lx,ly,0,lx,ly,lr);
+    gr.addColorStop(0,`rgba(${cr|0},${cg|0},${cb|0},${lo})`);
+    gr.addColorStop(.45,`rgba(${cr|0},${cg|0},${cb|0},${lo*.45})`);
+    gr.addColorStop(1,`rgba(${cr|0},${cg|0},${cb|0},0)`);
+    g.fillStyle=gr;g.fillRect(0,0,1280,720);}
+  const starOut=1-eSine(prog(t,6.0,6.6));
+  STARS.forEach(([x,y,r],i)=>{const o=eSine(prog(t,3.7+i*.08,4.3+i*.08))*starOut*.75; if(o<=0) return;
+    g.fillStyle=`rgba(255,255,255,${o})`;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fill();});
+  g.globalCompositeOperation='destination-out';g.fillStyle='#000';
+  phoneBody('L');phoneBody('C');phoneBody('R');
+  g.globalCompositeOperation='source-over';g.setTransform(1,0,0,1,0,0);
+
+  // screens: each wipes up once (ease out expo, 500ms), all dissolve back together at 6.0-6.6
+  const back=1-eInOutCubic(prog(t,6.0,6.6));
+  for(const [k,a] of [['L',1.0],['C',2.1],['R',3.7]]){
+    const p=eOutExpo(prog(t,a,a+.5));
+    const el=$('i'+k);el.style.clipPath=`inset(${(1-p)*100}% 0 0 0)`;
+    $('s'+k).style.opacity = p>0 ? back : 0;
+  }
+  // one chess move on the middle phone at 0:02.8
+  const mv=eOutQuart(prog(t,2.8,3.15));
+  $('piece').style.transform=`translate(${PIECE.x}px,${PIECE.y-PIECE.sq*mv}px)`;
+};
+window.render(0);
+</script>
+</body></html>
