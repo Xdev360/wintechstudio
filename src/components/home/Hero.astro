@@ -19,6 +19,10 @@ const logos: { name: string; icon?: string }[] = [
 ];
 ---
 <section class="hero">
+  <div class="art" aria-hidden="true">
+    <img class="art-l" src="/images/home/hero/window-light-1440.webp" srcset="/images/home/hero/window-light-800.webp 800w, /images/home/hero/window-light-1440.webp 1440w, /images/home/hero/window-light-2880.webp 2880w" sizes="max(1521px, 100vw)" alt="" width="1440" height="1080" fetchpriority="high" decoding="async" />
+    <img class="art-d" src="/images/home/hero/window-dark-1440.webp" srcset="/images/home/hero/window-dark-800.webp 800w, /images/home/hero/window-dark-1440.webp 1440w, /images/home/hero/window-dark-2880.webp 2880w" sizes="max(1521px, 100vw)" alt="" width="1440" height="1080" loading="lazy" decoding="async" />
+  </div>
   <div class="h-wrap inner">
     <div class="top">
       <div class="copy">
@@ -68,7 +72,16 @@ const logos: { name: string; icon?: string }[] = [
   reel.slice(1).forEach(function(r){var im=new Image();im.src=r.poster});show(0);run()})();
 </script>
 <style>
-  .hero{background:var(--h-bg)}
+  .hero{position:relative;isolation:isolate;overflow:hidden;background:var(--h-bg)}
+  /* Window-view art from Figma (Website v5, hero art light/dark). Sits behind the copy; a fade keeps the text side clean. */
+  .art{position:absolute;inset:0 0 142px;z-index:-1;pointer-events:none;overflow:hidden}
+  /* art stops at the logo band's top hairline (band 74px + 68px bottom padding), like the Figma hero */
+  .art img{position:absolute;left:calc(50% - 801px);top:0;width:max(1521px,calc(50% + 801px));max-width:none;height:auto;transform:translateY(-36.5%);display:block}
+  .art::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--h-bg) 0%,color-mix(in srgb,var(--h-bg) 92%,transparent) 38%,transparent 62%)}
+  .art-d{display:none!important}
+  :root[data-theme="dark"] .art-l{display:none!important}
+  :root[data-theme="dark"] .art-d{display:block!important}
+  .inner{position:relative}
   .inner{min-height:calc(703px - 96px);padding-top:28px;padding-bottom:68px;display:flex;flex-direction:column;gap:48px}
   .top{display:flex;justify-content:space-between;align-items:flex-end;gap:64px;margin:auto 0}
   .copy{width:784px;min-width:0;display:flex;flex-direction:column;align-items:flex-start}
@@ -114,7 +127,13 @@ const logos: { name: string; icon?: string }[] = [
     .top{flex-direction:column;align-items:stretch;gap:40px}
     .now{width:100%;max-width:560px}.media{width:100%;height:auto;aspect-ratio:16/9}
   }
+  @media (max-width:1023px){
+    .art img{top:auto;bottom:0;left:50%;width:max(900px,calc(100% + 160px));transform:translate(-50%,8%)}
+    .art::after{background:linear-gradient(180deg,var(--h-bg) 0%,color-mix(in srgb,var(--h-bg) 96%,transparent) 42%,transparent 62%)}
+  }
   @media (max-width:767px){
+    .art{bottom:138px}
+    .art img{left:-85px;width:560px;transform:translateY(8.8%)}
     .inner{min-height:0;padding-top:28px;padding-bottom:64px;gap:40px}
     .top{margin:0;gap:32px}
     h1{font-size:45.36px;letter-spacing:-.907px;margin-top:16px}
