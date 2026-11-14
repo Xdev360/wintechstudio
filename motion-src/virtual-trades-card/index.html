@@ -1,0 +1,279 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 4 · Virtual Trades card loop · "Card to cash". 1312x984, 9.5s, silent.
+     Every layer in a/ is exported from Figma (kQl8LQLi5xdRVVyXF3R4NZ): the website hero 955:109678 split into
+     beams / under (headline, coins, Steam and PlayStation cards) / over (phone, quote and paid floats), the Amazon gift card
+     955:111249 (component 911:12342), and the app screens A4 Quote 955:107251, A5 Status 955:107297, A6 Paid 955:107349
+     (balance text hidden; it is live Figtree here). a5lit is the Status screen with every step lit (same components).
+     cover.png is the site poster cover-virtual-trades.webp scaled to fill the 4:3 stage. -->
+<style>
+  @font-face{font-family:VTFig;font-weight:100 900;src:url(a/figtree-latin-ext-wght-normal.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+  @font-face{font-family:VTFig;font-weight:100 900;src:url(a/figtree-latin-wght-normal.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  html,body{margin:0;background:#0B0A0F}
+  #stage{position:relative;width:1312px;height:984px;overflow:hidden;background:#0B0A0F;font-family:VTFig,sans-serif}
+  .l{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform,opacity}
+  #cardP{position:absolute;left:0;top:0;width:1312px;height:984px;perspective:2200px;pointer-events:none}
+  .cw{position:absolute;left:-360px;top:-227px;width:720px;height:454px;transform-style:preserve-3d;will-change:transform}
+  .cw img{position:absolute;left:0;top:0;width:720px;height:454px}
+  #cardImg{filter:drop-shadow(0 57.6px 57.6px rgba(0,0,0,.45))}
+  .spec{position:absolute;left:0;top:0;width:720px;height:454px;border-radius:50px;overflow:hidden}
+  .spec i{position:absolute;top:-160px;left:0;width:150px;height:780px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.22) 50%,rgba(255,255,255,0));transform-origin:0 0}
+  .sh{position:absolute;left:0;top:0;width:720px;height:454px;background:url(a/card.png) 0 0/720px 454px no-repeat;transform-origin:360px 227px;will-change:transform,opacity}
+  #shards{filter:drop-shadow(0 30px 40px rgba(0,0,0,.4))}
+  .dg{position:absolute;left:0;top:0;font-size:110px;line-height:1.27;font-weight:400;letter-spacing:0;color:#fff;white-space:pre;transform-origin:50% 50%;will-change:transform,opacity}
+  #phone{position:absolute;left:0;top:0;width:362px;height:785px;border-radius:33px;overflow:hidden;box-shadow:0 29px 72px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.05);will-change:transform,opacity}
+  #phone img{position:absolute;left:0;top:0;width:362px;height:785px}
+  #scr{position:absolute;left:0;top:0;width:362px;height:785px}
+  #bal{position:absolute;left:0;top:0;white-space:pre;transform-origin:0 0;color:#F4F3F7;font-weight:400;line-height:1.27;font-size:40.5px;letter-spacing:-.045em}
+  #bal .m{display:inline-block;font-variant-numeric:tabular-nums}
+  #bal .d{display:inline-block;transform-origin:0 85%;letter-spacing:-.03em}
+  #uline{position:absolute;left:0;top:0;height:3px;border-radius:2px;background:linear-gradient(90deg,#B99CFF,rgba(185,156,255,0));transform-origin:0 50%}
+  #glow{position:absolute;left:18.4px;top:699.7px;width:325px;height:51.6px;border-radius:26px;box-shadow:0 0 34px 6px rgba(185,156,255,.55);opacity:0}
+  #press{position:absolute;left:18.4px;top:699.7px;width:325px;height:51.6px;border-radius:26px;background:#0B0A0F;opacity:0}
+  #meas{position:absolute;left:-4000px;font-variant-numeric:tabular-nums;top:0;font-size:110px;line-height:1.27;font-weight:400;letter-spacing:-.045em;white-space:pre;visibility:hidden}
+  #meas span{display:inline-block}
+</style></head>
+<body>
+<div id="stage">
+  <img id="beams" class="l" src="a/beams.png" width="1345" height="1009">
+  <img id="under" class="l" src="a/under.png" width="1345" height="1009">
+  <img id="over" class="l" src="a/over.png" width="1345" height="1009">
+  <div id="phone" class="l">
+    <div id="scr">
+      <img id="a4" src="a/a4.png">
+      <div id="glow"></div><div id="press"></div>
+      <img id="a5" src="a/a5.png">
+      <img id="litV" src="a/a5lit.png" style="clip-path:path('M25.2 333H64.8V376.2H25.2Z M181.8 215.1H261V223.2H181.8Z')">
+      <img id="litA" src="a/a5lit.png" style="clip-path:path('M41.4 365.4H50.4V419.4H41.4Z M30.6 412.2H147.6V440.1H30.6Z')">
+      <img id="litP" src="a/a5lit.png" style="clip-path:path('M41.4 439.2H50.4V493.2H41.4Z M30.6 486H108V513H30.6Z M264.6 215.1H343.8V223.2H264.6Z')">
+      <img id="a6" src="a/a6.png">
+      <img id="tick" src="a/a6tick.png">
+    </div>
+    <div id="uline"></div>
+    <div id="bal"><span class="m">₦0</span><span class="d">.00</span></div>
+  </div>
+  <div id="cardP2" style="position:absolute;left:0;top:0;width:1312px;height:984px;perspective:2200px;pointer-events:none">
+    <div id="card" class="cw">
+      <img id="cardImg" src="a/card.png">
+      <div class="spec"><i id="spec1"></i></div>
+    </div>
+    <div id="shardG" class="cw">
+      <div id="shards"></div>
+      <svg id="cracks" width="720" height="454" viewBox="0 0 720 454" style="position:absolute;left:0;top:0;overflow:visible"></svg>
+      <div class="spec"><i id="spec2"></i></div>
+    </div>
+  </div>
+  <div id="digits"></div>
+  <img id="cover" class="l" src="a/cover.png" width="1312" height="984">
+  <div id="meas"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eInOutSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eInOutCubic=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eInCubic=t=>t*t*t;
+const eOutCubic=t=>1-Math.pow(1-t,3);
+const eOutQuart=t=>1-Math.pow(1-t,4);
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eOutBack=t=>{const c1=1.6,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const W=1312,H=984,F=1.8,S=1.86778;
+const HERO={x:-16,y:-12};
+
+// ---------- the Amazon card ----------
+// resting pose on the cover: hero top-left (140,340), 125 wide, rotated 10deg counter-clockwise
+const K0=125*S/720;
+const REST=(()=>{const tl={x:140*S+HERO.x,y:340*S+HERO.y},th=-10*Math.PI/180,hw=360*K0,hh=227*K0;
+  return {x:tl.x+hw*Math.cos(th)-hh*Math.sin(th),y:tl.y+hw*Math.sin(th)+hh*Math.cos(th),s:K0,rz:-10};})();
+const BIG={x:500,y:520,s:0.85,rz:0};
+const REB={x:480,y:520,s:0.85,rz:0};
+function cardT(p){return `translate(${p.x.toFixed(2)}px,${p.y.toFixed(2)}px) rotateX(${(p.rx||0).toFixed(3)}deg) rotateY(${(p.ry||0).toFixed(3)}deg) rotateZ(${p.rz.toFixed(3)}deg) scale(${p.s.toFixed(5)})`;}
+const mix=(a,b,u)=>({x:lerp(a.x,b.x,u),y:lerp(a.y,b.y,u),s:lerp(a.s,b.s,u),rz:lerp(a.rz,b.rz,u)});
+
+// ---------- shards: seven pieces split by kinked crack lines ----------
+const TOP=[0,118,226,330,436,540,630,720], MID=[0,96,250,318,462,520,652,720], BOT=[0,80,206,344,420,560,668,720];
+const shards=[], crackD=[];
+for(let i=0;i<7;i++){
+  const poly=[[TOP[i],0],[TOP[i+1],0],[MID[i+1],227],[BOT[i+1],454],[BOT[i],454],[MID[i],227]];
+  const el=document.createElement('div'); el.className='sh';
+  el.style.clipPath='polygon('+poly.map(p=>p[0]+'px '+p[1]+'px').join(',')+')';
+  $('shards').appendChild(el);
+  const cx=(TOP[i]+TOP[i+1]+MID[i]+MID[i+1]+BOT[i]+BOT[i+1])/6, cy=227;
+  const dx=cx-360, dy=(i%2?-1:1)*28, n=Math.hypot(dx,dy)||1;
+  const dist=70+((i*37)%5)*12, spin=[-14,9,-6,11,-9,7,15][i];
+  shards.push({el,cx,cy,dir:{x:dx/n,y:dy/n},dist,spin,vy:[-30,-60,40,-20,50,-40,20][i]});
+  if(i>0) crackD.push(`M${TOP[i]} 0 L${MID[i]} 227 L${BOT[i]} 454`);
+}
+$('cracks').innerHTML=crackD.map(d=>`<path d="${d}" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="520" stroke-dashoffset="520" opacity=".75"/>`).join('');
+
+// ---------- digits (Figtree, white) ----------
+const GLY=['₦','1','5','2','4','0','0'];
+const digs=GLY.map(g=>{const s=document.createElement('span');s.className='dg';s.textContent=g;$('digits').appendChild(s);return s;});
+// measuring line: final balance "₦152,400" at 110px, so glyph centres can be found at any balance size
+$('meas').innerHTML='₦152,400'.split('').map(c=>`<span>${c}</span>`).join('');
+const GIDX=[0,1,2,3,5,6,7]; // glyph index in "₦152,400" for each digit
+function glyphBoxes(){const sp=[...$('meas').children];const x0=sp[0].offsetLeft;
+  return GIDX.map(i=>({cx:sp[i].offsetLeft-x0+sp[i].offsetWidth/2,w:sp[i].offsetWidth}));}
+
+// ---------- phone and balance ----------
+const PH={x:820,y:100};
+// balance states in screen px (Figma values x1.8): left, top, size; dec = ".00" scale vs main, colour mix (0 grey, 1 white), opacity
+const BA4={x:36.82,y:289.07,size:36.82,dk:0.55,dw:0,dop:1};
+const BA5={x:18.41,y:110.47,size:40.5,dk:0.55,dw:0,dop:0};
+const BA6={cx:180.9,y:335.1,size:36.82,dk:1,dw:1,dop:1};
+function balState(t){
+  const u1=eInOutCubic(prog(t,4.95,5.40)), u2=eInOutCubic(prog(t,6.35,6.80));
+  const m=$('bal').querySelector('.m'), d=$('bal').querySelector('.d');
+  const mw=m.offsetWidth, dw=d.offsetWidth;
+  let st={x:lerp(BA4.x,BA5.x,u1),y:lerp(BA4.y,BA5.y,u1),size:lerp(BA4.size,BA5.size,u1),dk:BA4.dk,dw:0,dop:lerp(1,0,cl(u1*2))};
+  if(u2>0){const k6=BA6.size/40.5, w6=(mw+dw*1)*k6, x6=BA6.cx-w6/2;
+    st={x:lerp(BA5.x,x6,u2),y:lerp(BA5.y,BA6.y,u2),size:lerp(BA5.size,BA6.size,u2),dk:lerp(BA5.dk,1,u2),dw:u2,dop:cl((u2-.4)/.6)};}
+  return st;
+}
+
+const set=(el,x,y,s=1,o=1,extra='')=>{el.style.transform=`translate(${x}px,${y}px) scale(${s})${extra}`;el.style.opacity=o;};
+const fmt=v=>'₦'+Math.round(v).toLocaleString('en-US');
+const grey=[0x8B,0x87,0x97], white=[0xF4,0xF3,0xF7];
+
+window.render=function(t){
+  // ---------- cover and hero layers ----------
+  const coverO = t<4 ? 1-eInOutSine(prog(t,0.2,0.45)) : eInOutSine(prog(t,9.05,9.25));
+  set($('cover'),0,0,1,coverO);
+  const fall = t<4 ? eInOutSine(prog(t,0.6,1.0)) : 1-eInOutSine(prog(t,8.5,8.9));
+  const fallO= t<4 ? eInOutSine(prog(t,0.6,0.9)) : 1-eInOutSine(prog(t,8.85,9.05));
+  const us=1-0.035*fall;
+  $('under').style.transformOrigin=`${656-HERO.x}px ${500-HERO.y}px`; $('over').style.transformOrigin=`${656-HERO.x}px ${500-HERO.y}px`;
+  set($('under'),HERO.x,HERO.y,us,1-fall);
+  const soft=(0.8*(1-fall)).toFixed(3)+'px';  // the poster is softer than a fresh render; match it at rest
+  $('under').style.filter=`blur(${soft})`; $('over').style.filter=`blur(${soft})`;
+  set($('over'),HERO.x,HERO.y,us,1-fallO);
+  const drift=1+0.03*Math.sin(Math.PI*prog(t,0.6,8.6));
+  $('beams').style.transformOrigin=`${656-HERO.x}px ${492-HERO.y}px`;
+  set($('beams'),HERO.x,HERO.y,drift,1);
+  // card sits under the floats while they are visible
+  const cardAbove = (t>0.9 && t<8.8);
+  $('cardP2').style.zIndex=cardAbove?3:1; $('over').style.zIndex=2; $('phone').style.zIndex=2; $('digits').style.zIndex=4; $('cover').style.zIndex=9;
+  $('cardP2').style.position='absolute';
+
+  // ---------- card pose ----------
+  let pose, showCard=true, showShards=false;
+  if(t<1.7){ pose=mix(REST,BIG,eInOutSine(prog(t,0.6,1.65))); }
+  else if(t<2.05){ pose={...BIG,ry:90*eInCubic(prog(t,1.7,2.05))}; }
+  else if(t<2.45){ pose={...BIG,ry:-90*(1-eOutCubic(prog(t,2.05,2.4)))}; showCard=false; showShards=true; }
+  else if(t<7.8){ pose={...BIG}; showCard=false; showShards=t<2.9; if(t>5) pose={...REB}; showShards=showShards||t>7.6; }
+  else if(t<8.2){ pose={...REB}; showCard=t>=8.15; showShards=t<8.15; }
+  else { pose=mix(REB,REST,eInOutCubic(prog(t,8.2,8.95))); }
+  if(t>1.7&&t<2.4) pose.rx=8*Math.sin(Math.PI*prog(t,1.7,2.4));
+  $('card').style.transform=cardT(pose); $('shardG').style.transform=cardT(pose);
+  const rest=t<4?1-prog(t,0.6,0.9):prog(t,8.7,8.95);
+  $('cardImg').style.filter=`drop-shadow(0 57.6px 57.6px rgba(0,0,0,.45)) blur(${(0.8/K0*rest).toFixed(3)}px)`;
+  $('card').style.visibility=showCard?'visible':'hidden';
+  $('shardG').style.visibility=showShards?'visible':'hidden';
+  // specular sweeps
+  const sw1=prog(t,1.72,2.02), sw3=prog(t,8.1,8.4);
+  const swp=t<5?sw1:sw3;
+  $('spec1').style.transform=`translateX(${lerp(-220,820,eInOutSine(swp))}px) rotate(18deg)`;
+  $('spec1').style.opacity=(swp>0&&swp<1)?1:0;
+  const sw2=prog(t,2.08,2.4);
+  $('spec2').style.transform=`translateX(${lerp(820,-220,eInOutSine(sw2))}px) rotate(18deg)`;
+  $('spec2').style.opacity=(sw2>0&&sw2<1&&t<2.45)?0.8:0;
+
+  // ---------- cracks and shards ----------
+  const ck=eOutCubic(prog(t,2.28,2.44));
+  [...$('cracks').children].forEach((p,i)=>{p.setAttribute('stroke-dashoffset',(520*(1-cl(ck*1.2-i*0.04))).toFixed(1));});
+  $('cracks').style.opacity=t<2.6?1-prog(t,2.47,2.56):0;
+  const burst=eOutExpo(prog(t,2.45,2.85));
+  const rebuild=eInOutCubic(prog(t,7.85,8.15));  // 0 = scattered, 1 = whole
+  shards.forEach((s,i)=>{
+    let b = t<5 ? burst : 1-rebuild;
+    const ox=s.dir.x*s.dist*b, oy=s.dir.y*s.dist*b+s.vy*0.25*b;
+    let o = t<5 ? 1-eInOutSine(prog(t,2.58+i*0.012,2.78+i*0.012)) : eInOutSine(prog(t,7.84+i*0.01,8.0+i*0.01));
+    const sc = 1-0.12*(t<5?prog(t,2.58,2.8):1-prog(t,7.84,8.02));
+    s.el.style.transform=`translate(${ox.toFixed(2)}px,${oy.toFixed(2)}px) rotate(${(s.spin*b).toFixed(2)}deg) scale(${sc.toFixed(4)})`;
+    s.el.style.opacity=o.toFixed(3);
+    s.el.style.filter=`blur(${(t<5?3*prog(t,2.62,2.8):3*(1-prog(t,7.86,8.04))).toFixed(2)}px)`;
+  });
+
+  // ---------- phone ----------
+  const pin=eOutExpo(prog(t,2.7,3.35)), pout=eInOutCubic(prog(t,7.35,7.8));
+  const phx=PH.x+70*(1-pin)+90*pout, phy=PH.y;
+  const pho=eInOutSine(prog(t,2.7,3.05))*(1-eInOutSine(prog(t,7.35,7.75)));
+  set($('phone'),phx,phy,1,pho);
+  $('phone').style.visibility=pho>0.001?'visible':'hidden';
+  $('scr').style.filter=`brightness(${(1-0.45*eInOutSine(prog(t,7.15,7.4))).toFixed(3)})`;
+  // screens: push transitions
+  const p1=eInOutCubic(prog(t,4.95,5.40)), p2=eInOutCubic(prog(t,6.35,6.80));
+  set($('a4'),-110*p1,0,1,1); $('a4').style.filter=`brightness(${(1-0.5*p1).toFixed(3)})`;
+  $('glow').style.transform=`translateX(${-110*p1}px)`; $('press').style.transform=`translateX(${-110*p1}px)`;
+  const a5x=362*(1-p1)-110*p2;
+  set($('a5'),a5x,0,1,p1>0?1:0); $('a5').style.filter=`brightness(${(1-0.5*p2).toFixed(3)})`;
+  ['litV','litA','litP'].forEach((id,i)=>{const u=eInOutSine(prog(t,5.55+0.25*i,5.73+0.25*i));
+    set($(id),a5x,0,1,u); $(id).style.filter=$('a5').style.filter;});
+  set($('a6'),362*(1-p2),0,1,p2>0?1:0);
+  const tk=prog(t,6.65,7.0), tks=lerp(0.6,1,eOutBack(tk));
+  $('tick').style.transformOrigin='180.9px 226.4px';
+  set($('tick'),362*(1-p2),0,tks,eInOutSine(cl(tk*2)));
+  // Submit card: glow then press
+  $('glow').style.opacity=(eInOutSine(prog(t,4.6,4.8))*(1-prog(t,4.9,5.1))).toFixed(3);
+  $('press').style.opacity=(0.12*prog(t,4.8,4.84)*(1-prog(t,4.88,4.94))).toFixed(3);
+
+  // ---------- balance (live text) ----------
+  const cnt=eOutQuart(prog(t,3.55,4.55));
+  $('bal').querySelector('.m').textContent=fmt(152400*cnt);
+  const bs=balState(t), k=bs.size/40.5;
+  const balO=prog(t,3.5,3.62)*(t<7.15?1:0);
+  set($('bal'),bs.x,bs.y,k,balO);
+  const dEl=$('bal').querySelector('.d');
+  dEl.style.transform=`scale(${bs.dk})`; dEl.style.opacity=bs.dop;
+  dEl.style.color=`rgb(${grey.map((g,i)=>Math.round(lerp(g,white[i],bs.dw))).join(',')})`;
+  // underline under the balance on the quote screen
+  const ul=eOutCubic(prog(t,4.1,4.55)), ulo=1-prog(t,4.95,5.15);
+  const mW=$('bal').querySelector('.m').offsetWidth*k;
+  $('uline').style.width=mW+'px';
+  set($('uline'),BA4.x-110*p1,BA4.y+BA4.size*1.27+4,1,0.85*(ul>0?1:0)*ulo,` scaleX(${ul.toFixed(4)})`);
+
+  // ---------- flying digits ----------
+  const gb=glyphBoxes();
+  digs.forEach((el,i)=>{
+    const s=shards[i];
+    // big digit position at the shatter (stage px, centre)
+    const bp={x:BIG.x+(s.cx-360+s.dir.x*s.dist)*BIG.s, y:BIG.y+(s.dir.y*s.dist+s.vy*0.25)*BIG.s};
+    let x,y,sc=1,o=0,glow=0;
+    // balance glyph centres: quote screen (arrival) and paid screen (lift off)
+    const kA=BA4.size/110, a4={x:PH.x+BA4.x+gb[i].cx*kA, y:PH.y+BA4.y+1.27*BA4.size/2};
+    const k6=BA6.size/110, m=$('bal').querySelector('.m'), d=$('bal').querySelector('.d');
+    const w6=(m.offsetWidth+d.offsetWidth)*(BA6.size/40.5);
+    const a6={x:PH.x+BA6.cx-w6/2+gb[i].cx*k6, y:PH.y+BA6.y+1.27*BA6.size/2};
+    const rb=1-eInOutCubic(prog(t,7.85,8.15)); const rp={x:REB.x+(s.cx-360+s.dir.x*s.dist*rb)*REB.s, y:REB.y+(s.dir.y*s.dist+s.vy*0.25)*rb*REB.s};
+    if(t<5){
+      const ts=2.95+0.07*(6-i), u=eInOutCubic(prog(t,ts,ts+0.62));
+      const appear=eInOutSine(prog(t,2.6+i*0.012,2.8+i*0.012));
+      // curved path: quadratic bezier with a lifted control point
+      const c={x:(bp.x+a4.x)/2+40, y:Math.min(bp.y,a4.y)-120};
+      x=(1-u)*(1-u)*bp.x+2*(1-u)*u*c.x+u*u*a4.x; y=(1-u)*(1-u)*bp.y+2*(1-u)*u*c.y+u*u*a4.y;
+      sc=lerp(lerp(0.8,1,appear),kA,u);
+      o=appear*(1-eInOutSine(prog(u,0.86,1)));
+      glow=Math.sin(Math.PI*u);
+    } else {
+      const lift=eOutCubic(prog(t,7.15,7.35));
+      const ts=7.3+0.04*i, u=eInOutCubic(prog(t,ts,ts+0.5));
+      const st={x:a6.x,y:a6.y-22*lift};
+      const c={x:(st.x+rp.x)/2, y:Math.min(st.y,rp.y)-150+i*12};
+      x=(1-u)*(1-u)*st.x+2*(1-u)*u*c.x+u*u*rp.x; y=(1-u)*(1-u)*st.y+2*(1-u)*u*c.y+u*u*rp.y;
+      sc=lerp(k6*lerp(1,1.08,lift),0.85,u);
+      o=(t>=7.15?1:0)*(1-eInOutSine(prog(t,7.84+i*0.008,7.98+i*0.008)));
+      glow=Math.sin(Math.PI*u);
+    }
+    el.style.transform=`translate(${(x-el.offsetWidth/2).toFixed(2)}px,${(y-el.offsetHeight/2).toFixed(2)}px) scale(${sc.toFixed(4)})`;
+    el.style.opacity=o.toFixed(3);
+    el.style.textShadow=`0 0 ${(28/Math.max(sc,.3)).toFixed(1)}px rgba(185,156,255,${(0.65*glow).toFixed(3)})`;
+  });
+};
+document.fonts.ready.then(()=>window.render(0));
+window.render(0);
+</script>
+</body></html>
