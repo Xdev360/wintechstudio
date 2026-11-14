@@ -1,0 +1,106 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 17 · AI assistant service loop · 1168x876, 8s, silent, seamless loop.
+     Frame 0 and the end match the coded "How we help" assistant panel: the chat window with its header and an empty body on #F4F5F7
+     (2x of the 584x438 art board). The assistant is Vira, Virelle Wellness Hub's real website assistant ("Ask Vira, product guide,
+     day or night", Figma KnZaBuFXRvi5xvegf6j79M node 837:517; the leaf mark is its vector 837:519).
+     No Ibadan fee is known, so Vira only states true facts: Virelle delivers across Nigeria in 5 to 7 working days and the exact
+     delivery fee shows at checkout. The link points to the store's Order and delivery policy page (frame 848:122).
+     The order card uses the real product and price from the store design (Nutricost Biotin 10,000 mcg, 120 capsules, N33,000, node 838:122);
+     a/biotin.png is its pack shot (838:125). Payment is Paystack. -->
+<style>
+  @font-face{font-family:Figtree;src:url(../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2) format('woff2');font-weight:100 900}
+  html,body{margin:0;background:#0b0c0f}
+  #stage{position:relative;width:1168px;height:876px;overflow:hidden;background:#F4F5F7;font-family:Figtree,sans-serif;color:#0A0E17}
+  .l{position:absolute;left:0;top:0;will-change:transform,opacity}
+  #chat{left:224px;top:72px;width:720px;height:732px;background:#fff;border:2px solid rgba(3,17,28,.10);box-sizing:border-box;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.06)}
+  #head{display:flex;gap:20px;align-items:center;padding:22px 28px;border-bottom:2px solid rgba(3,17,28,.10);flex:none}
+  #av{position:relative;width:64px;height:64px;border-radius:50%;background:#1B4332;display:grid;place-items:center;flex:none}
+  #av i{position:absolute;right:0;top:2px;width:16px;height:16px;border-radius:50%;background:#2EBD70;border:3px solid #fff;box-sizing:border-box}
+  #head b{display:block;font:600 28px/34px Figtree}
+  #head small{display:block;font:400 22px/28px Figtree;color:#6B7280}
+  #body{position:relative;flex:1;overflow:hidden}
+  #body::after{content:'';position:absolute;left:0;right:0;top:0;height:40px;background:linear-gradient(#fff,rgba(255,255,255,0));pointer-events:none}
+  #stack{position:absolute;left:28px;right:28px;top:24px;display:flex;flex-direction:column;gap:13px}
+  .m{margin:0;max-width:78%;padding:16px 24px;font:400 25px/35px Figtree;border-radius:24px;opacity:0}
+  .me{align-self:flex-end;background:rgba(3,17,28,.06);color:#0A0E17;border-bottom-right-radius:6px}
+  .bot{align-self:flex-start;background:#1B4332;color:#fff;border-bottom-left-radius:6px}
+  .lk{align-self:flex-start;display:flex;align-items:center;gap:16px;padding:14px 22px 14px 16px;border:2px solid rgba(3,17,28,.10);border-radius:18px;opacity:0;background:#fff}
+  .lk .ic{width:48px;height:48px;border-radius:12px;background:#E8F3EC;display:grid;place-items:center;flex:none}
+  .lk b{display:block;font:600 22px/28px Figtree;color:#1B4332}
+  .lk small{display:block;font:400 19px/24px Figtree;color:#6B7280}
+  #typing{position:absolute;left:28px;display:flex;gap:8px;padding:22px 24px;background:rgba(3,17,28,.06);border-radius:24px;border-bottom-left-radius:6px;opacity:0}
+  #typing i{width:10px;height:10px;border-radius:50%;background:#8A919C}
+  #order{align-self:flex-start;width:560px;padding:20px 24px!important;background:#fff;border-radius:24px;padding:24px 26px;box-sizing:border-box;border:2px solid rgba(3,17,28,.08);box-shadow:0 24px 56px rgba(4,26,18,.16),0 4px 12px rgba(4,26,18,.06);opacity:0;margin-top:8px}
+  .oh{display:flex;align-items:center;gap:10px;font:600 17px/22px Figtree;letter-spacing:.8px;color:#1B4332;text-transform:uppercase}
+  .oh i{width:10px;height:10px;border-radius:50%;background:#2EBD70}
+  .orow{display:flex;align-items:center;gap:18px;margin-top:12px}
+  .pt{width:84px;height:84px;border-radius:16px;background:#F3F6F4;display:grid;place-items:center;flex:none}
+  .pt img{height:68px}
+  .nm{flex:1}
+  .nm b{display:block;font:600 23px/29px Figtree;color:#1B4332}
+  .nm small{display:block;font:400 18px/24px Figtree;color:#6B7F74}
+  .pr{font:600 23px/29px Figtree;color:#1B4332}
+  .ofoot{margin-top:14px;font:400 18px/24px Figtree;color:#3B5A4A}
+  .paid{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:#E8F3EC;color:#1B4332;font:500 17px/22px Figtree}
+</style></head>
+<body>
+<div id="stage">
+  <div id="chat" class="l">
+    <div id="head">
+      <span id="av"><svg width="22" height="35" viewBox="0 0 13.75 22"><path fill="#fff" d="M 11.27288574977411 0 C 11.27288574977411 0 11.08598439532657 0.8556663056724092 10.980644830585367 1.252442658253205 C 10.407860271677265 3.3879410442124063 8.970095366610295 5.330893752921341 7.597972568193892 6.9532762315538195 C 5.475760203640808 9.462585814386351 4.841690526729074 12.398010775574253 4.984400957620614 15.713378071581197 C 5.063433737293578 17.548167797642897 5.32108197190316 19.534454502203523 6.010022356352388 21.249490643362712 C 6.109378020670536 21.497176106770834 6.456896105089676 22 6.456896105089676 22 C 6.528490492781603 21.85186339810363 6.3783157258009675 21.261995651375532 6.354380124108752 21.024170965211002 C 6.265637221492948 20.403997854901174 6.322315368558462 19.6484387520032 6.4559934663301695 19.04149023854834 C 7.014484713456368 16.503564661792197 8.966301851560237 14.761355147402512 10.579926190584947 12.95061254256811 C 12.100269434967203 11.244474283854167 13.390265652606153 9.374813764523237 13.693277531749889 6.982973904079861 C 13.957789114617317 4.895089173928286 13.267312301846962 3.2670567178318644 12.243769404522185 1.5607259375417333 C 11.93928975773392 1.0531648945604632 11.62065273547993 0.47403947879106567 11.27288574977411 0 Z"/><path fill="#fff" d="M 3.6958141333830623 18.008968620626334 C 2.8493346387805767 17.35910479553744 1.5098563521416586 16.285966146094168 0.9802602202391403 15.332630646534454 C -0.4133480831647819 12.824096027602497 0.08764544657612855 6.750426776592548 0.08764544657612855 6.750426776592548 C 0.08764544657612855 6.750426776592548 3.6902013384275443 9.458455064561633 3.892308592036055 10.820906158186432 C 4.112694398759447 12.304279451288728 3.8701867554372664 13.898963067470453 3.7692478502358284 15.40782710670406 L 3.6958141333830623 18.008968620626334 Z"/><path fill="#fff" d="M 5.99250467839094 4.023931623931624 C 5.99250467839094 5.062415672367455 5.199548148962578 5.904273504273504 4.221386901653198 5.904273504273504 C 3.243225586781037 5.904273504273504 2.450269124915456 5.062415672367455 2.450269124915456 4.023931623931624 C 2.450269124915456 2.985447503766443 3.243225586781037 2.1435897435897435 4.221386901653198 2.1435897435897435 C 5.199548148962578 2.1435897435897435 5.99250467839094 2.985447503766443 5.99250467839094 4.023931623931624 Z"/></svg><i></i></span>
+      <span><b>Vira</b><small>Virelle Wellness Hub · product guide, day or night</small></span>
+    </div>
+    <div id="body">
+      <div id="stack">
+        <p class="m me" data-at="0.5">Hi, do you deliver to Ibadan? How much?</p>
+        <p class="m bot" data-at="1.95" data-typing="1.1">Yes, we deliver to Ibadan. It takes 5 to 7 working days, and the exact delivery fee shows at checkout before you pay.</p>
+        <div class="lk" data-at="2.5"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1B4332" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><span><b>Order and delivery policy</b><small>virellewellnesshub.com</small></span></div>
+        <p class="m me" data-at="3.9">Okay, add the Biotin 10,000 mcg.</p>
+      <div id="order" data-at="4.95" data-typing="4.4">
+            <div class="oh"><i></i>New order<span class="paid" style="margin-left:auto;text-transform:none;letter-spacing:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1B4332" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Paid with Paystack</span></div>
+            <div class="orow"><span class="pt"><img src="a/biotin.png"></span><span class="nm"><b>Biotin 10,000 mcg</b><small>Nutricost · 120 capsules</small></span><span class="pr">₦33,000</span></div>
+            <div class="ofoot">Delivery to Ibadan · 5 to 7 working days</div>
+        </div>
+      </div>
+      <div id="typing"><i></i><i></i><i></i></div>
+    </div>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eIO=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eOut=t=>1-Math.pow(1-t,3);
+const eBack=t=>{const c1=1.3,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const items=[...$('stack').children];
+const PAD=28, OUT=7.0;
+window.render=function(t){
+  // scroll needed once each item is in (measured per frame so the web font is settled)
+  const bodyH=$('body').clientHeight;
+  const need=items.map(e=>Math.max(0,e.offsetTop+e.offsetHeight+24+18-bodyH));
+  const out=eIO(prog(t,OUT,OUT+.5));
+  let scroll=0;
+  items.forEach((e,i)=>{
+    const at=+e.dataset.at, k=eOut(prog(t,at,at+.42));
+    e.style.opacity=(k*(1-out)).toFixed(3);
+    e.style.transform=`translateY(${((1-k)*14).toFixed(2)}px)`;
+    if(t>=at){const prev=i?need[i-1]:0;scroll=lerp(prev,need[i],eIO(prog(t,at,at+.5)));}
+  });
+  if(t>=OUT) scroll=need[need.length-1]*(1-prog(t,OUT+.55,OUT+.56));
+  $('stack').style.transform=`translateY(${(-scroll).toFixed(2)}px)`;
+  // typing indicator sits where the next reply will appear
+  const ty=$('typing');let tyO=0;
+  items.forEach(e=>{if(!e.dataset.typing)return;const a=+e.dataset.typing,b=+e.dataset.at;
+    if(t>=a-.05&&t<b+.05){tyO=prog(t,a,a+.2)*(1-prog(t,b-.08,b+.02));ty.style.top=(24+e.offsetTop-scroll)+'px';}});
+  ty.style.opacity=tyO.toFixed(3);
+  [...ty.children].forEach((d,i)=>{const ph=(t*2.2-i*.18)%1;const b=Math.max(0,Math.sin(ph*Math.PI*2));d.style.opacity=(.35+.65*b).toFixed(3);d.style.transform=`translateY(${(-4*b).toFixed(2)}px)`;});
+  // order card lands (overrides the generic entrance)
+  const oi=prog(t,4.95,5.5);
+  $('order').style.transform=`translateY(${((1-eBack(oi))*-40).toFixed(2)}px) scale(${lerp(.95,1,eOut(oi)).toFixed(4)})`;
+};
+render(0);
+</script>
+</body></html>

@@ -16,11 +16,16 @@ const items = order.map((slug) => {
 // Service loop videos (docs/MOTION-BRIEFS.md, P2 Service loops). A row only switches to its video when the mp4 is in public/;
 // otherwise it keeps the coded animation below.
 const videos: Record<string, string> = {
+  brand: '/videos/services/brand.mp4',
+  websites: '/videos/services/websites.mp4',
+  'ai-assistant': '/videos/services/ai-assistant.mp4',
   apps: '/videos/services/apps.mp4',
   automation: '/videos/services/automation.mp4',
   motion: '/videos/services/motion.mp4',
 };
 const video = (slug: string) => (videos[slug] && fs.existsSync(`public${videos[slug]}`) ? videos[slug] : undefined);
+// Optional poster next to the mp4 (<name>-poster.webp, the video's first frame) so the box is never blank before it loads.
+const poster = (slug: string) => { const p = video(slug)?.replace(/\.mp4$/, '-poster.webp'); return p && fs.existsSync(`public${p}`) ? p : undefined; };
 const cycle: Record<string, number> = { 'ai-assistant': 9000, websites: 7600, brand: 7600, automation: 7200, apps: 0, motion: 0 };
 ---
 <section class="svc" id="services">
@@ -40,7 +45,7 @@ const cycle: Record<string, number> = { 'ai-assistant': 9000, websites: 7600, br
           </summary>
           <div class="body">
             <div class:list={['media', { 'has-v': video(s.slug) }]} aria-hidden="true">
-              {video(s.slug) && <video class="sv" data-src={video(s.slug)} muted loop playsinline preload="none" width="1168" height="876"></video>}
+              {video(s.slug) && <video class="sv" data-src={video(s.slug)} poster={poster(s.slug)} muted loop playsinline preload="none" width="1168" height="876"></video>}
               <div class={`art a-${s.slug}`} data-cycle={cycle[s.slug]}>
                 {s.slug === 'ai-assistant' && (
                   <div class="chat">

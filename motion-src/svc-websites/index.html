@@ -1,0 +1,142 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 16 · Websites and stores service loop · 1168x876, 8s, silent, seamless loop.
+     Frame 0 and the end match the coded "How we help" websites panel: an empty browser window on #F4F5F7 (2x of the 584x438 art board).
+     The store is the current Virelle Wellness Hub redesign, Figma KnZaBuFXRvi5xvegf6j79M, page "Website · Redesign", frame 837:122:
+       a/ann.png    announcement bar 837:123        a/hdr.png    header 837:125 (bag count hidden; the motion draws its own)
+       a/goals.png  "Shop by goal" cards 837:284-316 a/chips.png  Supplements / Skincare chips 837:335, 837:337
+       a/c1-c4.png  Best selling product cards 838:122, 838:140, 838:158, 838:176 (real names, sizes, expiry and prices)
+       a/biotin.png Nutricost Biotin 10,000 mcg pack shot 838:125
+     Section titles are set in Figtree Medium 28 / Regular 15 in the design's colours. The checkout sheet is drawn here in the store's style:
+     Virelle pays through Paystack, the only price shown is the real card price (N33,000), and delivery copy is the store's own
+     "Delivered across Nigeria in 5 to 7 working days". -->
+<style>
+  @font-face{font-family:Figtree;src:url(../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2) format('woff2');font-weight:100 900}
+  html,body{margin:0;background:#0b0c0f}
+  #stage{position:relative;width:1168px;height:876px;overflow:hidden;background:#F4F5F7;font-family:Figtree,sans-serif}
+  .l{position:absolute;left:0;top:0;will-change:transform,opacity}
+  #win{left:104px;top:88px;width:960px;height:700px;background:#fff;border:2px solid rgba(3,17,28,.10);box-sizing:border-box;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.06)}
+  #bar{position:absolute;left:0;top:0;right:0;height:60px;display:flex;align-items:center;gap:10px;padding:0 20px;border-bottom:2px solid rgba(3,17,28,.10);background:#FAFAFB;box-sizing:border-box}
+  #bar i{width:14px;height:14px;border-radius:50%;background:rgba(3,17,28,.16)}
+  #url{position:absolute;left:50%;top:14px;transform:translateX(-50%);height:32px;padding:0 64px;border:2px solid rgba(3,17,28,.10);border-radius:4px;background:#fff;font:500 19px/28px Figtree;color:#8A919C;box-sizing:border-box}
+  #page{position:absolute;left:0;top:58px;width:1440px;height:1100px;transform-origin:0 0}
+  #page .b{position:absolute;transform-origin:50% 50%}
+  .sk{position:absolute;background:#EEF1EF;border-radius:14px}
+  .h2{font:500 28px/34px Figtree;color:#1B4332;margin:0;white-space:nowrap}
+  .sub{font:400 15px/18px Figtree;color:#6B7F74;margin:0;white-space:nowrap}
+  #dim{left:0;top:58px;width:960px;height:640px;background:rgba(10,14,23,.32)}
+  #sheet{left:254px;top:136px;width:452px;background:#fff;border-radius:22px;padding:26px 28px 28px;box-sizing:border-box;box-shadow:0 30px 70px rgba(4,26,18,.28)}
+  .row{display:flex;align-items:center;gap:16px}
+  .ttl{font:500 28px/34px Figtree;color:#1B4332;flex:1}
+  .ps{display:flex;align-items:center;gap:6px;font:500 14px/18px Figtree;color:#6B7F74}
+  .pt{width:76px;height:76px;border-radius:14px;background:#F3F6F4;display:grid;place-items:center;flex:none}
+  .pt img{height:62px}
+  .nm{flex:1;display:flex;flex-direction:column;gap:3px}
+  .nm b{font:600 19px/24px Figtree;color:#1B4332}
+  .nm small{font:400 15px/19px Figtree;color:#6B7F74}
+  .pr{font:600 19px/24px Figtree;color:#1B4332}
+  .hr{height:2px;background:#EDF0EE;margin:20px 0 18px}
+  .dl{font:400 15px/20px Figtree;color:#3B5A4A}
+  #pay{margin-top:22px;height:60px;border-radius:30px;background:#1B4332;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;font:500 20px/1 Figtree;position:relative;overflow:hidden}
+  #payTxt,#paySpin,#payTick{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px}
+  #toast{left:334px;top:390px;width:500px;height:96px;background:#fff;border-radius:48px;display:flex;align-items:center;gap:18px;padding:0 30px;box-sizing:border-box;box-shadow:0 24px 56px rgba(4,26,18,.22),0 4px 12px rgba(4,26,18,.08)}
+  #toast .ok{width:48px;height:48px;border-radius:50%;background:#1B4332;display:grid;place-items:center;flex:none}
+  #toast b{display:block;font:600 24px/30px Figtree;color:#0A0E17}
+  #toast small{display:block;font:400 17px/22px Figtree;color:#6B7280}
+  #cursor{left:0;top:0;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
+  #ring{width:40px;height:40px;border-radius:50%;border:3px solid #1B4332;box-sizing:border-box}
+  #plus{width:34px;height:34px;border-radius:50%;background:#1B4332;display:grid;place-items:center}
+  #badge{width:18px;height:18px;border-radius:50%;background:#1B4332;color:#fff;font:600 11px/18px Figtree;text-align:center}
+</style></head>
+<body>
+<div id="stage">
+  <div id="win" class="l">
+    <div id="page">
+      <div class="b" id="b0" style="left:0;top:0;width:1440px;height:121px"><div class="sk" style="inset:0;border-radius:0"></div><img class="r" src="a/ann.png" style="position:absolute;left:0;top:0;width:1440px;height:36px"><img class="r" src="a/hdr.png" style="position:absolute;left:0;top:36px;width:1440px;height:85px"></div>
+      <div class="b" id="b1" style="left:80px;top:160px;width:420px;height:62px"><div class="sk" style="left:0;top:0;width:200px;height:34px;border-radius:6px"></div><div class="r"><p class="h2">Shop by goal</p><p class="sub" style="margin-top:8px">Women's and men's health live here too.</p></div></div>
+      <div class="b" id="b2" style="left:80px;top:240px;width:1280px;height:128px"><div class="sk" style="inset:0"></div><img class="r" src="a/goals.png" style="position:absolute;left:0;top:0"></div>
+      <div class="b" id="b3" style="left:80px;top:420px;width:300px;height:88px"><div class="sk" style="left:0;top:0;width:180px;height:34px;border-radius:6px"></div><div class="r"><p class="h2">Best selling</p><img src="a/chips.png" style="display:block;margin-top:18px"></div></div>
+      <div class="b" id="b4" style="left:80px;top:548px;width:302px;height:387px"><div class="sk" style="inset:0"></div><img class="r" src="a/c1.png" style="position:absolute;left:0;top:0"></div>
+      <div class="b" id="b5" style="left:406px;top:548px;width:302px;height:387px"><div class="sk" style="inset:0"></div><img class="r" src="a/c2.png" style="position:absolute;left:0;top:0"></div>
+      <div class="b" id="b6" style="left:732px;top:548px;width:302px;height:387px"><div class="sk" style="inset:0"></div><img class="r" src="a/c3.png" style="position:absolute;left:0;top:0"></div>
+      <div class="b" id="b7" style="left:1058px;top:548px;width:302px;height:387px"><div class="sk" style="inset:0"></div><img class="r" src="a/c4.png" style="position:absolute;left:0;top:0"></div>
+      <div id="ring" class="l"></div>
+      <div id="plus" class="l"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div id="badge" class="l">1</div>
+    </div>
+    <div id="bar"><i></i><i></i><i></i><span id="url">virellewellnesshub.com</span></div>
+    <div id="dim" class="l"></div>
+    <div id="sheet" class="l">
+      <div class="row"><span class="ttl">Checkout</span><span class="ps"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Secured by Paystack</span></div>
+      <div class="row" style="margin-top:22px"><span class="pt"><img src="a/biotin.png"></span><span class="nm"><b>Biotin 10,000 mcg</b><small>Nutricost · 120 capsules</small></span><span class="pr">₦33,000</span></div>
+      <div class="hr"></div>
+      <div class="row" style="gap:10px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B5A4A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg><span class="dl">Delivered across Nigeria in 5 to 7 working days</span></div>
+      <div id="pay"><span id="payTxt">Pay with Paystack</span>
+        <span id="paySpin"><svg width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="11" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="3"/><path id="arc" d="M15 4 A11 11 0 0 1 26 15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></span>
+        <span id="payTick"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path id="tk" d="M20 6 9 17l-5-5" stroke-dasharray="24" stroke-dashoffset="24"/></svg></span></div>
+    </div>
+  </div>
+  <div id="toast" class="l"><span class="ok"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Order received</b><small>Biotin 10,000 mcg · ₦33,000</small></span></div>
+  <svg id="cursor" class="l" width="40" height="40" viewBox="0 0 24 24"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" fill="#0A0E17" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eIO=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eOut=t=>1-Math.pow(1-t,3);
+const eIOC=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eBack=t=>{const c1=1.4,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const W={x:104,y:88}, S=.72, OX=19-80*.72;
+let SCR=0;
+const pg=(x,y)=>({x:W.x+2+OX+x*S,y:W.y+60+(y-SCR)*S});
+// block build times (in), un-build times (out, reverse order)
+const IN=[0.30,0.62,0.80,1.12,1.32,1.46,1.60,1.74];
+const OUT=[7.05,6.98,6.91,6.84,6.77,6.70,6.63,6.56];
+window.render=function(t){
+  SCR=lerp(0,96,eIO(prog(t,2.0,2.7)))*(1-eIO(prog(t,6.9,7.5)));
+  $('page').style.transform=`translate(${OX}px,${(-SCR*S).toFixed(2)}px) scale(${S})`;
+  const BTN=pg(80+271,548+356);
+  for(let i=0;i<8;i++){
+    const b=$('b'+i), sk=b.querySelector('.sk'), r=b.querySelectorAll('.r');
+    const s=eOut(prog(t,IN[i]-.1,IN[i]+.12)), k=eOut(prog(t,IN[i]+.08,IN[i]+.48)), o=1-eIO(prog(t,OUT[i],OUT[i]+.4));
+    sk.style.opacity=(s*(1-k)*o).toFixed(3);
+    r.forEach(e=>{e.style.opacity=(k*o).toFixed(3)});
+    b.style.transform=`translateY(${((1-k)*14+(1-o)*10).toFixed(2)}px) scale(${lerp(.985,1,k)})`;
+  }
+  // cursor path
+  const sheetIn=eOut(prog(t,3.85,4.35)), sheetOut=eIO(prog(t,5.7,6.1)), dimOut=eIO(prog(t,6.6,7.0));
+  const P2={x:W.x+254+226+40,y:W.y+136+$('pay').offsetTop+30+16};
+  const A={x:1120,y:900}, B={x:BTN.x+6,y:BTN.y+8};
+  let cx,cy;
+  if(t<3.3){const k=eIOC(prog(t,2.35,3.2));cx=lerp(A.x,B.x,k);cy=lerp(A.y,B.y,k)+Math.sin(k*Math.PI)*-40;}
+  else if(t<4.9){const k=eIOC(prog(t,4.1,4.85));cx=lerp(B.x,P2.x,k);cy=lerp(B.y,P2.y,k)+Math.sin(k*Math.PI)*-30;}
+  else {const k=eIOC(prog(t,5.3,6.2));cx=lerp(P2.x,1130,k);cy=lerp(P2.y,920,k);}
+  const press=(t>3.28&&t<3.45)||(t>4.88&&t<5.05)?.86:1;
+  const co=t<2.3?0:(t>6.0?1-prog(t,6.0,6.2):1);
+  $('cursor').style.transform=`translate(${cx-9}px,${cy-6}px) scale(${press})`;$('cursor').style.opacity=co;
+  // add to bag: ring, tick on the button, badge on the bag
+  const rk=prog(t,3.32,3.95);
+  $('ring').style.transform=`translate(${351-20}px,${904-20}px) scale(${lerp(.6,1.9,eOut(rk))})`;$('ring').style.opacity=rk>0&&rk<1?(1-rk):0;
+  const pk=eBack(prog(t,3.36,3.62));
+  $('plus').style.transform=`translate(${351-17}px,${904-17}px) scale(${t<3.36?0:pk})`;$('plus').style.opacity=t<3.36?0:1-eIO(prog(t,6.5,6.8));
+  const bk=eBack(prog(t,3.55,3.85));
+  $('badge').style.transform=`translate(${1340+8}px,${72-20}px) scale(${t<3.55?0:bk})`;$('badge').style.opacity=t<3.55?0:1-eIO(prog(t,6.85,7.1));
+  // checkout sheet
+  $('dim').style.opacity=(sheetIn*(1-dimOut)).toFixed(3);
+  $('sheet').style.transform=`translateY(${((1-sheetIn)*40+sheetOut*20).toFixed(2)}px) scale(${lerp(.97,1,sheetIn)})`;$('sheet').style.opacity=(sheetIn*(1-sheetOut)).toFixed(3);
+  const spinOn=t>4.95&&t<5.5, tickOn=t>=5.45;
+  $('payTxt').style.opacity=t<4.95?1:0;
+  $('paySpin').style.opacity=spinOn?prog(t,4.95,5.05)*(1-prog(t,5.4,5.5)):0;
+  $('arc').parentNode.style.transform=`rotate(${(t-4.95)*540}deg)`;
+  $('payTick').style.opacity=tickOn?1:0;$('tk').setAttribute('stroke-dashoffset',(24*(1-eOut(prog(t,5.45,5.75)))).toFixed(2));
+  $('pay').style.transform=`scale(${(t>4.88&&t<5.05)?.98:1})`;
+  // toast
+  const ti=eBack(prog(t,5.8,6.2)), to=eIO(prog(t,6.6,7.0));
+  $('toast').style.transform=`translateY(${((1-prog(t,5.8,6.2))*24+to*12).toFixed(2)}px) scale(${t<5.8?.9:lerp(.9,1,ti)})`;
+  $('toast').style.opacity=(prog(t,5.8,6.0)*(1-to)).toFixed(3);
+};
+render(0);
+</script>
+</body></html>
