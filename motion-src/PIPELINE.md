@@ -1,7 +1,7 @@
 # How website motions are made (Nov 2026)
 
 Every website motion is a small HTML page whose `window.render(t)` draws the frame at time t (seconds).
-`render.js` steps t at 30fps, screenshots `#stage`, and ffmpeg turns the frames into an mp4.
+`render.cjs` steps t at 30fps, screenshots `#stage`, and ffmpeg turns the frames into an mp4.
 Real assets come from Figma as PNG layers, so the motion uses the real product, not look-alikes.
 Worked example: `mylo-card/` (Brief 1, 1312x984, 8s). Read it before starting.
 
@@ -19,7 +19,7 @@ Worked example: `mylo-card/` (Brief 1, 1312x984, 8s). Read it before starting.
    - Delete the temporary frame when done.
 3. Write `motion-src/<slug>/index.html`: a `#stage` div at the exact video size, absolutely positioned layers, and `window.render(t)` that sets transforms/opacity from t only (no timers, no CSS transitions), so every frame is deterministic.
 4. Poster match: frame 0 must equal the poster already on the site (e.g. `public/images/cases/cover-<slug>.webp`, or the Figma cover). Start and end on a full cover image and crossfade to/from the layered version; check alignment numerically (mean absolute difference of the frame vs the cover under ~2 on 0-255 grey).
-5. Render and review: `node motion-src/render.js motion-src/<slug> <seconds> /tmp/frames 30` (add a comma list of times to render only those). Make contact sheets and look at them; fix overlaps (nothing over headlines), clipping, jumps.
+5. Render and review: `NODE_PATH=$(npm root -g) node motion-src/render.cjs motion-src/<slug> <seconds> /tmp/frames 30` (add a comma list of times to render only those). Make contact sheets and look at them; fix overlaps (nothing over headlines), clipping, jumps.
 6. Encode (silent, loop-friendly):
    `ffmpeg -y -framerate 30 -i /tmp/frames/f%04d.png -an -c:v libx264 -pix_fmt yuv420p -crf 22 -preset slow -movflags +faststart public/<path>.mp4`
    Keep card loops under 3MB. Skip webm unless it is smaller than the mp4.
