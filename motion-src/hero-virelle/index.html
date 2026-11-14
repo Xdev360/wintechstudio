@@ -1,0 +1,120 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 6 · Virelle Wellness hero film · 1280x720, 7s, silent, seamless loop.
+     World layers are in poster pixels (2720x1870, the 2x export of Figma node 953:97750 "poster (film frame)",
+     panel 953:97749 on Website v5 in kQl8LQLi5xdRVVyXF3R4NZ). The hero crops the poster with object-fit:cover,
+     so the film shows rows 170 to 1700 of it.
+     a/plate.png   the clean film frame (no play icon, no label, delivery chip painted out)
+     a/chip.png    "Delivered in 5 to 7 working days" chip, rendered by chip.cjs to match the original chip
+                   (Figtree 500, 38.2px at 2x). Copy is the current Virelle promise from the Website Redesign page
+                   of the Virelle Figma file (KnZaBuFXRvi5xvegf6j79M).
+     a/poster.png  the new site poster (public/images/cases/film-virelle.webp) cropped to 16:9 at film size;
+                   it covers frame 0 and the end so the image to video swap is invisible.
+     a/card1.png   real Biotin + Zinc product card from the store (same export as motion-src/virelle-card). -->
+<style>
+  @font-face{font-family:Figtree;src:url(../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2) format('woff2');font-weight:100 900}
+  html,body{margin:0;background:#0b0c0f}
+  #stage{position:relative;width:1280px;height:720px;overflow:hidden;background:#eef2ef}
+  #world{position:absolute;left:0;top:0;width:2720px;height:1870px;transform-origin:0 0}
+  .l{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform,opacity}
+  #card{filter:none}
+  #added{width:386px;height:72px;border-radius:36px;background:#E39100;display:flex;align-items:center;justify-content:center;gap:10px;
+    font:500 22px/1 Figtree,sans-serif;color:#0A0E17;opacity:0}
+  #added svg{width:24px;height:24px}
+  #badge{width:28px;height:28px;border-radius:50%;background:#054431;color:#fff;display:flex;align-items:center;justify-content:center;
+    font:500 17px/1 Figtree,sans-serif;box-shadow:0 0 0 3px #fff}
+  #cursor{filter:drop-shadow(0 5px 7px rgba(4,20,13,.28))}
+  #poster{position:absolute;left:0;top:0;width:1280px;height:720px}
+</style></head>
+<body>
+<div id="stage">
+  <div id="world">
+    <img id="plate" class="l" src="a/plate.png" width="2720" height="1870">
+    <img id="card" class="l" src="a/card1.png" width="530" height="783">
+    <div id="added" class="l"><svg viewBox="0 0 24 24" fill="none" stroke="#0A0E17" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path id="tick" d="M20 6 9 17l-5-5" stroke-dasharray="24" stroke-dashoffset="24"/></svg><span>Added to bag</span></div>
+    <div id="badge" class="l">1</div>
+    <img id="chip" class="l" src="a/chip.png" width="836" height="268">
+    <!-- Lucide mouse-pointer-2 -->
+    <svg id="cursor" class="l" width="64" height="64" viewBox="0 0 24 24"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" fill="#fff" stroke="#0A0E17" stroke-width="1.5" stroke-linejoin="round"/></svg>
+  </div>
+  <img id="poster" src="a/poster.png" width="1280" height="720">
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eIO=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eIOC=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eOC=t=>1-Math.pow(1-t,3);
+const eIC=t=>t*t*t;
+const eOB=t=>{const c1=1.4,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const S=1280/2720, TOP=170;                 // poster px -> film px, hero cover crop
+const F={x:1300,y:500};                     // camera focus (world)
+const CART={x:2368,y:530};
+const CARD_K=1.15, CARD_C={x:1905,y:1032}, CARD_IN={x:265,y:368};   // content centre inside card1.png
+const CARD_POS={x:CARD_C.x-CARD_IN.x*CARD_K,y:CARD_C.y-CARD_IN.y*CARD_K};
+const BTN={x:CARD_POS.x+81*CARD_K,y:CARD_POS.y+598*CARD_K,w:368*CARD_K,h:69*CARD_K};
+const CHIP={x:1683,y:1425,ox:80+675/2,oy:40+54};  // chip.png placement; origin = chip centre
+const TIP={x:4.3/24*64,y:4.7/24*64};
+const set=(el,x,y,s=1,o=1)=>{el.style.transform=`translate(${x}px,${y}px) scale(${s})`;el.style.opacity=o;};
+
+// cursor keyframes (world px, tip position)
+const P0={x:1376,y:930}, PJ={x:1985,y:985}, PB={x:BTN.x+BTN.w*0.8,y:BTN.y+BTN.h*0.55}, PR={x:2140,y:1130};
+function cursorAt(t){
+  const seg=(a,b,t0,t1,bend)=>{const k=eIOC(prog(t,t0,t1));const mx=(a.x+b.x)/2,my=(a.y+b.y)/2-bend;
+    return {x:(1-k)*(1-k)*a.x+2*(1-k)*k*mx+k*k*b.x,y:(1-k)*(1-k)*a.y+2*(1-k)*k*my+k*k*b.y};};
+  if(t<1.75) return seg(P0,PJ,0.75,1.7,60);
+  if(t<2.95) return seg(PJ,PB,2.25,2.95,-20);
+  if(t<5.3)  return seg(PB,PR,3.55,4.4,10);
+  return seg(PR,P0,5.3,6.35,70);
+}
+
+window.render=function(t){
+  // camera: a slow push toward the jar and cart, then back to the poster framing
+  const Z=1+0.035*(t<4?eIO(prog(t,0.7,2.6)):1-eIO(prog(t,5.0,6.3)));
+  const tx=S*(F.x*(1-Z)), ty=S*(F.y*(1-Z)-TOP);
+  $('world').style.transform=`translate(${tx}px,${ty}px) scale(${S*Z})`;
+
+  // poster: frame 0 and the end are the site poster itself (play icon crossfades into the cursor)
+  $('poster').style.opacity=t<3?1-eIO(prog(t,0.3,0.7)):eIO(prog(t,6.35,6.75));
+
+  // delivery chip: steps aside at the start, pops in after the order, stays to the loop point
+  const out=eIO(prog(t,0.4,0.8));
+  const pin=prog(t,4.15,4.7);
+  let cs=1,co=1,cy=0;
+  if(t<3){co=1-out;cy=14*out;cs=lerp(1,0.97,out);}
+  else{co=cl(pin*2.2);cs=lerp(0.86,1,eOB(pin));cy=10*(1-eOC(pin));}
+  $('chip').style.transformOrigin=`${CHIP.ox}px ${CHIP.oy}px`;
+  set($('chip'),CHIP.x,CHIP.y+cy,cs,co);
+
+  // product card: opens over the hero photo on click, then drops into the bag
+  const open=eOC(prog(t,1.8,2.4));
+  const flyT=prog(t,3.4,4.0), fly=eIOC(flyT), shrink=eIO(prog(t,3.4,3.9));
+  let k=CARD_K*lerp(0.95,1,open), x=CARD_C.x, y=CARD_C.y+40*(1-open), o=eIO(prog(t,1.8,2.15));
+  if(t>=3.4){k=CARD_K*lerp(1,0.06,shrink);x=lerp(CARD_C.x,CART.x,fly);y=lerp(CARD_C.y,CART.y,fly);o=1-prog(t,3.82,4.0);}
+  set($('card'),x-CARD_IN.x*k,y-CARD_IN.y*k,k,o);
+
+  // Add to bag press -> Added to bag (sits on the card's real button and travels with it)
+  const ad=prog(t,3.02,3.18);
+  $('added').style.transformOrigin='0 0';
+  const kk=k/CARD_K;
+  const bx=x+(BTN.x-CARD_C.x)*kk, by=y+(BTN.y-CARD_C.y)*kk;
+  set($('added'),bx,by,kk*(BTN.w/386),ad*o);
+  $('tick').setAttribute('stroke-dashoffset',(24*(1-eOC(prog(t,3.1,3.35)))).toFixed(2));
+
+  // bag badge
+  const bi=prog(t,3.95,4.3), bo=eIO(prog(t,5.55,5.95));
+  const bs=t<5?eOB(bi):1-0.4*bo;
+  $('badge').style.transformOrigin='14px 14px';
+  set($('badge'),CART.x+10,CART.y-36,bs,t<5?cl(bi*3):1-bo);
+
+  // cursor
+  const c=cursorAt(t);
+  const press=1-0.14*Math.sin(Math.PI*prog(t,1.72,1.88))-0.14*Math.sin(Math.PI*prog(t,2.98,3.14));
+  $('cursor').style.transformOrigin=`${TIP.x}px ${TIP.y}px`;
+  set($('cursor'),c.x-TIP.x,c.y-TIP.y,press,t<3?eIO(prog(t,0.3,0.7)):1-eIO(prog(t,6.35,6.7)));
+};
+window.render(0);
+</script>
+</body></html>
