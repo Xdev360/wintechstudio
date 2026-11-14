@@ -1,0 +1,153 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 12 · Case study film: Tobel Pearls guide · 1920x1153 · 15s loop, silent.
+     Built from the M2 storyboard "Five days, maximum" (section 1141:3977): a DAY 1 to DAY 5 counter on the left while the
+     55-page guide flips like a flipbook, the truck drives through on DAY 5, the camera follows it to the billboard and
+     pushes into the blue panel, which resolves back into the guide cover.
+     Real Figma exports (file kQl8LQLi5xdRVVyXF3R4NZ, Tobel case study C4 953:85192):
+       poster.webp   = public/images/cases/film-tobel-pearls.webp at 1920 (first and last frame)
+       nolabel.webp  = the same poster with the label chip patched from the "00 - Cover" export (953:85243)
+       p03..p30.webp = guide pages 03, 05, 07, 11, 15, 17, 19, 22, 24, 28, 30, 16 (953:87207 ... 953:87464), 1125x675
+       bg / bg5      = the storyboard's Tobel blue grid and DAY 5 navy road plates (1141:4154, 1141:4588)
+       truck.webp    = "Truck - Primary blue" from page 35 Truck livery (953:86218)
+       billboard     = "Photo · Billboard" image fill (953:86407, full 4096x2118 source shown at 2880)
+     Counter, pips and labels are live Figtree with the storyboard's sizes (x3.75). -->
+<style>
+  @font-face{font-family:Figtree;src:url(../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2) format('woff2');font-weight:100 900}
+  html,body{margin:0;background:#002269}
+  #stage{position:relative;width:1920px;height:1153px;overflow:hidden;background:#0057d6;font-family:Figtree,sans-serif}
+  .full{position:absolute;left:0;top:0;width:1920px;height:1153px}
+  #world{position:absolute;left:0;top:0;width:1920px;height:1153px}
+  #day{position:absolute;left:0;top:0;width:1920px;height:1153px}
+  .lab{position:absolute;color:#fff;font-weight:500;white-space:nowrap}
+  #dig{position:absolute;left:82px;top:215px;width:420px;height:600px;overflow:hidden}
+  .d{position:absolute;left:0;top:-45px;font:600 495px/560px Figtree,sans-serif;color:#fff;letter-spacing:-0.01em}
+  .pip{position:absolute;top:832px;width:75px;height:15px;border-radius:7.5px;background:#fff}
+  #pages{position:absolute;left:0;top:0;width:1920px;height:1153px}
+  .beh{position:absolute;width:1125px;height:675px;border-radius:15px;transform-origin:0 0}
+  #book{position:absolute;left:660px;top:150px;width:1125px;height:675px;transform-origin:0 0;transform:rotate(-3deg);perspective:3000px}
+  .pg{position:absolute;left:0;top:0;width:1125px;height:675px;transform-origin:0 50%;backface-visibility:hidden;box-shadow:0 30px 70px rgba(0,16,60,.35)}
+  #truck{position:absolute;left:0;top:632px;width:1174.7px;height:381.6px}
+  #bb{position:absolute;left:1920px;top:0;width:2229px;height:1153px;transform-origin:0 0}
+  #coverwrap{position:absolute;left:0;top:0;width:1920px;height:1153px;perspective:2600px}
+  #cover{position:absolute;left:0;top:0;width:1920px;height:1153px;transform-origin:0 50%;backface-visibility:hidden}
+</style></head>
+<body>
+<div id="stage">
+  <div id="world">
+    <div id="day">
+      <img class="full" src="a/bg.webp">
+      <img class="full" id="bg5" src="a/bg5.webp" style="opacity:0">
+      <div class="lab" id="dayl" style="left:105px;top:150px;font-size:52.5px">DAY</div>
+      <div id="dig"><div class="d" id="dA">1</div><div class="d" id="dB">2</div></div>
+      <div id="pips"></div>
+      <div class="lab" id="tag" style="left:112.5px;top:885px;font-size:45px">Logo</div>
+      <div id="pages">
+        <div class="beh" id="b2" style="left:735px;top:105px;transform:rotate(6deg);background:rgba(255,255,255,.15)"></div>
+        <div class="beh" id="b1" style="left:697.5px;top:127.5px;transform:rotate(3deg);background:rgba(255,255,255,.25)"></div>
+        <div id="book"></div>
+      </div>
+      <img id="truck" src="a/truck.webp">
+    </div>
+    <img id="bb" src="a/billboard.webp">
+  </div>
+  <img class="full" id="cover2" src="a/nolabel.webp" style="opacity:0;transform-origin:345px 577px">
+  <div id="coverwrap"><img id="cover" src="a/nolabel.webp"></div>
+  <img class="full" id="poster" src="a/poster.webp">
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eInExpo=t=>t<=0?0:Math.pow(2,10*t-10);
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eInQuad=t=>t*t;
+const ORANGE='#F2751F';
+
+// pips
+for(let i=0;i<5;i++){const d=document.createElement('div');d.className='pip';d.id='pip'+i;d.style.left=(112.5+i*97.5)+'px';$('pips').appendChild(d);}
+// the flipbook: every page in order, last of each day is the one that settles
+const SEQ=[ // [page, time it starts turning away] ; the page after it is revealed
+ ['03',1.10],['05',1.225],['07',1.35],['11',1.475],['15',3.45],
+ ['17',3.575],['19',3.70],['22',5.85],
+ ['24',5.975],['28',7.85],
+ ['30',7.975],['16',99]];
+const TURN=0.16;
+SEQ.forEach(([n],i)=>{const im=document.createElement('img');im.src=`a/p${n}.webp`;im.className='pg';im.id='pg'+i;im.style.zIndex=100-i;$('book').appendChild(im);});
+const DAYS=[ // start time, digit, label
+ [0.95,1,'Logo'],[3.40,2,'Colour'],[5.80,3,'Type'],[7.80,4,'Air and sea'],[9.45,5,'Cleared']];
+const T_TRUCK=[9.75,11.85];   // truck enters left, leaves right
+const T_PAN=[11.15,13.15];    // camera follows to the billboard
+const T_PUSH=[13.3,14.3];   // push into the blue panel
+const BBW=2229;
+
+window.render=function(t){
+  // poster label out, cover flips away on its left spine; reverse at the end
+  $('poster').style.opacity = t<7 ? 1-eSine(prog(t,0.2,0.6)) : eSine(prog(t,14.55,14.9));
+  const f=eIO(prog(t,0.6,1.3));
+  $('cover').style.transform=`rotateY(${-100*f}deg)`;
+  $('cover').style.opacity=t<7? (f>0.9?0:1) : 0;
+  $('cover').style.filter=`brightness(${1-0.35*f})`;
+
+  // counter: digit rolls up (ease out expo, 300ms)
+  let di=-1;DAYS.forEach((d,i)=>{if(t>=d[0])di=i;});
+  const dA=$('dA'),dB=$('dB');
+  if(di<0){dA.style.opacity=0;dB.style.opacity=0;}
+  else{const [s,n,lab]=DAYS[di];const u=eOutExpo(prog(t,s,s+0.3));
+    const prev=di>0?DAYS[di-1][1]:null;
+    dB.textContent=n;dB.style.transform=`translateY(${(1-u)*560}px)`;dB.style.opacity=1;
+    dB.style.color = n===5 ? ORANGE : '#fff';
+    if(prev){dA.textContent=prev;dA.style.opacity=1;dA.style.transform=`translateY(${-u*560}px)`;dA.style.color='#fff';}
+    else dA.style.opacity=0;
+    $('tag').textContent=lab;$('tag').style.opacity=cl(prog(t,s,s+0.25));
+    $('tag').style.transform=`translateY(${(1-eOutExpo(prog(t,s,s+0.35)))*14}px)`;
+  }
+  const lead=cl(prog(t,0.95,1.25));$('dayl').style.opacity=lead;$('pips').style.opacity=lead;
+  if(di<0)$('tag').style.opacity=0;
+  for(let i=0;i<5;i++){const p=$('pip'+i);const on=di>=0&&i<=DAYS[di][1]-1;
+    const five=t>=9.45;p.style.background=five?ORANGE:'#fff';p.style.opacity=on?1:0.25;}
+  $('bg5').style.opacity=eSine(prog(t,9.45,9.85));
+
+  // flipbook: each page turns away on its left spine
+  SEQ.forEach(([n,s],i)=>{const el=$('pg'+i);const u=prog(t,s,s+TURN);
+    el.style.transform=`rotateY(${-92*eInQuad(u)}deg)`;el.style.opacity=u>=1?0:1;});
+  // DAY 4: the page settles with a small lift
+  const lift=eOutExpo(prog(t,8.15,8.6));
+  $('book').style.transform=`rotate(${-3+1*lift}deg) translateY(${-8*lift}px)`;
+
+  // DAY 5: the truck drives through and wipes the pages
+  const tu=prog(t,...T_TRUCK);
+  const tx=lerp(-1250,2050,tu); // steady crossing
+  const shake = tu>0&&tu<1 ? Math.sin(t*95)*1.2 : 0;
+  $('truck').style.transform=`translate(${tx}px,${shake}px)`;
+  $('truck').style.opacity = tu>0&&tu<1?1:0;
+  const wipe=Math.max(0,tx+60);
+  $('pages').style.clipPath = tu>0 ? `inset(0 0 0 ${Math.min(1920,wipe)}px)` : 'none';
+
+  // camera pan to the billboard (pan right, then a small tilt up)
+  const pu=eIO(prog(t,...T_PAN));
+  const panX=-lerp(0,1920+(BBW-1920)/2,pu);
+  const tilt=(1-eIO(prog(t,T_PAN[0]+0.6,T_PAN[1])))*60;
+  $('world').style.transform=`translate(${panX}px,0)`;
+  $('bb').style.transform=`translate(0,${tilt}px)`;
+  $('day').style.opacity = pu<1?1:0;
+
+  // push into the left blue panel (ease in expo), the cover resolves under it
+  const zu=Math.pow(prog(t,...T_PUSH),3);
+  const ZX=345, ZY=600;
+  if(t>=T_PUSH[0]){const s=lerp(1,4.4,zu);
+    $('bb').style.transformOrigin=`${ZX+(BBW-1920)/2}px ${ZY}px`;
+    $('bb').style.transform=`scale(${s})`;
+    $('bb').style.filter=`blur(${7*zu}px)`;}
+  else {$('bb').style.transformOrigin='0 0';$('bb').style.filter='none';}
+  const cu=eSine(prog(t,14.12,14.42));
+  $('cover2').style.opacity=cu;
+  $('cover2').style.transformOrigin='960px 576px';
+  $('cover2').style.transform=`scale(${lerp(1.12,1,eOutExpo(prog(t,14.12,14.8)))})`;
+};
+window.render(0);
+</script>
+</body></html>

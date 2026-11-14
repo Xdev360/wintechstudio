@@ -1,0 +1,123 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 13 · Case study film: Let's Hang demo · 1920x1080 · 15s loop, silent.
+     The live demo (letshang-henna.vercel.app) is not reachable from the build machine, so the film is built from the
+     real demo screens in Figma (file kQl8LQLi5xdRVVyXF3R4NZ, the Let's Hang case study lh_m_* screens, 1170x2532 captures).
+     Two phone frames: the Rooms phone and the Map phone from the poster (panel · film 953:79019).
+       poster.png        = public/images/cases/film-lets-hang.webp at 1920 (first and last frame)
+       bg.webp, bezel    = the poster's dot grid and phone frame (from ../hero-lets-hang/raw)
+       s-bare + pin-*    = lh_m_map with the pins lifted into sprites (hero-lets-hang/tools at full 672px)
+       peek-card/ring    = lh_m_peek minus lh_m_map; s-hang = lh_m_hang; s-rooms = lh_m_rooms (953:81582)
+       s-live-base + av-* = lh_m_live (953:81712); the 3 speakers and 9 listeners are cut from it so they pop back in
+     Beats: 0:00 poster, 0:01 two phones, 0:02 pins appear, 0:04 tap 5-a-side for Peek, 0:05.6 Join opens the hang,
+     0:07.8 the live room opens on the Rooms phone, 0:08.6 it fills with avatars, 0:11.6 back, 0:13 poster framing. -->
+<style>
+  html,body{margin:0;background:#f5f3ff}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#f5f3ff}
+  #d{position:absolute;left:0;top:0;width:1360px;height:765px;transform:scale(1.4117647);transform-origin:0 0}
+  #d img,#d div{position:absolute;left:0;top:0}
+  .ph{width:287px;height:600px;transform-origin:0 0}
+  .bez{left:-60.4px!important;top:-26.85px!important;width:408px;height:721px}
+  .screen{left:9.2px!important;top:9.2px!important;width:268.53px;height:581.54px;border-radius:35.24px;overflow:hidden;background:#f5f3ff}
+  .inner{width:672px;height:1454px;transform:scale(0.39960);transform-origin:0 0}
+  .scr{width:672px;height:1454px}
+  .rip{width:100px;height:100px;border-radius:50%;margin:-50px 0 0 -50px;border:5px solid rgba(255,255,255,.95);background:rgba(255,255,255,.22);box-shadow:0 0 0 2px rgba(27,16,51,.18);opacity:0}
+</style></head>
+<body>
+<div id="stage">
+  <div id="d">
+    <img src="a/bg.webp" width="1360" height="765">
+    <img id="hangph" src="a/ph-hang.png" width="495" height="754.5" style="left:478.8px;top:-7.45px">
+    <div id="rp" class="ph" style="left:201px;top:110px">
+      <img class="bez" src="a/bezel.png">
+      <div class="screen"><div class="inner">
+        <img class="scr" src="a/s-rooms.png">
+        <div id="live" class="scr" style="background:url(a/s-live-base.png) 0 0/100% 100%;box-shadow:-30px 0 60px rgba(27,16,51,.25)"><div id="avs"></div></div>
+        <div id="rB" class="rip"></div>
+      </div></div>
+    </div>
+    <div id="mp" class="ph" style="left:872px;top:110px">
+      <img class="bez" src="a/bezel.png">
+      <div class="screen"><div class="inner">
+        <div id="mapwrap" class="scr">
+          <img src="a/s-bare.png" class="scr">
+          <div id="pins"></div>
+          <img id="ring" src="a/peek-ring.png" class="scr">
+          <img id="card" src="a/peek-card.png" class="scr">
+          <div id="r1" class="rip"></div><div id="r2" class="rip"></div>
+        </div>
+        <div id="hang" class="scr" style="background:url(a/s-hang.png) 0 0/100% 100%;box-shadow:-30px 0 60px rgba(27,16,51,.18)"></div>
+      </div></div>
+    </div>
+  </div>
+  <img id="poster" src="a/poster.png" width="1920" height="1080" style="position:absolute;left:0;top:0">
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eOutCubic=t=>1-Math.pow(1-t,3);
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eOutBack=t=>{const c1=1.3,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+
+const PINS=[{"n":"afro","x":5,"y":223,"w":258,"h":251,"ox":133,"oy":390},{"n":"live","x":225,"y":223,"w":217,"h":251,"ox":328,"oy":390},{"n":"paint","x":433,"y":223,"w":211,"h":251,"ox":530,"oy":390},{"n":"five","x":36,"y":418,"w":211,"h":253,"ox":133,"oy":585},{"n":"build","x":380,"y":418,"w":288,"h":253,"ox":523,"oy":585},{"n":"tech","x":191,"y":613,"w":248,"h":252,"ox":316,"oy":780},{"n":"girls","x":436,"y":613,"w":215,"h":252,"ox":537,"oy":780},{"n":"gallery","x":33,"y":810,"w":208,"h":251,"ox":127,"oy":977},{"n":"venue","x":320,"y":810,"w":224,"h":251,"ox":430,"oy":977},{"n":"ilashe","x":141,"y":1006,"w":208,"h":252,"ox":235,"oy":1173}];
+for(const p of PINS){const i=document.createElement('img');i.src=`a/pin-${p.n}.png`;i.width=p.w;i.height=p.h;
+  i.style.left=p.x+'px';i.style.top=p.y+'px';i.style.transformOrigin=`${p.ox-p.x}px ${p.oy-p.y}px`;i.id='pin-'+p.n;$('pins').appendChild(i);}
+// live room avatars, cut from the real live room screen
+const AV=[{"n":"am","x":52,"y":292,"w":150,"h":200,"ox":75,"oy":68},{"n":"to","x":261,"y":292,"w":150,"h":200,"ox":75,"oy":64},{"n":"nk","x":469,"y":292,"w":150,"h":200,"ox":75,"oy":64},{"n":"l0","x":26,"y":576,"w":71,"h":71,"ox":35,"oy":35},{"n":"l1","x":102,"y":576,"w":71,"h":71,"ox":35,"oy":35},{"n":"l2","x":178,"y":576,"w":71,"h":71,"ox":35,"oy":35},{"n":"l3","x":254,"y":576,"w":71,"h":71,"ox":35,"oy":35},{"n":"l4","x":330,"y":576,"w":71,"h":71,"ox":35,"oy":35},{"n":"l5","x":405,"y":576,"w":71,"h":71,"ox":35,"oy":35},{"n":"l6","x":481,"y":576,"w":71,"h":71,"ox":35,"oy":35},{"n":"l7","x":557,"y":576,"w":71,"h":71,"ox":35,"oy":35},{"n":"more","x":27,"y":652,"w":70,"h":70,"ox":35,"oy":35}];
+for(const a of AV){const i=document.createElement('img');i.src=`a/av-${a.n}.png`;i.width=a.w;i.height=a.h;
+  i.style.left=a.x+'px';i.style.top=a.y+'px';i.style.transformOrigin=`${a.ox}px ${a.oy}px`;i.id='av-'+a.n;$('avs').appendChild(i);}
+
+// layout: poster positions -> two upright phones
+const RP0={x:201.7,y:110.7,r:9}, RP1={x:300,y:82.5,r:0};
+const MP0={x:872,y:110.7}, MP1={x:773,y:82.5};
+const T={posterOut:[.3,.7], lay:[.7,1.8], clear:[.8,1.15], pop0:2.0, popStep:.12, popDur:.4,
+  tapFive:4.0, peekIn:[4.1,4.55], tapJoin:5.6, hangIn:[5.75,6.2],
+  tapRoom:7.8, liveIn:[7.95,8.45], av0:8.65, avStep:.15, avDur:.3,
+  liveOut:[11.6,12.2], hangOut:[11.9,12.5], layBack:[12.6,13.7], posterIn:[13.9,14.4]};
+
+function ripple(id,t,c,x,y){const u=(t-c)/.5;const el=$(id);
+  if(u<0||u>1){el.style.opacity=0;return;}
+  el.style.left=x+'px';el.style.top=y+'px';
+  el.style.transform=`scale(${.55+.9*eOutCubic(u)})`;el.style.opacity=(u<.15?u/.15:1-(u-.15)/.85)*.95;}
+
+window.render=function(t){
+  $('poster').style.opacity = window.NOPOSTER?0: t<7 ? 1-eSine(prog(t,...T.posterOut)) : eSine(prog(t,...T.posterIn));
+  const m=eIO(prog(t,...T.lay))*(1-eIO(prog(t,...T.layBack)));
+  $('rp').style.left=lerp(RP0.x,RP1.x,m)+'px';$('rp').style.top=lerp(RP0.y,RP1.y,m)+'px';
+  const sc=1+0.12*m;
+  $('rp').style.transform=`rotate(${lerp(RP0.r,RP1.r,m)}deg) translate(143.5px,300px) scale(${sc}) translate(-143.5px,-300px)`;
+  $('mp').style.transform=`translate(143.5px,300px) scale(${sc}) translate(-143.5px,-300px)`;
+  $('mp').style.left=lerp(MP0.x,MP1.x,m)+'px';$('mp').style.top=lerp(MP0.y,MP1.y,m)+'px';
+  const hf=eIO(prog(t,.7,1.3))*(1-eIO(prog(t,13.0,13.7)));
+  $('hangph').style.opacity=1-hf;$('hangph').style.transform=`translate(0,${50*hf}px) scale(${1-.04*hf})`;
+
+  // pins: out with the poster's Peek, then back one by one
+  const out=prog(t,...T.clear);
+  PINS.forEach((p,i)=>{const el=$('pin-'+p.n);
+    if(t<1.5){el.style.opacity=1-out;el.style.transform='';return;}
+    const a=T.pop0+i*T.popStep;const u=prog(t,a,a+T.popDur);
+    el.style.opacity=cl(u/.45);el.style.transform=`translateY(${-14*(1-eOutCubic(u))}px) scale(${.55+.45*eOutBack(u)})`;});
+  const pOut=eIO(prog(t,...T.clear)), pIn=eOutExpo(prog(t,...T.peekIn));
+  $('card').style.opacity=t<2?1-pOut:cl(prog(t,...T.peekIn)*2.2);
+  $('card').style.transform=`translateY(${t<2?40*pOut:80*(1-pIn)}px)`;
+  $('ring').style.opacity=t<2?1-pOut:prog(t,4.05,4.25);
+
+  // the hang pushes in from the right; slides back out at the end
+  const hx=t<9?1-eOutExpo(prog(t,...T.hangIn)):eIO(prog(t,...T.hangOut));
+  $('hang').style.transform=`translateX(${800*hx}px)`;
+  $('mapwrap').style.transform=`translateX(${-90*(1-hx)}px)`;
+  // the live room pushes in on the Rooms phone, fills, then slides back
+  const lx=t<10?1-eOutExpo(prog(t,...T.liveIn)):eIO(prog(t,...T.liveOut));
+  $('live').style.transform=`translateX(${800*lx}px)`;
+  AV.forEach((a,i)=>{const el=$('av-'+a.n);const s=T.av0+i*T.avStep;const u=prog(t,s,s+T.avDur);
+    el.style.opacity=cl(u/.4);el.style.transform=`scale(${eOutBack(u)})`;});
+
+  ripple('r1',t,T.tapFive,133,510);ripple('r2',t,T.tapJoin,465,1221);ripple('rB',t,T.tapRoom,336,400);
+};
+window.render(0);
+</script>
+</body></html>
