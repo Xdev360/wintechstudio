@@ -1,0 +1,113 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 10 · Case study film: Manzeelatur Ridho brand film · 1920x1080 · 34s, plays once then loops, silent.
+     No Figma Motion timeline exists for this film in kQl8LQLi5xdRVVyXF3R4NZ, so it is rebuilt from the
+     export map (M2 storyboard, Brief 10 section 1139:37808). Every layer is a real Figma export:
+     poster.webp  = the poster image fill (934:653) without the play button and "0:34 · BRAND FILM · FIGMA MOTION" label
+     k2bg.webp    = keyframe 2 (guidelines cover, seal close-up) with the logo hidden
+     emblem.svg   = the real seal vectors (Logo / Submark), drawn as strokes and then filled
+     k3bg.webp    = keyframe 3 (guidelines cover) with the names and divider hidden; names.png = the real Names lockup
+     k4.webp      = keyframe 4 (lamp, rehal and the app); k5.webp = keyframe 5 (Midnight Seal palette page)
+     Beats: 0:00 poster, 0:04 the seal draws in, 0:10 the name in two scripts, 0:16 the lamp,
+     0:23 colour, 0:29 back to the seal frame (straight cut to 0:00). -->
+<style>
+  html,body{margin:0;background:#141a3d}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#141a3d}
+  .sc{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:960px 540px}
+  .sc > img{position:absolute;left:0;top:0;width:1920px;height:1080px}
+  #emb{position:absolute;left:0;top:0;width:696px;height:696px;overflow:visible;transform-origin:0 0}
+  #names{position:absolute;left:689px;top:422px;width:653px;height:291px}
+  #div{position:absolute;left:638px;top:443px;width:3px;height:249px;background:rgba(227,233,255,.35);transform-origin:50% 50%}
+  #k5{background:#f8f6f0}
+</style></head>
+<body>
+<div id="stage">
+  <div class="sc" id="k2"><img src="a/k2bg.webp"></div>
+  <div class="sc" id="k3"><img src="a/k3bg.webp"><div id="div"></div>
+    <div id="namesA" style="position:absolute;left:0;top:0;width:1920px;height:1080px"><img id="names" src="a/names.png"></div>
+    <div id="namesB" style="position:absolute;left:0;top:0;width:1920px;height:1080px"><img src="a/names.png" style="position:absolute;left:689px;top:422px;width:653px;height:291px"></div>
+  </div>
+  <!-- the seal travels from its close-up (696px at 651,221) into the lockup (290px at 300,423) -->
+  <div class="sc" id="embw"><svg id="emb" viewBox="0 0 696 696" fill="none" xmlns="http://www.w3.org/2000/svg"></svg></div>
+  <div class="sc" id="k4"><img src="a/k4.webp"></div>
+  <div class="sc" id="k5"><img src="a/k5.webp" style="left:75px"></div>
+  <div class="sc" id="poster"><img src="a/poster.webp"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eOut=t=>1-Math.pow(1-t,3);
+const lerp=(a,b,t)=>a+(b-a)*t;
+// The seal, from the Figma export: arch, book on its rehal, star
+const PATHS=[
+ {d:"M86.7207 695.686V369.293L87.4454 345.263L90.605 314.189L96.2284 283.463L104.287 253.288L114.722 223.837L123.302 203.981L134.114 182.531L144.955 163.805L158.173 143.746L171.102 126.412L186.581 108.034L201.451 92.3234L218.959 75.8588L239.337 59.0174L260.787 43.5963L283.252 29.6826L306.616 17.2762L326.298 8.34823L347.835 0L362.734 5.59448L382.561 14.1746L401.925 23.8562L436.883 44.9587L469.464 69.5686L499.292 97.454L526.076 128.296L549.468 161.776L560.425 180.415L570.339 199.633L586.078 237.316L594.775 264.825L601.442 292.855L606.021 321.349L608.485 350.075L608.978 695.686H86.7207ZM571.44 369.293L569.933 336.741L565.034 302.334L556.802 268.564L546.105 237.78L531.641 206.184L515.321 177.98L495.118 149.688L473.783 125.079L445.289 98.2947L415.838 76.0327L382.3 55.9448L347.835 40.0889L317.225 53.9447L287.107 71.2499L260.526 90.0914L235.771 111.31L213.104 134.702L192.668 160.066L174.638 187.227L160.145 213.952L147.216 243.867L137.1 274.825L131.94 295.927L128.404 315.175L125.766 336.741L124.433 358.423L124.259 658.148H571.44V369.293Z",c:"#ffffff",a:3.4,b:6.8},
+ {d:"M347.842 598.823L267.983 640.187H207.69L317.696 583.199L279.143 563.256L347.234 573.256L416.541 563.256L377.989 583.199L487.994 640.187H427.701L347.842 598.823ZM544.895 498.557L549.678 498.354L553.476 499.629V521.254L551.765 522.007L448.63 546.82L348.451 561.835L247.055 546.82L142.209 521.254V499.629L148.412 498.209L252.272 522.906L347.842 537.254L443.412 522.906L544.895 498.557ZM304.594 518.268H287.057L269.52 517.079L251.953 514.529L234.416 510.557L208.096 502.064L164.239 483.513V330.114L190.559 341.68L216.879 351.506L234.416 356.318L251.953 359.478L269.52 360.898L287.057 360.637L313.377 357.68L339.697 352.955V516.152L304.594 518.268ZM356.017 352.955L399.874 359.941L417.411 360.956L434.948 360.405L452.485 358.115L470.051 354.115L487.588 348.52L531.445 330.114V483.513L505.125 495.078L478.805 505.195L461.268 510.557L443.731 514.529L426.194 517.079L408.628 518.268L382.308 517.949L356.017 516.152V352.955Z",c:"#ffffff",a:4.6,b:7.4},
+ {d:"M390.274 246.879H365.432L347.837 264.445L330.271 246.879H305.4V222.037L287.834 204.442L305.4 186.876V162.006H330.271L347.837 144.439L365.432 162.006H390.274V186.876L407.84 204.442L390.274 222.037V246.879Z",c:"#E3A93B",a:6.6,b:7.6}
+];
+const NS='http://www.w3.org/2000/svg';
+const svg=$('emb'); const parts=[];
+for(const p of PATHS){
+  const f=document.createElementNS(NS,'path');f.setAttribute('d',p.d);f.setAttribute('fill',p.c);f.setAttribute('fill-rule','evenodd');
+  const s=document.createElementNS(NS,'path');s.setAttribute('d',p.d);s.setAttribute('stroke',p.c);s.setAttribute('stroke-width','3');s.setAttribute('fill','none');s.setAttribute('stroke-linejoin','round');
+  svg.appendChild(f);svg.appendChild(s);
+  const L=s.getTotalLength();s.style.strokeDasharray=L;parts.push({f,s,L,...p});
+}
+// opacity of each scene over time, each with a slow push of its own
+function vis(t,a,b,c,d){ return t<a||t>d?0: t<b?eSine(prog(t,a,b)): t<=c?1: 1-eSine(prog(t,c,d)); }
+window.render=function(t){
+  // 0:00 poster hold, gentle push; fades to the seal scene. Returns at 28.4 and settles to scale 1 by 32.6
+  const pin=vis(t,-1,0,2.6,3.5), pout=eSine(prog(t,28.4,29.6));
+  const pOp=t<20?pin:pout;
+  const pS = t<20 ? 1+0.02*eSine(prog(t,0,3.5)) : 1+0.06*(1-eIO(prog(t,28.4,32.6)));
+  $('poster').style.opacity=pOp; $('poster').style.transform=`scale(${pS})`;
+
+  // 0:03 the seal draws in on the lattice
+  const k2o=vis(t,2.6,3.4,9.2,10.2);
+  const k2s=1.04-0.04*eSine(prog(t,2.6,10.2));
+  $('k2').style.opacity=k2o; $('k2').style.transform=`scale(${k2s})`;
+  for(const p of parts){
+    const d=eIO(prog(t,p.a,p.b));
+    p.s.style.strokeDashoffset=p.L*(1-d);
+    p.s.style.opacity=1-eSine(prog(t,p.b+0.2,p.b+1.0));
+    p.f.style.opacity=eSine(prog(t,p.b-0.5,p.b+0.7));
+  }
+  const star=parts[2]; const sp=prog(t,7.4,8.4);
+  star.f.style.transformOrigin='348px 204px';
+  star.f.style.transform=`scale(${1+0.12*Math.sin(Math.PI*sp)})`;
+
+  // 0:10 the name in two scripts beside the seal
+  const k3o=vis(t,9.2,10.2,15.6,16.6);
+  const k3s=1+0.025*eSine(prog(t,10.2,16.6));
+  $('k3').style.opacity=k3o; $('k3').style.transform=`scale(${k3s})`;
+  // seal: follows the close-up camera, flies into the lockup 9.2 to 10.4, then rides with the cover and leaves with it
+  const fly=eIO(prog(t,9.2,10.4));
+  const ex=lerp(651,300,fly), ey=lerp(221,423,fly), es=lerp(1,290/696,fly);
+  $('emb').style.transform=`translate(${ex}px,${ey}px) scale(${es})`;
+  $('embw').style.transform=`scale(${t<10.2?k2s:k3s})`;
+  $('embw').style.opacity = t<9.2 ? k2o : t<15.6 ? 1 : k3o;
+  $('div').style.transform=`scaleY(${eOut(prog(t,10.2,11.0))})`;
+  // Arabic reads right to left, so it is revealed from the right edge; top 202px of the lockup
+  const ar=eIO(prog(t,10.6,12.0));
+  $('namesA').style.clipPath=`inset(0px 0px ${1080-624}px ${689+653*(1-ar)}px)`;
+  // Latin name and "Station of contentment" rise in under it
+  const la=eSine(prog(t,11.8,12.9));
+  $('namesB').style.clipPath='inset(624px 0px 0px 0px)';
+  $('namesB').style.opacity=la; $('namesB').style.transform=`translateY(${(1-la)*16}px)`;
+
+  // 0:16 the lamp: slow push towards the phone
+  const k4o=vis(t,15.6,16.6,22.2,23.2);
+  $('k4').style.opacity=k4o;
+  const lp=eSine(prog(t,15.6,23.2));
+  $('k4').style.transformOrigin='900px 560px';
+  $('k4').style.transform=`scale(${1.0+0.06*lp}) translateX(${-14*lp}px)`;
+
+  // 0:23 the Midnight Seal palette page
+  const k5o=vis(t,22.2,23.2,28.4,29.4);
+  $('k5').style.opacity=k5o; $('k5').style.transform=`scale(${1.035-0.035*eSine(prog(t,22.2,29.4))})`;
+};
+window.render(0);
+</script>
+</body></html>
