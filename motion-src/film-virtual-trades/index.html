@@ -1,0 +1,58 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 11 · Case study film: Virtual Trades · 1920x1320 · 16s, plays once then loops, silent.
+     No Figma Motion timeline exists for this film in kQl8LQLi5xdRVVyXF3R4NZ, so it is rebuilt from the
+     export map (M2 storyboard, Brief 11 section 1140:8296). Every layer is a real Figma export:
+     poster.webp = the poster image fill (955:100599) without the play button and "0:16 · HOMEPAGE FILM · FIGMA MOTION" label
+     k2..k5.webp = keyframe panels 2 to 5 (Wallet, Rates, Sell a card + quote, Paid), rescaled to 1920x1320.
+     Beats: 0:00 poster (Rates), 0:03 the app opens on the wallet, 0:06 the rates, 0:10 sell a card and see the quote,
+     0:13 the payout lands, 0:16 back on the poster framing. -->
+<style>
+  html,body{margin:0;background:#07070a}
+  #stage{position:relative;width:1920px;height:1320px;overflow:hidden;background:#07070a}
+  #stage img{position:absolute;left:0;top:0;width:1920px;height:1320px}
+  .scr{position:absolute;left:0;top:0;width:1920px;height:1320px;clip-path:inset(118px 700px 120px 722px round 74px)}
+  #cam{position:absolute;left:0;top:0;width:1920px;height:1320px;transform-origin:960px 660px}
+</style></head>
+<body>
+<div id="stage">
+  <div id="cam">
+    <img id="k2" src="a/k2.webp">
+    <div class="scr" id="s3"><img src="a/k3.webp"></div>
+    <img id="k4" src="a/k4.webp">
+    <img id="k5" src="a/k5.webp">
+  </div>
+  <!-- the poster phone (406px wide, top at y 480) scales 1.32x about (960, 1674) onto the plate phone (537px wide, top at y 98) -->
+  <img id="poster" src="a/poster.webp" style="transform-origin:960px 1674px">
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const PS=1.3227;
+window.render=function(t){
+  // poster rises into the app (1.8 to 3.0) and returns at the end (14.3 to 15.5)
+  const up=eIO(prog(t,1.8,3.0)), down=eIO(prog(t,14.3,15.5));
+  const z = t<8 ? up : 1-down;
+  $('poster').style.transform=`scale(${lerp(1,PS,z)})`;
+  $('poster').style.opacity = t<8 ? 1-eSine(prog(t,2.45,3.0)) : eSine(prog(t,14.3,14.85));
+  // plates sit under the poster at full size; the poster phone grows onto the plate phone, then the poster fades
+  const drift = 1+0.012*Math.sin(Math.PI*prog(t,3,14.3));
+  $('cam').style.transform=`scale(${drift})`;
+  // wallet -> rates: only the screen changes, sliding up inside the phone
+  const r=eSine(prog(t,5.6,6.4));
+  $('s3').style.opacity=r; $('s3').style.transform=`translateY(${(1-r)*40}px)`;
+  $('s3').style.clipPath=`inset(${118-(1-r)*40}px 700px ${120+(1-r)*40}px 722px round 74px)`;
+  // rates -> sell + quote (two phones)
+  const q=eSine(prog(t,9.5,10.15));
+  $('k4').style.opacity=q; $('k4').style.transform=`scale(${lerp(1.03,1,q)})`;
+  // quote -> paid
+  const p=eSine(prog(t,12.7,13.35));
+  $('k5').style.opacity=p; $('k5').style.transform=`scale(${lerp(0.97,1,p)})`;
+};
+window.render(0);
+</script>
+</body></html>
