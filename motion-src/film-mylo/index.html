@@ -1,0 +1,73 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 8 · Case study film: Mylo · 1920x1080 · 16s, plays once then loops, silent.
+     No Figma Motion timeline exists for this film in kQl8LQLi5xdRVVyXF3R4NZ, so it is rebuilt from the
+     export map (M2 storyboard, Brief 8 section 1139:9339). Every layer is a real Figma export:
+     poster.webp  = the poster image fill (953:27223) without the play button and "MYLO · HOMEPAGE FILM · 0:16" label
+     k2..k5.webp  = keyframe panels 2 to 5 (real Mylo screens), rescaled to 1920x1080 with annotations removed.
+     Beats follow the export map: 0:00 poster, 0:03 chess with a friend, 0:07 the egg, 0:11 the home, 0:14 three sides,
+     0:16 back on the poster frame (straight cut to 0:00). -->
+<style>
+  html,body{margin:0;background:#1c1c21}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#1c1c21}
+  #stage img,#stage .lay{position:absolute;left:0;top:0;width:1920px;height:1080px}
+  #plates{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:960px 540px}
+  #poster{transform-origin:960px 560px}
+  .col{position:absolute;left:0;top:0;width:1920px;height:1080px}
+</style></head>
+<body>
+<div id="stage">
+  <div id="plates">
+    <img id="k2" src="a/k2.webp">
+    <!-- each later plate is split in three columns (one per phone) so the screens change one after another -->
+    <div class="lay" id="k3"></div>
+    <div class="lay" id="k4"></div>
+    <div class="lay" id="k5"></div>
+  </div>
+  <img id="poster" src="a/poster.webp">
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+// phone columns: left 0..725, middle 725..1196, right 1196..1920
+const COLS=[[0,725],[725,1196],[1196,1920]];
+for(const k of ['k3','k4','k5']){
+  const host=$(k);
+  COLS.forEach(([a,b],i)=>{
+    const d=document.createElement('div');d.className='col';d.id=k+'c'+i;
+    d.style.clipPath=`inset(0 ${1920-b}px 0 ${a}px)`;
+    const im=document.createElement('img');im.src=`a/${k}.webp`;d.appendChild(im);host.appendChild(d);
+  });
+}
+// staggered column swap: [start, plate]
+const SWAPS=[[6.0,'k3'],[9.7,'k4'],[12.7,'k5']];
+const COLDUR=0.75, STAG=0.18;
+window.render=function(t){
+  // poster: holds, then grows slightly as the flat three-phone layout takes over; returns at the end
+  const pin=eIO(prog(t,0,2.8)), pout=eIO(prog(t,14.3,15.5));
+  // short dip between the tilted poster and the flat layout, so the two never sit on top of each other for long
+  const pOp = t<8 ? 1-eSine(prog(t,1.9,2.5)) : eSine(prog(t,14.7,15.35));
+  $('plates').style.opacity = t<8 ? eSine(prog(t,2.2,2.9)) : 1-eSine(prog(t,14.3,14.95));
+  const pS = t<8 ? 1+0.045*pin : 1+0.045*(1-pout);
+  $('poster').style.opacity=pOp;
+  $('poster').style.transform=`scale(${pS})`;
+  // plates: a slow, continuous push while the screens change, starting slightly small so the cut from the poster reads as a settle
+  const pp=prog(t,1.9,15.5);
+  const plS=0.975+0.04*eSine(pp);
+  $('plates').style.transform=`scale(${plS})`;
+  for(const [start,k] of SWAPS){
+    for(let i=0;i<3;i++){
+      const a=start+i*STAG;
+      const o=eSine(prog(t,a,a+COLDUR));
+      const c=$(k+'c'+i);
+      c.style.opacity=o;
+      c.style.transform=`translateY(${(1-o)*14}px)`;
+    }
+  }
+};
+window.render(0);
+</script>
+</body></html>

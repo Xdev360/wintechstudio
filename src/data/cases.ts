@@ -17,7 +17,8 @@ export type Case = {
   headline: string; line: string; intro: string; status: string; url?: string;
   stats: [string, string][]; did: string[];
   theme: 'dark' | 'light'; grad: [string, string]; icon?: string; iconTodo?: string;
-  film: { title: string; lead: string; body: string; w: number; h: number; label: string };
+  // video: the case study film (public/videos/films/<slug>.mp4). Without it the page shows the still poster.
+  film: { title: string; lead: string; body: string; w: number; h: number; label: string; video?: string };
   chapters: Chapter[];
   want: { label: string; href: string };
   services: string[];
@@ -47,7 +48,7 @@ export const cases: Case[] = [
     stats: [['598 app screens', '299 screens, each one designed in light and dark'], ['22 desktop screens', '10 desktop app screens and 12 admin panel screens'], ['14 mini apps', 'Focus, games, pets, journal and more, inside one app']],
     did: ['Brand identity', 'Character design', 'Mobile app', 'Desktop app', 'Admin panel', 'Website', 'Motion'],
     theme: 'dark', grad: ['#f4f4f5', '#52525b'], icon: '/images/cases/icon-mylo.svg',
-    film: { title: 'Film', lead: 'Three phones, three sides of Mylo.', body: 'Chess with a friend, a pet egg hatching and a home being built. The homepage film sums up the app in sixteen seconds.', w: 1360, h: 765, label: 'Mylo · homepage film · 0:16' },
+    film: { title: 'Film', lead: 'Three phones, three sides of Mylo.', body: 'Chess with a friend, a pet egg hatching and a home being built. The homepage film sums up the app in sixteen seconds.', w: 1360, h: 765, label: 'Mylo · homepage film · 0:16', video: '/videos/films/mylo.mp4' },
     chapters: [
       { n: '02', title: 'The challenge', lead: 'Most productivity apps are built for one person, and most people stop opening them within a week.', body: 'Mylo had to make planning feel social and rewarding without turning work into noise. One app needed to hold a day plan, focus sessions, games with friends, rewards and a home that grows.',
         list: [['Planning feels like homework', 'Lists and timers work, but nothing makes you want to come back tomorrow.'], ['Progress is invisible', 'Finishing a task gives you a tick and nothing else.'], ['Friends live in other apps', 'Accountability works better together, but productivity tools stay solo.']] },
@@ -93,7 +94,7 @@ export const cases: Case[] = [
     stats: [['118 mobile screens', 'Child and adult app, lessons and seven games'], ['68 desktop screens', 'Desktop web app and the ustadh and admin panel'], ['11 brand slides', 'Logo, colour, type, social and mockups']],
     did: ['Brand identity', 'Product planning', 'Mobile app', 'Web app', 'Admin panel', 'Website', 'Motion'],
     theme: 'light', grad: ['#2a4bd7', '#e3a93b'], iconTodo: '950:1686',
-    film: { title: 'Film', lead: 'The brand film: a seal, a lamp and a midnight sky.', body: 'The short film that opens the brand. The seal draws in, the name appears, then the colours, type and social system follow. Built in Figma Motion.', w: 1360, h: 765, label: '0:34 · brand film · Figma Motion' },
+    film: { title: 'Film', lead: 'The brand film: a seal, a lamp and a midnight sky.', body: 'The short film that opens the brand. The seal draws in, the name appears, then the colours, type and social system follow. Built in Figma Motion.', w: 1360, h: 765, label: '0:34 · brand film · Figma Motion', video: '/videos/films/manzeelatur-ridho.mp4' },
     chapters: [
       { n: '02', title: 'The challenge', lead: 'Children in the UK, families from Nigeria. English comes first, Arabic is new, and time is short between school and bed.', body: 'The parent pays and needs to see it working, and both a seven year old and an eleven year old had to feel it was made for them.',
         list: [['Two very different learners', 'Big audio buttons and tracing for the youngest, levels and a fair league for older children.'], ['A parent who pays', 'Progress, homework, booking and billing in one place, behind a PIN.'], ['One ustadh, many students', 'In phase one the founder is the teacher and the admin, so his panel had to do everything.']] },
@@ -183,7 +184,7 @@ export const cases: Case[] = [
     stats: [['26 app screens', 'Every flow, in dark and light'], ['15 brand slides', 'Logo, colour, type, illustration and voice'], ['5 social posts', 'Plus 7 illustrations for web and social']],
     did: ['Brand identity', 'Mobile app', 'Website', 'Social', 'Illustration', 'Motion'],
     theme: 'dark', grad: ['#9160df', '#b99cff'], icon: '/images/cases/icon-virtual-trades.svg',
-    film: { title: 'Film', lead: 'The homepage film: rates you can see, in sixteen seconds.', body: 'The app opens, the rates move and the payout lands. Built in Figma Motion.', w: 1360, h: 935, label: '0:16 · homepage film · Figma Motion' },
+    film: { title: 'Film', lead: 'The homepage film: rates you can see, in sixteen seconds.', body: 'The app opens, the rates move and the payout lands. Built in Figma Motion.', w: 1360, h: 935, label: '0:16 · homepage film · Figma Motion', video: '/videos/films/virtual-trades.mp4' },
     chapters: [
       { n: '02', title: 'The challenge', lead: 'Selling a gift card for naira usually means sending codes into a chat, waiting, and hoping the rate holds.', body: 'People could not see the price up front or where their card was, and every quiet minute felt like a risk. The product had to earn trust in the first minute and keep it until the money landed.',
         list: [['No price up front', 'The rate usually appears only after the card is sent.'], ['No sight of the card', 'Nobody can tell if a card is verifying, stuck or rejected.'], ['Trust breaks on delay', 'Every silent minute makes people assume the worst.']] },
