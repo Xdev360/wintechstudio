@@ -1,0 +1,300 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Manzeelatur Ridho card loop (Brief 3, "Ink to star"). 1312x984, 9s. render(t) draws frame t (seconds).
+     Real assets: seal paths (Arch, Book, Star) from the approved Logo / Submark (Figma 917:43131),
+     names from the approved lockup (922:82744), lesson screen "M27 Lesson · Trace" from the storyboard clone. -->
+<style>
+  html,body{margin:0;background:#0b0c0f}
+  #stage{position:relative;width:1312px;height:984px;overflow:hidden;background:#141A3D}
+  #stage > *{position:absolute;left:0;top:0}
+  #glow{left:82px;top:82px;width:1148px;height:820px;border-radius:50%;background:#2A4BD7;opacity:.45;filter:blur(120px)}
+  #phone{width:723px;height:1564px;transform-origin:0 0;will-change:transform,opacity}
+  #phone img,#phone svg{position:absolute;left:0;top:0}
+  #pshadow{position:absolute;left:12px;top:30px;width:699px;height:1520px;border-radius:110px;box-shadow:0 60px 120px rgba(4,6,20,.55),0 16px 40px rgba(4,6,20,.35)}
+  #names{transform-origin:0 0}
+  #div{background:rgb(90,99,144)}
+</style></head>
+<body>
+<div id="stage">
+  <div id="glow"></div>
+  <svg id="lat" width="1312" height="984" viewBox="0 0 1312 984">
+    <defs>
+      <pattern id="lp" patternUnits="userSpaceOnUse" width="65.6" height="65.6" x="25.6" y="47.4667">
+        <path d="M29.155 0 L58.31 29.155 L29.155 58.31 L0 29.155 Z" fill="none" stroke="#fff" stroke-width="1.0933"/>
+      </pattern>
+    </defs>
+    <rect id="latr" x="-400" y="-200" width="2200" height="1400" fill="url(#lp)" opacity=".6"/>
+  </svg>
+
+
+  <!-- phone with overlay in export px (723x1564, 4.6x the storyboard clone) -->
+  <div id="phone">
+    <div id="pshadow"></div>
+    <img id="phimg" src="a/phone.png" width="723" height="1564">
+    <svg id="pov" width="723" height="1564" viewBox="0 0 723 1564" style="overflow:visible">
+      <path id="guide" fill="none" stroke="#2A4BD7" stroke-opacity=".45" stroke-width="4" stroke-dasharray="2 12" stroke-linecap="round"/>
+      <circle id="gdot" r="15" fill="#2FAE7E"/>
+      <path id="trace" fill="none" stroke="#2A4BD7" stroke-width="24" stroke-linecap="round"/>
+      <path id="ringInk" fill="none" stroke="#2A4BD7" stroke-width="16" stroke-linecap="round"/>
+      <g id="tick">
+        <circle cx="12" cy="12" r="10" fill="#fff" stroke="#2FAE7E" stroke-width="2"/>
+        <path d="m9 12 2 2 4-4" fill="none" stroke="#2FAE7E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <g id="finger" fill="#fff" stroke="#141A3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L6 13.5V4a2 2 0 0 1 4 0v5.5V9a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0Z" stroke="none"/>
+        <path d="M22 14a8 8 0 0 1-8 8" fill="none"/>
+        <path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2" fill="none"/>
+        <path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1" fill="none"/>
+        <path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10" fill="none"/>
+        <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" fill="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ribbon (stage coords) -->
+  <svg id="rib" width="1312" height="984" viewBox="0 0 1312 984" style="overflow:visible">
+    <defs><linearGradient id="rg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#2A4BD7"/></linearGradient></defs>
+    <path id="ribp" d="" fill="none" stroke="url(#rg)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <!-- seal (emblem units, 111.36 square) -->
+  <svg id="seal" width="1312" height="984" viewBox="0 0 1312 984" style="overflow:visible">
+    <defs>
+      <mask id="inkM" maskUnits="userSpaceOnUse" x="-20" y="-20" width="160" height="160">
+        <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+          <path id="mArch" stroke-width="9" transform="translate(13.8813 0)"/>
+          <g transform="translate(22.7635 52.8417)">
+            <path id="mLeg1" d="M10.5 49.6 L43.9 37.3" stroke-width="8"/>
+            <path id="mLeg2" d="M55.35 49.6 L21.9 37.3" stroke-width="8"/>
+            <path id="mBand" d="M-1 28.9 L16.8 32.7 L33 35.1 L49 32.7 L66.8 28.9" stroke-width="7"/>
+            <rect id="mPL" y="-3" height="34" fill="#fff" stroke="none"/>
+            <rect id="mPR" y="-3" height="34" fill="#fff" stroke="none"/>
+          </g>
+        </g>
+      </mask>
+    </defs>
+    <g id="sealG">
+      <g id="ghost" fill="#fff">
+        <use href="#archShape"/><use href="#bookShape"/>
+      </g>
+      <g id="solid" fill="#fff">
+        <path id="archShape" fill-rule="evenodd" transform="translate(13.8813 0)" d="M 0 111.3592758178711 L 0 59.11321628798978 L 0.11599925590430113 55.266680877645555 L 0.6217560271346256 50.292632658044745 L 1.5219102241893694 45.37426535075865 L 2.8118219365701367 40.54405506295079 L 4.482211177341869 35.82984756080259 L 5.855642384948876 32.65146893817073 L 7.5863515131421115 29.217890559116494 L 9.321700275269967 26.220468706479366 L 11.437526455163274 23.009610436667934 L 13.506953640698132 20.23490869327361 L 15.98469781761433 17.293167752951195 L 18.36500304437288 14.778304071997445 L 21.16754372181458 12.142801069373853 L 24.429444001449088 9.446978848417347 L 27.863020914211496 6.9785146002198415 L 31.458999617253006 4.751328995362019 L 35.19881449480244 2.765422033843879 L 38.349354709965226 1.3363113629146937 L 41.79685273704171 0 L 44.18179715523283 0.8955141520311031 L 47.35553509756666 2.2689451828388427 L 50.45503535693024 3.818694954186867 L 56.050841868964845 7.1965933059304 L 61.266163883201294 11.135927581787108 L 66.04069722104065 15.599578058551195 L 70.32803226807539 20.536505669942198 L 74.07248456704922 25.89567223468366 L 75.82639274991963 28.8791729742381 L 77.41326172108656 31.955473464309033 L 79.93276924094498 37.98743423777705 L 81.3247603117966 42.39076461120421 L 82.3919548821227 46.877614583095415 L 83.1250639490091 51.438705771406234 L 83.5194642510968 56.036914027910825 L 83.59834289550781 111.3592758178711 L 0 111.3592758178711 Z M 77.58958285567155 59.11321628798978 L 77.34830242098145 53.9025286160715 L 76.56414631826314 48.394886698522896 L 75.24639647039812 42.98932114352719 L 73.53424632044542 38.06167191418062 L 71.2189057038165 33.00410409611577 L 68.60660019524117 28.489415438075227 L 65.37254037422663 23.96080389694398 L 61.957521997202704 20.02147050609128 L 57.396430405441656 15.734137608299715 L 52.682222486299366 12.170640640527198 L 47.31377706464896 8.95514140968553 L 41.79685273704171 6.417078233604661 L 36.897041760432906 8.634984128912038 L 32.07611296825146 11.405045796280136 L 27.82126111128562 14.421026183014146 L 23.85872610479273 17.817484838862583 L 20.230269521706845 21.561940346637858 L 16.95909085920719 25.621913944164405 L 14.07302969090965 29.96956340527686 L 11.753044572823628 34.24761615101597 L 9.683618272292858 39.03606486958379 L 8.064267881065216 43.99155278507969 L 7.238353745429208 47.36945025181922 L 6.672277252715646 50.450393472928404 L 6.250040032024318 53.9025286160715 L 6.036601383460321 57.37322760333554 L 6.00876136734239 105.35051630953821 L 77.58958285567155 105.35051630953821 L 77.58958285567155 59.11321628798978 Z"/>
+        <path id="bookShape" fill-rule="evenodd" transform="translate(22.7635 52.8417)" d="M 32.915950775146484 43.012522826595784 L 20.13283105287404 49.63376235961914 L 10.48169308490363 49.63376235961914 L 28.090380906157172 40.51157914358753 L 21.91922069851322 37.31928088413038 L 32.81851182265932 38.92006920530806 L 43.91267908177153 37.31928088413038 L 37.74151710411936 40.51157914358753 L 55.35020669538112 49.63376235961914 L 45.69906695740249 49.63376235961914 L 32.915950775146484 43.012522826595784 Z M 64.45846721233633 26.96286742168698 L 65.22406656762787 26.930387771518678 L 65.83190155029297 27.13454582543488 L 65.83190155029297 30.5959649791612 L 65.55813791898896 30.71660165691982 L 49.04912611441273 34.68841860044892 L 33.01338972763365 37.09192333295228 L 16.782771895863803 34.68841860044892 L 0 30.5959649791612 L 0 27.13454582543488 L 0.992953702955043 26.907188274256775 L 17.61796797434873 30.860443141964897 L 32.915950775146484 33.15722700104877 L 48.21393357594424 30.860443141964897 L 64.45846721233633 26.96286742168698 Z M 25.993114096866105 30.118048609534902 L 23.18593239087107 30.118048609534902 L 20.378748914867813 29.927808129966024 L 17.566928017329293 29.519490252125436 L 14.759745426330149 28.883814823106743 L 10.546652386561743 27.52430339746267 L 3.5263774195472757 24.554721727726335 L 3.5263774195472757 0 L 7.739470680566708 1.8513481352554768 L 11.952563720335114 3.4242980995986834 L 14.759745426330149 4.1945330907478695 L 17.566928017329293 4.700289919093359 L 20.378748914867813 4.927648355275555 L 23.18593239087107 4.885888552200857 L 27.399024545635363 4.412611816525714 L 31.61211670039966 3.656296612234079 L 31.61211670039966 29.779329223480026 L 25.993114096866105 30.118048609534902 Z M 34.22442227142858 3.656296612234079 L 41.244696132187904 4.774529372336358 L 44.051879608191165 4.936928508181953 L 46.85905954417798 4.8487688255793575 L 49.666243020181234 4.482211193315514 L 52.47806391771975 3.8418952453415773 L 55.285247393723004 2.9463810662193186 L 62.305521254482336 0 L 62.305521254482336 24.554721727726335 L 58.09242732970982 26.406070637360394 L 53.87933694495375 28.025421034359052 L 51.07215346895049 28.883814823106743 L 48.264969992947236 29.519490252125436 L 45.45779005696042 29.927808129966024 L 42.6459691594219 30.118048609534902 L 38.43287523464939 30.067008653553806 L 34.22442227142858 29.779329223480026 L 34.22442227142858 3.656296612234079 Z"/>
+      </g>
+      <g id="inked" fill="#fff" mask="url(#inkM)">
+        <use href="#archShape"/><use href="#bookShape"/>
+      </g>
+      <path id="sealStar" fill="#E3A93B" transform="translate(46.0740 23.1206)" d="M 16.39765401916849 16.39765401916849 L 12.4211998784399 16.39765401916849 L 9.604738235473633 19.209476470947266 L 6.792916226196878 16.39765401916849 L 2.8118217880257443 16.39765401916849 L 2.8118217880257443 12.4211998784399 L 0 9.604738235473633 L 2.8118217880257443 6.792916226196878 L 2.8118217880257443 2.8118217880257443 L 6.792916226196878 2.8118217880257443 L 9.604738235473633 0 L 12.4211998784399 2.8118217880257443 L 16.39765401916849 2.8118217880257443 L 16.39765401916849 6.792916226196878 L 19.209476470947266 9.604738235473633 L 16.39765401916849 12.4211998784399 L 16.39765401916849 16.39765401916849 Z"/>
+      <g id="nibG"><circle id="nibGlow" r="3.2" fill="#fff" opacity=".22"/><circle id="nib" r="1.5" fill="#fff"/></g>
+    </g>
+  </svg>
+
+  <div id="div" style="width:3.4253px;height:261.77px"></div>
+  <img id="names" src="a/names.png" width="686" height="306">
+
+  <!-- the gold star moment (stage coords) -->
+  <svg id="fx" width="1312" height="984" viewBox="0 0 1312 984" style="overflow:visible">
+    <defs>
+      <path id="starShape" fill="#E3A93B" transform="translate(-9.6047 -9.6047)" d="M 16.39765401916849 16.39765401916849 L 12.4211998784399 16.39765401916849 L 9.604738235473633 19.209476470947266 L 6.792916226196878 16.39765401916849 L 2.8118217880257443 16.39765401916849 L 2.8118217880257443 12.4211998784399 L 0 9.604738235473633 L 2.8118217880257443 6.792916226196878 L 2.8118217880257443 2.8118217880257443 L 6.792916226196878 2.8118217880257443 L 9.604738235473633 0 L 12.4211998784399 2.8118217880257443 L 16.39765401916849 2.8118217880257443 L 16.39765401916849 6.792916226196878 L 19.209476470947266 9.604738235473633 L 16.39765401916849 12.4211998784399 L 16.39765401916849 16.39765401916849 Z"/>
+      <radialGradient id="gg"><stop offset="0" stop-color="#E3A93B" stop-opacity=".55"/><stop offset=".45" stop-color="#E3A93B" stop-opacity=".16"/><stop offset="1" stop-color="#E3A93B" stop-opacity="0"/></radialGradient>
+    </defs>
+    <circle id="sglow" r="260" fill="url(#gg)" opacity="0"/>
+    <g id="rays" stroke="#E3A93B" stroke-width="5" stroke-linecap="round"></g>
+    <use id="fstar" href="#starShape"/>
+    
+    <path id="glint" d="M0 -14 C1.2 -3 3 -1.2 14 0 C3 1.2 1.2 3 0 14 C-1.2 3 -3 1.2 -14 0 C-3 -1.2 -1.2 -3 0 -14 Z" fill="#FFF4DC" opacity="0"/>
+  </svg>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eOutCubic=t=>1-Math.pow(1-t,3);
+const eOutQuad=t=>1-(1-t)*(1-t);
+const eInOut=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eInOutSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eOutBack=(t,c1=1.70158)=>{const c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const NS='http://www.w3.org/2000/svg';
+
+const S=1312/480;                       // storyboard keyframe -> stage
+const LOCK={x:40*S,y:124.149169921875*S};// lockup origin on stage (keyframe 01)
+const EC=55.6796;                       // emblem centre (units)
+const K01={x:LOCK.x,y:LOCK.y,s:S};
+const SB=S/0.45;                        // keyframe 02: seal big, centred
+const K02={x:656-EC*SB,y:492-EC*SB,s:SB};
+const STAR_U={x:46.0740+9.6047,y:23.1206+9.6047}; // star centre in emblem units
+const SOCKET={x:K01.x+STAR_U.x*S,y:K01.y+STAR_U.y*S};
+const STAR_PX=19.2095;                  // star size in units
+
+// --- arch centreline: average the outer and inner contours of the real Arch path
+(function(){
+  const d=$('archShape').getAttribute('d');
+  const subs=d.split('Z').map(s=>[...s.matchAll(/(-?[\d.]+) (-?[\d.]+)/g)].map(m=>[+m[1],+m[2]])).filter(a=>a.length);
+  let outer=subs[0].slice(1,-2);          // (0,59.1) ... (83.52,56.04)
+  let inner=subs[1].slice(0,-3).reverse(); // (6.04,57.37) ... (77.59,59.11)
+  function resample(pts,n){const L=[0];for(let i=1;i<pts.length;i++)L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
+    const T=L[L.length-1],out=[];let j=0;for(let k=0;k<n;k++){const s=T*k/(n-1);while(j<L.length-2&&L[j+1]<s)j++;const u=(s-L[j])/((L[j+1]-L[j])||1);
+      out.push([lerp(pts[j][0],pts[j+1][0],u),lerp(pts[j][1],pts[j+1][1],u)]);}return out;}
+  const A=resample(outer,80),B=resample(inner,80);
+  const mid=A.map((p,i)=>[(p[0]+B[i][0])/2,(p[1]+B[i][1])/2]);
+  const xl=3.0044, xr=80.594, yb=108.355;
+  let s=`M ${xl} ${yb} L ${xl} ${mid[0][1].toFixed(3)}`;
+  for(const p of mid) s+=` L ${p[0].toFixed(3)} ${p[1].toFixed(3)}`;
+  s+=` L ${xr} ${yb} L ${xl+4} ${yb}`;
+  $('mArch').setAttribute('d',s);
+})();
+const SEG=['mArch','mLeg1','mLeg2','mBand'].map(id=>{const el=$(id);const L=el.getTotalLength();el.setAttribute('stroke-dasharray',`${L} ${L+10}`);return {el,L};});
+// one pen: arch, rehal legs, cover band, then the pages open from the spine
+const SPLIT=[0,.56,.65,.74,.84,1];
+function setInk(u){ // u 0..1
+  SEG.forEach((g,i)=>{const p=prog(u,SPLIT[i],SPLIT[i+1]);g.el.setAttribute('stroke-dashoffset',String(g.L*(1-p)));});
+  const pp=eOutCubic(prog(u,SPLIT[4],1)), w=32*pp;
+  $('mPL').setAttribute('x',String(33-w));$('mPL').setAttribute('width',String(w));
+  $('mPR').setAttribute('x',String(33));$('mPR').setAttribute('width',String(w));
+  // nib at the pen head
+  let head=null;
+  for(let i=0;i<4;i++){const p=prog(u,SPLIT[i],SPLIT[i+1]);if(p>0&&p<1){const g=SEG[i];const pt=g.el.getPointAtLength(g.L*p);
+    head=i===0?{x:pt.x+13.8813,y:pt.y}:{x:pt.x+22.7635,y:pt.y+52.8417};}}
+  return head;
+}
+
+// --- ribbon (stage) and the sukun ring (phone export px)
+const RING={cx:353,cy:540,rx:29,ry:31.5};
+const ringD=`M ${RING.cx} ${RING.cy-RING.ry} A ${RING.rx} ${RING.ry} 0 0 1 ${RING.cx} ${RING.cy+RING.ry} A ${RING.rx} ${RING.ry} 0 0 1 ${RING.cx} ${RING.cy-RING.ry}`;
+for(const id of ['guide','trace','ringInk']) $(id).setAttribute('d',ringD);
+const RL=$('trace').getTotalLength();
+$('trace').setAttribute('stroke-dasharray',`${RL} ${RL+50}`);
+$('ringInk').setAttribute('stroke-dasharray',`${RL} ${RL+50}`);
+$('gdot').setAttribute('cx',RING.cx);$('gdot').setAttribute('cy',RING.cy-RING.ry);
+
+// phone poses: export anchor (ax,ay) placed at stage (X,Y), scale f
+const PH3={ax:361.5,ay:782,X:930,Y:492,f:.5};
+const PH4={ax:361.5,ay:606,X:656,Y:492,f:1};
+function phonePose(t){
+  const m=eInOut(prog(t,3.45,4.45));
+  const p={ax:lerp(PH3.ax,PH4.ax,m),ay:lerp(PH3.ay,PH4.ay,m),X:lerp(PH3.X,PH4.X,m),Y:lerp(PH3.Y,PH4.Y,m),f:lerp(PH3.f,PH4.f,m)};
+  p.X+=80*(1-eOutExpo(prog(t,2.6,3.3)));
+  return p;}
+function toStage(p,x,y){return {x:p.X+(x-p.ax)*p.f,y:p.Y+(y-p.ay)*p.f};}
+const TICK={x:548,y:536,s:4.6};   // tick centre (export px) and icon scale
+
+// rays
+for(let i=0;i<12;i++){const l=document.createElementNS(NS,'line');$('rays').appendChild(l);}
+
+function sealPose(t){
+  let P;
+  if(t<1.0) P=K01;
+  else if(t<2.35){const m=eInOut(prog(t,1.0,1.9));P={x:lerp(K01.x,K02.x,m),y:lerp(K01.y,K02.y,m),s:lerp(K01.s,K02.s,m)};}
+  else {const m=eInOutSine(prog(t,2.35,2.95));P={x:lerp(K02.x,K01.x,m),y:lerp(K02.y,K01.y,m),s:lerp(K02.s,K01.s,m)};}
+  return P;}
+
+window.render=function(t){
+  // lattice drifts one full tile (65.6px) left over the 9s loop, so it wraps seamlessly
+  $('latr').setAttribute('transform',`translate(${-65.6*(t/9)} 0)`);
+
+  // ---------- seal
+  const P=sealPose(t);
+  let ex=P.x, ey=P.y, es=P.s, so=1;
+  // exit left as the camera pushes into the phone
+  const out=eInOut(prog(t,3.5,4.1)); ex-=380*out; so=1-out;
+  // return to keyframe 01 for the star
+  if(t>=6.55){const r=eOutCubic(prog(t,6.55,7.2)); const k=lerp(.94,1,r);
+    ex=K01.x+EC*S*(1-k); ey=K01.y+EC*S*(1-k); es=S*k; so=r;}
+  $('sealG').setAttribute('transform',`translate(${ex} ${ey}) scale(${es})`);
+  $('sealG').style.opacity=so;
+  // ink: solid until 1.0, then the pen redraws it over a faint guide
+  const drawing=t>=1.0&&t<2.4;
+  $('solid').style.opacity= t<1.0 ? 1 : 1-prog(t,1.0,1.18);
+  $('ghost').style.opacity= .13*prog(t,1.0,1.2)*(1-prog(t,2.2,2.4));
+  const u = t<1.0 ? 1 : eInOut(prog(t,1.04,2.24));
+  const head=setInk(u);
+  if(head&&drawing){$('nibG').style.display='';$('nibG').setAttribute('transform',`translate(${head.x} ${head.y})`);}
+  else $('nibG').style.display='none';
+  $('sealStar').style.opacity= t<1.0?1:Math.max(0,1-prog(t,1.0,1.15));
+
+  // names + divider
+  const no = t<1.0 ? 1 : (t<5 ? 1-prog(t,1.0,1.3) : prog(t,7.95,8.25));
+  $('names').style.transform=`translate(${LOCK.x+149*S}px,${LOCK.y}px)`; $('names').style.opacity=no;
+  $('div').style.transform=`translate(${LOCK.x+129.7387*S}px,${LOCK.y+7.9663*S}px)`; $('div').style.opacity=no;
+
+  // ---------- phone
+  const pp=phonePose(t);
+  let pf=pp.f, po=eOutCubic(prog(t,2.6,3.0));
+  // soft pulse when the trace completes
+  const pu=prog(t,5.47,5.9); const pulse=1+.02*Math.sin(Math.PI*pu)*(pu>0&&pu<1?1:0);
+  // falls back and dims for the star
+  const fb=eInOut(prog(t,6.12,6.9)); const fbs=lerp(1,.9,fb);
+  po*=1-eInOut(prog(t,6.45,6.9));
+  const k=pf*pulse*fbs;
+  // scale about the anchor point
+  const tx=pp.X-pp.ax*k, ty=pp.Y-pp.ay*k+40*fb;
+  $('phone').style.transform=`translate(${tx}px,${ty}px) scale(${k})`;
+  $('phone').style.opacity=po; $('phone').style.display=po>0.001?'':'none';
+  $('phimg').style.filter=fb>0?`brightness(${1-.62*fb})`:'';
+
+  // ring ink arrives with the ribbon, then settles into the faint guide
+  const ri=eOutCubic(prog(t,3.28,3.62));
+  $('ringInk').setAttribute('stroke-dashoffset',String(RL*(1-ri)));
+  $('ringInk').style.opacity=ri>0?1-prog(t,3.62,3.9):0;
+  $('guide').style.opacity=prog(t,3.62,3.9);
+  const gd=eOutBack(prog(t,3.85,4.1)); $('gdot').setAttribute('r',String(15*gd)); $('gdot').style.opacity=prog(t,3.85,3.95);
+  // trace: finger enters, then follows the guide for 900ms
+  const tr=eInOutSine(prog(t,4.6,5.45));
+  $('trace').setAttribute('stroke-dashoffset',String(RL*(1-tr)));
+  $('trace').style.opacity=tr>0?1:0;
+  const tip = tr>0 ? $('trace').getPointAtLength(RL*tr) : {x:RING.cx,y:RING.cy-RING.ry};
+  const fin=eOutQuad(prog(t,4.15,4.6)), fout=eInOutSine(prog(t,5.55,6.05));
+  const fx=tip.x+260*(1-fin)+150*fout, fy=tip.y+340*(1-fin)+220*fout;
+  const FS=3.6; // lucide 24 -> 86px
+  $('finger').setAttribute('transform',`translate(${fx-8*FS} ${fy-2*FS}) scale(${FS})`);
+  $('finger').style.opacity= t<4.15?0: cl(prog(t,4.15,4.35))*(1-prog(t,5.6,6.0));
+  // tick pops beside the letter, then flashes into the star
+  const tk=prog(t,5.55,5.9), tf=prog(t,6.2,6.36);
+  const ts=TICK.s*(tk>0?lerp(.8,1,eOutBack(tk)):0)*(1+.2*tf);
+  $('tick').setAttribute('transform',`translate(${TICK.x-12*ts} ${TICK.y-12*ts}) scale(${ts})`);
+  $('tick').style.opacity=cl(tk*3)*(1-tf);
+
+  // ---------- gold star
+  const tickStage=toStage({...pp,f:k,ay:pp.ay,ax:pp.ax,Y:pp.Y+40*fb},TICK.x,TICK.y);
+  // burst origin is frozen where the tick was at 6.2
+  const pp62=phonePose(6.2); const O=toStage(pp62,TICK.x,TICK.y);
+  const BASE=166/STAR_PX;           // 100% of the burst star, in units -> px
+  const LAND=S;                     // socket scale
+  let sx=O.x, sy=O.y, sc=0, rot=0, sop=0;
+  if(t>=6.22 && t<6.85){const b=prog(t,6.22,6.57); sc=BASE*1.6*eOutBack(b,1.4); rot=22*eOutCubic(b); sop=b>0?1:0;}
+  else if(t>=6.85 && t<7.55){const f=eInOutSine(prog(t,6.85,7.55)); sx=lerp(O.x,SOCKET.x,f); sy=lerp(O.y,SOCKET.y,f)-90*Math.sin(Math.PI*f);
+    sc=lerp(BASE*1.6,LAND*1.4,eInOut(prog(t,6.85,7.55))); rot=lerp(22,0,f); sop=1;}
+  else if(t>=7.55){const l=prog(t,7.55,7.95); sx=SOCKET.x; sy=SOCKET.y; sc=LAND*lerp(1.4,1,eOutBack(l,1.6)); rot=0; sop=1;}
+  $('fstar').setAttribute('transform',`translate(${sx} ${sy}) rotate(${rot}) scale(${Math.max(sc,0.0001)})`);
+  $('fstar').style.opacity=sop;
+  // glow follows the star, strongest at the burst
+  const gl=prog(t,6.22,6.45)*(1-prog(t,6.85,7.5));
+  $('sglow').setAttribute('cx',sx);$('sglow').setAttribute('cy',sy);
+  $('sglow').setAttribute('r',String(260*lerp(.4,1,gl)));$('sglow').style.opacity=gl;
+  // rays shoot out and fade
+  const ry=prog(t,6.3,6.68); const r0=88+62*eOutCubic(ry), len=36*(1-ry);
+  [...$('rays').children].forEach((l,i)=>{const a=(i*30+15)*Math.PI/180;
+    l.setAttribute('x1',O.x+Math.cos(a)*r0);l.setAttribute('y1',O.y+Math.sin(a)*r0);
+    l.setAttribute('x2',O.x+Math.cos(a)*(r0+len));l.setAttribute('y2',O.y+Math.sin(a)*(r0+len));
+    l.style.opacity=ry>0&&ry<1?(1-ry)*.9:0;});
+  // one faint glint as the star settles
+  const g=prog(t,7.85,8.3); const gs=Math.sin(Math.PI*g);
+  $('glint').setAttribute('transform',`translate(${SOCKET.x+22} ${SOCKET.y-24}) rotate(${45*g}) scale(${gs*1.1})`);
+  $('glint').style.opacity=g>0&&g<1?gs*.85:0;
+
+  // ---------- ribbon: the stroke peels off the seal and sweeps into the phone
+  const A=(()=>{const P2=sealPose(Math.min(t,2.95));const ox=P2.x,oy=P2.y,s=P2.s;return {x:ox+(13.8813+80.594)*s,y:oy+108.355*s};})();
+  const E=toStage(phonePose(t),RING.cx,RING.cy-RING.ry);
+  const rd=`M ${A.x} ${A.y} C ${A.x+90} ${A.y+120} ${A.x+300} ${A.y+130} ${A.x+340} ${A.y-30} S ${E.x-110} ${E.y-6} ${E.x} ${E.y}`;
+  const rp=$('ribp'); rp.setAttribute('d',rd);
+  // white over the navy, Royal Lapis once it crosses onto the phone screen
+  const pl=toStage(phonePose(t),10,0).x; $('rg').setAttribute('x1',pl-6); $('rg').setAttribute('x2',pl+34);
+  const L=rp.getTotalLength();
+  const h=eOutCubic(prog(t,2.72,3.35))*L, tl=eInOut(prog(t,2.95,3.6))*L;
+  if(h>0 && tl<L-0.5){rp.style.display='';rp.setAttribute('stroke-dasharray',`${Math.max(h-tl,0.01)} ${L*3}`);rp.setAttribute('stroke-dashoffset',String(-tl));}
+  else rp.style.display='none';
+};
+window.render(0);
+</script>
+</body></html>
