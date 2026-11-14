@@ -1,0 +1,213 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 2 · Virelle Wellness card loop · "Seal of trust". 1312x984, 9.6s, silent.
+     Every layer in a/ is exported from Figma (kQl8LQLi5xdRVVyXF3R4NZ): cover 880:12840, hero jar photo (953:96983 image),
+     Kraft seal 953:96692, homepage 953:96953, product cards 953:97039/97048, storyboard chip, checkout sheet, button and toast (1137:59xx/60xx). -->
+<style>
+  html,body{margin:0;background:#0b0c0f}
+  #stage{position:relative;width:1312px;height:984px;overflow:hidden;background:radial-gradient(ellipse 80% 80% at 50% 50%,#2a634a 0%,#1b4433 70%,#163a2b 100%)}
+  #stage > *{position:absolute;left:0;top:0}
+  .l{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform,opacity}
+  #inner{width:1312px;height:984px;overflow:hidden;background:radial-gradient(ellipse 80% 80% at 50% 45%,#225740 0%,#143a2a 75%,#10301f 100%);transform-origin:656px 492px}
+  #sheet{filter:drop-shadow(0 28px 48px rgba(4,20,13,.38))}
+  #toast{filter:drop-shadow(0 14px 28px rgba(4,20,13,.32))}
+  #cursor{filter:drop-shadow(0 4px 6px rgba(4,20,13,.35))}
+</style></head>
+<body>
+<div id="stage">
+  <div id="inner">
+    <img id="home" class="l" src="a/home.png" width="1239" height="638">
+    <img id="card1" class="l" src="a/card1.png" width="530" height="783">
+    <img id="card2" class="l" src="a/card2.png" width="530" height="783">
+    <div id="press" class="l" style="width:368px;height:70px;border-radius:35px;background:#0A0E17;opacity:0"></div>
+    <div id="uline" class="l" style="height:4px;border-radius:2px;background:#EC9700;width:0"></div>
+    <img id="chip" class="l" src="a/chip.png" width="487" height="119">
+    <img id="sheet" class="l" src="a/sheet.png" width="572" height="599">
+    <img id="button" class="l" src="a/button.png" width="484" height="97">
+    <svg id="btnfx" class="l" width="484" height="97" viewBox="0 0 484 97">
+      <rect x="0" y="0" width="484" height="96.8" rx="48.4" fill="#054431"/>
+      <g id="spin" transform="translate(242 48.4)"><circle r="17" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="3.5"/>
+        <path id="arc" d="M0 -17 A17 17 0 0 1 17 0" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></g>
+      <path id="tick" d="M225 49 L237 61 L261 37" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="52" stroke-dashoffset="52"/>
+    </svg>
+  </div>
+
+  <svg id="outer" width="1312" height="984" viewBox="0 0 1312 984">
+    <defs>
+      <radialGradient id="bgG" cx="656" cy="492" r="820" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#2a634a"/><stop offset=".7" stop-color="#1b4433"/><stop offset="1" stop-color="#163a2b"/></radialGradient>
+      <radialGradient id="glowG"><stop offset="0" stop-color="#d2f4db" stop-opacity=".16"/><stop offset="1" stop-color="#d2f4db" stop-opacity="0"/></radialGradient>
+      <linearGradient id="flapG" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f1e6cf"/><stop offset=".3" stop-color="#ddc9a6"/><stop offset="1" stop-color="#bfa077"/></linearGradient>
+      <linearGradient id="bandG" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04140d" stop-opacity=".5"/><stop offset="1" stop-color="#04140d" stop-opacity="0"/></linearGradient>
+      <radialGradient id="spillG" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fffbe9" stop-opacity=".22"/><stop offset="1" stop-color="#fffbe9" stop-opacity="0"/></radialGradient>
+      <filter id="flapSh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="-6" dy="-4" stdDeviation="9" flood-color="#04140d" flood-opacity=".35"/></filter>
+      <filter id="sealSh" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur id="sealBl" in="SourceGraphic" stdDeviation="0" result="b"/><feDropShadow in="b" dx="0" dy="14" stdDeviation="18" flood-color="#04140d" flood-opacity=".35"/></filter>
+      <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="1312" height="984">
+        <rect width="1312" height="984" fill="#fff"/>
+        <g class="cam"><path id="holeM" fill="#000"/></g>
+      </mask>
+    </defs>
+    <g mask="url(#m)">
+      <rect width="1312" height="984" fill="url(#bgG)"/>
+      <g class="cam">
+        <ellipse id="glow" cx="656" cy="492" rx="560" ry="560" fill="url(#glowG)"/>
+        <g id="sealG"><image id="seal" href="a/seal.png" width="1008" height="1008" filter="url(#sealSh)"/></g>
+      </g>
+    </g>
+    <g class="cam">
+      <path id="holeSpill" fill="url(#spillG)"/>
+      <path id="holeBand" fill="url(#bandG)"/>
+      <g id="flapG0" filter="url(#flapSh)"><g id="flapT"><path id="flap" fill="url(#flapG)"/></g></g>
+      <circle id="ring1" cx="656" cy="492" r="420" fill="none" stroke="#D2F4DB" stroke-width="3" opacity="0"/>
+      <circle id="ring2" cx="656" cy="492" r="420" fill="none" stroke="#D2F4DB" stroke-width="2" opacity="0"/>
+    </g>
+  </svg>
+
+  <img id="photo" class="l" src="a/photo.png" width="1254" height="1254">
+  <img id="toast" class="l" src="a/toast.png" width="308" height="71">
+  <svg id="cursor" class="l" width="44" height="44" viewBox="0 0 24 24"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" fill="#fff" stroke="#0A0E17" stroke-width="1.5" stroke-linejoin="round"/></svg>
+  <img id="cover" class="l" src="a/cover.png" width="1344" height="984">
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eInOutSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+const eInSine=t=>1-Math.cos(t*Math.PI/2);
+const eInOutCubic=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eInCubic=t=>t*t*t;
+const eOutCubic=t=>1-Math.pow(1-t,3);
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eOutBack=t=>{const c1=1.5,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const W=1312,H=984,C={x:656,y:492};
+const SEAL_PX=1008/2, SEAL_R=503.7;           // seal.png centre and drawn radius
+const PH={cx:614,cy:521,rx:262,ry:238};      // jar seal inside photo.png
+const D={x:Math.SQRT1_2,y:Math.SQRT1_2};      // peel direction: lower right
+const N={x:-D.y,y:D.x};
+const R=420;                                   // seal radius on stage after the push
+const COVER_X=-15.5;                             // poster is object-fit:cover in a 4:3 box
+// layout of the inner (store) layers, stage px
+const HOME={x:656-575-44.23,y:492-274.75-26.54};
+const CARD_Y=160, C1X=219, C2X=679, CARD_OFF={x:58,y:34.8};
+const CHIP={x:656-214.5-28.8,y:64-19.2};
+const SHEET={x:370,y:492-299.2}, BTN={x:SHEET.x+44,y:SHEET.y+453.2,w:484,h:96.8};
+const ADD={x:C1X+23.2,y:CARD_Y+564,w:368.3,h:69.6};
+const ULINE={x:C1X+129,y:CARD_Y+448+20.3+6,w:128};
+const set=(el,x,y,s=1,o=1,extra='')=>{el.style.transform=`translate(${x}px,${y}px) scale(${s})${extra}`;el.style.opacity=o;};
+const pts=a=>a.map((p,i)=>(i?'L':'M')+p[0].toFixed(2)+' '+p[1].toFixed(2)).join(' ')+' Z';
+// region of the seal beyond the fold line (signed distance s from the centre along D)
+function segment(s){const phi=Math.acos(cl(s/R,-1,1)), a0=Math.atan2(D.y,D.x), out=[];
+  for(let i=0;i<=72;i++){const a=a0-phi+2*phi*i/72; out.push([C.x+R*Math.cos(a),C.y+R*Math.sin(a)]);} return out;}
+function camera(t){
+  // returns {Z, P (zoom centre in world), Q (where P lands on screen)}
+  const sEnd=0.02*R, P={x:C.x+D.x*(sEnd+(R-sEnd)/2),y:C.y+D.y*(sEnd+(R-sEnd)/2)};
+  const dive=eInCubic(prog(t,3.45,4.15)), back=eOutCubic(prog(t,7.4,8.05));
+  if(t<7.4){return {Z:lerp(1,7,dive),P,Q:{x:lerp(P.x,C.x,dive),y:lerp(P.y,C.y,dive)}};}
+  // pull back past the start: lands at 0.86 scale, seal centre slightly lower (room for the toast)
+  const end={x:656,y:534}, Pend={x:end.x+(P.x-C.x)*0.86,y:end.y+(P.y-C.y)*0.86};
+  return {Z:lerp(7,0.86,back),P,Q:{x:lerp(C.x,Pend.x,back),y:lerp(C.y,Pend.y,back)}};
+}
+
+window.render=function(t){
+  // ---------- cover: hold, slow push, dissolve through forest ----------
+  const push=1+0.06*eInSine(prog(t,0.6,1.4));
+  const cin=eOutExpo(prog(t,8.7,9.25)), cs=t>5?lerp(1.08,1,cin):push;
+  const co=t<5?1-prog(t,1.1,1.38):eInOutSine(prog(t,8.7,9.1));
+  $('cover').style.transformOrigin=`${C.x-COVER_X}px ${C.y}px`;
+  set($('cover'),COVER_X,0,cs,co);
+
+  // ---------- macro photo and the seal push (one continuous curve) ----------
+  const r=lerp(297,R,eInOutSine(prog(t,1.2,3.4)));
+  const k=r/PH.rx;
+  set($('photo'),C.x-PH.cx*k,C.y-PH.cy*k,k, t<2?prog(t,1.22,1.52):1-eInOutSine(prog(t,2.32,2.56)));
+  $('photo').style.filter=`blur(${(7*eInOutSine(prog(t,2.12,2.5))).toFixed(2)}px)`;
+  // focus pull: the printed seal in the photo and the master seal differ in layout, so the hand-off happens out of focus
+  $('sealBl').setAttribute('stdDeviation',(9*(1-eInOutSine(prog(t,2.38,2.8)))).toFixed(2));
+
+  // ---------- camera (dive in, pull back) ----------
+  const cam=camera(t);
+  const camT=`translate(${(cam.Q.x-cam.Z*cam.P.x).toFixed(3)} ${(cam.Q.y-cam.Z*cam.P.y).toFixed(3)}) scale(${cam.Z.toFixed(4)})`;
+  document.querySelectorAll('.cam').forEach(g=>g.setAttribute('transform',camT));
+
+  // ---------- seal ----------
+  const sy=lerp(PH.ry/PH.rx,1,eInOutSine(prog(t,2.2,2.95)));
+  const lift=t<8.35?lerp(1,1.04,eInCubic(prog(t,7.95,8.35))):lerp(1.04,1,eOutCubic(prog(t,8.35,8.55)));
+  const rr=(t<3.4?r:R)*lift;
+  const sig=rr/SEAL_R;
+  const sealFade=t>8.5?1-eInOutSine(prog(t,8.6,8.95)):1;
+  const recede=lerp(1,0.94,eInOutSine(prog(t,8.6,8.95)));
+  $('seal').setAttribute('transform',`translate(${C.x} ${C.y}) scale(${(sig*recede).toFixed(5)} ${(sig*sy*recede).toFixed(5)}) translate(${-SEAL_PX} ${-SEAL_PX})`);
+  $('sealG').setAttribute('opacity',t<2.2?0:sealFade);
+  $('glow').setAttribute('opacity',t<2.2?0:sealFade*prog(t,2.2,2.8));
+
+  // ---------- peel (open 2.85-3.55, close 7.95-8.35) ----------
+  let pe=0; if(t<5) pe=eInOutCubic(prog(t,2.85,3.55)); else pe=1-eInCubic(prog(t,7.95,8.35));
+  const s=lerp(R,0.02*R,pe), kf=0.55*Math.sin(pe*Math.PI/2);
+  const open=pe>0.001 && !(t>4.15&&t<7.4);
+  if(open){
+    const seg=segment(s), d=pts(seg);
+    $('holeM').setAttribute('d',d); $('holeSpill').setAttribute('d',d); $('holeBand').setAttribute('d',d); $('flap').setAttribute('d',d);
+    const f0={x:C.x+D.x*s,y:C.y+D.y*s}, f1={x:C.x+D.x*R,y:C.y+D.y*R};
+    const fg=$('flapG'); fg.setAttribute('x1',f0.x);fg.setAttribute('y1',f0.y);fg.setAttribute('x2',f1.x);fg.setAttribute('y2',f1.y);
+    const bg=$('bandG'); bg.setAttribute('x1',f0.x);bg.setAttribute('y1',f0.y);bg.setAttribute('x2',f0.x+D.x*70);bg.setAttribute('y2',f0.y+D.y*70);
+    const sp=$('spillG'); const hc={x:C.x+D.x*(s+(R-s)*.55),y:C.y+D.y*(s+(R-s)*.55)}; sp.setAttribute('cx',hc.x);sp.setAttribute('cy',hc.y);sp.setAttribute('r',Math.max(1,(R-s)*.9));
+    const m=1+kf, dc=D.x*C.x+D.y*C.y+s;
+    $('flapT').setAttribute('transform',`matrix(${1-m*D.x*D.x} ${-m*D.x*D.y} ${-m*D.x*D.y} ${1-m*D.y*D.y} ${m*dc*D.x} ${m*dc*D.y})`);
+  } else { ['holeM','holeSpill','holeBand','flap'].forEach(id=>$(id).setAttribute('d','M0 0Z')); }
+    $('holeBand').setAttribute('opacity',t<5?1-prog(t,3.55,3.8):prog(t,7.62,7.9));
+  $('outer').style.opacity = (t>3.95&&t<7.6)? (t<5?1-prog(t,3.95,4.15):prog(t,7.4,7.55)) : 1;
+
+  // ---------- press rings ----------
+  for(const [id,t0,amp,o0] of [['ring1',8.35,0.2,.85],['ring2',8.45,0.13,.5]]){const u=prog(t,t0,t0+0.5);
+    const el=$(id); el.setAttribute('r',R*(1+amp*eOutCubic(u))); el.setAttribute('opacity',u>0&&u<1?o0*(1-u):0);}
+
+  // ---------- inner: the store ----------
+  const inS = t<5? lerp(1.2,1,eOutCubic(prog(t,3.45,4.3))) : lerp(1,1.2,eInCubic(prog(t,7.4,8.05)));
+  $('inner').style.transform=`scale(${inS})`;
+  $('inner').style.visibility=(t>2.84&&t<8.36)?'visible':'hidden';
+  // homepage
+  const hOut=eInOutCubic(prog(t,4.5,4.78));
+  set($('home'),HOME.x,HOME.y-50*hOut,1,1-hOut);
+  // product cards: rise in, stagger, then step back for checkout
+  const cOut=eInOutCubic(prog(t,5.98,6.2));
+  [[ 'card1',C1X,4.76],['card2',C2X,4.86]].forEach(([id,x,t0])=>{const u=eOutExpo(prog(t,t0,t0+0.6));
+    const el=$(id); el.style.transformOrigin=`${CARD_OFF.x+207}px ${CARD_OFF.y+333}px`;
+    set(el,x-CARD_OFF.x,CARD_Y-CARD_OFF.y+60*(1-u)+20*cOut,1-0.03*cOut,eInOutSine(prog(t,t0,t0+0.32))*(1-cOut));});
+  const chU=prog(t,5.15,5.5);
+  $('chip').style.transformOrigin='243px 59px';
+  set($('chip'),CHIP.x,CHIP.y+20*cOut,lerp(.9,1,eOutBack(chU)),cl(chU*2)*(1-cOut));
+  const ul=eOutCubic(prog(t,5.3,5.7));
+  set($('uline'),ULINE.x,ULINE.y+20*cOut,1,(ul>0?1:0)*(1-cOut)); $('uline').style.width=(ULINE.w*ul)+'px';
+  const pr=prog(t,5.85,5.93)*(1-prog(t,5.98,6.12));
+  set($('press'),ADD.x,ADD.y,1,0.1*pr*(1-cOut));
+  // checkout sheet
+  const sh=eOutExpo(prog(t,6.18,6.7));
+  const shO=eInOutSine(prog(t,6.18,6.45));
+  set($('sheet'),SHEET.x,SHEET.y+60*(1-sh),1,shO);
+  const bp=t<6.73?lerp(1,.96,eOutCubic(prog(t,6.65,6.73))):lerp(.96,1,eOutCubic(prog(t,6.73,6.81)));
+  $('button').style.transformOrigin='242px 48.4px'; $('btnfx').style.transformOrigin='242px 48.4px';
+  set($('button'),BTN.x,BTN.y+60*(1-sh),bp,shO);
+  const fx=prog(t,6.78,6.84);
+  set($('btnfx'),BTN.x,BTN.y+60*(1-sh),bp,fx);
+  const spinU=prog(t,6.82,7.14);
+  $('spin').setAttribute('opacity',spinU>0&&t<7.14?1:0);
+  $('arc').setAttribute('transform',`rotate(${spinU*400})`);
+  $('tick').setAttribute('stroke-dashoffset',52*(1-eOutCubic(prog(t,7.12,7.32))));
+
+  // ---------- cursor: hover Add to bag, then Pay with Paystack ----------
+  const tip={x:7.4,y:8.6};
+  let cx=1180,cy=1010;
+  const a=eInOutCubic(prog(t,5.25,5.8)); cx=lerp(1180,470,a); cy=lerp(1010,772,a);
+  const b=eInOutCubic(prog(t,6.0,6.6)); cx=lerp(cx,690,b); cy=lerp(cy,708,b);
+  const cpress=(t>5.85&&t<6.0)||(t>6.65&&t<6.81)?0.9:1;
+  $('cursor').style.transformOrigin=`${tip.x}px ${tip.y}px`;
+  set($('cursor'),cx-tip.x,cy-tip.y,cpress,(t>5.2&&t<7.1)?cl(prog(t,5.25,5.45))*(1-prog(t,6.88,7.05)):0);
+
+  // ---------- toast ----------
+  const ti=eOutCubic(prog(t,7.15,7.5)), to=prog(t,8.55,8.85);
+  set($('toast'),656-154,56-16*(1-ti),1,ti*(1-to));
+};
+window.render(0);
+</script>
+</body></html>
