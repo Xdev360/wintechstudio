@@ -1,0 +1,56 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 18 · Apps and MVPs service loop · 1168x876 · 7s loop, silent.
+     Real screens only: Mylo (Today, Chess with Tobi, Momo after hatching) from hero-mylo/a and
+     Let's Hang (map, Peek, live room) from hero-lets-hang/raw, both Figma exports.
+     Each phone swipes home -> key flow -> success -> home. The "Build 11 · Friday" label ticks up once to
+     "Build 12 · Friday" after the success screens land, then fades back to 11 while the phones return home. -->
+<style>
+  @font-face{font-family:Figtree;src:url(../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2) format('woff2');font-weight:100 900}
+  html,body{margin:0;background:#F4F5F7}
+  #stage{position:relative;width:1168px;height:876px;overflow:hidden;background:#F4F5F7;font-family:Figtree,sans-serif;color:#0A0E17}
+  .ph{position:absolute;top:62px;width:322px;height:672px;border-radius:52px;background:#0B0B0C;box-shadow:0 2px 0 1px #2A2A2E inset,0 34px 70px rgba(10,14,23,.16),0 8px 18px rgba(10,14,23,.08)}
+  .scr{position:absolute;left:11px;top:11px;width:300px;height:650px;border-radius:41px;overflow:hidden}
+  #pM .scr{background:#161618}#pL .scr{background:#F6F4FF}
+  .strip{position:absolute;left:0;top:0;height:650px;width:1200px;display:flex;will-change:transform}
+  .strip img{width:300px;height:650px;flex:none;object-fit:cover;object-position:top}
+  #pM{left:223px}#pL{left:623px}
+  #lab{position:absolute;left:50%;top:762px;height:52px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:0 24px 0 20px;
+    background:#fff;border:1px solid #E3E6EC;border-radius:26px;font:500 26px/1 Figtree;white-space:nowrap;box-shadow:0 6px 16px rgba(10,14,23,.05)}
+  #lab i{width:10px;height:10px;border-radius:50%;background:#3B5BFF}
+  .num{position:relative;display:inline-block;width:28px;height:30px;overflow:hidden;vertical-align:middle}
+  .num b{position:absolute;left:0;top:0;width:100%;font-weight:500;line-height:30px;text-align:center}
+</style></head>
+<body>
+<div id="stage">
+  <div class="ph" id="pM"><div class="scr"><div class="strip" id="sM">
+    <img src="a/today.png"><img src="a/chess.png"><img src="a/momo.png"><img src="a/today.png">
+  </div></div></div>
+  <div class="ph" id="pL"><div class="scr"><div class="strip" id="sL">
+    <img src="a/lh-map.png"><img src="a/lh-peek.png"><img src="a/lh-live.png"><img src="a/lh-map.png">
+  </div></div></div>
+  <div id="lab"><i></i><span>Build <span class="num"><b id="n11">11</b><b id="n12">12</b></span> · Friday</span></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+// swipe starts (s); each swipe 0.6s, Let's Hang trails Mylo by 0.15s
+const SW=[1.5,3.4,5.9];
+function pos(t,lag){let p=0;for(const s of SW)p+=eIO(prog(t,s+lag,s+lag+.6));return p;}
+window.render=function(t){
+  $('sM').style.transform=`translateX(${-300*pos(t,0)}px)`;
+  $('sL').style.transform=`translateX(${-300*pos(t,.15)}px)`;
+  // label: 11 rolls up to 12 once (4.3 to 4.7), then fades and comes back as 11 while the phones return home
+  const r=eOutExpo(prog(t,4.3,4.7));
+  // back to 11 by a soft crossfade of the number only (5.9 to 6.5), so it never reads as a roll down
+  const back=t>=5.9, f=eSine(prog(t,5.9,6.5));
+  $('n11').style.transform=`translateY(${back?0:-30*r}px)`;$('n11').style.opacity=back?f:1;
+  $('n12').style.transform=`translateY(${30-30*r}px)`;$('n12').style.opacity=back?1-f:1;
+};
+window.render(0);
+</script>
+</body></html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 19 · Automation service loop · 1168x876 · 7s loop, silent.
+     Four steps in a line (Payment received, Receipt sent, Sales sheet updated, WhatsApp to owner), Lucide icons,
+     hairline connectors, blue only on the active step. A small card travels along the line; the last step shows a tick; reset.
+     The card amount (N18,500) is the Biotin + Zinc total from the real Virelle checkout already on the site. -->
+<style>
+  @font-face{font-family:Figtree;src:url(../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2) format('woff2');font-weight:100 900}
+  html,body{margin:0;background:#F4F5F7}
+  #stage{position:relative;width:1168px;height:876px;overflow:hidden;background:#F4F5F7;font-family:Figtree,sans-serif;color:#0A0E17}
+  .wire{position:absolute;top:497px;height:2px;background:#D9DDE4}
+  .wire i{position:absolute;left:0;top:0;height:2px;width:0;background:#0A0E17}
+  .node{position:absolute;top:430px;width:136px;height:136px;margin-left:-68px;border-radius:50%;box-sizing:border-box;display:grid;place-items:center;background:#fff;border:2px solid #DDE1E7}
+  .node svg{width:52px;height:52px}
+  .ring{position:absolute;left:-14px;top:-14px;right:-14px;bottom:-14px;border-radius:50%;background:rgba(59,91,255,.12);opacity:0}
+  .lbl{position:absolute;top:596px;width:240px;margin-left:-120px;text-align:center;font:500 27px/34px Figtree;color:#0A0E17}
+  .tick{position:absolute;right:-6px;top:-6px;width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 4px 12px rgba(10,14,23,.12);transform:scale(0)}
+  .tick svg{width:26px;height:26px}
+  #card{position:absolute;top:250px;width:290px;height:96px;margin-left:-145px;box-sizing:border-box;display:flex;align-items:center;gap:16px;padding:0 22px;
+    background:#fff;border:1px solid #E3E6EC;border-radius:18px;box-shadow:0 14px 34px rgba(10,14,23,.08),0 2px 6px rgba(10,14,23,.04)}
+  #card .ci{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:#F4F5F7;color:#0A0E17}
+  #card .ci svg{width:28px;height:28px}
+  #card b{display:block;font:600 30px/34px Figtree;letter-spacing:-.3px}
+  #card small{display:block;font:500 20px/26px Figtree;color:#6B7280}
+  #stem{position:absolute;top:346px;width:0;height:84px;border-left:2px dashed #CBD1DA;margin-left:-1px}
+</style></head>
+<body>
+<div id="stage">
+  <div id="wires"></div>
+  <div id="nodes"></div>
+  <div id="stem"></div>
+  <div id="card"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></span>
+    <span><b>₦18,500</b><small>Order paid</small></span></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const lerp=(a,b,u)=>a+(b-a)*u;
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eOutBack=t=>{const c1=1.4,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const eSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+// Lucide icons
+const IC={
+  card:'<rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/>',
+  receipt:'<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>',
+  sheet:'<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="3" x2="21" y1="15" y2="15"/><line x1="9" x2="9" y1="9" y2="21"/><line x1="15" x2="15" y1="9" y2="21"/>',
+  msg:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>'};
+const svg=(p,w=1.6)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const X=[209,459,709,959];
+const STEPS=[['card','Payment<br>received'],['receipt','Receipt<br>sent'],['sheet','Sales sheet<br>updated'],['msg','WhatsApp<br>to owner']];
+let wh='',nh='';
+for(let k=0;k<3;k++) wh+=`<div class="wire" style="left:${X[k]+68}px;width:${X[k+1]-X[k]-136}px"><i id="w${k}"></i></div>`;
+STEPS.forEach(([ic,l],k)=>{nh+=`<div class="node" id="n${k}" style="left:${X[k]}px"><span class="ring" id="r${k}"></span><span id="i${k}" style="display:grid">${svg(IC[ic])}</span>${k==3?`<span class="tick" id="tk">${svg('<path d="M20 6 9 17l-5-5"/>',2.4)}</span>`:''}</div><div class="lbl" style="left:${X[k]}px">${l}</div>`;});
+$('wires').innerHTML=wh;$('nodes').innerHTML=nh;
+// card arrives at node k at ARR[k]; moves take 0.6s
+const ARR=[0.8,2.3,3.6,4.9];
+const NEU=[138,147,163], INK=[10,14,23], BLUE=[59,91,255], BOR=[221,225,231];
+const mix=(a,b,u)=>a.map((v,i)=>Math.round(lerp(v,b[i],u)));
+const rgb=c=>`rgb(${c[0]},${c[1]},${c[2]})`;
+window.render=function(t){
+  const reset=eSine(prog(t,6.0,6.5)); // 0 -> 1 returns everything to the idle row
+  // card x along the line
+  let x=X[0];for(let k=1;k<4;k++){const u=eIO(prog(t,ARR[k]-.6,ARR[k]));x=lerp(x,X[k],u);}
+  const cin=eOutExpo(prog(t,.3,.8)), cout=eSine(prog(t,5.5,5.9));
+  const c=$('card');c.style.left=x+'px';c.style.opacity=cin*(1-cout);c.style.transform=`translateY(${-24*(1-cin)-16*cout}px)`;
+  const s=$('stem');s.style.left=x+'px';s.style.opacity=cin*(1-cout)*.9;
+  for(let k=0;k<4;k++){
+    const on=eSine(prog(t,ARR[k]-.1,ARR[k]+.2));                 // becomes active
+    const off=k<3?eSine(prog(t,ARR[k+1]-.1,ARR[k+1]+.2)):0;       // hands over (done)
+    const act=on*(1-off)*(1-reset), done=off*(1-reset);
+    const n=$('n'+k);
+    n.style.background=rgb(mix([255,255,255],BLUE,act));
+    n.style.borderColor=rgb(mix(mix(BOR,INK,done),BLUE,act));
+    $('i'+k).style.color=rgb(mix(mix(NEU,INK,done),[255,255,255],act));
+    $('r'+k).style.opacity=act;
+    n.style.transform=`scale(${1+.04*act})`;
+  }
+  for(let k=0;k<3;k++){const u=eIO(prog(t,ARR[k+1]-.6,ARR[k+1]));$('w'+k).style.width=(X[k+1]-X[k]-136)*u+'px';$('w'+k).style.opacity=1-reset;}
+  const tk=eOutBack(prog(t,5.2,5.55))*(1-reset);
+  const T=$('tk');T.style.transform=`scale(${Math.max(0,tk)})`;T.style.color='#3B5BFF';
+};
+window.render(0);
+</script>
+</body></html>

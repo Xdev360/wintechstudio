@@ -1,0 +1,65 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Brief 20 · Motion and film service loop · 1168x876 · 7.5s loop, silent.
+     An edit window: the preview cuts every 1.25s between real frames of Wintech films, a thin playhead runs
+     along the clip track and the timecode counts up. Frames (a/) are pulled from the films already on the site:
+     Mylo (public/videos/films/mylo.mp4 at 0.5s and 8.2s), Virelle (public/videos/cards/virelle.mp4 at 0.3s cover and
+     6.5s checkout, both chosen to avoid the seal), Manzeelatur Ridho (public/videos/films/manzeelatur-ridho.mp4 at 1s and 17s).
+     No inDrive or Lagos Life frames exist in the repo or Figma file (the storyboards hold placeholders only), so they are not used. -->
+<style>
+  @font-face{font-family:Figtree;src:url(../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2) format('woff2');font-weight:100 900}
+  html,body{margin:0;background:#F4F5F7}
+  #stage{position:relative;width:1168px;height:876px;overflow:hidden;background:#F4F5F7;font-family:Figtree,sans-serif;color:#0A0E17}
+  #win{position:absolute;left:64px;top:40px;width:1040px;height:796px;background:#fff;border:1px solid #E3E6EC;border-radius:22px;box-sizing:border-box;
+    box-shadow:0 24px 60px rgba(10,14,23,.08),0 2px 8px rgba(10,14,23,.04)}
+  .bar{position:absolute;left:0;right:0;top:0;height:60px;display:flex;align-items:center;padding:0 26px;border-bottom:1px solid #EEF0F4}
+  .bar i{width:12px;height:12px;border-radius:50%;background:#E3E6EC;margin-right:8px}
+  #tc{margin-left:auto;display:flex;align-items:center;gap:10px;font:500 26px/1 Figtree;font-variant-numeric:tabular-nums;letter-spacing:.2px}
+  #tc svg{width:18px;height:18px;color:#3B5BFF}
+  #pv{position:absolute;left:39px;top:80px;width:960px;height:540px;background:#0A0A0A;border-radius:12px;overflow:hidden}
+  #pv img{position:absolute;left:0;top:0;width:960px;height:540px;object-fit:cover;opacity:0;transform-origin:50% 50%}
+  #tl{position:absolute;left:39px;top:640px;width:960px;height:132px}
+  .ruler{position:absolute;left:0;top:0;width:960px;height:22px}
+  .ruler i{position:absolute;bottom:0;width:1.5px;height:8px;background:#C9CED7}
+  .ruler i.big{height:16px;background:#9AA2AF}
+  #trk{position:absolute;left:0;top:34px;width:960px;height:84px}
+  .clip{position:absolute;top:0;height:84px;border-radius:10px;overflow:hidden;box-sizing:border-box;background:#0A0A0A}
+  .clip img{width:100%;height:100%;object-fit:cover;display:block}
+  .clip b{position:absolute;inset:0;border-radius:10px;border:3px solid #3B5BFF;opacity:0}
+  #ph{position:absolute;top:-4px;width:0;height:130px}
+  #ph::before{content:'';position:absolute;left:-1px;top:8px;bottom:0;width:2px;background:#0A0E17}
+  #ph::after{content:'';position:absolute;left:-8px;top:0;width:16px;height:14px;border-radius:4px 4px 8px 8px;background:#0A0E17}
+</style></head>
+<body>
+<div id="stage">
+  <div id="win">
+    <div class="bar"><i></i><i></i><i></i>
+      <span id="tc"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg><span id="tct">00:00:00:00</span></span></div>
+    <div id="pv"></div>
+    <div id="tl"><div class="ruler" id="ru"></div><div id="trk"></div><div id="ph"></div></div>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const CLIPS=['mylo-a','virelle-a','manz-a','mylo-b','virelle-b','manz-b'];
+const LEN=7.5, D=LEN/CLIPS.length, W=960, GAP=6, FPS=30;
+const cw=(W-GAP*(CLIPS.length-1))/CLIPS.length;
+$('pv').innerHTML=CLIPS.map(c=>`<img src="a/${c}.jpg">`).join('');
+$('trk').innerHTML=CLIPS.map((c,k)=>`<div class="clip" style="left:${k*(cw+GAP)}px;width:${cw}px"><img src="a/${c}.jpg"><b></b></div>`).join('');
+let r='';for(let s=0;s<=30;s++){r+=`<i class="${s%4==0?'big':''}" style="left:${s*W/30-.75}px"></i>`;}$('ru').innerHTML=r;
+const pv=[...$('pv').children], cb=[...document.querySelectorAll('.clip b')];
+const p2=n=>String(n).padStart(2,'0');
+window.render=function(t){
+  t=((t%LEN)+LEN)%LEN;
+  const k=Math.min(CLIPS.length-1,Math.floor(t/D));
+  pv.forEach((im,i)=>{im.style.opacity=i===k?1:0; if(i===k){const u=(t-k*D)/D; im.style.transform=`scale(${1+.03*u})`;}});
+  cb.forEach((b,i)=>b.style.opacity=i===k?1:0);
+  // playhead: linear across the track, wraps with the loop
+  $('ph').style.left=(t/LEN*W)+'px';
+  const f=Math.round(t*FPS), s=Math.floor(f/FPS), fr=f%FPS;
+  $('tct').textContent=`00:00:${p2(s)}:${p2(fr)}`;
+};
+window.render(0);
+</script>
+</body></html>
