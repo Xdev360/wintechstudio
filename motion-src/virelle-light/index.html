@@ -10,14 +10,14 @@
 <style>
   html,body{margin:0;background:#F2F4F8}
   #stage{position:relative;overflow:hidden;background:#F2F4F8;font-family:Figtree,system-ui,sans-serif}
-  #br{position:absolute;border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 30px 80px rgba(10,14,23,.14),0 6px 18px rgba(10,14,23,.06)}
-  #bar{position:absolute;left:0;top:0;right:0;height:52px;display:flex;align-items:center;gap:8px;padding:0 18px;background:#F7F8FA;border-bottom:1px solid #E7EAF0}
+  #br{position:absolute;background:#fff;overflow:hidden}
+  #bar{display:none;position:absolute;left:0;top:0;right:0;height:52px;align-items:center;gap:8px;padding:0 18px;background:#F7F8FA;border-bottom:1px solid #E7EAF0}
   #bar i{width:11px;height:11px;border-radius:50%;background:#E1E5EC}
   #url{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;height:30px;padding:0 14px;border-radius:999px;background:#fff;border:1px solid #E7EAF0;font:500 14px/1 Figtree,system-ui,sans-serif;color:#0A0E17;white-space:nowrap}
   #url b{width:7px;height:7px;border-radius:50%;background:#22A06B;box-shadow:0 0 0 3px rgba(34,160,107,.18)}
-  #vp{position:absolute;left:0;right:0;top:52px;bottom:0;overflow:hidden}
+  #vp{position:absolute;left:0;right:0;top:0;bottom:0;overflow:hidden}
   .pg{position:absolute;left:0;top:0;width:1440px;transform-origin:0 0}
-  .pg img{display:block;width:1440px}
+  .pg img{display:block;width:1440px;height:auto}
   #bn{position:absolute;left:80px;top:132px;width:1280px;height:480px;border-radius:24px;overflow:hidden}
   #bn img{position:absolute;top:0;width:1280px;height:480px}
   #tap{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(10,14,23,.18);border:2px solid rgba(255,255,255,.9);opacity:0;pointer-events:none}
@@ -27,9 +27,9 @@
   <div id="br">
     <div id="bar"><i></i><i></i><i></i><span id="url"><b></b><span id="ut">virellewellnesshub.com</span></span></div>
     <div id="vp">
-      <div class="pg" id="home"><img src="a/home.webp"><div id="bn"><img src="a/banner1.webp"><img src="a/banner2.webp"><img src="a/banner3.webp"><img src="a/banner4.webp"><img src="a/banner1.webp"></div></div>
-      <div class="pg" id="prod"><img src="a/product.webp"></div>
-      <div class="pg" id="pay"><img src="a/pay.webp"></div>
+      <div class="pg" id="home"><img src="a/home2x.webp"><div id="bn"><img src="a/banner1x2.webp"><img src="a/banner2x2.webp"><img src="a/banner3x2.webp"><img src="a/banner4x2.webp"><img src="a/banner1x2.webp"></div></div>
+      <div class="pg" id="prod"><img src="a/product2x.webp"></div>
+      <div class="pg" id="pay"><img src="a/pay2x.webp"></div>
       <div id="tap"></div>
     </div>
   </div>
@@ -40,10 +40,10 @@ const CFG=Object.assign({W:1312,H:984,S:1},window.CFG||{});
 const $=id=>document.getElementById(id);
 const st=$('stage');st.style.width=CFG.W+'px';st.style.height=CFG.H+'px';
 // browser box: 6% margin each side, a little more at the bottom
-const mx=Math.round(CFG.W*0.06), my=Math.round(CFG.H*0.07);
+const mx=0, my=0;
 const BW=CFG.W-2*mx, BH=CFG.H-2*my;
 const br=$('br');br.style.left=mx+'px';br.style.top=my+'px';br.style.width=BW+'px';br.style.height=BH+'px';
-const sc=BW/1440; const VH=(BH-52)/sc; // visible page height in page px
+const sc=BW/1440; const VH=BH/sc; // visible page height in page px
 document.querySelectorAll('.pg').forEach(p=>p.style.transform=`scale(${sc})`);
 [...$('bn').children].forEach((im,i)=>im.style.left=(i*1280)+'px');
 const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
@@ -77,8 +77,7 @@ window.render=function(t){
   if(u>6.6){ $('home').style.transform=`scale(${sc}) translateY(0px)`; [...$('bn').children].forEach(im=>im.style.transform='translateX(0px)'); }
   $('ut').textContent = u>4.85&&u<6.05 ? 'virellewellnesshub.com/biotin-10000' : u>=6.05&&u<7.5 ? 'virellewellnesshub.com/pay' : 'virellewellnesshub.com';
   // slow push on the whole browser
-  const push=1+0.012*Math.sin(Math.PI*cl(u/8));
-  br.style.transform=`scale(${push})`;
+  
 };
 window.render(0);
 </script>

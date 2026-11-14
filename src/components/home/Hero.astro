@@ -10,7 +10,7 @@ const reel = [
 // Client strip: each logo in its own colour; tap one for a line about the company.
 const logos: { name: string; slug: string; icon: string; color: string; info: string }[] = [
   { name: 'Mylo', slug: 'mylo', icon: '/images/cases/icon-mylo.svg', color: 'var(--h-fg)', info: 'Our own productivity app, with games, friends and rewards built in.' },
-  { name: 'Virelle Wellness', slug: 'virelle', icon: '/images/cases/icon-virelle.svg', color: '#1D6B4A', info: 'An online wellness store in Nigeria: supplements, skincare and fragrance, bought in the UK and US.' },
+  { name: 'Virelle Wellness', slug: 'virelle', icon: '/images/cases/icon-virelle.svg', color: '#1D6B4A', info: 'An online wellness store in Nigeria: authentic supplements, skincare and fragrance from the UK and US.' },
   { name: 'Tobel Pearls', slug: 'tobel-pearls', icon: '/images/cases/icon-tobel-pearls.svg', color: '#007DFE', info: 'A Lagos clearing agency moving air and sea freight through Apapa, Tin Can and MMA.' },
   { name: 'Manzeelatur Ridho', slug: 'manzeelatur-ridho', icon: '/images/cases/icon-manzeelatur-ridho.webp', color: '#2A4BD7', info: "An online madrasah where children and adults learn Arabic and the Qur'an from home." },
   { name: "Let's Hang", slug: 'lets-hang', icon: '/images/cases/icon-lets-hang.svg', color: '#834DFB', info: 'A social app for going out in Nigeria. Find a plan on the map and join people tonight.' },
@@ -81,7 +81,7 @@ const logos: { name: string; slug: string; icon: string; color: string; info: st
   (function(){var band=document.querySelector('.hero .band');if(!band)return;var pop=document.getElementById('logo-pop'),track=document.getElementById('logo-track'),cur=null;
   function close(){if(!cur)return;cur.setAttribute('aria-expanded','false');cur=null;pop.hidden=true;band.classList.remove('open')}
   function open(b){var l=logos[+b.dataset.i];if(cur===b){close();return}if(cur)cur.setAttribute('aria-expanded','false');cur=b;b.setAttribute('aria-expanded','true');
-    document.getElementById('pop-t').textContent=l.name;document.getElementById('pop-d').textContent=l.info;document.getElementById('pop-i').src=l.icon;var a=document.getElementById('pop-l');a.href='/work/'+l.slug;
+    document.getElementById('pop-t').textContent=l.name;document.getElementById('pop-d').textContent=l.info;document.getElementById('pop-i').src=l.icon;document.getElementById('pop-l').href='/work/'+l.slug;
     pop.style.setProperty('--c',l.color);pop.hidden=false;band.classList.add('open');
     var br=band.getBoundingClientRect(),r=b.getBoundingClientRect(),w=pop.offsetWidth,x=r.left+r.width/2-br.left-w/2;x=Math.max(16,Math.min(br.width-w-16,x));pop.style.left=x+'px'}
   track.addEventListener('click',function(e){var b=e.target.closest('.lg');if(b){e.stopPropagation();open(b)}});
@@ -90,7 +90,7 @@ const logos: { name: string; slug: string; icon: string; color: string; info: st
   window.addEventListener('resize',close);})();
 </script>
 <style>
-  .hero{position:relative;z-index:2;isolation:isolate;overflow-x:clip;background:var(--h-bg)}
+  .hero{position:relative;isolation:isolate;overflow:hidden;background:var(--h-bg)}
   /* Window-view art from Figma (Website v5, hero art light/dark). Sits behind the copy; a fade keeps the text side clean. */
   .art{position:absolute;inset:0 0 142px;z-index:-1;pointer-events:none;overflow:hidden}
   /* art stops at the logo band's top hairline (band 74px + 68px bottom padding), like the Figma hero */
@@ -139,9 +139,9 @@ const logos: { name: string; slug: string; icon: string; color: string; info: st
   .track img{width:22px;height:22px;border-radius:5px;object-fit:cover}
   :root[data-theme="dark"] .lg{color:color-mix(in srgb,var(--c) 55%,#fff)}
   .wm{font:600 16px/22px var(--font);letter-spacing:-.2px;white-space:nowrap}
-  .pop{position:absolute;top:calc(100% + 10px);z-index:20;width:320px;padding:16px 18px;border-radius:14px;background:var(--h-bg);border:1px solid var(--h-rule);box-shadow:0 18px 48px rgba(10,14,23,.14);animation:popin .22s cubic-bezier(.2,.8,.2,1)}
-  .pop::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--c)}
-  @keyframes popin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .pop{position:absolute;bottom:calc(100% + 10px);z-index:20;width:320px;padding:16px 18px;background:var(--h-bg);border:1px solid var(--h-rule);box-shadow:0 18px 48px rgba(10,14,23,.14);animation:popin .22s cubic-bezier(.2,.8,.2,1)}
+  .pop::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c)}
+  @keyframes popin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .pop-n{display:flex;align-items:center;gap:8px;margin:0;font:600 15px/20px var(--font);color:var(--h-fg)}
   .pop-n img{width:20px;height:20px;border-radius:5px;object-fit:cover}
   .pop-d{margin:8px 0 12px;font:400 14px/21px var(--font);color:var(--h-mute)}

@@ -9,7 +9,6 @@ import Masonry from '../../components/work/Masonry.astro';
 import Visual from '../../components/work/Visual.astro';
 import Card from '../../components/work/Card.astro';
 import Icon from '../../components/Icon.astro';
-import CardMedia from '../../components/work/CardMedia.astro';
 import { cases, tiles, workOrder } from '../../data/cases';
 export function getStaticPaths() { return cases.map(c => ({ params: { slug: c.slug } })); }
 const c = cases.find(x => x.slug === Astro.params.slug)!;
@@ -24,7 +23,7 @@ const vt = c.slug === 'virtual-trades';
 <Page title={`${c.name} case study · Wintech Studio`} description={c.intro.slice(0, 158)} crumbs={[['Work', '/work'], [c.name, `/work/${c.slug}`]]} jsonld={[ld]} theme={dark ? 'dark' : undefined}>
   <article class:list={['case', dark ? 'is-dark' : 'is-light', { vt }]}>
     <section class="cover" aria-label={`${c.name} cover`}>
-      <div class="cv"><CardMedia c={c} eager class="cvm" /></div>
+      <div class="cv"><img src={`/images/cases/film-${c.slug}.webp`} alt={`${c.name}: a highlight of the design`} width="2720" height="1530" fetchpriority="high" decoding="async" /></div>
       <div class="cvcap">
         <span class="cvn">{c.icon && <img src={c.icon} alt="" width="22" height="22" />}{c.name}<span class="cvk">{c.kind}</span></span>
         {c.url && <a class="cvl" href={c.url} target="_blank" rel="noopener"><i aria-hidden="true"></i>{c.url.replace('https://', '')}<Icon name="arrow-up-right" size={12} /></a>}
@@ -166,8 +165,8 @@ const vt = c.slug === 'virtual-trades';
   @media (prefers-reduced-motion:reduce){.sty[data-reveal]{opacity:1;transform:none;transition:none}}
   /* Cover first: the project's cover (card motion when there is one) fills the top of the page, the story starts on scroll */
   .cover{background:var(--c-bg);padding:16px 24px 0}
-  .cv{position:relative;max-width:1392px;margin:0 auto;aspect-ratio:16/9;max-height:calc(100vh - 150px);min-height:320px;border-radius:24px;overflow:hidden;background:var(--c-panel)}
-  .cv > :global(.cvm){position:absolute;inset:0}
+  .cv{position:relative;max-width:1392px;margin:0 auto;height:clamp(180px,24vw,340px);overflow:hidden;background:var(--c-panel)}
+  .cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 42%;display:block}
   .cvcap{max-width:1392px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:16px 4px 40px;flex-wrap:wrap}
   .cvn{display:inline-flex;align-items:center;gap:8px;font:600 15px/20px var(--font);color:var(--c-fg)}
   .cvn img{width:22px;height:22px;border-radius:6px;object-fit:cover}
@@ -178,7 +177,7 @@ const vt = c.slug === 'virtual-trades';
   .cvs{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:500 14px/20px var(--font);color:color-mix(in srgb,var(--c-fg) 70%,transparent);text-decoration:none}
   .cvs :global(svg){animation:nudge 1.8s ease-in-out infinite}
   @keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
-  @media (max-width:767px){.cover{padding:8px 12px 0}.cv{aspect-ratio:4/3;border-radius:16px;max-height:none}.cvcap{padding:12px 4px 28px}.cvs{display:none}}
+  @media (max-width:767px){.cover{padding:8px 12px 0}.cv{height:160px}.cvcap{padding:12px 4px 28px}.cvs{display:none}}
   @media (prefers-reduced-motion:reduce){.cvs :global(svg){animation:none}}
   .ov{background:var(--c-panel);padding:64px 0 96px}
   .ov h1{margin:12px 0 0;max-width:1000px;font-size:56px;line-height:64.4px;font-weight:600;letter-spacing:-1.12px}
@@ -209,8 +208,8 @@ const vt = c.slug === 'virtual-trades';
   .cmedia{margin-top:28px;display:flex;flex-direction:column;gap:12px}
   .cmedia > :global(*){width:100%}
   .cmedia :global(img){width:100%!important;max-width:none!important;height:auto}
-  /* Sticky chapter index: holds under the sticky header bar (75px; the 32px strip scrolls away) while the body scrolls past. */
-  .case{--stick:calc(75px + 32px)}
+  /* Sticky chapter index: holds under the sticky header bar (61px; the 32px strip scrolls away) while the body scrolls past. */
+  .case{--stick:calc(61px + 32px)}
   .idx{display:flex;flex-direction:column;gap:16px;position:sticky;top:var(--stick);align-self:start}
   .ln{margin:0;display:flex;align-items:baseline;gap:16px}
   .num{font-size:16px;line-height:24px;opacity:.62;font-variant-numeric:tabular-nums}
