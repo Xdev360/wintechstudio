@@ -1,0 +1,138 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  html,body{margin:0;background:#0b0c0f}
+  #stage{position:relative;width:1312px;height:984px;overflow:hidden;background:#111}
+  #stage img,#stage svg,#stage div{position:absolute;left:0;top:0;will-change:transform,opacity}
+  .ph{transform-origin:0 0}
+</style></head>
+<body>
+<div id="stage">
+  <img id="bg" src="a/bg.png" width="1312" height="1537">
+  <div id="halo" style="width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.16),rgba(255,255,255,0) 65%);opacity:0"></div>
+  <img id="chat" class="ph" src="a/chat.png">
+  <img id="goals" class="ph" src="a/goals.png">
+  <img id="today" class="ph" src="a/today.png">
+  <img id="chess" class="ph" src="a/chess.png">
+  <div id="sqA" style="width:30px;height:30px;background:rgba(59,91,255,.45);opacity:0"></div>
+  <div id="sqB" style="width:30px;height:30px;background:rgba(59,91,255,.45);opacity:0"></div>
+  <img id="piece" src="a/piece.png" width="34" height="34" style="transform-origin:0 0">
+  <img id="eggs" class="ph" src="a/eggnoegg.png">
+  <div id="eggwrap" style="width:209px;height:262px;transform-origin:104px 240px">
+    <img id="egg" src="a/egg.png" width="209" height="262" style="position:absolute;left:0;top:0">
+    <svg id="crack" width="209" height="262" viewBox="0 0 209 262" style="position:absolute;left:0;top:0;overflow:visible">
+      <path id="ck" d="M30 118 L58 104 L74 126 L98 100 L116 124 L140 98 L158 120 L182 106" fill="none" stroke="#7a4b18" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="220" stroke-dashoffset="220"/>
+    </svg>
+  </div>
+  <div id="chips"></div>
+  <img id="mylo" src="a/mylo.png" width="324" height="388" style="transform-origin:162px 300px">
+  <img id="cover" src="a/cover-full.png" width="1312" height="1537">
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const prog=(t,a,b)=>cl((t-a)/(b-a));
+const eOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+const eInOut=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eOutBack=t=>{const c1=1.4,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const eInOutSine=t=>-(Math.cos(Math.PI*t)-1)/2;
+
+// phone geometry: node box inside each exported image (x0,y0,w,h)
+const NODE={today:[84.3,46.9,328,711.3],chat:[84.3,46.9,281.1,609.1],goals:[84.3,46.9,281.1,609.1],chess:[36.6,22,360,780.5],eggs:[36.6,22,360,780.5]};
+// place a phone so the node centre sits at (cx,cy), scaled s, rotated r
+function phone(id,cx,cy,s,r,o){const [x0,y0,w,h]=NODE[id];const el=$(id);
+  const ncx=x0+w/2,ncy=y0+h/2;
+  el.style.transformOrigin=`${ncx}px ${ncy}px`;
+  el.style.transform=`translate(${cx-ncx}px,${cy-ncy}px) rotate(${r}deg) scale(${s})`;
+  el.style.opacity=o;}
+// slot layout (phones as platforms)
+const TOP=640, SW=250;
+const SL={today:{cx:300,s:SW/328},chess:{cx:656,s:SW/360},eggs:{cx:1012,s:SW/360}};
+for(const k in SL){const [x0,y0,w,h]=NODE[k];SL[k].cy=TOP+h*SL[k].s/2;}
+// cover layout (node centres in cover coords)
+const CV={today:[656,964.8,1,0],chat:[410.9,959.9,1,-7],goals:[899,994.2,1,7]};
+// Mylo
+const MYR=(window.MYR??8), MYSc=215.54/323; const MY_COVER={x:1082.1-Math.sin(MYR*Math.PI/180)*106*MYSc,y:667.9+Math.cos(MYR*Math.PI/180)*106*MYSc,s:MYSc,r:MYR};
+const MS=0.33;
+const feet=(375-300); // feet below transform origin (image px)
+function myloOn(k){return {x:SL[k].cx,y:TOP-feet*MS+10,s:MS,r:0};}
+function setMylo(p,sx=1,sy=1){const el=$('mylo');
+  el.style.transform=`translate(${p.x-162}px,${p.y-300}px) rotate(${p.r}deg) scale(${p.s*sx},${p.s*sy})`;}
+// jump between two poses: arc height hgt
+function jump(t,a,b,P,Q,hgt){const u=prog(t,a,b);const k=eInOutSine(u);
+  return {x:lerp(P.x,Q.x,k),y:lerp(P.y,Q.y,k)-hgt*4*u*(1-u),s:lerp(P.s,Q.s,k),r:lerp(P.r,Q.r,k)+ (Q.x>P.x?1:-1)*10*Math.sin(Math.PI*u)};}
+// squash pulse around a time c
+function squash(t,c,amt=.16,dur=.22){const d=(t-c)/dur; if(d<-1||d>1) return [1,1]; const v=amt*Math.cos(d*Math.PI/2); return [1+v*.7,1-v];}
+
+// chess squares (from export measurements)
+const SQ=40.3, BX=55, BY=195;
+function chessPt(col,row){const s=SL.chess.s;const [x0,y0,w,h]=NODE.chess;const left=SL.chess.cx-w*s/2, top=TOP;
+  return {x:left+(BX+col*SQ-x0)*s, y:top+(BY+row*SQ-y0)*s, sq:SQ*s, s};}
+const EGG_NODE=[75.6,265.7];
+
+window.render=function(t){
+  // --- cover crossfade
+  const fadeIn=prog(t,.45,.85), fadeOut=prog(t,7.35,7.75);
+  $('cover').style.opacity = t<4 ? 1-fadeIn : fadeOut;
+  // --- phone choreography: 1.15-2.0 into slots, 6.55-7.3 back to cover
+  const go=eInOut(prog(t,1.15,2.0)), back=eInOut(prog(t,6.55,7.3));
+  const m = go*(1-back); // 0 cover, 1 slots
+  // today: cover centre -> left slot
+  { const c=CV.today, s=SL.today; phone('today',lerp(c[0],s.cx,m),lerp(c[1],s.cy,m),lerp(1,s.s,m),0,1); }
+  // chat & goals: sink and fade out
+  { const sinkC=eInOut(prog(t,1.1,1.75))*(1-eInOut(prog(t,6.75,7.3)));
+    phone('chat',CV.chat[0]-40*sinkC,CV.chat[1]+520*sinkC,1,CV.chat[3],1-sinkC);
+    phone('goals',CV.goals[0]+40*sinkC,CV.goals[1]+520*sinkC,1,CV.goals[3],1-sinkC); }
+  // chess & egg rise from below (staggered), sink at the end
+  { const rC=eOutExpo(prog(t,1.25,2.05))*(1-eInOut(prog(t,6.5,7.1)));
+    const rE=eOutExpo(prog(t,1.35,2.15))*(1-eInOut(prog(t,6.45,7.05)));
+    phone('chess',SL.chess.cx,SL.chess.cy+620*(1-rC),SL.chess.s,0,cl(rC*1.4));
+    phone('eggs',SL.eggs.cx,SL.eggs.cy+620*(1-rE),SL.eggs.s,0,cl(rE*1.4));
+    // piece + squares ride with the chess phone
+    const p0=chessPt(3,6), p1=chessPt(3,4); const mv=eInOut(prog(t,3.75,4.35));
+    const lift=620*(1-rC);
+    const px=p0.x+(SQ-34)/2*p0.s, py=lerp(p0.y,p1.y,mv)+(SQ-34)/2*p0.s+lift - 10*Math.sin(Math.PI*mv);
+    $('piece').style.transform=`translate(${px}px,${py}px) scale(${p0.s})`; $('piece').style.opacity=cl(rC*1.4);
+    const hl=prog(t,3.55,3.75)*(1-prog(t,5.0,5.4));
+    for(const [id,p,o] of [['sqA',p0,hl*.9],['sqB',p1,hl*eOutExpo(prog(t,4.2,4.4))]]){const el=$(id);
+      el.style.transform=`translate(${p.x}px,${p.y+lift}px) scale(${p.sq/30})`; el.style.transformOrigin='0 0'; el.style.opacity=o;}
+    // egg rides with the egg phone
+    const es=SL.eggs.s, [x0,y0,w,h]=NODE.eggs; const eLeft=SL.eggs.cx-w*es/2, eTop=TOP+620*(1-rE);
+    // shake on three beats, then small hop
+    let rot=0; for(const c of [5.35,5.75,6.15]){const d=(t-c)/.18; if(d>=0&&d<=1) rot+= (c===5.75?-1:1)*6*Math.sin(d*Math.PI*2)*(1-d);}
+    const ew=$('eggwrap'); ew.style.transform=`translate(${eLeft+(EGG_NODE[0]+x0-x0)*es}px,${eTop+EGG_NODE[1]*es}px) scale(${es}) rotate(${rot}deg)`;
+    ew.style.transformOrigin='0 0'; ew.style.opacity=cl(rE*1.4);
+    // inner rotate around the egg base
+    $('egg').style.transform='';
+    // crack draws in 3 steps
+    const cs=[prog(t,5.35,5.5),prog(t,5.75,5.9),prog(t,6.15,6.3)].reduce((a,b)=>a+b,0)/3;
+    const heal=prog(t,6.5,6.8); // crack fades as phones sink
+    $('ck').setAttribute('stroke-dashoffset',String(220*(1-cs))); $('crack').style.opacity=1-heal;
+    // chips
+    const chips=$('chips'); if(!chips.childElementCount){for(let i=0;i<5;i++){const d=document.createElement('div');d.style.cssText='width:12px;height:9px;background:#fde3b8;border-radius:2px';chips.appendChild(d);}}
+    const cp=prog(t,6.18,6.6); const ox=eLeft+(EGG_NODE[0]+104)*es, oy=eTop+(EGG_NODE[1]+105)*es;
+    [...chips.children].forEach((d,i)=>{const a=(-150+i*30)*Math.PI/180;const r=70*eOutExpo(cp);
+      d.style.transform=`translate(${ox+Math.cos(a)*r}px,${oy+Math.sin(a)*r+90*cp*cp}px) rotate(${i*50*cp}deg)`; d.style.opacity=cp>0&&cp<1?1-cp:0;});
+    // today "plan lights up"
+    const lit=prog(t,2.15,2.4)*(1-prog(t,3.0,3.5));
+    $('today').style.filter=`brightness(${1+.14*lit})`;
+    const hx=SL.today.cx, hy=TOP+150; $('halo').style.transform=`translate(${hx-260}px,${hy-260}px) scale(${.8+.3*lit})`; $('halo').style.opacity=lit*m;
+  }
+  // --- Mylo
+  const P0=MY_COVER, A=myloOn('today'), B=myloOn('chess'), C=myloOn('eggs');
+  let p=P0, sq=[1,1];
+  if(t<1.35){ p=P0; sq=squash(t,1.15,.18,.24); }               // crouch
+  else if(t<2.1){ p=jump(t,1.35,2.1,P0,A,260); }
+  else if(t<2.75){ p=A; sq=squash(t,2.16,.2); }
+  else if(t<3.45){ p=jump(t,2.75,3.45,A,B,220); }
+  else if(t<4.6){ p=B; sq=squash(t,3.5,.2); }
+  else if(t<5.25){ p=jump(t,4.6,5.25,B,C,220); }
+  else if(t<6.55){ p=C; sq=squash(t,5.3,.2); const s2=squash(t,6.45,.14); if(s2[1]!==1) sq=s2; }
+  else if(t<7.3){ p=jump(t,6.55,7.3,C,P0,180); }
+  else { p=P0; sq=squash(t,7.33,.16); }
+  setMylo(p,sq[0],sq[1]);
+};
+window.render(0);
+</script>
+</body></html>
