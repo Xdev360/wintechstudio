@@ -1,0 +1,85 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Virelle Wellness Hub motion, Nov 2026 redesign (bank transfer, delivered across Nigeria in 5 to 7 working days, no seal).
+     One source for the card loop, the hero reel and the case film. Every page is a real export from the redesign that
+     Oladele placed in Figma kQl8LQLi5xdRVVyXF3R4NZ (section "Virelle · Website redesign", 1440:64835):
+     01 Home, 00 Hero slides (four banners), 03 Product (Biotin 10,000 mcg, N33,000), 05 Pay ("Last step: send the transfer").
+     Story: the hero carousel turns through its four banners, the page scrolls to Best selling, Biotin opens,
+     then the bank transfer step, and back to the top of the store (last frame cuts to the first).
+     Config: cfg.js (W, H, S = time scale: 1 for the 8s card loop). -->
+<style>
+  html,body{margin:0;background:#F2F4F8}
+  #stage{position:relative;overflow:hidden;background:#F2F4F8;font-family:Figtree,system-ui,sans-serif}
+  #br{position:absolute;border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 30px 80px rgba(10,14,23,.14),0 6px 18px rgba(10,14,23,.06)}
+  #bar{position:absolute;left:0;top:0;right:0;height:52px;display:flex;align-items:center;gap:8px;padding:0 18px;background:#F7F8FA;border-bottom:1px solid #E7EAF0}
+  #bar i{width:11px;height:11px;border-radius:50%;background:#E1E5EC}
+  #url{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;height:30px;padding:0 14px;border-radius:999px;background:#fff;border:1px solid #E7EAF0;font:500 14px/1 Figtree,system-ui,sans-serif;color:#0A0E17;white-space:nowrap}
+  #url b{width:7px;height:7px;border-radius:50%;background:#22A06B;box-shadow:0 0 0 3px rgba(34,160,107,.18)}
+  #vp{position:absolute;left:0;right:0;top:52px;bottom:0;overflow:hidden}
+  .pg{position:absolute;left:0;top:0;width:1440px;transform-origin:0 0}
+  .pg img{display:block;width:1440px}
+  #bn{position:absolute;left:80px;top:132px;width:1280px;height:480px;border-radius:24px;overflow:hidden}
+  #bn img{position:absolute;top:0;width:1280px;height:480px}
+  #tap{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(10,14,23,.18);border:2px solid rgba(255,255,255,.9);opacity:0;pointer-events:none}
+</style></head>
+<body>
+<div id="stage">
+  <div id="br">
+    <div id="bar"><i></i><i></i><i></i><span id="url"><b></b><span id="ut">virellewellnesshub.com</span></span></div>
+    <div id="vp">
+      <div class="pg" id="home"><img src="a/home.webp"><div id="bn"><img src="a/banner1.webp"><img src="a/banner2.webp"><img src="a/banner3.webp"><img src="a/banner4.webp"><img src="a/banner1.webp"></div></div>
+      <div class="pg" id="prod"><img src="a/product.webp"></div>
+      <div class="pg" id="pay"><img src="a/pay.webp"></div>
+      <div id="tap"></div>
+    </div>
+  </div>
+</div>
+<script src="cfg.js" onerror="void 0"></script>
+<script>
+const CFG=Object.assign({W:1312,H:984,S:1},window.CFG||{});
+const $=id=>document.getElementById(id);
+const st=$('stage');st.style.width=CFG.W+'px';st.style.height=CFG.H+'px';
+// browser box: 6% margin each side, a little more at the bottom
+const mx=Math.round(CFG.W*0.06), my=Math.round(CFG.H*0.07);
+const BW=CFG.W-2*mx, BH=CFG.H-2*my;
+const br=$('br');br.style.left=mx+'px';br.style.top=my+'px';br.style.width=BW+'px';br.style.height=BH+'px';
+const sc=BW/1440; const VH=(BH-52)/sc; // visible page height in page px
+document.querySelectorAll('.pg').forEach(p=>p.style.transform=`scale(${sc})`);
+[...$('bn').children].forEach((im,i)=>im.style.left=(i*1280)+'px');
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const P=(t,a,b)=>cl((t-a)/(b-a));
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eS=t=>-(Math.cos(Math.PI*t)-1)/2;
+const S=CFG.S;
+window.DUR=8*S;
+window.render=function(t){
+  t=((t%window.DUR)+window.DUR)%window.DUR; const u=t/S; // u runs 0..8 whatever the length
+  // hero carousel: banner 1 -> 2 -> 3 -> 4
+  const b=eIO(P(u,.55,1.15))+eIO(P(u,1.55,2.15))+eIO(P(u,2.55,3.15));
+  [...$('bn').children].forEach((im,i)=>im.style.transform=`translateX(${-b*1280}px)`);
+  // scroll to Best selling, then back up at the end
+  const best=1500, down=eIO(P(u,3.3,4.4));
+  const y=best*down;
+  $('home').style.transform=`scale(${sc}) translateY(${-y}px)`;
+  // tap on Biotin, product page slides in from the right
+  const tapAt=4.55; const tp=P(u,tapAt,tapAt+.45);
+  const tap=$('tap'); const tx=258*sc, ty=(1790-y)*sc; tap.style.left=tx+'px'; tap.style.top=ty+'px';
+  tap.style.opacity= tp>0&&tp<1 ? (1-tp)*.9 : 0; tap.style.transform=`scale(${.6+.8*tp})`;
+  const inP=eIO(P(u,4.85,5.45)), outP=eIO(P(u,6.05,6.6));
+  $('prod').style.transform=`scale(${sc}) translateX(${(1-inP)*1440 - outP*1440}px)`;
+  $('prod').style.opacity= u<4.8||u>6.7 ? 0 : 1;
+  // the bag button pulse on the product page
+  // pay page slides in, then the store comes back
+  const inY=eIO(P(u,6.05,6.6)), back=eIO(P(u,7.25,7.85));
+  $('pay').style.transform=`scale(${sc}) translateX(${(1-inY)*1440}px)`;
+  $('pay').style.opacity= u<6.0 ? 0 : 1-back;
+  // the home page returns to the top under the fading pay page
+  if(u>6.6){ $('home').style.transform=`scale(${sc}) translateY(0px)`; [...$('bn').children].forEach(im=>im.style.transform='translateX(0px)'); }
+  $('ut').textContent = u>4.85&&u<6.05 ? 'virellewellnesshub.com/biotin-10000' : u>=6.05&&u<7.5 ? 'virellewellnesshub.com/pay' : 'virellewellnesshub.com';
+  // slow push on the whole browser
+  const push=1+0.012*Math.sin(Math.PI*cl(u/8));
+  br.style.transform=`scale(${push})`;
+};
+window.render(0);
+</script>
+</body></html>

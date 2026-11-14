@@ -1,0 +1,47 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Mylo light motion (Nov 2026 redesign). One source for the card loop, the hero reel and the case film.
+     Every frame is a real export of the Mylo "Dribbble" light pages (Figma kQl8LQLi5xdRVVyXF3R4NZ, page Wintech Designs,
+     section 1261:38887): 01 Cover, 02 Hero, 03 Half plan half play, 05 Keys and chests, 06 Dress your Mylo, 07 Waitlist.
+     The pages sit side by side on the same grey grid, so the camera pulls back, glides along the grid to the next page
+     and settles in. Starts and ends on the first page, so the last frame cuts to the first.
+     Config: cfg.js next to this file (or the defaults below): W, H, SEQ (frame files), HOLD, MOVE (seconds). -->
+<style>
+  html,body{margin:0;background:#EBEBEB}
+  #stage{position:relative;overflow:hidden;background:#EBEBEB}
+  #strip{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+  #strip img{position:absolute;top:0;width:1600px;height:1200px;display:block}
+</style></head>
+<body>
+<div id="stage"><div id="strip"></div></div>
+<script src="cfg.js" onerror="void 0"></script>
+<script>
+const CFG=Object.assign({W:1312,H:984,SEQ:['d01','d03','d05','d06'],HOLD:1.15,MOVE:0.85},window.CFG||{});
+const stage=document.getElementById('stage'),strip=document.getElementById('strip');
+stage.style.width=CFG.W+'px';stage.style.height=CFG.H+'px';
+const PW=1600,PH=1200,GAP=0; // pages share the grid background, so they tile edge to edge
+const pages=[...CFG.SEQ,CFG.SEQ[0]];
+pages.forEach((f,i)=>{const im=document.createElement('img');im.src='a/'+f+'.webp';im.style.left=(i*(PW+GAP))+'px';strip.appendChild(im);});
+// cover-fit one page into the stage
+const fit=Math.max(CFG.W/PW,CFG.H/PH);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eS=t=>-(Math.cos(Math.PI*t)-1)/2;
+const seg=CFG.HOLD+CFG.MOVE;
+window.DUR=seg*CFG.SEQ.length;
+window.render=function(t){
+  t=((t%window.DUR)+window.DUR)%window.DUR;
+  const k=Math.floor(t/seg), u=t-k*seg;
+  let pos=k, zoom=1;
+  // slow push while holding, so a held page still breathes
+  const hold=cl(u/CFG.HOLD);
+  if(u>CFG.HOLD){const m=(u-CFG.HOLD)/CFG.MOVE;pos=k+eIO(m);zoom=1.018+(1-1.018)*eIO(m)-0.16*Math.sin(Math.PI*m);}
+  else{zoom=1+0.018*eS(hold);}
+  // after the glide the next page starts its own push from 1.0, so carry the end of the push into the move start
+  const s=fit*zoom;
+  const cx=pos*(PW+GAP)+PW/2, cy=PH/2;
+  strip.style.transform=`translate(${CFG.W/2-cx*s}px,${CFG.H/2-cy*s}px) scale(${s})`;
+};
+window.render(0);
+</script>
+</body></html>

@@ -7,15 +7,15 @@ const reel = [
   { name: 'Virelle Wellness', tags: 'Brand, store, packaging', href: '/work/virelle', poster: '/images/cases/film-virelle-800.webp', video: '/videos/hero/virelle.mp4' },
   { name: "Let's Hang", tags: 'Product, brand, app design', href: '/work/lets-hang', poster: '/images/cases/film-lets-hang-800.webp', video: '/videos/hero/lets-hang.mp4' },
 ];
-const facts: [string, string][] = [['1 project lead', 'per client'], ['Weekly builds', 'you can see'], ['Lagos,', 'working worldwide']];
-const logos: { name: string; icon?: string }[] = [
-  { name: 'Mylo', icon: '/images/cases/icon-mylo.svg' },
-  { name: 'Virelle Wellness', icon: '/images/cases/icon-virelle.svg' },
-  { name: 'Tobel Pearls', icon: '/images/cases/icon-tobel-pearls.svg' },
-  { name: 'Manzeelatur Ridho' },
-  { name: "Let's Hang", icon: '/images/cases/icon-lets-hang.svg' },
-  { name: 'CardioRisk', icon: '/images/cases/icon-cardiorisk.svg' },
-  { name: 'Virtual Trades', icon: '/images/cases/icon-virtual-trades.svg' },
+// Client strip: each logo in its own colour; tap one for a line about the company.
+const logos: { name: string; slug: string; icon: string; color: string; info: string }[] = [
+  { name: 'Mylo', slug: 'mylo', icon: '/images/cases/icon-mylo.svg', color: 'var(--h-fg)', info: 'Our own productivity app, with games, friends and rewards built in.' },
+  { name: 'Virelle Wellness', slug: 'virelle', icon: '/images/cases/icon-virelle.svg', color: '#1D6B4A', info: 'An online wellness store in Nigeria: supplements, skincare and fragrance, bought in the UK and US.' },
+  { name: 'Tobel Pearls', slug: 'tobel-pearls', icon: '/images/cases/icon-tobel-pearls.svg', color: '#007DFE', info: 'A Lagos clearing agency moving air and sea freight through Apapa, Tin Can and MMA.' },
+  { name: 'Manzeelatur Ridho', slug: 'manzeelatur-ridho', icon: '/images/cases/icon-manzeelatur-ridho.webp', color: '#2A4BD7', info: "An online madrasah where children and adults learn Arabic and the Qur'an from home." },
+  { name: "Let's Hang", slug: 'lets-hang', icon: '/images/cases/icon-lets-hang.svg', color: '#834DFB', info: 'A social app for going out in Nigeria. Find a plan on the map and join people tonight.' },
+  { name: 'CardioRisk', slug: 'cardiorisk', icon: '/images/cases/icon-cardiorisk.svg', color: '#E5383B', info: 'A health AI product that turns a 10-year heart risk score into something you can read.' },
+  { name: 'Virtual Trades', slug: 'virtual-trades', icon: '/images/cases/icon-virtual-trades.svg', color: '#9160DF', info: 'An exchange for turning gift cards and crypto into naira, in minutes.' },
 ];
 ---
 <section class="hero">
@@ -48,16 +48,22 @@ const logos: { name: string; icon?: string }[] = [
       </aside>
     </div>
     <div class="trust">
-      <ul class="facts">{facts.map(([v, l]) => <li><strong>{v}</strong> <span>{l}</span></li>)}</ul>
       <div class="band" aria-label="Clients and products we have designed and built">
-        <div class="cells"><ul class="track">
+        <div class="cells"><ul class="track" id="logo-track">
           {[...logos, ...logos].map((l, i) => (
             <li aria-hidden={i >= logos.length ? 'true' : undefined}>
-              {l.icon ? <img src={l.icon} alt="" width="22" height="22" loading="lazy" /> : <span class="mono" aria-hidden="true">MR</span>}
-              <span class="wm">{l.name}</span>
+              <button type="button" class="lg" style={`--c:${l.color}`} data-i={i % logos.length} tabindex={i >= logos.length ? -1 : undefined} aria-expanded="false" aria-controls="logo-pop">
+                <img src={l.icon} alt="" width="22" height="22" loading="lazy" />
+                <span class="wm">{l.name}</span>
+              </button>
             </li>
           ))}
         </ul></div>
+        <div class="pop" id="logo-pop" role="dialog" aria-label="About this company" hidden>
+          <p class="pop-n"><img id="pop-i" src="" alt="" width="20" height="20" /><strong id="pop-t"></strong></p>
+          <p class="pop-d" id="pop-d"></p>
+          <a class="pop-l" id="pop-l" href="/work">Read the case study <span aria-hidden="true">→</span></a>
+        </div>
       </div>
     </div>
   </div>
@@ -71,8 +77,20 @@ const logos: { name: string; icon?: string }[] = [
   b.forEach(function(x,k){x.addEventListener('click',function(){show(k);run()})});
   reel.slice(1).forEach(function(r){var im=new Image();im.src=r.poster});show(0);run()})();
 </script>
+<script is:inline define:vars={{ logos }}>
+  (function(){var band=document.querySelector('.hero .band');if(!band)return;var pop=document.getElementById('logo-pop'),track=document.getElementById('logo-track'),cur=null;
+  function close(){if(!cur)return;cur.setAttribute('aria-expanded','false');cur=null;pop.hidden=true;band.classList.remove('open')}
+  function open(b){var l=logos[+b.dataset.i];if(cur===b){close();return}if(cur)cur.setAttribute('aria-expanded','false');cur=b;b.setAttribute('aria-expanded','true');
+    document.getElementById('pop-t').textContent=l.name;document.getElementById('pop-d').textContent=l.info;document.getElementById('pop-i').src=l.icon;var a=document.getElementById('pop-l');a.href='/work/'+l.slug;
+    pop.style.setProperty('--c',l.color);pop.hidden=false;band.classList.add('open');
+    var br=band.getBoundingClientRect(),r=b.getBoundingClientRect(),w=pop.offsetWidth,x=r.left+r.width/2-br.left-w/2;x=Math.max(16,Math.min(br.width-w-16,x));pop.style.left=x+'px'}
+  track.addEventListener('click',function(e){var b=e.target.closest('.lg');if(b){e.stopPropagation();open(b)}});
+  document.addEventListener('click',function(e){if(cur&&!pop.contains(e.target))close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+  window.addEventListener('resize',close);})();
+</script>
 <style>
-  .hero{position:relative;isolation:isolate;overflow:hidden;background:var(--h-bg)}
+  .hero{position:relative;z-index:2;isolation:isolate;overflow-x:clip;background:var(--h-bg)}
   /* Window-view art from Figma (Website v5, hero art light/dark). Sits behind the copy; a fade keeps the text side clean. */
   .art{position:absolute;inset:0 0 142px;z-index:-1;pointer-events:none;overflow:hidden}
   /* art stops at the logo band's top hairline (band 74px + 68px bottom padding), like the Figma hero */
@@ -108,19 +126,26 @@ const logos: { name: string; icon?: string }[] = [
   @keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
   .trust{display:flex;flex-direction:column;gap:24px}
-  .facts{list-style:none;display:flex;flex-wrap:wrap;gap:8px 24px;padding:0;margin:0;font-size:14px;line-height:21px}
-  .facts strong{font-weight:600;color:var(--h-fg)}.facts span{color:var(--h-mute)}
   /* DesignMe: band hairlines run edge to edge; the cells sit in the 1200 container with a hairline either side */
-  .band{height:74px;width:100vw;margin-left:calc(50% - 50vw);border-top:1px solid var(--h-rule);border-bottom:1px solid var(--h-rule)}
+  .band{position:relative;height:74px;width:100vw;margin-left:calc(50% - 50vw);border-top:1px solid var(--h-rule);border-bottom:1px solid var(--h-rule)}
   .cells{max-width:1200px;height:100%;margin:0 auto;border-left:1px solid var(--h-rule);border-right:1px solid var(--h-rule);overflow:hidden}
   .track{list-style:none;margin:0;padding:0;display:flex;width:max-content;height:100%;animation:slide 48s linear infinite}
-  .band:hover .track{animation-play-state:paused}
+  .band:hover .track,.band.open .track,.band:focus-within .track{animation-play-state:paused}
   @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-  .track li{flex:none;width:240px;height:100%;display:flex;align-items:center;justify-content:center;gap:8px;border-right:1px solid var(--h-rule);color:var(--h-label)}
-  .track img{width:22px;height:22px;border-radius:5px;filter:grayscale(1) contrast(.9);opacity:.6}
-  :root[data-theme="dark"] .track img{opacity:.7}
-  .mono{width:22px;height:22px;border-radius:5px;display:grid;place-items:center;background:rgba(var(--h-rgb),.4);color:var(--h-bg);font:600 9px/1 var(--font);letter-spacing:.2px}
+  .track li{flex:none;width:240px;height:100%;border-right:1px solid var(--h-rule)}
+  .lg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;border:0;background:none;color:var(--c);cursor:pointer;font:inherit;transition:background .2s}
+  .lg:hover,.lg[aria-expanded="true"]{background:color-mix(in srgb,var(--c) 7%,transparent)}
+  .lg:focus-visible{outline:2px solid var(--c);outline-offset:-4px}
+  .track img{width:22px;height:22px;border-radius:5px;object-fit:cover}
+  :root[data-theme="dark"] .lg{color:color-mix(in srgb,var(--c) 55%,#fff)}
   .wm{font:600 16px/22px var(--font);letter-spacing:-.2px;white-space:nowrap}
+  .pop{position:absolute;top:calc(100% + 10px);z-index:20;width:320px;padding:16px 18px;border-radius:14px;background:var(--h-bg);border:1px solid var(--h-rule);box-shadow:0 18px 48px rgba(10,14,23,.14);animation:popin .22s cubic-bezier(.2,.8,.2,1)}
+  .pop::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--c)}
+  @keyframes popin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .pop-n{display:flex;align-items:center;gap:8px;margin:0;font:600 15px/20px var(--font);color:var(--h-fg)}
+  .pop-n img{width:20px;height:20px;border-radius:5px;object-fit:cover}
+  .pop-d{margin:8px 0 12px;font:400 14px/21px var(--font);color:var(--h-mute)}
+  .pop-l{font:500 14px/20px var(--font);color:var(--h-fg);text-decoration:underline;text-underline-offset:3px}
 
   @media (max-width:1279px){.copy{width:auto;flex:1}h1{font-size:64px;letter-spacing:-1.28px}}
   @media (max-width:1023px){
@@ -142,10 +167,11 @@ const logos: { name: string; icon?: string }[] = [
     .ctas .h-btn{width:100%}
     .now{max-width:none}.media{width:100%;height:auto;aspect-ratio:358/201}
     .trust{gap:20px}
-    .facts{flex-direction:column;gap:4px}
     .cells{border-left:0;border-right:0}
     .track{animation-duration:36s}
-    .track li{width:auto;min-width:115px;padding:0 20px}
+    .track li{width:auto;min-width:115px}
+    .lg{padding:0 20px}
+    .pop{width:calc(100vw - 32px)}
     .wm{font-size:14px}
   }
 </style>

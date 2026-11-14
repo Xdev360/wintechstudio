@@ -20,6 +20,8 @@ export type Case = {
   // video: the case study film (public/videos/films/<slug>.mp4). Without it the page shows the still poster.
   film: { title: string; lead: string; body: string; w: number; h: number; label: string; video?: string };
   chapters: Chapter[];
+  // story: a bento story told in image tiles (Mylo, Nov 2026 light redesign). When set it replaces the gallery and chapters.
+  story?: { src: string; w: number; h: number; alt: string }[];
   want: { label: string; href: string };
   services: string[];
   // Card media. 'motion' plays public/videos/cards/<slug>.mp4 (and .webm) once the file exists,
@@ -47,8 +49,18 @@ export const cases: Case[] = [
     status: 'Launching December 2026 at staymylo.com. The app, website and admin are designed and built.', url: 'https://staymylo.com',
     stats: [['598 app screens', '299 screens, each one designed in light and dark'], ['22 desktop screens', '10 desktop app screens and 12 admin panel screens'], ['14 mini apps', 'Focus, games, pets, journal and more, inside one app']],
     did: ['Brand identity', 'Character design', 'Mobile app', 'Desktop app', 'Admin panel', 'Website', 'Motion'],
-    theme: 'dark', grad: ['#f4f4f5', '#52525b'], icon: '/images/cases/icon-mylo.svg',
-    film: { title: 'Film', lead: 'Three phones, three sides of Mylo.', body: 'Chess with a friend, a pet egg hatching and a home being built. The homepage film sums up the app in sixteen seconds.', w: 1360, h: 765, label: 'Mylo · homepage film · 0:16', video: '/videos/films/mylo.mp4' },
+    theme: 'light', grad: ['#f4f4f5', '#52525b'], icon: '/images/cases/icon-mylo.svg',
+    film: { title: 'Film', lead: 'The whole of Mylo in seventeen seconds.', body: 'The camera glides across the Mylo pages: the goal app for people who do better together, half plan and half play, keys and chests, the wardrobe and the waitlist.', w: 1360, h: 765, label: 'Mylo · light film · 0:17', video: '/videos/films/mylo.mp4' },
+    story: [
+      { src: '/images/cases/mylo-story/01-hook', w: 2400, h: 2446, alt: 'The Mylo story: doing it alone is crazy. Three Mylo characters take a selfie together, your crew and your goals.' },
+      { src: '/images/cases/mylo-story/02-problem', w: 2400, h: 2122, alt: 'The problem: everybody quits by February. In January the goals are on track; by February the plan went quiet.' },
+      { src: '/images/cases/mylo-story/03-insight', w: 2400, h: 1793, alt: 'The insight: you need people who hold you accountable. A private room shows who showed up today.' },
+      { src: '/images/cases/mylo-story/04-research', w: 2400, h: 2473, alt: 'The research: we studied how habits stick, then made everything easy. Mylo AI plans with you, a focus timer, and who is free when.' },
+      { src: '/images/cases/mylo-story/05-character', w: 2400, h: 2858, alt: 'The character: personality is crucial. Dress your Mylo in 30 outfits, from Winter Cozy to Space Cadet.' },
+      { src: '/images/cases/mylo-story/06-journey', w: 2400, h: 2226, alt: 'The journey: earn a key, open the Sunday chest, collect outfit cards and eggs.' },
+      { src: '/images/cases/mylo-story/07-play', w: 2400, h: 2746, alt: 'The play: half of Mylo gets things done, the other half brings you back. Plan on one side, keys, chests, outfits and pets on the other.' },
+      { src: '/images/cases/mylo-story/08-close', w: 2400, h: 2675, alt: 'Not just an app, a journey you take with your people. Join the waitlist at staymylo.com.' },
+    ],
     chapters: [
       { n: '02', title: 'The challenge', lead: 'Most productivity apps are built for one person, and most people stop opening them within a week.', body: 'Mylo had to make planning feel social and rewarding without turning work into noise. One app needed to hold a day plan, focus sessions, games with friends, rewards and a home that grows.',
         list: [['Planning feels like homework', 'Lists and timers work, but nothing makes you want to come back tomorrow.'], ['Progress is invisible', 'Finishing a task gives you a tick and nothing else.'], ['Friends live in other apps', 'Accountability works better together, but productivity tools stay solo.']] },
@@ -66,19 +78,19 @@ export const cases: Case[] = [
     card: { kind: 'motion', video: '/videos/cards/virelle.mp4', poster: '/images/cases/cover-virelle.webp' },
     cardLine: 'The shop that was living in an Instagram inbox. Rebrand, store and assistant.', cardServices: ['Branding', 'Websites', 'Motion'], filters: ['Branding', 'Websites', 'Motion'], coverId: '880:12840',
     headline: 'Designing Virelle Wellness, imported wellness you can trust',
-    line: 'Brand, store, packaging seal and launch content.',
-    intro: 'Client project. We designed the brand, the website, the packaging seal, the social content system and the homepage film.',
+    line: 'Brand, store, packaging and launch content.',
+    intro: 'Client project. We designed the brand, the website, the packaging, the social content system and the homepage film.',
     status: 'Launching November 2026 at virellewellnesshub.com. The brand, the store and the launch videos are done.',
     stats: [['39 brand slides', 'Brand Guideline 2.0, from mark to packaging'], ['24 social posts', 'Three concepts explored, one chosen'], ['72 calendar designs', 'September and November content calendars']],
     did: ['Brand identity', 'Website', 'Packaging', 'Social content', 'Motion'],
     theme: 'light', grad: ['#029368', '#ec9700'], icon: '/images/cases/icon-virelle.svg',
-    film: { title: 'Film', lead: 'The homepage film: original, sealed, dated.', body: 'The film that plays on the Wintech homepage: the store opens, the products line up and the order is placed. Built in Figma Motion.', w: 1360, h: 935, label: '0:13 · homepage film · Figma Motion' },
+    film: { title: 'Film', lead: 'The new store, from banner to bank transfer.', body: 'The hero turns through skincare, supplements, whole foods and fragrance, Biotin opens on its own page, and checkout ends on one clear step: send the transfer.', w: 1360, h: 765, label: 'Virelle · store film · 0:16', video: '/videos/films/virelle.mp4' },
     chapters: [
       { n: '02', title: 'The challenge', lead: 'Sell imported wellness online in a market that expects fakes.', body: 'Shoppers in Lagos worry about counterfeit and expired products, and most stores give them nothing to check.',
         list: [['Fear of fakes', 'Shoppers worry imported products are counterfeit or expired.'], ['Nothing to check', 'Most online stores give no proof before you pay.'], ['Trust at the door', 'The order has to arrive looking as genuine as the promise.']] },
       { n: '03', title: 'How it started', lead: 'A brand guideline first, then a content system built on top of it.', body: 'Three social directions were explored side by side in Figma. One was chosen and became the monthly calendars.', visuals: [todo('953:95829', 910, 'Figma file: three social concepts', '#e9e9e9')] },
-      { n: '04', title: 'Finding the visual direction', lead: 'A leaf, a seal and a promise kept.', body: 'The leaf mark repeats as a quiet pattern and the printed seal closes every order, on a forest to mint palette with one marigold accent.', visuals: [todo('953:96579', 849, 'Brand system: mark, seal, palette and packaging', '#0b2b21')] },
-      { n: '05', title: 'The website', lead: 'Original wellness, delivered.', body: 'Proof comes first: US-sourced, sealed, delivered, with the expiry date on every listing across supplements, skincare, wholefoods and fragrance.', visuals: [todo('953:96952', 657, 'Homepage', '#d2f4db'), todo('953:97038', 620, 'Product cards', '#f4f6f3')] },
+      { n: '04', title: 'Finding the visual direction', lead: 'A leaf and a promise kept.', body: 'The leaf mark repeats as a quiet pattern, on a forest to mint palette with one marigold accent.', visuals: [todo('953:96579', 849, 'Brand system: mark, palette and packaging', '#0b2b21')] },
+      { n: '05', title: 'The website', lead: 'Original wellness, delivered.', body: 'Proof comes first: original products bought in the UK and US, the expiry date on every item, delivery across Nigeria in 5 to 7 working days and a simple bank transfer at checkout.', visuals: [todo('953:96952', 657, 'Homepage', '#d2f4db'), todo('953:97038', 620, 'Product cards', '#f4f6f3')] },
       { n: '06', title: 'The content system', lead: 'Green Glass: deep green, frosted panels and real people.', body: 'It runs as carousels, reel covers and WhatsApp Business content, planned month by month.', visuals: [todo('953:97063', 1000, 'All social posts', '#0b2b21')] },
     ],
     want: brandWeb, services: ['brand', 'websites', 'motion'],

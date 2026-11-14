@@ -95,7 +95,8 @@ const cur = (h: string) => (h !== '/' && path.startsWith(h) ? 'page' : undefined
           </div>
         ))}
         <a class="ni" href="/pricing" aria-current={cur('/pricing')}>Pricing</a>
-        <a class="ni" href={contact.templates} target="_blank" rel="noopener">Templates<Icon name="arrow-up-right" size={12} /></a>
+        <a class="ni" href="/partners" aria-current={cur('/partners')}>Partners</a>
+        <span class="ni soon" aria-disabled="true" title="Wintech Templates is coming soon">Templates<em>Soon</em></span>
         <a class="ni" href="/contact" aria-current={cur('/contact')}>Contact</a>
       </nav>
       <div class="actions">
@@ -121,7 +122,8 @@ const cur = (h: string) => (h !== '/' && path.startsWith(h) ? 'page' : undefined
         </details>
       ))}
       <a class="mrow" href="/pricing">Pricing<Icon name="arrow-right" size={18} /></a>
-      <a class="mrow" href={contact.templates} target="_blank" rel="noopener">Templates<Icon name="arrow-up-right" size={18} /></a>
+      <a class="mrow" href="/partners">Partners<Icon name="arrow-right" size={18} /></a>
+      <span class="mrow soon" aria-disabled="true">Templates<em>Coming soon</em></span>
       <a class="mrow" href="/contact">Contact<Icon name="arrow-right" size={18} /></a>
     </nav>
     <div class="mfoot2"><a class="btn btn-primary" href="/book">Book a call</a></div>
@@ -176,6 +178,9 @@ const cur = (h: string) => (h !== '/' && path.startsWith(h) ? 'page' : undefined
   .ni{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:0;border-radius:2px;background:none;color:var(--fg);font:500 14px/21px var(--font);text-decoration:none;cursor:pointer;white-space:nowrap;transition:background .15s}
   .ni:hover,.dd.open>.ni{background:var(--hover)}
   .ni[aria-current]{background:var(--hover)}
+  .ni.soon{cursor:default;color:var(--fg-2)}.ni.soon:hover{background:none}
+  .soon em{font-style:normal;font:500 10px/1 var(--font);letter-spacing:.4px;text-transform:uppercase;padding:4px 6px;border-radius:999px;background:var(--hover);color:var(--fg-2)}
+  .mrow.soon{cursor:default;color:var(--fg-2)}.mrow.soon em{font-size:11px}
   .ni :global(svg){flex:none;color:var(--fg-2)}
   .ni :global(.pl){transition:transform .2s}.dd.open>.ni :global(.pl){transform:rotate(45deg)}
   .actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}

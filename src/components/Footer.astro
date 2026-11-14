@@ -15,7 +15,7 @@ const ais: [string, string, string][] = [
 const cols: { h: string; links: [string, string, boolean?][] }[] = [
   { h: 'Services', links: [['/services#starting', 'Starting something'], ['/services#adding-tech', 'Adding tech to my business'], ['/services#refresh', 'Refreshing my brand'], ...services.map(s => [`/services/${s.slug}`, s.name] as [string, string]), ['/services', 'All services']] },
   { h: 'Work', links: [['/work', 'Case studies'], ['/work/mylo', 'Mylo'], ['/work/virelle', 'Virelle Wellness'], ['/work/tobel-pearls', 'Tobel Pearls'], ['/work/manzeelatur-ridho', 'Manzeelatur Ridho'], ['/work/lets-hang', "Let's Hang"]] },
-  { h: 'Studio', links: [['/about', 'About'], ['/how-we-work', 'How we work'], ['/faq', 'FAQ'], ['/join-the-bench', 'Join the bench'], ['/pricing', 'Pricing'], ['/contact', 'Contact'], [contact.templates, 'Templates', true]] },
+  { h: 'Studio', links: [['/about', 'About'], ['/how-we-work', 'How we work'], ['/faq', 'FAQ'], ['/join-the-bench', 'Join the bench'], ['/pricing', 'Pricing'], ['/partners', 'Partners'], ['/contact', 'Contact'], ['', 'Templates (soon)']] },
 ];
 const clocks: [string, string][] = [['Lagos', 'Africa/Lagos'], ['London', 'Europe/London']];
 ---
@@ -47,7 +47,7 @@ const clocks: [string, string][] = [['Lagos', 'Africa/Lagos'], ['London', 'Europ
     <div class="right">
       <nav class="grid3" aria-label="Footer">
         {cols.map(c => (
-          <div class="fc"><p class="fh">{c.h}</p>{c.links.map(([h, l, ext]) => <a href={h} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l}{ext && <Icon name="arrow-up-right" size={12} />}</a>)}</div>
+          <div class="fc"><p class="fh">{c.h}</p>{c.links.map(([h, l, ext]) => !h ? <span class="soon">{l}</span> : <a href={h} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l}{ext && <Icon name="arrow-up-right" size={12} />}</a>)}</div>
         ))}
       </nav>
       <div class="addr">
@@ -100,6 +100,7 @@ const clocks: [string, string][] = [['Lagos', 'Africa/Lagos'], ['London', 'Europ
   .fc a{display:inline-flex;align-items:center;gap:4px;font-size:14px;line-height:21px;font-weight:500;color:var(--fg);text-decoration:none}
   .fc a :global(svg){color:var(--fg-3)}
   .fc a:hover{text-decoration:underline;text-underline-offset:3px}
+  .fc .soon{font-size:14px;line-height:21px;font-weight:500;color:var(--fg-3);cursor:default}
   .addr{margin-top:40px}
   .addr p:not(.fh){margin:0;font-size:14px;line-height:21px;font-weight:500;color:var(--fg-2)}
   .addr a{color:inherit;text-decoration:none}.addr a:hover{color:var(--fg)}

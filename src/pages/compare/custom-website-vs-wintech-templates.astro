@@ -35,7 +35,7 @@ const title = 'Custom website or Wintech Templates: which one fits your business
       <div class="mc">{cols.map((c, ci) => (
         <div class:list={['opt', { ours: ci === 0 }]}><h2>{c}</h2>{rows.map(r => <div class="mr"><b>{r[0]}</b><span>{r[ci + 1]}</span></div>)}</div>))}</div>
       <div class="dm-grid g2 picks">
-        <div class="dm-card panel"><h2 class="dm-h3">Pick a template if</h2><p class="dm-body">You sell a handful of things, you want to be live today, and you are happy with a proven layout.</p><a class="dm-btn s mw" href={contact.templates} target="_blank" rel="noopener">Browse templates</a></div>
+        <div class="dm-card panel"><h2 class="dm-h3">Pick a template if</h2><p class="dm-body">You sell a handful of things, you want to be live today, and you are happy with a proven layout.</p><span class="dm-btn s mw" aria-disabled="true" style="opacity:.55;cursor:default">Templates coming soon</span></div>
         <div class="dm-card hi"><h2 class="dm-h3">Pick custom if</h2><p class="dm-body">Your site has to win trust, rank on Google, take bookings or orders your way, or connect to your tools.</p><a class="dm-btn p mw" href="/services/websites#brief">Build your brief</a></div>
       </div>
       </div>

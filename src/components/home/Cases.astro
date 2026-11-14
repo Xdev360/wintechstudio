@@ -1,85 +1,148 @@
 ---
-// Home case rows, DesignMe "Case studies" sizes (docs/DESIGNME-SPEC.md): bordered rows 1200x491, media 646 wide
-// alternating sides, text side padding 32. The text side uses the same work-card parts as /work:
-// meta row (client, tag, year), 20/600 title + 32x32 arrow button, summary. Media = CardMedia (motion or image).
-// No testimonial boxes until real quotes exist.
-import { cases } from '../../data/cases';
+// Home "Case studies" deck (Nov 2026), after the Chowdeck "What's on Deck" section.
+// Desktop: the section pins while you scroll and opens one project strip at a time; each strip wears the
+// project's own colour, its name runs up the side, and the open strip shows the card motion and the story line.
+// The last strip is "See all work". Phone and tablet: the same strips as a swipe row.
+import { cases, workOrder } from '../../data/cases';
 import CardMedia from '../work/CardMedia.astro';
 import Icon from '../Icon.astro';
-const pick = ['mylo', 'virelle', 'tobel-pearls', 'manzeelatur-ridho'];
-const rows = pick.map((slug) => cases.find((c) => c.slug === slug)!);
+const accent: Record<string, string> = {
+  mylo: '#0A0E17', virelle: '#1D6B4A', 'manzeelatur-ridho': '#2A4BD7', 'tobel-pearls': '#F2751F',
+  'lets-hang': '#834DFB', cardiorisk: '#E5383B', 'virtual-trades': '#9160DF',
+};
+const tint: Record<string, string> = {
+  mylo: '#EEF0F3', virelle: '#DDF1E6', 'manzeelatur-ridho': '#E1E7FF', 'tobel-pearls': '#FDE9DA',
+  'lets-hang': '#ECE4FF', cardiorisk: '#FDE2E2', 'virtual-trades': '#EFE6FC',
+};
+const rows = workOrder.map((slug) => cases.find((c) => c.slug === slug)!).filter(Boolean);
+const total = rows.length + 1;
 ---
-<section class="cases h-sec" id="work">
-  <div class="h-wrap">
-    <div class="h-head">
+<section class="deck h-sec" id="work" style={`--n:${total}`}>
+  <div class="pin">
+    <div class="h-wrap head">
       <p class="h-eb">Selected work</p>
       <h2 class="h-h2">Case studies</h2>
+      <p class="hint" aria-hidden="true">Scroll to open each project</p>
     </div>
-    <div class="list">
+    <div class="track" role="list">
       {rows.map((c, i) => (
-        <a class:list={['row', { flip: i % 2 === 1 }]} href={`/work/${c.slug}`} aria-label={`${c.name} case study: ${c.headline}`}>
-          <span class="media"><CardMedia c={c} class="fillm" /></span>
-          <span class="txt">
-            <span class="meta">
-              <strong>{c.name}</strong>
-              <span class:list={['tag', c.tag === 'Our product' ? 'own' : 'client']}>{c.tag}</span>
-              {c.cardServices.slice(0, 2).map((t) => <span class="tag">{t}</span>)}
-              <span class="yr">{c.year}</span>
+        <a class:list={['strip', { on: i === 0 }]} role="listitem" href={`/work/${c.slug}`} data-i={i}
+           style={`--c:${accent[c.slug] || '#0A0E17'};--t:${tint[c.slug] || '#F2F4F8'}`}
+           aria-label={`${c.name} case study: ${c.headline}`}>
+          <span class="rail" aria-hidden="true">
+            {c.icon ? <img class="ic" src={c.icon} alt="" width="28" height="28" loading="lazy" /> : <img class="ic" src={`/images/cases/icon-${c.slug}.webp`} alt="" width="28" height="28" loading="lazy" />}
+            <span class="vname">{c.name}</span>
+          </span>
+          <span class="open">
+            <span class="top">
+              <span class="meta"><img class="ic sm" src={c.icon || `/images/cases/icon-${c.slug}.webp`} alt="" width="22" height="22" loading="lazy" /><strong>{c.name}</strong><span class="tag">{c.tag}</span><span class="yr">{c.year}</span></span>
+              <span class="tt">{c.headline}</span>
+              <span class="ln">{c.cardLine}</span>
             </span>
-            <span class="main">
-              <span class="hd">
-                <span class="tt">{c.headline}</span>
-                <span class="ar" aria-hidden="true"><Icon name="arrow-right" size={14} /></span>
-              </span>
-              <span class="sum">{c.intro.replace(/^(Client project|Our own product)\.\s*/, '')}</span>
-              <span class="rd">Read the case study</span>
-            </span>
+            <span class="media"><CardMedia c={c} class="fillm" /></span>
+            <span class="go">Read the case study <Icon name="arrow-right" size={14} /></span>
           </span>
         </a>
       ))}
+      <a class="strip all" role="listitem" href="/work" data-i={rows.length} style="--c:#3B5BFF;--t:#0A0E17" aria-label="See all case studies">
+        <span class="rail" aria-hidden="true"><span class="plus"><Icon name="arrow-right" size={16} /></span><span class="vname">See all work</span></span>
+        <span class="open">
+          <span class="top"><span class="meta"><strong>{rows.length} case studies</strong></span><span class="tt">Brands, stores, apps and films, from Lagos to the world.</span></span>
+          <span class="grid">{rows.map((c) => <img src={c.card.poster} alt="" width="160" height="120" loading="lazy" />)}</span>
+          <span class="go">See all case studies <Icon name="arrow-right" size={14} /></span>
+        </span>
+      </a>
     </div>
-    <p class="all"><a class="h-link" href="/work">See all case studies <span class="ar2">→</span></a></p>
   </div>
 </section>
+<script>
+  // Pin and open: scroll progress through the section picks the open strip (desktop only).
+  const deck = document.querySelector<HTMLElement>('.deck');
+  if (deck) {
+    const strips = [...deck.querySelectorAll<HTMLElement>('.strip')];
+    const desk = matchMedia('(min-width:1024px)');
+    let cur = 0, raf = 0;
+    const set = (i: number) => { if (i === cur) return; strips[cur]?.classList.remove('on'); strips[i]?.classList.add('on'); cur = i; };
+    const tick = () => {
+      raf = 0;
+      if (!desk.matches) return;
+      const r = deck.getBoundingClientRect();
+      const run = deck.offsetHeight - innerHeight;
+      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, run)));
+      set(Math.min(strips.length - 1, Math.floor(p * strips.length * 0.999)));
+    };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(tick); }, { passive: true });
+    addEventListener('resize', tick);
+    // Hover or focus opens a strip too, so the deck works without scrolling (and with a keyboard).
+    strips.forEach((s, i) => {
+      s.addEventListener('mouseenter', () => desk.matches && set(i));
+      s.addEventListener('focus', () => set(i));
+    });
+    tick();
+  }
+</script>
 <style>
-  .cases{background:var(--h-bg);--wk-panel:var(--h-panel2,#FAFAFA)}
-  .list{margin-top:80px;display:flex;flex-direction:column;gap:80px}
-  .row{display:flex;height:491px;box-sizing:border-box;border:1px solid var(--h-rule);color:var(--h-fg);text-decoration:none;transition:border-color .25s}
-  .row:hover,.row:focus-visible{border-color:var(--h-mute)}
-  .row.flip{flex-direction:row-reverse}
-  .media{position:relative;flex:0 0 646px;height:100%;display:block;border-right:1px solid var(--h-rule)}
-  .row.flip .media{border-right:0;border-left:1px solid var(--h-rule)}
+  .deck{background:var(--h-bg);--rail:76px;--gap:10px}
+  .head{position:relative}
+  .hint{margin:12px 0 0;font:500 13px/18px var(--font);color:var(--h-label)}
+  .track{display:flex;gap:var(--gap)}
+  .strip{position:relative;display:flex;border-radius:22px;background:var(--t);color:var(--h-fg);text-decoration:none;overflow:hidden;
+    border:1px solid color-mix(in srgb,var(--c) 22%,transparent)}
+  .strip:focus-visible{outline:2px solid var(--c);outline-offset:3px}
+  .rail{flex:none;width:var(--rail);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:22px 0 26px}
+  .ic{width:28px;height:28px;border-radius:7px;object-fit:cover;display:block}
+  .ic.sm{width:22px;height:22px;border-radius:6px}
+  .vname{writing-mode:vertical-rl;transform:rotate(180deg);font:600 34px/1 var(--font);letter-spacing:-.6px;color:var(--c);white-space:nowrap}
+  .open{flex:1;min-width:0;display:flex;flex-direction:column;gap:18px;padding:26px 26px 26px 0}
+  .top{display:flex;flex-direction:column;gap:10px}
+  .meta{display:flex;align-items:center;gap:8px;font:400 13px/18px var(--font);color:var(--h-mute)}
+  .meta strong{font-weight:600;color:var(--h-fg);font-size:14px}
+  .tag{padding:3px 8px;border-radius:999px;background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c);font-weight:500}
+  .yr{margin-left:auto}
+  .tt{font:600 26px/32px var(--font);letter-spacing:-.4px;max-width:560px}
+  .ln{font:400 16px/24px var(--font);color:var(--h-mute);max-width:520px}
+  .media{position:relative;flex:1;min-height:0;border-radius:14px;overflow:hidden;display:block;box-shadow:0 18px 40px color-mix(in srgb,var(--c) 18%,transparent)}
   .media > :global(.fillm){position:absolute;inset:0}
-  .txt{flex:1;min-width:0;padding:32px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
-  .meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding-bottom:16px;border-bottom:1px solid var(--h-rule)}
-  .meta strong{font:600 14px/21px var(--font);color:var(--h-fg);margin-right:4px}
-  .tag{font:400 14px/21px var(--font);padding:4px 8px;border-radius:2px;background:var(--h-tint);color:var(--h-mute)}
-  .tag.own{background:var(--h-warm-tint);color:var(--h-warm)}
-  .tag.client{background:var(--h-accent-tint);color:var(--h-accent-ink)}
-  .yr{margin-left:auto;font:400 13px/18px var(--font);color:var(--h-label)}
-  .main{display:flex;flex-direction:column;align-items:stretch;gap:12px}
-  .hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
-  .tt{font:600 20px/26px var(--font);letter-spacing:-.2px;max-width:460px}
-  .ar{flex:none;width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--h-rule);transition:background .25s,color .25s,border-color .25s}
-  .ar :global(svg){transition:transform .35s cubic-bezier(.2,.7,.2,1)}
-  .row:hover .ar,.row:focus-visible .ar{background:var(--h-fg);border-color:var(--h-fg);color:var(--h-bg)}
-  .row:hover .ar :global(svg),.row:focus-visible .ar :global(svg){transform:translateX(3px)}
-  .sum{font:400 16px/24px var(--font);color:var(--h-mute)}
-  .rd{margin-top:8px;font:600 14px/21px var(--font);text-decoration:underline;text-underline-offset:3px}
-  .all{margin:56px 0 0;text-align:center}
-  @media (prefers-reduced-motion:reduce){.ar :global(svg){transition:none}.row:hover .ar :global(svg){transform:none}}
-  @media (max-width:1279px){.media{flex-basis:54%}}
+  .go{display:inline-flex;align-items:center;gap:8px;font:600 14px/21px var(--font);color:var(--c)}
+  .go :global(svg){transition:transform .3s}
+  .strip:hover .go :global(svg){transform:translateX(3px)}
+  .all{color:#fff;border-color:transparent}
+  .all .vname{color:#fff}
+  .all .plus{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#3B5BFF;color:#fff}
+  .all .meta strong,.all .tt{color:#fff}
+  .all .go{color:#8FA3FF}
+  .grid{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-content:start}
+  .grid img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:block}
+  :root[data-theme="dark"] .strip:not(.all){background:color-mix(in srgb,var(--c) 16%,#121212);color:#F5F5F5}
+  :root[data-theme="dark"] .vname,:root[data-theme="dark"] .go,:root[data-theme="dark"] .tag{color:color-mix(in srgb,var(--c) 45%,#fff)}
+  :root[data-theme="dark"] .all{background:#1B1D24}
+
+  /* Desktop: pinned deck */
+  @media (min-width:1024px){
+    .deck.h-sec{height:calc(100vh + (var(--n) - 1) * 52vh);padding:0}
+    .pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;gap:32px;padding:112px 0 32px;box-sizing:border-box}
+    .head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+    .track{width:min(1320px,calc(100vw - 64px));margin:0 auto;height:min(600px,calc(100vh - 300px));min-height:420px}
+    .strip{flex:0 0 var(--rail);transition:flex-basis .7s cubic-bezier(.65,0,.2,1),flex-grow .7s cubic-bezier(.65,0,.2,1)}
+    .strip.on{flex:1 1 auto}
+    .open{opacity:0;transform:translateX(24px);transition:opacity .35s,transform .5s cubic-bezier(.2,.7,.2,1);pointer-events:none;min-width:520px}
+    .strip.on .open{opacity:1;transform:none;transition-delay:.25s;pointer-events:auto}
+    .strip.on .vname{opacity:.18}
+    .vname{transition:opacity .4s}
+  }
+  /* Phone and tablet: swipe row */
   @media (max-width:1023px){
-    .row,.row.flip{flex-direction:column;height:auto}
-    .media,.row.flip .media{flex:none;width:100%;height:auto;aspect-ratio:646/490;border:0;border-bottom:1px solid var(--h-rule)}
+    .head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+    .hint{display:none}
+    .track{margin-top:32px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    .track::-webkit-scrollbar{display:none}
+    .strip{flex:0 0 min(84vw,420px);scroll-snap-align:center;min-height:520px}
+    .rail{display:none}
+    .open{padding:20px}
+    .tt{font-size:21px;line-height:27px}
+    .ln{font-size:15px;line-height:22px}
+    .media{flex:none;aspect-ratio:4/3}
+    .grid{grid-template-columns:repeat(3,1fr)}
   }
-  @media (max-width:767px){
-    .list{margin-top:40px;gap:40px}
-    .row{margin:0 -16px;border-left:0;border-right:0}
-    .media{aspect-ratio:390/294}
-    .txt{padding:20px 16px;gap:20px}
-    .tt{font-size:18px;line-height:24px}
-    .sum{font-size:15px;line-height:22.5px}
-    .all{margin-top:40px}
-  }
+  @media (prefers-reduced-motion:reduce){.strip,.open,.vname{transition:none!important}}
 </style>

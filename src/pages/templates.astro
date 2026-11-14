@@ -20,11 +20,11 @@ const plans = [['Free', '$0', '', 'A live site on a Wintech link'], ['Starter', 
     <section class="dm-top">
       <div class="wrap">
         <div class="dm-head c">
-          <p class="dm-eb">Wintech Templates</p>
+          <p class="dm-eb">Wintech Templates · Coming soon</p>
           <h1 class="dm-h1">Not ready for a full build? Start with a template.</h1>
           <p class="dm-intro">Pick a template, describe your business in your own words, and go live the same afternoon. Made by the studio, run by you.</p>
           <div class="dm-ctas cc">
-            <a class="dm-btn p" href={contact.templates} target="_blank" rel="noopener">Open Wintech Templates</a>
+            <span class="dm-btn p" aria-disabled="true" style="opacity:.55;cursor:default">Coming soon</span>
             <a class="dm-btn s" href="#plans">See plans</a>
           </div>
         </div>
@@ -33,7 +33,7 @@ const plans = [['Free', '$0', '', 'A live site on a Wintech link'], ['Starter', 
 
     <section class="dm-sec flush">
       <div class="wrap dm-grid g3">{kinds.map(([k, bg, fg, id, mid]) => (
-        <a class="tc" href={contact.templates} target="_blank" rel="noopener">
+        <div class="tc" aria-disabled="true">
           <div class="pv" style={`--tb:${bg};--tf:${fg}`} data-figma={id} data-figma-mobile={mid || undefined} data-pfx="0.05" aria-hidden="true">
             <div class="site" data-pfx-target>
               <div class="nb"><i></i><b></b><b></b><b></b></div>
@@ -41,8 +41,8 @@ const plans = [['Free', '$0', '', 'A live site on a Wintech link'], ['Starter', 
               <div class="pics"><u></u><u></u><u></u></div>
             </div>
           </div>
-          <span class="tm"><strong>{k}</strong><span class="dm-arrow"><Lc name="arrow-up-right" /></span></span>
-        </a>
+          <span class="tm"><strong>{k}</strong><span class="dm-tag">Soon</span></span>
+        </div>
       ))}</div>
     </section>
 
