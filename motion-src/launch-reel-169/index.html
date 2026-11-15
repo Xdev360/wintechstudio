@@ -1,0 +1,202 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- "Our new website is live" reel (Nov 2026) · 1920x1080 landscape · 18s · plays once.
+     Storyboard: Figma kQl8LQLi5xdRVVyXF3R4NZ, page "Launch · Website live · Nov 2026" (panels 1282:1351 to 1283:1323).
+     Screens are real 2x captures of the built site: the old site from /archive, the new home in light and dark.
+     Facts used are from the launch brief: 15 to 35 pages, Lighthouse mobile performance 91. Config: cfg.js (W,H). -->
+<style>
+  @font-face{font-family:Figtree;src:url(../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2) format('woff2');font-weight:100 900}
+  @font-face{font-family:GM;src:url(../../node_modules/@fontsource/geist-mono/files/geist-mono-latin-500-normal.woff2) format('woff2');font-weight:500}
+  html,body{margin:0;background:#0A0E17}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#0A0E17;font-family:Figtree,sans-serif;color:#0A0E17}
+  .abs{position:absolute;left:0;top:0}
+  .sc{position:absolute;inset:0}
+  .ink{background:#0A0E17}.paper{background:#fff}
+  /* crosshair safe lines (brand chrome) */
+  .cross{position:absolute;inset:0;pointer-events:none}
+  .cross i{position:absolute;background:currentColor;opacity:.12}
+  .br{position:absolute;width:960px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.06);transform-origin:50% 50%}
+  .bar{height:44px;display:flex;align-items:center;gap:8px;padding:0 18px;background:#F2F4F8;border-bottom:1px solid #E3E7EE;position:relative}
+  .bar i{width:11px;height:11px;border-radius:50%;background:#D5DAE3}
+  .bar span{position:absolute;left:50%;transform:translateX(-50%);font:500 15px/1 GM,monospace;color:#5B6475;letter-spacing:.3px}
+  .vp{position:relative;width:960px;height:840px;overflow:hidden}
+  .vp img{position:absolute;left:0;top:0;width:960px;display:block}
+  .eb{font:500 26px/34px GM,monospace;letter-spacing:1.6px;text-transform:uppercase}
+  .h{font:500 76px/84px Figtree,sans-serif;letter-spacing:-2px}
+  .cap{position:absolute;left:0;right:0;text-align:center}
+  #cursor{position:absolute;width:36px;height:36px;z-index:50;filter:drop-shadow(0 4px 8px rgba(0,0,0,.35))}
+  #ripple{position:absolute;width:80px;height:80px;margin:-40px 0 0 -40px;border-radius:50%;border:3px solid #3B5BFF;z-index:49;opacity:0}
+  /* folder */
+  #folder{position:absolute;left:420px;top:640px;width:400px;height:280px}
+  #fback{position:absolute;left:0;top:0;width:400px;height:280px}
+  #ffront{position:absolute;left:0;top:70px;width:400px;height:210px;background:#254D7F;border-radius:10px 10px 18px 18px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:40px;box-sizing:border-box;color:#fff;font:500 30px/1 GM,monospace;box-shadow:0 -10px 30px rgba(0,0,0,.25)}
+  /* terminal */
+  #term{position:absolute;left:190px;top:280px;width:860px;height:520px;background:#0A0E17;border-radius:16px;box-shadow:0 40px 90px rgba(10,14,23,.25);padding:40px 48px;box-sizing:border-box;font:500 30px/52px GM,monospace;color:#fff}
+  #term .dim{color:#5B6475}
+  #term .ln{opacity:0}
+  #tbar{position:absolute;left:48px;right:48px;bottom:48px;height:8px;border-radius:4px;background:#1A2030;overflow:hidden}
+  #tbar b{display:block;height:100%;width:0;background:#3B5BFF}
+  #tick{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#3B5BFF;vertical-align:middle;margin-left:14px;transform:scale(0)}
+  /* typed headline overlay on the new home */
+  #typed{position:absolute;left:80px;top:152px;font:600 51.84px/51.84px Figtree,sans-serif;letter-spacing:-1.04px;color:#0A0E17;white-space:nowrap}
+  #typed span{opacity:0;display:inline-block}
+  #pill{position:absolute;left:383px;top:770px;height:46px;padding:0 18px 0 8px;display:flex;align-items:center;gap:10px;border-radius:999px;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35);font:500 18px/1 Figtree,sans-serif;color:#0A0E17;transform:scale(0);transform-origin:50% 100%}
+  #pill b{width:30px;height:30px;border-radius:50%;background:#0A0E17;display:grid;place-items:center}
+  /* count */
+  #pages{position:absolute;left:160px;width:800px;top:430px;text-align:center}
+  #pages .row{display:flex;align-items:baseline;justify-content:center;gap:28px}
+  #p15{font:500 120px/1 Figtree,sans-serif;color:#B9C1CF;letter-spacing:-3px}
+  #p35{font:500 220px/1 Figtree,sans-serif;letter-spacing:-8px;min-width:270px;text-align:left}
+  #ring{position:absolute;left:1180px;top:300px;width:400px;height:400px}
+  
+  /* end card */
+  .ec{opacity:0}
+  #btn{display:inline-flex;align-items:center;gap:14px;height:88px;padding:0 44px;background:#3B5BFF;color:#fff;font:500 34px/1 Figtree,sans-serif;border-radius:2px}
+  #t1,#t2,#t3,#t4,#t5,#t6,.side{left:1180px;right:100px;text-align:left}
+  #t1 .h,#t3 .h,#t4 .h,#t5 .h,#t6 .h{font-size:72px;line-height:80px}
+  #s1 #t1{top:470px}
+</style></head>
+<body>
+<div id="stage">
+  <!-- S1-S3: Ink, old site -->
+  <div class="sc ink" id="s1">
+    <div class="br" id="oldBr"><div class="bar"><i></i><i></i><i></i><span>wintechstudio.com</span></div><div class="vp"><img id="oldImg" src="a/old-home.png"></div></div>
+    <div id="folder"><svg id="fback" viewBox="0 0 400 280"><path d="M0 22a14 14 0 0 1 14-14h120l24 26h228a14 14 0 0 1 14 14v220H0z" fill="#1A3A63"/></svg><div id="fslot"></div><div id="ffront">/archive</div></div>
+    <div class="cap" id="t1" style="top:470px;color:#fff"><div class="h">End of an era.</div></div>
+    <div class="cap" id="t2" style="top:510px;color:#B9C1CF"><div class="eb">Hand-written HTML · 15 pages</div></div>
+    <div class="cap" id="t3" style="top:450px;color:#fff"><div class="h" style="font-size:64px;line-height:72px">Kept in the archive.</div><div class="eb" style="margin-top:22px;color:#B9C1CF;text-transform:none;letter-spacing:.4px">wintechstudio.com/archive</div></div>
+  </div>
+  <!-- S4: Paper, astro build -->
+  <div class="sc paper" id="s4">
+    <div class="cap side" style="top:440px;color:#5B6475"><div class="eb" id="t4a">The rebuild</div></div>
+    <div id="term">
+      <div class="ln">$ astro build</div>
+      <div class="ln dim">building pages <span id="cnt">8</span> / 35</div>
+      <div class="ln dim">structured data  · llms.txt</div>
+      <div class="ln">35 pages built<span id="tick"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></div>
+      <div id="tbar"><b></b></div>
+    </div>
+    <div class="cap" id="t4" style="top:490px"><div class="h">Rebuilt on Astro.</div></div>
+  </div>
+  <!-- S5-S6: new site -->
+  <div class="sc paper" id="s5" style="background:#F2F4F8">
+    <div class="br" id="newBr" style="box-shadow:0 40px 100px rgba(10,14,23,.18),0 0 0 1px rgba(10,14,23,.06)"><div class="bar"><i></i><i></i><i></i><span>wintechstudio.com</span></div>
+      <div class="vp" id="nvp"><img id="nlight" src="a/new-light-noh1.png"><div id="typed"></div><img id="ndark" src="a/new-dark.png" style="clip-path:circle(0px at 800px 41px)"><div id="pill"><b><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg></b>Ask Wintech AI</div></div>
+    </div>
+    <div class="cap" id="t5" style="top:400px"><div class="eb" style="color:#3B5BFF">New · wintechstudio.com</div><div class="h" style="margin-top:20px">Our new website<br>is live.</div></div>
+    <div class="cap" id="t6" style="top:440px"><div class="h">Dark mode.<br>Ask Wintech AI.</div></div>
+  </div>
+  <!-- S7: count -->
+  <div class="sc paper" id="s7">
+    <div class="cap" style="top:360px;left:160px;right:auto;width:800px"><div class="eb" style="color:#5B6475">Pages</div></div>
+    <div id="pages"><div class="row"><span id="p15">15</span><svg width="70" height="40" viewBox="0 0 70 40"><path d="M2 20h62M48 6l16 14-16 14" fill="none" stroke="#B9C1CF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="p35">15</span></div></div>
+    <svg id="ring" viewBox="0 0 400 400"><circle cx="200" cy="200" r="176" fill="none" stroke="#F2F4F8" stroke-width="24"/><circle id="arc" cx="200" cy="200" r="176" fill="none" stroke="#3B5BFF" stroke-width="24" stroke-linecap="round" stroke-dasharray="1106" stroke-dashoffset="1106" transform="rotate(-90 200 200)"/></svg>
+    <div id="rnum" style="position:absolute;left:1180px;top:300px;width:400px;height:400px;display:grid;place-items:center;font:500 150px/1 Figtree,sans-serif;letter-spacing:-5px">0</div>
+    <div class="cap" id="t7" style="top:760px;left:1080px;right:auto;width:600px"><div class="eb" style="color:#5B6475">Lighthouse performance · mobile</div></div>
+  </div>
+  <!-- S8: end card -->
+  <div class="sc paper" id="s8">
+    <div class="cap ec" id="e1" style="top:250px"><svg width="132" height="92" viewBox="0 0 1460 1020"><path fill="#0A0E17" d="M980.934 0C963.206 0 947.13 10.41 939.879 26.5869L715.176 527.851L490.47 26.5869C483.219 10.4103 467.143 0.000176976 449.416 0H45.0446C12.1774 0 -9.59748 34.0954 4.22627 63.9141L434.46 991.939C450.686 1026.94 500.552 1026.62 516.333 991.419L715.176 547.847L914.91 993.412C930.529 1028.25 979.715 1029.03 996.422 994.693L1448.96 64.6768C1463.5 34.793 1441.74 0.000315535 1408.5 0H980.934Z"/></svg><div style="font:600 34px/1 Figtree;margin-top:28px;letter-spacing:-.4px">Wintech Studio</div></div>
+    <div class="cap ec" id="e2" style="top:480px"><div class="h">Our new website<br>is live.</div></div>
+    <div class="cap ec" id="e3" style="top:690px"><div class="eb" style="color:#5B6475;text-transform:none;letter-spacing:.4px;font-size:28px">wintechstudio.com</div></div>
+    <div class="cap ec" id="e4" style="top:780px"><span id="btn">See what changed <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div>
+  </div>
+  <div class="cross" id="cross"><i style="left:60px;top:0;bottom:0;width:1px"></i><i style="right:60px;top:0;bottom:0;width:1px"></i><i style="top:100px;left:0;right:0;height:1px"></i><i style="bottom:100px;left:0;right:0;height:1px"></i></div>
+  <svg id="cursor" viewBox="0 0 24 24"><path d="M4 2l16 9-7 2-3 7z" fill="#0A0E17" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  <div id="ripple"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const P=(t,a,b)=>cl((t-a)/(b-a));
+const eO=t=>1-Math.pow(1-t,3), eI=t=>t*t*t, eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eBack=t=>{const c1=1.7,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const show=(id,o)=>{$(id).style.opacity=o;$(id).style.visibility=o>0.001?'visible':'hidden'};
+// typed headline words
+const words=["Bring","the","idea.","|","We'll","bring","the","team."];
+const ty=$('typed');words.forEach(w=>{if(w==='|'){ty.appendChild(document.createElement('br'));return}const s=document.createElement('span');s.textContent=w+' ';ty.appendChild(s)});
+const tspans=[...ty.querySelectorAll('span')];
+const lns=[...document.querySelectorAll('#term .ln')];
+window.DUR=18;
+window.render=function(t){
+  // scene visibility
+  show('s1', t<6.05?1:0); show('s4', t>=6&&t<8.35?1:0); show('s5', t>=8&&t<13.2?1:0); show('s7', t>=13&&t<15.4?1:0); show('s8', t>=15.2?1:0);
+  if(t>=6&&t<8.35) show('s4',1-P(t,8.0,8.35)*0);
+  $('cross').style.color = (t<6||(t>=13.2&&false))?'#fff':'#0A0E17';
+  // ---------- S1 to S3 ----------
+  const ob=$('oldBr'), oi=$('oldImg');
+  if(t<6){
+    let x=140, s=1, op=1, ry=0;
+    // 0-2: rise in small
+    const a=eO(P(t,0.15,0.95)); s=0.72; op=a; ry=24*(1-a);
+    // 2: cut to the work page, larger
+    if(t>=2){ oi.src='a/old-work.png'; s=0.96; op=1; ry=0; } else oi.src='a/old-home.png';
+    // scroll 2.3-3.7
+    const sc=eIO(P(t,2.35,3.75)); oi.style.transform=`translateY(${-sc*220}px)`;
+    // 4-4.6 shrink, 4.6-5.2 drop into folder
+    const sh=eIO(P(t,4.0,4.6)), dr=eI(P(t,4.55,5.15));
+    if(t>=4){ s=0.96+(0.30-0.96)*sh; }
+    const cy=98+442; // browser centre y at rest
+    let ty0=0; if(t>=4){ ty0=(760-cy)*sh + 130*dr; }
+    ob.style.left=x+'px'; ob.style.top=(98+ry)+'px';
+    ob.style.transform=`translateY(${ty0}px) scale(${s})`; ob.style.opacity=op*(t>5.1?1-P(t,5.1,5.2):1);
+    ob.style.zIndex=2;
+    // folder: in at 3.9, settle on drop, slide out left 5.4-5.9
+    const fin=eO(P(t,3.85,4.35)), settle=t>5.15?Math.sin(P(t,5.15,5.45)*Math.PI)*10:0, fout=eIO(P(t,5.45,5.95));
+    $('folder').style.opacity=fin; $('folder').style.transform=`translate(${-fout*900}px,${(1-fin)*60+settle}px)`;
+    $('folder').style.zIndex=t>4.55?3:1; $('ffront').style.zIndex=4;
+    // put the browser behind the folder front while it drops
+    ob.style.zIndex = t>4.6?2:5; $('folder').style.zIndex = t>4.6?6:1; $('fback').style.zIndex=0;
+    // captions
+    show('t1', eO(P(t,0.45,1.15))*(1-P(t,1.8,2.0))); $('t1').style.transform=`translateY(${(1-eO(P(t,0.45,1.15)))*16}px)`;
+    show('t2', eO(P(t,2.4,2.9))*(1-P(t,3.85,4.0)));
+    show('t3', eO(P(t,4.7,5.2))*(1-P(t,5.75,5.95))); $('t3').style.transform=`translateX(${-fout*0}px)`;
+  }
+  // ---------- S4 terminal ----------
+  if(t>=6&&t<8.4){
+    lns.forEach((l,i)=>{const a=eO(P(t,6.25+i*0.32,6.5+i*0.32));l.style.opacity=a;l.style.transform=`translateY(${(1-a)*10}px)`});
+    const c=t<6.75?8:t<7.0?21:35; $('cnt').textContent=c;
+    $('tbar').firstElementChild.style.width=(eO(P(t,6.5,7.3))*100)+'%';
+    $('tick').style.transform=`scale(${eBack(P(t,7.3,7.5))})`;
+    show('t4', eO(P(t,7.35,7.75)));
+    const out=eIO(P(t,7.95,8.35)); $('term').style.transform=`scale(${1-0.1*out})`; $('term').style.opacity=1-out; $('t4').style.opacity=Math.min($('t4').style.opacity,1-out);
+    show('t4a', eO(P(t,6.1,6.5))*(1-out));
+  }
+  // ---------- S5 / S6 new site ----------
+  if(t>=8&&t<13.3){
+    const nb=$('newBr'); const up=eO(P(t,8.05,8.75)); const outD=eIO(P(t,12.75,13.25));
+    nb.style.left='140px'; nb.style.top=(98+160*(1-up)+1100*outD)+'px'; nb.style.opacity=up; nb.style.transform='scale(1)';
+    tspans.forEach((s,i)=>{const a=eO(P(t,8.75+i*0.18,8.95+i*0.18));s.style.opacity=a;s.style.transform=`translateY(${(1-a)*8}px)`});
+    show('t5', eO(P(t,9.9,10.4))*(1-P(t,10.75,10.95)));
+    // cursor to the moon (moon centre page 1197,62 -> browser 798,41 + bar 44)
+    const mx=140+798, my=98+44+41;
+    const cin=eIO(P(t,10.4,11.05));
+    const cx=1820+(mx-1820)*cin, cyv=1060+(my-1060)*cin;
+    const cur=$('cursor'); cur.style.opacity= t>10.35&&t<12.7?1:0; cur.style.left=(cx-4+(t>11.05?(t-11.05)*0:0))+'px'; cur.style.top=(cyv-2)+'px';
+    const rp=P(t,11.1,11.45); const rip=$('ripple'); rip.style.left=mx+'px'; rip.style.top=my+'px'; rip.style.opacity=rp>0&&rp<1?(1-rp):0; rip.style.transform=`scale(${0.4+rp})`;
+    // wipe to dark from the moon
+    const w=eIO(P(t,11.2,11.75)); $('ndark').style.clipPath=`circle(${w*1200}px at 798px 41px)`;
+    // pill pops (page centre bottom)
+    $('pill').style.transform=`scale(${t<11.85?0:0.8+0.2*eBack(P(t,11.85,12.2))})`;
+    // after the pill, cursor drifts to it
+    if(t>11.9){const k=eIO(P(t,11.9,12.4)); cur.style.left=(mx-4+(140+480-mx)*k)+'px'; cur.style.top=(my-2+(98+44+790-my)*k)+'px';}
+    show('t6', eO(P(t,11.5,11.95))*(1-outD));
+  } else { $('cursor').style.opacity=0; $('ripple').style.opacity=0; }
+  // ---------- S7 count ----------
+  if(t>=13&&t<15.5){
+    const inn=eO(P(t,13.1,13.5)); $('pages').style.opacity=inn;
+    $('p35').textContent=Math.round(15+20*eO(P(t,13.35,14.15)));
+    const r=eO(P(t,13.6,14.8)); $('arc').setAttribute('stroke-dashoffset',String(1106*(1-0.91*r)));
+    $('rnum').textContent=Math.round(91*r);
+    const out=P(t,15.0,15.4); $('s7').style.opacity=1-out;
+    show('t7', eO(P(t,13.9,14.3))*(1-out));
+  }
+  // ---------- S8 end card ----------
+  if(t>=15.2){
+    ['e1','e2','e3','e4'].forEach((id,i)=>{const a=eO(P(t,15.35+i*0.15,15.85+i*0.15));const el=$(id);el.style.opacity=a;el.style.transform=`translateY(${(1-a)*16}px)`});
+    const pr=P(t,16.3,16.6); const press=pr>0&&pr<1?Math.sin(pr*Math.PI):0; $('btn').style.transform=`scale(${1-0.04*press})`; $('btn').style.background=press>0?'#2F4AE0':'#3B5BFF';
+  }
+};
+window.render(0);
+</script>
+</body></html>
