@@ -1,0 +1,267 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Launch film "Wintech Studio 2.0" (Nov 2026), after the DesignMe 2.0 reel (uiadrian): Figma-style selection boxes and named cursors,
+     smooth site scroll, theme flip, big counted numbers, Lighthouse rings, a curved wall of every page, quick tool demos, a dot-matrix logo end.
+     1920x1080 · 48s. Every screen is a real capture of the built site (light and dark) or the archived old site. Facts from the launch brief only:
+     15 to 35 pages, Lighthouse mobile 91 / 96 / 100 / 100, 7 case studies, structured data on every page, llms.txt, edits shipped with Claude.
+     Config: cfg.js may set W,H (vertical cut uses 1080x1920 and the same scene code with a layout switch). -->
+<style>
+  @font-face{font-family:Figtree;src:url(../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2) format('woff2');font-weight:100 900}
+  @font-face{font-family:GM;src:url(../../node_modules/@fontsource/geist-mono/files/geist-mono-latin-500-normal.woff2) format('woff2');font-weight:500}
+  html,body{margin:0;background:#000}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#fff;font-family:Figtree,sans-serif}
+  .sc{position:absolute;inset:0;visibility:hidden;overflow:hidden}
+  .ab{position:absolute}
+  .sel{position:absolute;border:2px solid #3B5BFF;box-sizing:border-box}
+  .sel i{position:absolute;width:12px;height:12px;background:#fff;border:2px solid #3B5BFF;box-sizing:border-box}
+  .sel i:nth-child(1){left:-7px;top:-7px}.sel i:nth-child(2){right:-7px;top:-7px}.sel i:nth-child(3){left:-7px;bottom:-7px}.sel i:nth-child(4){right:-7px;bottom:-7px}
+  .cur{position:absolute;z-index:40;width:0;height:0}
+  .cur svg{position:absolute;left:-3px;top:-2px;width:30px;height:30px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.25))}
+  .cur b{position:absolute;left:22px;top:24px;padding:5px 10px;border-radius:6px;font:600 16px/1 Figtree;color:#fff;white-space:nowrap}
+  .mono{font:500 22px/1 GM,monospace;letter-spacing:2px;text-transform:uppercase}
+  .big{font:600 360px/1 Figtree;letter-spacing:-14px}
+  .ttl{font:500 84px/92px Figtree;letter-spacing:-2.6px}
+  .brw{position:absolute;background:#fff;overflow:hidden;box-shadow:0 50px 120px rgba(10,14,23,.22),0 0 0 1px rgba(10,14,23,.08)}
+  .brw .bar{height:40px;background:#F2F4F8;border-bottom:1px solid #E3E7EE;display:flex;align-items:center;gap:8px;padding:0 16px;position:relative}
+  .brw .bar i{width:11px;height:11px;border-radius:50%;background:#D5DAE3}
+  .brw .bar span{position:absolute;left:50%;transform:translateX(-50%);font:500 14px/1 GM;color:#5B6475}
+  .dk .bar{background:#16181E;border-color:#23262E}.dk .bar span{color:#8A93A3}.dk .bar i{background:#2F333C}
+  .vp{position:relative;overflow:hidden}
+  .ring{position:absolute;width:300px;height:300px}
+  .ring svg{position:absolute;inset:0}
+  .ring b{position:absolute;inset:0;display:grid;place-items:center;font:600 104px/1 Figtree;color:#fff;letter-spacing:-4px}
+  .ring em{position:absolute;left:0;right:0;top:-74px;text-align:center;font:500 34px/1 Figtree;font-style:normal;color:#fff}
+  #wall{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+  #wall img{position:absolute;width:300px;height:188px;object-fit:cover;object-position:top;box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+  .bub{position:absolute;padding:22px 28px;border-radius:18px;font:500 30px/40px Figtree;max-width:760px}
+  .code{font:500 24px/38px GM,monospace}
+</style></head>
+<body>
+<div id="stage">
+  <!-- S1 logo in a selection box -->
+  <div class="sc" id="s1" style="background:radial-gradient(ellipse at 50% 50%,#fff 40%,#E9EBEF 100%)">
+    <div class="ab" id="lg" style="left:0;top:0;width:1920px;height:1080px">
+      <svg id="wm" class="ab" viewBox="0 0 1460 1020" style="width:150px;height:105px"><path id="wmp" fill="#0A0E17" d="M980.934 0C963.206 0 947.13 10.41 939.879 26.5869L715.176 527.851L490.47 26.5869C483.219 10.4103 467.143 0.000176976 449.416 0H45.0446C12.1774 0 -9.59748 34.0954 4.22627 63.9141L434.46 991.939C450.686 1026.94 500.552 1026.62 516.333 991.419L715.176 547.847L914.91 993.412C930.529 1028.25 979.715 1029.03 996.422 994.693L1448.96 64.6768C1463.5 34.793 1441.74 0.000315535 1408.5 0H980.934Z"/></svg>
+      <div class="ab" id="wword" style="font:600 92px/1 Figtree;letter-spacing:-3px;color:#0A0E17;white-space:nowrap">Wintech Studio</div>
+      <div class="sel" id="sel1"><i></i><i></i><i></i><i></i></div>
+    </div>
+  </div>
+  <!-- S2 new home scroll, light to dark -->
+  <div class="sc" id="s2" style="background:#F2F4F8">
+    <div class="brw" id="b2" style="left:160px;top:70px;width:1600px;border-radius:14px"><div class="bar"><i></i><i></i><i></i><span>wintechstudio.com</span></div>
+      <div class="vp" style="width:1600px;height:900px"><img id="h2l" class="ab" src="a/home-light-full.jpg" style="left:0;top:0;width:1600px"><img id="h2d" class="ab" src="a/home-dark-full.jpg" style="left:0;top:0;width:1600px;clip-path:circle(0px at 1320px 52px)"></div></div>
+  </div>
+  <!-- S3 old site, end of an era, tunnel -->
+  <div class="sc" id="s3" style="background:#0A0E17">
+    <div id="tun" class="ab" style="inset:0"></div>
+    <div class="brw" id="b3" style="left:600px;top:250px;width:720px;border-radius:10px"><div class="bar"><i></i><i></i><i></i><span>wintechstudio.com</span></div><div class="vp" style="width:720px;height:450px"><img src="a/old-home.jpg" style="width:720px;display:block"></div></div>
+    <div class="ab ttl" id="t3" style="left:0;right:0;top:790px;text-align:center;color:#fff">End of an era.</div>
+    <div class="ab mono" id="t3b" style="left:0;right:0;top:900px;text-align:center;color:#8A93A3">Hand-written HTML · kept at /archive</div>
+  </div>
+  <!-- S4 numbers -->
+  <div class="sc" id="s4" style="background:#0A0E17">
+    <div id="paths"></div>
+    <div class="ab big" id="n35" style="left:0;right:0;top:330px;text-align:center;color:#fff">35</div>
+    <div class="sel" id="sel4" style="left:760px;top:330px;width:400px;height:360px"><i></i><i></i><i></i><i></i></div>
+    <div class="ab mono" id="lp" style="left:0;right:0;top:740px;text-align:center;color:#8A93A3">Live pages</div>
+    <div class="ab" id="from" style="left:0;right:0;top:420px;text-align:center;color:#fff;font:600 200px/1 Figtree;letter-spacing:-8px"><span style="color:#3F4554">15</span><span style="display:inline-block;width:60px"></span><span id="arr" style="color:#3B5BFF">→</span><span style="display:inline-block;width:60px"></span><span id="to">35</span></div>
+    <div class="ab mono" id="fl" style="left:0;right:0;top:680px;text-align:center;color:#8A93A3">Pages, before and after</div>
+  </div>
+  <!-- S5 lighthouse -->
+  <div class="sc" id="s5" style="background:#0A0E17">
+    <div class="ab mono" style="left:0;right:0;top:170px;text-align:center;color:#8A93A3">Lighthouse · new home page · mobile</div>
+    <div id="rings"></div>
+  </div>
+  <!-- S6 grid lines, buttons, cursors, zoom out to hero -->
+  <div class="sc" id="s6" style="background:#0A0E17">
+    <div id="z6" class="ab" style="left:0;top:0;width:1920px;height:1200px;transform-origin:350px 470px">
+      <img src="a/home-dark-full.jpg" style="position:absolute;left:0;top:0;width:1920px">
+    </div>
+    <div id="g6" class="ab" style="inset:0"></div>
+  </div>
+  <!-- S7 wall of pages -->
+  <div class="sc" id="s7" style="background:#050608;perspective:1100px">
+    <div id="wall"></div>
+    <div class="ab" id="scr7" style="inset:0;background:radial-gradient(ellipse 40% 34% at 50% 50%,rgba(5,6,8,.92),rgba(5,6,8,0));opacity:0"></div>
+    <div class="ab ttl" id="t7" style="left:0;right:0;top:470px;text-align:center;color:#fff;text-shadow:0 10px 40px rgba(0,0,0,.8)">7 case studies.<br>35 pages.</div>
+  </div>
+  <!-- S8 tools -->
+  <div class="sc" id="s8" style="background:#0A0E17">
+    <div class="brw dk" id="b8" style="left:240px;top:150px;width:1440px;border-radius:14px"><div class="bar"><i></i><i></i><i></i><span id="u8">wintechstudio.com</span></div>
+      <div class="vp" style="width:1440px;height:900px"><img id="i8a" class="ab" src="a/ai-open.jpg" style="width:1440px;left:0;top:0"><img id="i8b" class="ab" src="a/pricing.jpg" style="width:1440px;left:0;top:0"><img id="i8c" class="ab" src="a/book.jpg" style="width:1440px;left:0;top:0">
+        <div class="ab" id="q8" style="left:470px;top:806px;font:400 20px/1 Figtree;color:#fff"></div></div></div>
+    <div class="ab mono" id="l8" style="left:240px;top:90px;color:#8A93A3"></div>
+  </div>
+  <!-- S9 runs in Claude -->
+  <div class="sc" id="s9" style="background:#F2F4F8">
+    <div class="ab ttl" id="t9" style="left:200px;top:180px;color:#0A0E17">The site runs in Claude.</div>
+    <div class="bub" id="m1" style="left:200px;top:360px;background:#0A0E17;color:#fff">Add a Partners page and put it in the nav.</div>
+    <div class="ab" id="m2" style="left:200px;top:500px;width:1100px;background:#fff;border:1px solid #DDE2EA;border-radius:18px;padding:28px 32px;box-sizing:border-box">
+      <div class="code" style="color:#5B6475">src/pages/partners.astro <span style="color:#22A06B">+ new</span></div>
+      <div class="code" style="color:#5B6475">src/components/Header.astro <span style="color:#22A06B">+1</span></div>
+      <div class="code" id="ship" style="color:#0A0E17;margin-top:10px">Built. Pushed. Live at /partners</div>
+    </div>
+    <div class="ab mono" id="t9b" style="left:200px;top:820px;color:#5B6475">Ask, review, ship. Same day.</div>
+  </div>
+  <!-- S10 end -->
+  <div class="sc" id="s10" style="background:#0A0E17">
+    <canvas id="dots" width="1920" height="1080" class="ab" style="left:0;top:0"></canvas>
+    <svg id="wm2" class="ab" viewBox="0 0 1460 1020" style="left:885px;top:470px;width:150px;height:105px"><path fill="#fff" d="M980.934 0C963.206 0 947.13 10.41 939.879 26.5869L715.176 527.851L490.47 26.5869C483.219 10.4103 467.143 0.000176976 449.416 0H45.0446C12.1774 0 -9.59748 34.0954 4.22627 63.9141L434.46 991.939C450.686 1026.94 500.552 1026.62 516.333 991.419L715.176 547.847L914.91 993.412C930.529 1028.25 979.715 1029.03 996.422 994.693L1448.96 64.6768C1463.5 34.793 1441.74 0.000315535 1408.5 0H980.934Z"/></svg>
+    <div class="ab" id="e10" style="left:0;right:0;top:440px;text-align:center;color:#fff">
+      <div style="display:inline-flex;align-items:baseline;gap:26px"><span style="font:600 120px/1 Figtree;letter-spacing:-4px">Wintech Studio</span><span id="ver" style="font:500 54px/1 GM;color:#3B5BFF">2.0</span></div>
+      <div id="e10b" style="margin-top:40px;font:500 40px/1 Figtree;color:#B9C1CF">Our new website is live · wintechstudio.com</div>
+    </div>
+    <div class="ab" id="scan" style="left:0;right:0;top:540px;height:2px;background:#fff;opacity:0"></div>
+  </div>
+  <!-- cursors -->
+  <div class="cur" id="cA"><svg viewBox="0 0 24 24"><path d="M4 2l16 9-7 2-3 7z" fill="#3B5BFF" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg><b style="background:#3B5BFF">Oladele</b></div>
+  <div class="cur" id="cB"><svg viewBox="0 0 24 24"><path d="M4 2l16 9-7 2-3 7z" fill="#D97757" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg><b style="background:#D97757">Claude</b></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const P=(t,a,b)=>cl((t-a)/(b-a));
+const L=(a,b,k)=>a+(b-a)*k;
+const eO=t=>1-Math.pow(1-t,3), eO5=t=>1-Math.pow(1-t,5), eI=t=>t*t*t, eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eBack=t=>{const c1=1.6,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const S=[['s1',0,3.7],['s2',3.6,8.7],['s3',8.6,12.7],['s4',12.6,17.1],['s5',17.0,20.7],['s6',20.6,24.7],['s7',24.6,29.7],['s8',29.6,37.7],['s9',37.6,41.7],['s10',41.6,48.1]];
+function cur(id,x,y,o){const c=$(id);c.style.left=x+'px';c.style.top=y+'px';c.style.opacity=o;c.style.visibility=o>0?'visible':'hidden';}
+// ---- builders
+// S4 floating paths
+const paths=['/work/mylo','/services/brand','/guides','/glossary','/partners','/work/virelle','/pricing','/how-we-work','/tools/cost-calculator','/industries/salons','/work/tobel-pearls','/about','/new-website','/faq','/services/ai-assistant','/work/lets-hang'];
+const pw=$('paths');paths.forEach((p,i)=>{const d=document.createElement('div');d.className='ab';d.textContent=p;d.style.cssText='font:500 '+(22+((i*7)%4)*6)+'px/1 Figtree;color:#fff;white-space:nowrap';pw.appendChild(d);});
+const ppos=paths.map((p,i)=>{const a=i*2.399, r=520+((i*97)%5)*70;return [960+Math.cos(a)*r*1.35, 520+Math.sin(a)*r*0.62];});
+// S5 rings
+const RV=[['Performance',91],['Accessibility',96],['Best practices',100],['SEO',100]];
+const rw=$('rings');RV.forEach(([n,v],i)=>{const d=document.createElement('div');d.className='ring';d.style.left=(180+i*410)+'px';d.style.top='420px';
+ d.innerHTML=`<em>${n}</em><svg viewBox="0 0 300 300"><circle cx="150" cy="150" r="128" fill="none" stroke="#1E222B" stroke-width="18"/><circle class="arc" cx="150" cy="150" r="128" fill="none" stroke="${v>=90?'#3B5BFF':'#F2751F'}" stroke-width="18" stroke-linecap="round" stroke-dasharray="804" stroke-dashoffset="804" transform="rotate(-90 150 150)"/></svg><b>0</b>`;rw.appendChild(d);});
+const rings=[...rw.children];
+// S6 grid lines
+const g6=$('g6');[[0,470,'h'],[0,640,'h'],[230,0,'v'],[740,0,'v']].forEach(([x,y,k])=>{const l=document.createElement('div');l.className='ab';l.style.background='rgba(255,255,255,.55)';if(k==='h'){l.style.cssText+=`;left:0;top:${y}px;width:1920px;height:1px`}else{l.style.cssText+=`;left:${x}px;top:0;width:1px;height:1080px`}g6.appendChild(l);});
+// S7 wall
+const wall=$('wall');const imgs=[];for(let i=0;i<33;i++){imgs.push('a/pages/'+['p00','p01','p02','p03','p04','p05','p06','p07','p08','p09','p10','p11','p12','p13','p14','p15','p16','p17','p18','p19','p20','p21','p22','p23','p24','p29','p30','p31','p32','p33','p34','p35','p36'][i]+'.jpg');}
+const COLS=17,ROWS=7,R=1700,tiles=[];
+for(let c=0;c<COLS;c++)for(let r=0;r<ROWS;r++){const im=document.createElement('img');im.src=imgs[(c*5+r*3)%imgs.length];wall.appendChild(im);tiles.push([im,c,r]);}
+// S10 dots
+const dc=$('dots').getContext('2d');
+function dots(t){dc.clearRect(0,0,1920,1080);const N=900;for(let i=0;i<N;i++){const a=i*2.39996,rr=Math.sqrt(i/N);const R0=120+rr*620;const wob=Math.sin(rr*18-t*2.2)*0.5+0.5;const x=960+Math.cos(a+t*0.15*(1-rr))*R0*1.25,y=520+Math.sin(a+t*0.15*(1-rr))*R0*0.75;
+ const ring=Math.exp(-Math.pow((rr-0.62)/0.13,2));const o=(0.08+0.85*ring*wob);dc.fillStyle=`rgba(255,255,255,${o.toFixed(3)})`;dc.beginPath();dc.arc(x,y,2.2+ring*1.8,0,6.283);dc.fill();}}
+// S3 tunnel frames
+const tun=$('tun');for(let i=0;i<10;i++){const d=document.createElement('div');d.className='ab';d.style.cssText='left:50%;top:50%;width:1920px;height:1080px;margin:-540px 0 0 -960px;border:2px solid rgba(255,255,255,.18);box-sizing:border-box;opacity:0';tun.appendChild(d);}
+const tframes=[...tun.children];
+
+window.DUR=48;
+window.render=function(t){
+  for(const [id,a,b] of S){const on=t>=a&&t<b;$(id).style.visibility=on?'visible':'hidden';}
+  // crossfade boundaries: each scene fades in over 0.1s
+  for(const [id,a,b] of S){$(id).style.opacity=cl((t-a)/0.12);}
+  cur('cA',0,0,0);cur('cB',0,0,0);
+
+  // ---------------- S1 0-3.7
+  if(t<3.7){const u=t;
+    const wmW=150,wmH=105; const draw=eO(P(u,0.2,0.9));
+    // logo grows from a dot while a selection box follows it; then word slides out to the right
+    const slide=eIO(P(u,1.6,2.4)); const totalW=wmW+30+620; const gx=960-totalW/2;
+    const wx=L(960-wmW/2,gx,slide), wy=540-wmH/2;
+    const sc=L(0.2,1,eBack(P(u,0.25,0.95)));
+    $('wm').style.left=wx+'px';$('wm').style.top=wy+'px';$('wm').style.transform=`scale(${sc})`;$('wm').style.opacity=draw;
+    const ww=$('wword');ww.style.left=(gx+wmW+30)+'px';ww.style.top=(540-46)+'px';ww.style.opacity=eO(P(u,1.85,2.5));ww.style.transform=`translateX(${(1-eO(P(u,1.85,2.6)))*-40}px)`;ww.style.clipPath=`inset(0 ${100-100*eO(P(u,1.85,2.7))}% 0 0)`;
+    // selection box: around mark, then stretches to include the word
+    const bx0=960-wmW/2-18, bw0=wmW+36, bx1=gx-18, bw1=totalW+36;
+    const bk=eIO(P(u,1.7,2.6)); const sel=$('sel1');sel.style.left=L(bx0,bx1,bk)+'px';sel.style.top=(540-wmH/2-18)+'px';sel.style.width=L(bw0,bw1,bk)+'px';sel.style.height=(wmH+36)+'px';sel.style.opacity=P(u,0.5,0.7)*(1-P(u,3.0,3.3));
+    // cursor drags the right handle
+    const hx=L(bx0+bw0,bx1+bw1,bk), hy=540+wmH/2+18; const cin=eO(P(u,0.6,1.5));
+    cur('cA',L(1500,hx,cin),L(900,hy,cin),cl(P(u,0.6,0.8))*(1-P(u,3.1,3.4)));
+    const z=1+0.06*eIO(P(u,2.9,3.7)); $('lg').style.transform=`scale(${z})`; $('lg').style.transformOrigin='960px 540px';
+  }
+  // ---------------- S2 3.6-8.7
+  if(t>=3.6&&t<8.7){const u=t-3.6;
+    const inn=eO(P(u,0,0.6)); $('b2').style.transform=`translateY(${(1-inn)*120}px) scale(${L(0.94,1,inn)})`;
+    const full=4800*1600/1920-900; // scroll range in px (display)
+    const s=eIO(P(u,0.5,2.6))*2300 - eIO(P(u,2.7,3.5))*2300;
+    $('h2l').style.top=(-s)+'px';$('h2d').style.top=(-s)+'px';
+    // moon at (1197,62) in 1440 page -> display x 1330, y 69
+    const mx=160+1330, my=70+40+69;
+    const ck=eIO(P(u,3.4,4.0));cur('cA',L(1700,mx,ck),L(1000,my,ck),P(u,3.3,3.45)*(1-P(u,4.8,5.0)));
+    const w=eIO(P(u,4.05,4.75)); $('h2d').style.clipPath=`circle(${w*2000}px at 1330px 69px)`;
+    $('b2').classList.toggle('dk',w>0.5);
+    $('s2').style.background=w>0.5?'#0A0E17':'#F2F4F8';
+  }
+  // ---------------- S3 8.6-12.7
+  if(t>=8.6&&t<12.7){const u=t-8.6;
+    const inn=eO(P(u,0,0.7)); const b=$('b3');
+    const shrink=eI(P(u,2.6,3.5)); b.style.opacity=inn*(1-P(u,3.3,3.5)); b.style.transform=`translateY(${(1-inn)*40}px) scale(${1-0.85*shrink})`;
+    cur('cA',L(1200,960,eO(P(u,0.6,1.6))),L(880,560,eO(P(u,0.6,1.6))),P(u,0.5,0.7)*(1-P(u,2.5,2.7)));
+    $('t3').style.opacity=eO(P(u,0.6,1.1))*(1-P(u,2.6,2.9));$('t3b').style.opacity=eO(P(u,1.2,1.7))*(1-P(u,2.6,2.9));
+    // tunnel: frames rush toward camera 3.0-4.1
+    tframes.forEach((f,i)=>{const k=P(u,3.0+i*0.06,3.9+i*0.06);const s=0.05+Math.pow(k,2.2)*1.4;f.style.transform=`scale(${s})`;f.style.opacity=k>0&&k<1?Math.sin(k*Math.PI)*0.9:0;});
+  }
+  // ---------------- S4 12.6-17.1
+  if(t>=12.6&&t<17.1){const u=t-12.6;
+    const ph2=P(u,2.6,2.9);
+    const n=Math.round(L(1,35,eO5(P(u,0.2,1.6)))); $('n35').textContent=n; $('n35').style.opacity=eO(P(u,0,0.4))*(1-ph2);
+    $('n35').style.filter=`blur(${(1-eO(P(u,0,0.5)))*14}px)`;
+    $('sel4').style.opacity=P(u,0.6,0.8)*(1-ph2); $('lp').style.opacity=eO(P(u,0.8,1.2))*(1-ph2);
+    [...pw.children].forEach((d,i)=>{const [x,y]=ppos[i];const k=eO(P(u,0.3+i*0.05,1.2+i*0.05));const dr=u*14;d.style.left=(L(960,x,k)-(d.offsetWidth/2)+Math.cos(i)*dr)+'px';d.style.top=(L(520,y,k)+Math.sin(i)*dr)+'px';d.style.opacity=k*0.55*(1-ph2);d.style.filter=`blur(${(i%3)*1.2}px)`;});
+    cur('cA',L(1300,1165,eO(P(u,0.7,1.5))),L(820,700,eO(P(u,0.7,1.5))),P(u,0.6,0.8)*(1-ph2));
+    const f=$('from');f.style.opacity=eO(P(u,2.9,3.3))*(1-P(u,4.2,4.5));$('to').textContent=Math.round(L(15,35,eO(P(u,3.3,4.0))));
+    $('arr').style.display='inline-block';$('arr').style.transform=`translateX(${(1-eO(P(u,3.0,3.5)))*-40}px)`;
+    $('fl').style.opacity=eO(P(u,3.2,3.6))*(1-P(u,4.2,4.5));
+  }
+  // ---------------- S5 17.0-20.7
+  if(t>=17&&t<20.7){const u=t-17;
+    rings.forEach((r,i)=>{const k=eO(P(u,0.3+i*0.25,1.6+i*0.25));const v=RV[i][1];r.querySelector('.arc').setAttribute('stroke-dashoffset',String(804*(1-v/100*k)));r.querySelector('b').textContent=Math.round(v*k);
+      const a=eO(P(u,0.1+i*0.12,0.6+i*0.12));r.style.opacity=a*(1-P(u,3.3,3.6));r.style.transform=`translateY(${(1-a)*40}px)`;});
+  }
+  // ---------------- S6 20.6-24.7
+  if(t>=20.6&&t<24.7){const u=t-20.6;
+    // start zoomed on the buttons (page 1440 coords ~ (120..360, 540)), zoom out to full hero
+    const z=L(3.0,1,eIO(P(u,1.6,3.0)));const z6=$('z6');z6.style.transformOrigin='300px 640px';z6.style.transform=`scale(${z})`;
+    $('g6').style.opacity=(1-P(u,1.5,1.9));
+    cur('cA',L(820,560,eO(P(u,0.2,1.0))),L(380,470,eO(P(u,0.2,1.0))),P(u,0.1,0.3)*(1-P(u,1.5,1.8)));
+    cur('cB',L(60,230,eO(P(u,0.4,1.2))),L(900,640,eO(P(u,0.4,1.2))),P(u,0.3,0.5)*(1-P(u,1.5,1.8)));
+  }
+  // ---------------- S7 24.6-29.7
+  if(t>=24.6&&t<29.7){const u=t-24.6;
+    const rot=L(-38,8,eIO(P(u,0,4.6))); const pull=L(300,1150,eIO(P(u,0,3.0)));
+    wall.style.transform=`translateZ(${pull}px) rotateY(${rot}deg)`;
+    const span=100/COLS;
+    tiles.forEach(([im,c,r])=>{const ang=(c-(COLS-1)/2)*span;const y=(r-(ROWS-1)/2)*206;
+      im.style.transform=`rotateY(${ang}deg) translateZ(${-R}px) translate(-150px,${y-94}px)`;im.style.opacity=eO(P(u,0.05*((c+r)%7),0.6+0.05*((c+r)%7)));});
+    $('t7').style.opacity=eO(P(u,1.8,2.4))*(1-P(u,4.4,4.8));$('scr7').style.opacity=$('t7').style.opacity;
+  }
+  // ---------------- S8 29.6-37.7
+  if(t>=29.6&&t<37.7){const u=t-29.6;
+    const inn=eO(P(u,0,0.6));$('b8').style.transform=`translateY(${(1-inn)*80}px)`;
+    const sb=eIO(P(u,3.0,3.5)), sc=eIO(P(u,5.5,6.0));
+    $('i8b').style.clipPath=`inset(0 0 0 ${100-100*sb}%)`;$('i8c').style.clipPath=`inset(0 0 0 ${100-100*sc}%)`;
+    $('u8').textContent=u<3.25?'wintechstudio.com':u<5.75?'wintechstudio.com/pricing':'wintechstudio.com/book';
+    const q='How fast can you start?';const n=Math.floor(P(u,0.8,2.2)*q.length);$('q8').textContent=u<3.2?q.slice(0,n):'';
+    $('l8').textContent=u<3.25?'Ask Wintech AI':u<5.75?'Pricing in dollars and naira':'Book a call, brief attached';$('l8').style.opacity=eO(P(u,0.2,0.6))*(1-P(u,7.6,8.0));
+    // cursor: types, then toggles NGN, then picks a date
+    let cx=1100,cy=900;if(u<3)[cx,cy]=[L(1500,1140,eO(P(u,0.4,1.0))),L(1000,970,eO(P(u,0.4,1.0)))];
+    else if(u<5.5)[cx,cy]=[L(1140,240+437,eO(P(u,3.5,4.3))),L(970,150+40+218,eO(P(u,3.5,4.3)))];
+    else [cx,cy]=[L(677,240+585,eO(P(u,6.0,6.8))),L(408,150+40+364,eO(P(u,6.0,6.8)))];
+    cur('cA',cx,cy,P(u,0.4,0.6)*(1-P(u,7.5,7.8)));
+  }
+  // ---------------- S9 37.6-41.7
+  if(t>=37.6&&t<41.7){const u=t-37.6;
+    $('t9').style.opacity=eO(P(u,0,0.5));$('t9').style.transform=`translateY(${(1-eO(P(u,0,0.6)))*30}px)`;
+    $('m1').style.opacity=eO(P(u,0.6,1.0));$('m1').style.transform=`translateY(${(1-eO(P(u,0.6,1.0)))*20}px)`;
+    $('m2').style.opacity=eO(P(u,1.4,1.8));$('m2').style.transform=`translateY(${(1-eO(P(u,1.4,1.8)))*20}px)`;
+    $('ship').style.opacity=eO(P(u,2.2,2.5));$('t9b').style.opacity=eO(P(u,2.7,3.1));
+    cur('cB',L(1600,1250,eO(P(u,1.2,2.0))),L(900,640,eO(P(u,1.2,2.0))),P(u,1.1,1.3)*(1-P(u,3.7,4.0)));
+  }
+  // ---------------- S10 41.6-48
+  if(t>=41.6){const u=t-41.6;
+    dots(u);$('dots').style.opacity=eO(P(u,0,1.0))*(1-0.6*P(u,2.2,3.0));
+    const wm=$('wm2');wm.style.opacity=eO(P(u,0.3,0.9))*(1-P(u,2.0,2.3));wm.style.transform=`scale(${L(0.6,1,eBack(P(u,0.3,1.0)))})`;
+    const e=$('e10');e.style.opacity=eO(P(u,2.3,2.9));e.style.filter=`blur(${(1-eO(P(u,2.3,2.9)))*16}px)`;
+    $('e10b').style.opacity=eO(P(u,3.2,3.7));
+    $('ver').style.transform=`rotate(${-6+6*eO(P(u,2.7,3.2))}deg)`;
+    const sk=P(u,2.2,2.6);$('scan').style.opacity=sk>0&&sk<1?Math.sin(sk*Math.PI):0;$('scan').style.transform=`scaleX(${eO(sk)})`;
+  }
+};
+window.render(0);
+</script>
+</body></html>
