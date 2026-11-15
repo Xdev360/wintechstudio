@@ -19,13 +19,23 @@ const more = [1, 2, 3].map(k => order[(at + k) % order.length]);
 const ld = { '@context': 'https://schema.org', '@type': 'CreativeWork', name: c.headline, about: c.name, creator: { '@type': 'Organization', name: 'Wintech Studio' }, description: c.intro, image: `https://www.wintechstudio.com/images/cases/film-${c.slug}.webp` };
 const dark = c.theme === 'dark';
 const vt = c.slug === 'virtual-trades';
+// Cover gradients: one hue per brand, dark to light
+const coverGrad: Record<string, [string, string]> = {
+  mylo: ['#0A0E17', '#3A3F4D'], virelle: ['#123D2C', '#2E8B62'], 'manzeelatur-ridho': ['#141A3D', '#2A4BD7'],
+  'tobel-pearls': ['#002E8A', '#0A7DFF'], 'lets-hang': ['#4A21C2', '#8F5CFF'], cardiorisk: ['#7A1416', '#E5383B'], 'virtual-trades': ['#4B2A8F', '#9A6BE6'],
+};
 ---
 <Page title={`${c.name} case study · Wintech Studio`} description={c.intro.slice(0, 158)} crumbs={[['Work', '/work'], [c.name, `/work/${c.slug}`]]} jsonld={[ld]} theme={dark ? 'dark' : undefined}>
   <article class:list={['case', dark ? 'is-dark' : 'is-light', { vt }]}>
     <section class="cover" aria-label={`${c.name} cover`}>
-      <div class="cv"><img src={`/images/cases/film-${c.slug}.webp`} alt={`${c.name}: a highlight of the design`} width="2720" height="1530" fetchpriority="high" decoding="async" /></div>
+      <div class="cv" style={`--g1:${coverGrad[c.slug]?.[0] || "#0A0E17"};--g2:${coverGrad[c.slug]?.[1] || "#2B3140"}`}>
+        <div class="cvb">
+          <img class="cvi" src={c.icon || `/images/cases/icon-${c.slug}.webp`} alt="" width="72" height="72" />
+          <span class="cvt">{c.name}</span>
+        </div>
+      </div>
       <div class="cvcap">
-        <span class="cvn">{c.icon && <img src={c.icon} alt="" width="22" height="22" />}{c.name}<span class="cvk">{c.kind}</span></span>
+        <span class="cvn">{c.kind}</span>
         {c.url && <a class="cvl" href={c.url} target="_blank" rel="noopener"><i aria-hidden="true"></i>{c.url.replace('https://', '')}<Icon name="arrow-up-right" size={12} /></a>}
         <a class="cvs" href="#overview">The story <Icon name="arrow-down" size={14} /></a>
       </div>
@@ -165,8 +175,11 @@ const vt = c.slug === 'virtual-trades';
   @media (prefers-reduced-motion:reduce){.sty[data-reveal]{opacity:1;transform:none;transition:none}}
   /* Cover first: the project's cover (card motion when there is one) fills the top of the page, the story starts on scroll */
   .cover{background:var(--c-bg);padding:16px 24px 0}
-  .cv{position:relative;max-width:1392px;margin:0 auto;height:clamp(180px,24vw,340px);overflow:hidden;background:var(--c-panel)}
-  .cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 42%;display:block}
+  /* Designed cover: one brand gradient, the app's logo and its name */
+  .cv{position:relative;max-width:1392px;margin:0 auto;height:clamp(160px,18vw,260px);display:grid;place-items:center;background:linear-gradient(120deg,var(--g1) 0%,var(--g2) 100%)}
+  .cvb{display:flex;align-items:center;gap:20px}
+  .cvi{width:72px;height:72px;border-radius:18px;object-fit:cover;box-shadow:0 12px 30px rgba(0,0,0,.22)}
+  .cvt{font:500 52px/1 var(--font);letter-spacing:-1.2px;color:#fff;white-space:nowrap}
   .cvcap{max-width:1392px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:16px 4px 40px;flex-wrap:wrap}
   .cvn{display:inline-flex;align-items:center;gap:8px;font:600 15px/20px var(--font);color:var(--c-fg)}
   .cvn img{width:22px;height:22px;border-radius:6px;object-fit:cover}
@@ -177,7 +190,7 @@ const vt = c.slug === 'virtual-trades';
   .cvs{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:500 14px/20px var(--font);color:color-mix(in srgb,var(--c-fg) 70%,transparent);text-decoration:none}
   .cvs :global(svg){animation:nudge 1.8s ease-in-out infinite}
   @keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
-  @media (max-width:767px){.cover{padding:8px 12px 0}.cv{height:160px}.cvcap{padding:12px 4px 28px}.cvs{display:none}}
+  @media (max-width:767px){.cover{padding:8px 12px 0}.cv{height:150px}.cvi{width:48px;height:48px;border-radius:12px}.cvt{font-size:32px;letter-spacing:-.6px}.cvb{gap:14px}.cvcap{padding:12px 4px 28px}.cvs{display:none}}
   @media (prefers-reduced-motion:reduce){.cvs :global(svg){animation:none}}
   .ov{background:var(--c-panel);padding:64px 0 96px}
   .ov h1{margin:12px 0 0;max-width:1000px;font-size:56px;line-height:64.4px;font-weight:600;letter-spacing:-1.12px}
