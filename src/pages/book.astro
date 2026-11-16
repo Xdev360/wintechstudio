@@ -3,7 +3,7 @@ import Page from '../layouts/Page.astro';
 import Lc from '../components/ui/Lc.astro';
 import '../styles/studio.css';
 import { services } from '../data/site';
-const names = Object.fromEntries([...services.map(s => [s.slug, s.name]), ['plan', 'Project plan'], ['diagnostic', 'Paid diagnostic ($200)']]);
+const names = Object.fromEntries([...services.map(s => [s.slug, s.name]), ['plan', 'Project plan'], ['diagnostic', 'Paid diagnostic ($200)'], ['black-friday', 'Black Friday pack']]);
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const times = ['10:00', '11:30', '13:00', '15:00', '16:30'];
 const expect = [['clock', '25 minutes', 'We read your brief before the call.'], ['user', 'With the project lead', 'The person who would run your project.'], ['check', 'One next step', 'The diagnostic, a proposal or a quick job.']];

@@ -1,0 +1,440 @@
+---
+// Black Friday 2026 · 20 brands only. Design: Figma "Website · v5" > BF · Black Friday 2026 (desktop/mobile, dark/light).
+// No online payment: every action goes to /book?service=black-friday. No borders, no radius on this page.
+import Page from '../layouts/Page.astro';
+import Lc from '../components/ui/Lc.astro';
+import Faq from '../components/ui/Faq.astro';
+import '../styles/studio.css';
+
+const ENDS = '2026-11-27T23:59:00+01:00';
+const TOTAL = 20, TAKEN = 5; // update TAKEN as calls are booked and confirmed
+const LEFT = TOTAL - TAKEN;
+const book = '/book?service=black-friday';
+
+const logos = [
+  ['Mylo', '/images/cases/icon-mylo.svg', 'var(--fg)'], ['Virelle Wellness', '/images/cases/icon-virelle.svg', '#1D6B4A'],
+  ['Tobel Pearls', '/images/cases/icon-tobel-pearls.svg', '#007DFE'], ['Manzeelatur Ridho', '/images/cases/icon-manzeelatur-ridho.webp', '#2A4BD7'],
+  ["Let's Hang", '/images/cases/icon-lets-hang.svg', '#834DFB'],
+];
+const pack = [
+  ['search', 'Brand audit', 'How customers find you, where they drop off and what competitors do better. Written down.'],
+  ['pen', 'Brand identity', 'Logo refresh, colours, type and a guideline, so everything looks like one business.'],
+  ['layout', 'Social page', 'A highlight for each service, post and story templates, X and LinkedIn covers.'],
+  ['globe', 'Website', 'New or rebuilt. Fast on a phone, found on Google, with WhatsApp, booking and contact.'],
+];
+const steps = [
+  ['Week 1', 'Audit', 'We study your page, your site and your sales, and write down what is losing you customers.', ['How customers find you', 'Where they drop off', 'What competitors do better', 'What to fix first'], 'Weak point: no prices on the page'],
+  ['Week 2', 'Brand', 'Identity and guideline, built on what the audit found. You approve before we move on.', ['Logo refresh', 'Colours and type', 'Brand guideline', 'Approved by you'], 'Colours and type locked'],
+  ['Week 3', 'Social page', 'Highlights and templates that lead people straight to what you sell.', ['A highlight for each service', 'Post and story templates', 'Profile picture', 'X and LinkedIn covers'], 'Highlights point to prices'],
+  ['Weeks 4 to 6', 'Website', 'Designed and built to fix the problems the audit found, not just to look new.', ['Up to 5 pages', 'WhatsApp, booking, contact', 'Fast on a phone', 'Found on Google'], 'Prices now on the home page'],
+  ['January', 'Launch', 'We go live together. Files, guideline and logins are handed over to you.', ['Go live', 'Files and guideline', 'Logins handed over', 'Aftercare starts'], 'Live, and handed over'],
+];
+const packs = [
+  { id: 'refresh', name: 'Refresh', who: 'For brands that need to look the part', was: 1000000, now: 300000, usd: 220, items: ['Brand audit, written', 'Logo refresh', 'Brand guideline', 'Social page kit', 'X and LinkedIn covers'] },
+  { id: 'revamp', name: 'Revamp', who: 'Brand, social page and a new website', was: 1900000, now: 600000, usd: 450, hi: true, items: ['Everything in Refresh', '5 page website, new or rebuilt', 'WhatsApp, contact and booking', 'Found on Google', 'Launch in January'] },
+  { id: 'revamp-ai', name: 'Revamp + AI', who: 'Everything, plus AI on your website', was: 3100000, now: 900000, usd: 650, items: ['Everything in Revamp', 'AI assistant on your website', 'Answers customers day and night', 'First month of care', 'Priority launch slot'] },
+];
+const addons = [['page', 'Extra website page', 60000], ['store', 'Online store with Paystack', 250000], ['motion', '15 second motion intro', 250000], ['content', 'One month of content, 12 posts', 300000]] as const;
+const who = [['bag', 'Fashion and retail', 'Sell from your page with a real store behind it.'], ['utensils', 'Restaurants and food', 'Menu, orders and bookings in one place.'], ['scissors', 'Beauty and salons', 'Book straight from your highlights.'], ['layers', 'Logistics and clearing', 'Look as big as the cargo you move.'], ['heart', 'Clinics and services', 'Trust before the first appointment.'], ['rocket', 'Startups and new brands', 'Launch 2027 with everything in place.']];
+const care = [['wrench', '2 maintenance checks a year', 'We check speed, links, forms and payments twice a year.'], ['shield', 'Bugs fixed free', 'If something on your site breaks, we fix it at no cost.'], ['tag', '30% off future updates', 'New pages, features or campaigns at 30% off the quote.']];
+const faqs: [string, string][] = [
+  ['Why only 20 brands?', 'Every pack starts with a real audit and ends with a January launch. Twenty is what we can do properly in that time.'],
+  ['How do I pay?', 'Book a call first. We agree your pack and plan on the call, then send the first invoice. Pay in 3 (30% to lock your spot, 35% in December, 35% before launch) or pay in 2 (50% now, 50% before launch).'],
+  ['I already have a logo. Do I still need the brand part?', 'We keep what works. The audit tells us if your logo needs a refresh or just a proper guideline around it.'],
+  ['What happens after launch?', 'Black Friday clients get two maintenance checks a year, free bug fixes on the site, and 30% off any future update.'],
+  ['Can I pay in dollars?', 'Yes. Every pack has a dollar price for businesses outside Nigeria.'],
+];
+const ngn = (n: number) => '₦' + n.toLocaleString('en-NG');
+const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech Black Friday 2026', description: 'Brand audit, identity, social page and website for 20 brands, launching January 2027.', priceCurrency: 'NGN', price: '300000', availabilityEnds: ENDS, seller: { '@type': 'Organization', name: 'Wintech Studio' } }];
+---
+<Page title="Black Friday 2026 · 20 brands only · Wintech Studio" description="We are taking 20 businesses only: a brand audit first, then your brand, social page and website, launching in January 2027. Packs from ₦300,000, paid in parts." crumbs={[['Black Friday', '/black-friday']]} jsonld={ld} closing={false}>
+<div class="dm bf">
+  <canvas class="burst" id="burst" aria-hidden="true"></canvas>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hg">
+      <div>
+        <p class="dm-eb acc">Black Friday 2026 · 20 brands only</p>
+        <h1 class="h1">Ready for 2027?<br /><span>Your brand isn't.</span></h1>
+        <p class="dm-intro">We are taking 20 businesses only. We study yours first, then rebuild your brand, your social page and your website, so you start the new year ready to sell.</p>
+        <div class="ctas"><a class="dm-btn p" href={book}>Book a call</a><a class="dm-btn s" href="#packs">See the packs</a></div>
+      </div>
+      <div class="tc">
+        <span class="tag">Black Friday</span>
+        <p class="dm-eb">Ends Black Friday · 27 Nov · 11:59 PM WAT</p>
+        <div class="cd" id="cd" data-ends={ENDS}>
+          {['Days', 'Hrs', 'Min', 'Sec'].map(l => <div><b data-u={l}>00</b><span>{l}</span></div>)}
+        </div>
+        <p class="dm-eb">{LEFT} of {TOTAL} spots left</p>
+        <div class="spots" aria-label={`${LEFT} of ${TOTAL} spots left`}>{Array.from({ length: TOTAL }, (_, i) => <i class={i < TAKEN ? 'on' : ''}></i>)}</div>
+        <p class="dm-small">Audit first. Brand, social page and website. Launch in January.</p>
+        <a class="dm-btn p w" href={book}>Book a call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section class="proof">
+    <div class="wrap">
+      <p class="dm-eb">Brands we have designed and built</p>
+      <ul class="logos">{logos.map(([n, src, c]) => <li style={`--c:${c}`}><img src={src} alt="" width="22" height="22" loading="lazy" /><span>{n}</span></li>)}</ul>
+    </div>
+  </section>
+
+  <!-- PACK -->
+  <section class="dm-sec alt">
+    <div class="wrap">
+      <p class="dm-eb acc">What's in the pack</p>
+      <h2 class="h2">Four things your business<br />needs before 2027.</h2>
+      <div class="row4 swipe">
+        {pack.map(([ic, t, d], i) => (
+          <article class="card rv">
+            <div class={`ill ill${i}`} aria-hidden="true">
+              {i === 0 && <div class="bars">{[['Found you', 100], ['Messaged', 55], ['Paid', 20]].map(([l, v]) => <p><span>{l}</span><i style={`--v:${v}%`}></i></p>)}</div>}
+              {i === 1 && <div class="aa"><b>Aa</b><span><i></i><i></i><i></i><i></i></span></div>}
+              {i === 2 && <div class="soc"><i class="av"></i><span><i></i><i></i><i></i><i></i></span></div>}
+              {i === 3 && <div class="br"><i class="hb">Your brand, ready for 2027.</i><span><i></i><i></i><i></i></span></div>}
+            </div>
+            <div class="cb"><span class="ic"><Lc name={ic} size={18} /></span><span class="n">0{i + 1}</span></div>
+            <h3>{t}</h3><p>{d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIT: pinned, cards flip 1 to 5 on scroll -->
+  <section class="audit" id="audit">
+    <div class="pin">
+      <div class="wrap">
+        <div class="ah">
+          <div><p class="dm-eb acc">How it runs</p><h2 class="h2">We start with an audit,<br />not a logo.</h2></div>
+          <p class="dm-body">Most redesigns start with how things look. Ours start with why customers are not buying. Then every step fixes something the audit found.</p>
+        </div>
+        <div class="stage">
+          <ol class="rail">{steps.map(([w, t], i) => <li class={i === 0 ? 'on' : ''}><b>{i + 1}</b><span><em>{w}</em>{t}</span></li>)}</ol>
+          <div class="stack">
+            {steps.map(([w, t, d, list], i) => (
+              <article class="sc" data-i={i} style={`--i:${i}`}>
+                <div class="st"><span class="tg">Step 0{i + 1} · {w}</span><span class="dm-eb">{i + 1} / 5</span></div>
+                <h3>{t}</h3><p class="dm-body">{d}</p>
+                <p class="dm-eb">What we do</p>
+                <ul>{(list as string[]).map(x => <li><Lc name="check" size={16} stroke={2.2} />{x}</li>)}</ul>
+                <div class="pg"><i style={`width:${(i + 1) * 20}%`}></i></div>
+              </article>
+            ))}
+          </div>
+          <div class="aill" aria-hidden="true">
+            <div class="phone"><i class="av"></i><i class="l1"></i><i class="l2"></i><div class="gr">{Array.from({ length: 6 }, (_, i) => <i class={i === 4 ? 'hot' : ''}></i>)}</div></div>
+            <div class="mag"><i></i></div>
+            <p class="note" id="anote">{steps[0][4]}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="dm-sec cmp-sec">
+    <div class="wrap cmp">
+      <div class="card"><p class="dm-eb">The usual way</p><ul class="no">{['Logo first', 'Website from a template', 'Hope people buy'].map(x => <li><Lc name="x" size={16} stroke={2.2} /><s>{x}</s></li>)}</ul></div>
+      <div class="card hi"><p class="dm-eb acc">The Wintech way</p><ul>{['Audit first', 'Brand and social built on the audit', 'A website that fixes what was losing sales'].map(x => <li><Lc name="check" size={16} stroke={2.2} />{x}</li>)}</ul></div>
+    </div>
+  </section>
+
+  <!-- PACKS + PLAN -->
+  <section class="dm-sec alt" id="packs">
+    <div class="wrap">
+      <div class="ph">
+        <div><p class="dm-eb acc">Pick your pack</p><h2 class="h2">Pick your pack.<br />Pay in small parts.</h2></div>
+        <p class="dm-body">No big payment up front. Start from 30% after your call, and the rest is spread until launch in January.</p>
+      </div>
+      <div class="row3 swipe" role="radiogroup" aria-label="Packs">
+        {packs.map(p => (
+          <button type="button" class={`pk rv${p.hi ? ' on' : ''}`} role="radio" aria-checked={p.hi ? 'true' : 'false'} data-id={p.id} data-name={p.name} data-price={p.now}>
+            {p.hi && <span class="badge">Most picked</span>}
+            <b class="nm">{p.name}</b><span class="who">{p.who}</span>
+            <s class="was">{ngn(p.was)}</s><b class="pr">{ngn(p.now)}</b><span class="usd">${p.usd} outside Nigeria</span>
+            <span class="from">From {ngn(Math.round(p.now * 0.3))} after your call<em>Pay in 3</em></span>
+            <ul>{p.items.map(x => <li><Lc name="check" size={16} stroke={2.2} />{x}</li>)}</ul>
+            <span class="sel">{p.hi ? 'Selected' : 'Choose ' + p.name}</span>
+          </button>
+        ))}
+      </div>
+
+      <div class="plan" id="plan">
+        <div class="pl-top">
+          <div><p class="dm-eb">Your plan</p><b class="pl-name" id="plName">Revamp</b></div>
+          <b class="pl-total" id="plTotal">{ngn(600000)}</b>
+        </div>
+        <div class="pl-grid">
+          <div>
+            <p class="dm-eb">Add what you need</p>
+            <div class="adds">{addons.map(([id, n, p]) => <label class="add"><input type="checkbox" value={id} data-price={p} data-name={n} /><span class="box"><Lc name="check" size={14} stroke={2.6} /></span><span class="an">{n}</span><span class="ap">+ {ngn(p)}</span></label>)}</div>
+            <p class="dm-eb gap">How you pay</p>
+            <div class="plans" role="radiogroup" aria-label="Payment plan">
+              <button type="button" class="pp on" role="radio" aria-checked="true" data-plan="3"><b>Pay in 3</b><span>30% after your call</span></button>
+              <button type="button" class="pp" role="radio" aria-checked="false" data-plan="2"><b>Pay in 2</b><span>50% after your call</span></button>
+            </div>
+          </div>
+          <div>
+            <p class="dm-eb">When you pay</p>
+            <ol class="sched" id="sched"></ol>
+            <div class="due">
+              <div><p class="dm-eb">First payment, after your call</p><b id="plFirst">{ngn(180000)}</b></div>
+              <a class="dm-btn p" id="plBook" href={book}>Book a call</a>
+            </div>
+            <p class="dm-small">Book a call to lock your spot. We agree the plan on the call and send your first invoice after. Nothing is handed over until the last payment.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care">
+        <p class="dm-eb acc">Black Friday aftercare · included</p>
+        <div class="cg">{care.map(([ic, t, d]) => <div><span class="ic s"><Lc name={ic} size={18} /></span><span><b>{t}</b><span class="dm-small">{d}</span></span></div>)}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO -->
+  <section class="dm-sec">
+    <div class="wrap">
+      <p class="dm-eb acc">Who it's for</p>
+      <h2 class="h2">For businesses that look smaller<br />online than they really are.</h2>
+      <div class="row-who swipe">{who.map(([ic, t, d]) => <div class="card rv"><span class="ic s"><Lc name={ic} size={18} /></span><h3>{t}</h3><p>{d}</p></div>)}</div>
+    </div>
+  </section>
+</div>
+
+<Faq items={faqs} title="Black Friday questions" ld={true} service="black-friday" />
+
+<section class="bfc">
+  <div class="cf" aria-hidden="true">{Array.from({ length: 26 }, (_, i) => <i style={`--x:${(i * 37) % 100}%;--y:${(i * 23) % 60}%;--r:${(i * 47) % 180 - 90}deg;--c:${['#3B5BFF', '#8B9CFF', '#5A6378'][i % 3]}`}></i>)}</div>
+  <div class="in">
+    <p class="dm-eb">Black Friday · ends 27 November</p>
+    <h2>20 brands.<br />Then we close.</h2>
+    <p class="sub">Audit first, then brand, social page and website. Book a call to lock your spot.</p>
+    <a class="dm-btn p" href={book}>Book a call</a>
+  </div>
+</section>
+
+<a class="sticky" href={book}><span><b>{LEFT} of {TOTAL} spots left</b><em>Ends 27 Nov</em></span><span class="dm-btn p sm">Book a call</span></a>
+</Page>
+
+<style>
+  .bf{position:relative}
+  .bf *,.bfc *,.sticky *{border-radius:0}
+  .acc{color:var(--sig)}
+  :global(:root[data-theme="dark"]) .acc{color:#8B9CFF}
+  .h1{font-size:68px;line-height:72px;letter-spacing:-1.6px;font-weight:600;margin:16px 0 24px}
+  .h1 span{color:var(--sig)}
+  :global(:root[data-theme="dark"]) .h1 span{color:#8B9CFF}
+  .h2{font-size:42px;line-height:48px;letter-spacing:-.9px;font-weight:600;margin:12px 0 0}
+  .card{background:var(--bg);padding:24px;display:flex;flex-direction:column;gap:10px}
+  .alt .card{background:var(--bg)}
+  .ic{display:inline-grid;place-items:center;width:40px;height:40px;color:var(--sig)}
+  .ic.s{background:var(--sig);color:#fff}
+  .burst{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:60}
+
+  /* hero */
+  .hero{padding:96px 0 72px;position:relative}
+  .hg{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:64px;align-items:center}
+  .ctas{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+  .tc{position:relative;background:var(--panel);padding:32px 28px 28px;display:flex;flex-direction:column;gap:14px}
+  .tag{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;font:500 11px/1 var(--font-mono,monospace);letter-spacing:1.4px;text-transform:uppercase;padding:8px 14px;white-space:nowrap}
+  .cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .cd div{background:var(--bg);padding:14px 0 12px;text-align:center}
+  .cd b{display:block;font-size:36px;line-height:40px;font-weight:600;letter-spacing:-.8px;font-variant-numeric:tabular-nums}
+  .cd span{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--lab)}
+  .spots{display:grid;grid-template-columns:repeat(20,1fr);gap:4px}
+  .spots i{height:14px;background:var(--tint)}
+  .spots i.on{background:var(--sig)}
+
+  .proof{padding:28px 0 40px}
+  .logos{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:12px}
+  .logos li{display:flex;align-items:center;gap:8px;background:var(--panel);padding:12px 18px;color:var(--c);font-weight:500;font-size:15px}
+  .logos img{width:22px;height:22px}
+
+  /* pack */
+  .row4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px}
+  .row4 .card{padding:0 0 24px}
+  .row4 .card>:not(.ill){padding:0 24px}
+  .row4 h3{font-size:20px;font-weight:600;margin:0}
+  .row4 p,.row-who p{font-size:14px;line-height:21px;color:var(--mute);margin:0}
+  .cb{display:flex;justify-content:space-between;align-items:center;margin-top:20px}
+  .cb .n{font:400 11px var(--font-mono,monospace);color:var(--lab)}
+  .ill{height:150px;background:var(--panel);padding:20px;position:relative;overflow:hidden}
+  .bars p{margin:0 0 14px;font-size:11px;color:var(--lab)}
+  .bars i{display:block;height:8px;width:var(--v);background:var(--sig);margin-top:6px}
+  .bars p:nth-child(2) i{opacity:.6}.bars p:nth-child(3) i{opacity:.3}
+  .aa b{font-size:56px;line-height:60px;font-weight:600;letter-spacing:-2px}
+  .aa span,.soc span{display:flex;gap:8px;margin-top:12px}
+  .aa span i,.soc span i{width:28px;height:28px;border-radius:50%;background:var(--fg);opacity:.12}
+  .aa span i:first-child,.soc .av{background:var(--sig);opacity:1}
+  .soc .av{display:block;width:40px;height:40px;border-radius:50%;margin-bottom:12px}
+  .soc span i{width:34px;height:34px}
+  .br{background:var(--bg);padding:10px;height:100%}
+  .br .hb{display:block;background:var(--sig);color:#fff;font-style:normal;font-size:11px;font-weight:600;padding:16px 10px}
+  .br span{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+  .br span i{height:26px;background:var(--tint)}
+
+  /* audit pinned */
+  .audit{height:500vh;position:relative}
+  .pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden;background:var(--bg)}
+  .pin>.wrap{width:100%}
+  .ah{display:grid;grid-template-columns:1fr 500px;gap:64px;align-items:end;margin-bottom:48px}
+  .stage{display:grid;grid-template-columns:260px 440px minmax(0,1fr);gap:56px;align-items:center}
+  .rail{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:36px;position:relative}
+  .rail::before{content:"";position:absolute;left:17px;top:18px;bottom:18px;width:2px;background:var(--tint)}
+  .rail li{display:flex;gap:16px;align-items:center;position:relative;color:var(--lab);transition:color .3s}
+  .rail b{width:36px;height:36px;display:grid;place-items:center;background:var(--panel);font-size:14px;transition:background .3s,color .3s;flex:none}
+  .rail em{display:block;font:400 11px var(--font-mono,monospace);letter-spacing:1px;text-transform:uppercase;font-style:normal}
+  .rail span{font-size:17px;font-weight:500}
+  .rail li.on{color:var(--fg)}.rail li.on b{background:var(--sig);color:#fff}.rail li.on em{color:var(--sig)}
+  .stack{position:relative;height:460px}
+  .sc{position:absolute;inset:0;background:var(--panel);padding:36px;display:flex;flex-direction:column;gap:12px;transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .5s;box-shadow:0 20px 50px rgba(10,14,23,.08);transform-origin:50% 0}
+  .sc h3{font-size:44px;line-height:48px;letter-spacing:-1.2px;font-weight:600;margin:8px 0 0}
+  .st{display:flex;justify-content:space-between;align-items:center}
+  .tg{background:var(--sig);color:#fff;font:500 11px var(--font-mono,monospace);letter-spacing:1px;text-transform:uppercase;padding:6px 10px}
+  .sc ul,.cmp ul,.pk ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .sc li,.cmp li,.pk li{display:flex;gap:10px;align-items:center;font-size:15px;font-weight:500}
+  .sc li :global(svg),.cmp li :global(svg){color:var(--sig)}
+  .pg{margin-top:auto;height:6px;background:var(--bg)}.pg i{display:block;height:100%;background:var(--sig)}
+  .aill{position:relative;height:460px;background:var(--panel);display:grid;place-items:center}
+  .phone{width:190px;height:340px;background:var(--bg);padding:18px 16px;position:relative}
+  .phone .av{display:block;width:36px;height:36px;border-radius:50%;background:var(--tint)}
+  .phone .l1,.phone .l2{position:absolute;left:62px;height:7px;background:var(--tint)}.phone .l1{top:22px;width:70px}.phone .l2{top:36px;width:46px}
+  .gr{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:20px}.gr i{aspect-ratio:1;background:var(--tint);transition:background .4s}.gr i.hot{background:var(--sig);opacity:.35}
+  .mag{position:absolute;right:18%;top:36%;width:96px;height:96px;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+  .mag::before{content:"";position:absolute;inset:0 18px 18px 0;border-radius:50%;border:6px solid var(--sig);background:color-mix(in srgb,var(--bg) 60%,transparent)}
+  .mag i{position:absolute;right:4px;bottom:0;width:10px;height:34px;background:var(--sig);transform:rotate(-45deg)}
+  .note{position:absolute;left:24px;bottom:24px;margin:0;background:var(--fg);color:var(--bg);font-size:12px;font-weight:500;padding:8px 12px;transition:opacity .3s}
+  .cmp-sec{padding-top:0}
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .cmp .card{background:var(--panel);padding:28px;gap:18px}
+  .cmp .card.hi{background:var(--soft)}
+  :global(:root[data-theme="dark"]) .cmp .card.hi{background:#172045}
+  .cmp .no li{color:var(--mute);font-weight:400}.cmp .no :global(svg){color:var(--lab)}
+
+  /* packs */
+  .ph{display:grid;grid-template-columns:1fr 500px;gap:64px;align-items:end}
+  .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+  .pk{position:relative;text-align:left;border:0;background:var(--bg);color:var(--fg);padding:28px;display:flex;flex-direction:column;gap:6px;cursor:pointer;font:inherit;transition:transform .2s}
+  .pk:hover{transform:translateY(-2px)}
+  .pk.on{background:var(--sig);color:#fff}
+  .pk .nm{font-size:24px;letter-spacing:-.5px}
+  .pk .who,.pk .usd,.pk .was{font-size:14px;color:var(--mute)}
+  .pk.on .who,.pk.on .usd,.pk.on .was{color:#DCE3FF}
+  .pk .was{margin-top:18px}
+  .pk .pr{font-size:42px;line-height:48px;letter-spacing:-1.2px}
+  .pk .from{display:flex;justify-content:space-between;background:var(--panel);padding:12px 14px;font-size:14px;font-weight:500;margin:14px 0 18px}
+  .pk.on .from{background:rgba(255,255,255,.14)}
+  .pk .from em{font-style:normal;font-size:12px;font-weight:400;opacity:.7}
+  .pk li{font-weight:400;font-size:14px}.pk :global(svg){color:var(--sig)}.pk.on :global(svg){color:#fff}
+  .pk .sel{margin-top:22px;height:45px;display:grid;place-items:center;background:var(--panel);font-weight:500;font-size:15px}
+  .pk.on .sel{background:#fff;color:var(--sig)}
+  .badge{position:absolute;top:28px;right:28px;background:#fff;color:var(--sig);font-size:12px;font-weight:500;padding:5px 10px}
+  .plan{background:var(--bg);margin-top:24px;padding:36px}
+  .pl-top{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:24px;margin-bottom:28px;box-shadow:inset 0 -1px 0 var(--hl)}
+  .pl-name,.pl-total{font-size:28px;letter-spacing:-.6px;display:block;margin-top:6px}
+  .pl-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+  .adds{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+  .add{position:relative;display:flex;align-items:center;gap:12px;background:var(--panel);padding:14px 16px;cursor:pointer;font-size:15px}
+  .add input{position:absolute;opacity:0;pointer-events:none}
+  .add .box{width:20px;height:20px;background:var(--bg);display:grid;place-items:center;color:transparent;flex:none}
+  .add input:checked+.box{background:var(--sig);color:#fff}
+  .add input:focus-visible+.box{outline:2px solid var(--sig);outline-offset:2px}
+  .an{flex:1}.ap{color:var(--mute)}
+  .gap{margin-top:28px}
+  .plans{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+  .pp{border:0;text-align:left;background:var(--panel);color:var(--fg);padding:14px 16px;cursor:pointer;font:inherit;display:flex;flex-direction:column;gap:4px}
+  .pp b{font-size:15px}.pp span{font-size:12px;opacity:.7}
+  .pp.on{background:var(--fg);color:var(--bg)}
+  .sched{list-style:none;margin:14px 0 24px;padding:0;display:flex;flex-direction:column;gap:2px}
+  :global(.sched li){display:grid;grid-template-columns:16px 1fr auto;gap:14px;align-items:center;background:var(--panel);padding:16px}
+  :global(.sched li)::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--tint)}
+  :global(.sched li:first-child)::before{background:var(--sig)}
+  :global(.sched em){display:block;font:400 11px var(--font-mono,monospace);letter-spacing:1px;text-transform:uppercase;color:var(--lab);font-style:normal}
+  :global(.sched span){font-size:14px;color:var(--mute)}:global(.sched b){font-size:20px;letter-spacing:-.4px}
+  .due{display:flex;justify-content:space-between;align-items:center;gap:16px;background:var(--soft);padding:22px 24px;margin-bottom:14px}
+  :global(:root[data-theme="dark"]) .due{background:#172045}
+  .due b{font-size:34px;letter-spacing:-1px;display:block;margin-top:6px}
+  .care{background:var(--soft);padding:32px 36px;margin-top:24px}
+  :global(:root[data-theme="dark"]) .care{background:#172045}
+  .cg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:18px}
+  .cg>div{display:flex;gap:14px;align-items:flex-start}.cg b{display:block;font-size:16px;margin-bottom:4px}
+
+  .row-who{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+  .row-who .card{background:var(--panel);padding:24px}
+  .row-who h3{font-size:17px;font-weight:600;margin:20px 0 0}
+
+  /* closing */
+  .bfc{position:relative;overflow:hidden;background:#000;color:#F5F5F5;padding:200px 16px;display:flex;justify-content:center;text-align:center}
+  .bfc .in{position:relative;z-index:1;max-width:640px;display:flex;flex-direction:column;align-items:center}
+  .bfc .dm-eb{color:rgba(245,245,245,.62)}
+  .bfc h2{font-size:72px;line-height:79px;letter-spacing:-1.44px;font-weight:600;margin:24px 0}
+  .bfc .sub{font-size:18px;line-height:27px;color:rgba(245,245,245,.75);margin:0 0 40px}
+  .cf i{position:absolute;left:var(--x);top:var(--y);width:8px;height:16px;background:var(--c);transform:rotate(var(--r));opacity:.9}
+  .cf i:nth-child(3n){width:10px;height:10px;border-radius:50%}
+
+  .sticky{display:none}
+  .rv{opacity:0;transform:translateY(16px);filter:blur(6px);transition:opacity .6s,transform .6s,filter .6s}
+  .rv.in{opacity:1;transform:none;filter:none}
+
+  @media (max-width:1023px){
+    .hero{padding:48px 0 40px}
+    .hg,.ah,.ph,.pl-grid,.cmp{grid-template-columns:1fr;gap:32px}
+    .h1{font-size:44px;line-height:48px;letter-spacing:-1.2px}
+    .h2{font-size:32px;line-height:38px}
+    .ctas{flex-direction:column}.ctas .dm-btn{flex:none;width:100%;height:48px}
+    .swipe{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:82%;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-left:-16px;margin-right:-16px;padding:0 16px 8px;scrollbar-width:none}
+    .swipe::-webkit-scrollbar{display:none}
+    .swipe>*{scroll-snap-align:start}
+    .stage{grid-template-columns:1fr;gap:20px}
+    .rail{flex-direction:row;gap:8px}.rail::before{display:none}.rail span{display:none}.rail b{width:28px;height:28px;font-size:12px}
+    .aill{display:none}
+    .stack{height:440px}.sc{padding:24px}.sc h3{font-size:34px;line-height:38px}
+    .pin{align-items:flex-start;padding-top:72px}
+    .ah{margin-bottom:24px}.ah .dm-body{display:none}
+    .plan{padding:20px}.cg{grid-template-columns:1fr}.care{padding:24px 20px}
+    .due{flex-direction:column;align-items:stretch}.due .dm-btn{width:100%}
+    .bfc{padding:140px 16px}.bfc h2{font-size:42px;line-height:46px}
+    :global(#ask .pill){bottom:96px}
+    .sticky{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px calc(14px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(16px);box-shadow:0 -6px 20px rgba(0,0,0,.08);color:var(--fg);text-decoration:none}
+    .sticky b{display:block;font-size:14px}.sticky em{font-style:normal;font-size:12px;color:var(--mute)}
+  }
+  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}.sc,.mag{transition:none}}
+</style>
+
+<script is:inline>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ngn=function(n){return '₦'+Math.round(n).toLocaleString('en-NG')};
+  // countdown
+  var cd=document.getElementById('cd');if(cd){var end=new Date(cd.dataset.ends).getTime();var u=function(k){return cd.querySelector('[data-u="'+k+'"]')};
+    var tick=function(){var d=Math.max(0,end-Date.now());var s=Math.floor(d/1000);var v={Days:Math.floor(s/86400),Hrs:Math.floor(s%86400/3600),Min:Math.floor(s%3600/60),Sec:s%60};for(var k in v)u(k).textContent=String(v[k]).padStart(2,'0')};tick();setInterval(tick,1000);}
+  // confetti burst on load
+  var cv=document.getElementById('burst');if(cv&&!reduce){var x=cv.getContext('2d'),W=cv.width=innerWidth,H=cv.height=innerHeight,cols=['#3B5BFF','#8B9CFF','#C9CED8','#3B5BFF'],ps=[];
+    for(var i=0;i<140;i++){var a=Math.random()*Math.PI*2,sp=6+Math.random()*10;ps.push({x:W/2,y:H*0.38,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-6,w:5+Math.random()*6,h:9+Math.random()*9,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:cols[i%4],o:1})}
+    var t0=performance.now();(function f(t){x.clearRect(0,0,W,H);var alive=false;ps.forEach(function(p){p.vy+=0.28;p.vx*=0.985;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;if(t-t0>1400)p.o-=0.02;if(p.o>0&&p.y<H+40){alive=true;x.save();x.globalAlpha=Math.max(0,p.o);x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()}});if(alive)requestAnimationFrame(f);else cv.remove()})(t0);} else if(cv)cv.remove();
+  // reveal
+  var io=new IntersectionObserver(function(es){es.forEach(function(e,i){if(e.isIntersecting){var el=e.target;setTimeout(function(){el.classList.add('in')},(Array.prototype.indexOf.call(el.parentNode.children,el)%4)*90);io.unobserve(el)}})},{threshold:.15});
+  document.querySelectorAll('.rv').forEach(function(el){reduce?el.classList.add('in'):io.observe(el)});
+  // audit pinned stack
+  var au=document.getElementById('audit');if(au){var cards=au.querySelectorAll('.sc'),rail=au.querySelectorAll('.rail li'),note=document.getElementById('anote'),mag=au.querySelector('.mag'),hot=au.querySelectorAll('.gr i');
+    var notes=['Weak point: no prices on the page','Colours and type locked','Highlights point to prices','Prices now on the home page','Live, and handed over'];var cur=-1;
+    var set=function(k){if(k===cur)return;cur=k;cards.forEach(function(c,i){var d=i-k;if(d<0){c.style.transform='translateY(-40px) rotateX(18deg) scale(.96)';c.style.opacity='0';c.style.zIndex=10+i}else{c.style.transform='translateY('+(-d*14)+'px) scale('+(1-d*0.04)+')';c.style.opacity=d>3?'0':String(1-d*0.2);c.style.zIndex=10-d}});rail.forEach(function(r,i){r.classList.toggle('on',i===k)});note.textContent=notes[k];mag.style.transform='translate('+[0,-60,-20,-80,-30][k]+'px,'+[0,-40,60,20,-60][k]+'px)';hot.forEach(function(h,i){h.classList.toggle('hot',i===[4,0,2,5,1][k])})};
+    var on=function(){var r=au.getBoundingClientRect();var p=Math.min(.999,Math.max(0,-r.top/(au.offsetHeight-innerHeight)));set(Math.floor(p*5))};set(0);addEventListener('scroll',on,{passive:true});on();}
+  // packs + plan
+  var pks=document.querySelectorAll('.pk'),adds=document.querySelectorAll('.add input'),pps=document.querySelectorAll('.pp');var pack=document.querySelector('.pk.on'),plan='3';
+  var upd=function(){var base=+pack.dataset.price,ex=0,names=[pack.dataset.name],ids=[];adds.forEach(function(a){if(a.checked){ex+=+a.dataset.price;ids.push(a.value);names.push(a.dataset.name)}});var tot=base+ex;
+    document.getElementById('plName').textContent=pack.dataset.name+(ids.length?' + '+(ids.length===1?names[1].charAt(0).toLowerCase()+names[1].slice(1):ids.length+' add-ons'):'');document.getElementById('plTotal').textContent=ngn(tot);
+    var parts=plan==='3'?[['After your call','Locks your spot',.3],['15 December','After brand and social',.35],['Before launch','January handover',.35]]:[['After your call','Locks your spot',.5],['Before launch','January handover',.5]];
+    document.getElementById('sched').innerHTML=parts.map(function(p){return '<li><span><em>'+p[0]+'</em>'+p[1]+'</span><b>'+ngn(tot*p[2])+'</b></li>'}).join('');
+    document.getElementById('plFirst').textContent=ngn(tot*parts[0][2]);
+    document.getElementById('plBook').href='/book?service=black-friday&pack='+pack.dataset.id+'&plan='+plan+(ids.length?'&addons='+ids.join(','):'')};
+  pks.forEach(function(b){b.addEventListener('click',function(){pks.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-checked','false');x.querySelector('.sel').textContent='Choose '+x.dataset.name});b.classList.add('on');b.setAttribute('aria-checked','true');b.querySelector('.sel').textContent='Selected';pack=b;upd()})});
+  adds.forEach(function(a){a.addEventListener('change',upd)});
+  pps.forEach(function(b){b.addEventListener('click',function(){pps.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-checked','false')});b.classList.add('on');b.setAttribute('aria-checked','true');plan=b.dataset.plan;upd()})});
+  if(pack)upd();
+})();
+</script>
