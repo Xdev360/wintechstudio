@@ -69,14 +69,14 @@
     <div class="cam" id="c8c"><img src="a/book-0.jpg"><img id="bk1" class="ab" src="a/book-1.jpg" style="left:0;top:0"><div class="rip" id="rip8c"></div></div>
     <div class="dof" id="d8"></div>
     <div class="cap" id="l8w"><span class="pill mono" id="l8"></span></div></div>
-  <!-- S9 Claude -->
+  <!-- S9 same-day changes -->
   <div class="sc" id="s9" style="background:#FAFAFA">
-    <div class="ab" id="t9"><div class="mask"><span id="t9a" class="h" style="font-size:76px;color:#09090B">The site runs in Claude.</span></div></div>
+    <div class="ab" id="t9"><div class="mask"><span id="t9a" class="h" style="font-size:76px;color:#09090B">Changes go live the same day.</span></div></div>
     <div class="ab card" id="chat9" style="padding:24px">
-      <div class="mono" style="color:rgba(9,9,11,.5)">You</div>
+      <div class="mono" style="color:rgba(9,9,11,.5)">Request</div>
       <div id="p9" style="font:500 28px/40px Figtree;color:#09090B;margin-top:12px;min-height:80px"></div>
       <div style="height:1px;background:rgba(0,0,0,.07);margin:18px 0"></div>
-      <div class="mono" style="color:#C2410C" id="cl9">Claude</div>
+      <div class="mono" style="color:rgba(9,9,11,.5)" id="cl9">Update</div>
       <div id="o9" class="code" style="color:#09090B;margin-top:10px"></div>
     </div>
     <div class="ab card" id="br9" style="overflow:hidden;box-shadow:0 30px 80px rgba(9,9,11,.10)">
@@ -145,7 +145,7 @@ const COLS=19,ROWS=V?11:7,R=1700,tiles=[];for(let c=0;c<COLS;c++)for(let r=0;r<R
 for(let i=0;i<3;i++){const d=document.createElement('i');d.style.cssText='width:10px;height:10px;border-radius:50%;background:#A1A1AA;display:block';$('dots8').appendChild(d);}
 $('qc8').style.cssText+=`;left:${466*K}px;top:${811*K}px;width:${444*K}px;height:${24*K}px`;$('q8').style.left=PX(470*K);$('q8').style.top=PX(823*K-14);$('dots8').style.left=PX(500*K);$('dots8').style.top=PX(720*K);
 // ---- S9 layout inside the 96px safe area
-if(V){$('t9').style.cssText+=`;left:96px;top:200px;width:888px`;$('t9a').style.fontSize='72px';$('chat9').style.cssText+=`;left:96px;top:470px;width:888px;height:520px`;$('br9').style.cssText+=`;left:96px;top:1030px;width:888px;height:640px`;}
+if(V){$('t9').style.cssText+=`;left:96px;top:200px;width:888px`;$('t9a').style.fontSize='72px';$('t9a').innerHTML='Changes go live<br>the same day.';$('chat9').style.cssText+=`;left:96px;top:470px;width:888px;height:520px`;$('br9').style.cssText+=`;left:96px;top:1030px;width:888px;height:640px`;}
 else{$('t9').style.cssText+=`;left:96px;top:110px`;$('chat9').style.cssText+=`;left:96px;top:280px;width:744px;height:620px`;$('br9').style.cssText+=`;left:864px;top:280px;width:960px;height:620px`;}
 const bw9=V?888:960;$('pp9').style.width=PX(bw9);$('vp9').style.height=PX(580);const s9k=bw9/1440;
 const hl9=$('hl9');hl9.style.left=PX((808-8)*s9k);hl9.style.top=PX((46-6)*s9k);hl9.style.width=PX((71+16)*s9k);hl9.style.height=PX((32+12)*s9k);
@@ -232,7 +232,7 @@ window.render=function(t){
     dof('d8',sNow,fp);
     const lab=u<3.1?'Ask Wintech AI':u<6.1?'Prices in dollars and naira':'Book a call · brief attached';$('l8').textContent=lab;
     $('l8w').style.top=PX(H-96-36);const st=u<3.1?0.8:u<6.1?3.7:6.7;$('l8').style.opacity=TXT(P(u,st,st+0.32))*(u<3.1?1-P(u,2.85,3.05):u<6.1?1-P(u,5.85,6.05):1);}
-  // S9 34.6-39.85 Claude
+  // S9 34.6-39.85 same-day changes
   if(t>=34.6&&t<39.85){const u=t-34.6;reveal($('t9a'),u,0.15,16);
     $('chat9').style.opacity=TXT(P(u,0.3,0.62));$('chat9').style.transform=`translateY(${(1-TXT(P(u,0.3,0.62)))*12}px)`;
     $('br9').style.opacity=TXT(P(u,0.45,0.77));$('br9').style.transform=`translateY(${(1-TXT(P(u,0.45,0.77)))*12}px)`;
