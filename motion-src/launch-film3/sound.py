@@ -68,8 +68,16 @@ def swell(at):
     x=lp(lp(rng.standard_normal(n),400,2),400,2)*env
     return x
 sw=np.zeros(N)
-for c in [2.2,4.5,9.8,13.8,17.4,20.8,25.6,34.6,39.6]: add(sw,swell(c),c-0.7)
+for c in [2.2,20.8,34.6]: add(sw,swell(c),c-0.7)
 sw=rms_norm(sw,-24)
+# sub-bass swells on other cuts (sine 48 -> 62 Hz), some cuts carried by the music alone
+def sub(at):
+    pre=0.6; tail=0.5; n=int(SR*(pre+tail)); t=np.arange(n)/SR
+    env=np.where(t<pre,(t/pre)**2,np.exp(-(t-pre)/0.2)); f=48+14*np.clip(t/pre,0,1)
+    return np.sin(2*np.pi*np.cumsum(f)/SR)*env
+sb=np.zeros(N)
+for c in [4.5,13.8,25.6,39.6]: add(sb,sub(c),c-0.6)
+sw=sw+rms_norm(sb,-24)
 # soft glass taps (<35 ms), pitch varied +-3%
 taps=np.zeros(N)
 def tap(f):
@@ -96,7 +104,10 @@ def bell(f,d=2.2):
     return x*(1-np.exp(-t/0.003))
 ch=np.zeros(N); add(ch,bell(mtof(72)),15.9); add(ch,bell(mtof(79))*0.9,16.15)
 ch=rms_norm(ch,-20)*0.7
-mix=music+sw+taps+keys+ch
+# 150 ms room tail on taps and keys so the last one never cuts off dry
+irn=int(SR*0.3); it2=np.arange(irn)/SR; ir2=lp(rng.standard_normal(irn)*np.exp(-it2/0.05),2500); ir2/=np.sqrt(np.sum(ir2**2))
+tk=taps+keys; tk=tk+0.35*sg.fftconvolve(tk,ir2)[:N]
+mix=music+sw+tk+ch
 # gentle room: short diffuse reverb
 ir_n=int(SR*1.2); it=np.arange(ir_n)/SR; ir=rng.standard_normal(ir_n)*np.exp(-it/0.35); ir=lp(ir,3000); ir/=np.sqrt(np.sum(ir**2))
 wet=sg.fftconvolve(mix,ir)[:N]
