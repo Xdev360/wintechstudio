@@ -68,7 +68,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
           {['Days', 'Hrs', 'Min', 'Sec'].map(l => <div><b data-u={l}>00</b><span>{l}</span></div>)}
         </div>
         <p class="dm-eb">{LEFT === TOTAL ? `All ${TOTAL} spots open` : `${LEFT} of ${TOTAL} spots left`}</p>
-        <div class="spots" aria-label={`${LEFT} of ${TOTAL} spots left`}>{Array.from({ length: TOTAL }, (_, i) => <i class={i < LEFT ? 'on' : ''}></i>)}</div>
+        <div class="spots" aria-label={`${LEFT} of ${TOTAL} spots left`}>{Array.from({ length: TOTAL }, (_, i) => <i class={i < LEFT ? 'on' : ''} style={`--i:${i}`}></i>)}</div>
         <p class="dm-small">Audit first. Brand, social page and website. Launch in January.</p>
         <a class="dm-btn p w dk" href={book}>Book a call</a>
       </div>
@@ -260,7 +260,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .burst{position:absolute;left:0;top:0;width:100%;height:100vh;pointer-events:none;z-index:60}
 
   /* hero */
-  .hero{padding:96px 0 72px;position:relative}
+  .hero{padding:40px 0 56px;position:relative}
   .hg{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:64px;align-items:center}
   .ctas{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
   .tc{position:relative;background:var(--panel);padding:32px 28px 28px;display:flex;flex-direction:column;gap:14px}
@@ -271,7 +271,8 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .cd span{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--lab)}
   .spots{display:grid;grid-template-columns:repeat(20,1fr);gap:4px}
   .spots i{height:14px;background:var(--tint)}
-  .spots i.on{background:var(--sig)}
+  .spots i.on{background:var(--sig);transform-origin:50% 100%;animation:wave 3s cubic-bezier(.4,0,.2,1) infinite;animation-delay:calc(var(--i) * 60ms)}
+  @keyframes wave{0%,40%,100%{background:var(--sig);transform:none}8%{background:#8B9CFF;transform:scaleY(1.45)}16%{background:#C9D2FF;transform:scaleY(1.2)}26%{background:var(--sig);transform:none}}
 
   .proof{padding:28px 0 40px}
   .logos{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:12px}
@@ -401,7 +402,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .row-who h3{font-size:17px;font-weight:600;margin:20px 0 0}
 
   /* closing */
-  .bfc{position:relative;overflow:hidden;background:#000;color:#F5F5F5;padding:200px 16px;display:flex;justify-content:center;text-align:center}
+  .bfc{position:relative;overflow:hidden;background:#000;color:#F5F5F5;padding:136px 16px;display:flex;justify-content:center;text-align:center}
   .bfc .in{position:relative;z-index:1;max-width:640px;display:flex;flex-direction:column;align-items:center}
   .bfc .dm-eb{color:rgba(245,245,245,.62)}
   .bfc h2{font-size:72px;line-height:79px;letter-spacing:-1.44px;font-weight:600;margin:24px 0}
@@ -430,7 +431,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .rv.in{opacity:1;transform:none;filter:none}
 
   @media (max-width:1023px){
-    .hero{padding:48px 0 40px}
+    .hero{padding:32px 0 40px}
     .hg,.ah,.ph,.pl-grid,.cmp{grid-template-columns:1fr;gap:32px}
     .h1{font-size:44px;line-height:48px;letter-spacing:-1.2px}
     .h2{font-size:32px;line-height:38px}
@@ -446,7 +447,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
     .ah{margin-bottom:24px}.ah .dm-body{display:none}
     .plan{padding:20px}.cg{grid-template-columns:1fr}.care{padding:24px 20px}
     .due{flex-direction:column;align-items:stretch}.due .dm-btn{width:100%}
-    .bfc{padding:140px 16px}.bfc h2{font-size:42px;line-height:46px}
+    .bfc{padding:104px 16px}.bfc h2{font-size:42px;line-height:46px}
   }
   @media (max-width:767px){
     .sticky{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px calc(14px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(16px);box-shadow:0 -6px 20px rgba(0,0,0,.08);color:var(--fg);text-decoration:none}
@@ -464,7 +465,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
     .h2{font-size:30px;line-height:36px;letter-spacing:-.8px;margin-top:12px}
 
     /* hero */
-    .hero{padding:40px 0 56px}
+    .hero{padding:20px 0 48px}
     .h1{font-size:44px;line-height:48px;letter-spacing:-1.3px;margin:16px 0}
     .h1+.dm-intro{font-size:17px;line-height:26px;margin:0}
     .hg{gap:44px}
@@ -568,7 +569,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
     .cg .ic.s{width:32px;height:32px}
 
     .row-who .card{padding:24px}.row-who h3{font-size:18px;margin:16px 0 0}
-    .bfc{padding:120px 0}
+    .bfc{padding:96px 0}
     .bfc h2{font-size:44px;line-height:48px;margin:20px 0}
     .bfc .sub{font-size:17px;line-height:26px;margin-bottom:32px}
 
@@ -577,7 +578,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
     .sticky.show{transform:none}
   }
   @media (max-width:767px) and (prefers-reduced-motion:reduce){.logos{animation:none;flex-wrap:wrap;width:auto}.logos .dup{display:none}}
-  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}.sc,.mag{transition:none}}
+  @media (prefers-reduced-motion:reduce){.spots i.on{animation:none}.rv{opacity:1;transform:none;filter:none;transition:none}.sc,.mag{transition:none}}
 </style>
 
 <script is:inline>
