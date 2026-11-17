@@ -57,8 +57,8 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
       <div>
         <p class="dm-eb acc">Black Friday 2026 · 20 brands only</p>
         <h1 class="h1">Ready for 2027?<br /><span>Your brand isn't.</span></h1>
-        <p class="dm-intro">We are taking 20 businesses only. We study yours first, then rebuild your brand, your social page and your website, so you start the new year ready to sell.</p>
-        <div class="ctas"><a class="dm-btn p" href={book}>Book a call</a><a class="dm-btn s" href="#packs">See the packs</a></div>
+        <p class="dm-intro"><span class="dk">We are taking 20 businesses only. We study yours first, then rebuild your brand, your social page and your website, so you start the new year ready to sell.</span><span class="mb">20 brands only. We rebuild your brand, social page and website for 2027.</span></p>
+        <div class="ctas dk"><a class="dm-btn p" href={book}>Book a call</a><a class="dm-btn s" href="#packs">See the packs</a></div>
       </div>
       <div class="tc">
         <span class="tag">Black Friday</span>
@@ -69,8 +69,9 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
         <p class="dm-eb">{LEFT === TOTAL ? `All ${TOTAL} spots open` : `${LEFT} of ${TOTAL} spots left`}</p>
         <div class="spots" aria-label={`${LEFT} of ${TOTAL} spots left`}>{Array.from({ length: TOTAL }, (_, i) => <i class={i < LEFT ? 'on' : ''}></i>)}</div>
         <p class="dm-small">Audit first. Brand, social page and website. Launch in January.</p>
-        <a class="dm-btn p w" href={book}>Book a call</a>
+        <a class="dm-btn p w dk" href={book}>Book a call</a>
       </div>
+      <div class="mcta mb"><a class="dm-btn p" href={book}>Book a call</a><a class="more-l" href="#packs">See the packs <Lc name="chevron-down" size={16} /></a></div>
     </div>
   </section>
 
@@ -78,7 +79,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   <section class="proof">
     <div class="wrap">
       <p class="dm-eb">Brands we have designed and built</p>
-      <ul class="logos">{logos.map(([n, src, c]) => <li style={`--c:${c}`}><img src={src} alt="" width="22" height="22" loading="lazy" /><span>{n}</span></li>)}</ul>
+      <div class="lm"><ul class="logos">{[0, 1].map(k => logos.map(([n, src, c]) => <li style={`--c:${c}`} class={k ? 'dup' : ''} aria-hidden={k ? 'true' : undefined}><img src={src} alt="" width="22" height="22" loading="lazy" /><span>{n}</span></li>))}</ul></div>
     </div>
   </section>
 
@@ -86,7 +87,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   <section class="dm-sec alt">
     <div class="wrap">
       <p class="dm-eb acc">What's in the pack</p>
-      <h2 class="h2">Four things your business<br />needs before 2027.</h2>
+      <h2 class="h2">Four things your business <br />needs before 2027.</h2>
       <div class="row4 swipe">
         {pack.map(([ic, t, d], i) => (
           <article class="card rv">
@@ -101,6 +102,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
           </article>
         ))}
       </div>
+      <div class="dots" data-for="row4" aria-hidden="true">{pack.map((_, i) => <i class={i === 0 ? 'on' : ''}></i>)}</div>
     </div>
   </section>
 
@@ -109,11 +111,11 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
     <div class="pin">
       <div class="wrap">
         <div class="ah">
-          <div><p class="dm-eb acc">How it runs</p><h2 class="h2">We start with an audit,<br />not a logo.</h2></div>
+          <div><p class="dm-eb acc">How it runs</p><h2 class="h2">We start with an audit, <br />not a logo.</h2></div>
           <p class="dm-body">Most redesigns start with how things look. Ours start with why customers are not buying. Then every step fixes something the audit found.</p>
         </div>
         <div class="stage">
-          <ol class="rail">{steps.map(([w, t], i) => <li class={i === 0 ? 'on' : ''}><b>{i + 1}</b><span><em>{w}</em>{t}</span></li>)}</ol>
+          <ol class="rail">{steps.map(([w, t], i) => <li class={i === 0 ? 'on' : ''} data-k={i}><b>{i + 1}</b><span><em>{w}</em>{t}</span><i class="pb"></i></li>)}</ol>
           <div class="stack">
             {steps.map(([w, t, d, list], i) => (
               <article class="sc" data-i={i} style={`--i:${i}`}>
@@ -145,9 +147,10 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   <section class="dm-sec alt" id="packs">
     <div class="wrap">
       <div class="ph">
-        <div><p class="dm-eb acc">Pick your pack</p><h2 class="h2">Pick your pack.<br />Pay in small parts.</h2></div>
+        <div><p class="dm-eb acc">Pick your pack</p><h2 class="h2">Pick your pack. <br />Pay in small parts.</h2></div>
         <p class="dm-body">No big payment up front. Start from 30% after your call, and the rest is spread until launch in January.</p>
       </div>
+      <div class="ptabs" role="tablist" aria-label="Packs">{packs.map(p => <button type="button" class={p.hi ? 'on' : ''} data-id={p.id}>{p.name}</button>)}</div>
       <div class="row3 swipe" role="radiogroup" aria-label="Packs">
         {packs.map(p => (
           <button type="button" class={`pk rv${p.hi ? ' on' : ''}`} role="radio" aria-checked={p.hi ? 'true' : 'false'} data-id={p.id} data-name={p.name} data-price={p.now}>
@@ -168,22 +171,25 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
         </div>
         <div class="pl-grid">
           <div>
-            <p class="dm-eb">Add what you need</p>
-            <div class="adds">{addons.map(([id, n, p]) => <label class="add"><input type="checkbox" value={id} data-price={p} data-name={n} /><span class="box"><Lc name="check" size={14} stroke={2.6} /></span><span class="an">{n}</span><span class="ap">+ {ngn(p)}</span></label>)}</div>
-            <p class="dm-eb gap">How you pay</p>
-            <div class="plans" role="radiogroup" aria-label="Payment plan">
+            <p class="dm-eb o-l">Add what you need</p>
+            <details class="more" id="more" open>
+              <summary><Lc name="plus" size={16} stroke={2.4} /><b>Add more</b><span>{addons.length} add-ons</span><Lc name="chevron-down" size={16} /></summary>
+              <div class="adds">{addons.map(([id, n, p]) => <label class="add"><input type="checkbox" value={id} data-price={p} data-name={n} /><span class="box"><Lc name="check" size={14} stroke={2.6} /></span><span class="an">{n}</span><span class="ap">+ {ngn(p)}</span></label>)}</div>
+            </details>
+            <p class="dm-eb gap o-h">How you pay</p>
+            <div class="plans o-p" role="radiogroup" aria-label="Payment plan">
               <button type="button" class="pp on" role="radio" aria-checked="true" data-plan="3"><b>Pay in 3</b><span>30% after your call</span></button>
               <button type="button" class="pp" role="radio" aria-checked="false" data-plan="2"><b>Pay in 2</b><span>50% after your call</span></button>
             </div>
           </div>
           <div>
-            <p class="dm-eb">When you pay</p>
+            <p class="dm-eb o-w">When you pay</p>
             <ol class="sched" id="sched"></ol>
             <div class="due">
               <div><p class="dm-eb">First payment, after your call</p><b id="plFirst">{ngn(180000)}</b></div>
               <a class="dm-btn p" id="plBook" href={book}>Book a call</a>
             </div>
-            <p class="dm-small">Book a call to lock your spot. We agree the plan on the call and send your first invoice after. Nothing is handed over until the last payment.</p>
+            <p class="dm-small o-s">Book a call to lock your spot. We agree the plan on the call and send your first invoice after. Nothing is handed over until the last payment.</p>
           </div>
         </div>
       </div>
@@ -199,8 +205,9 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   <section class="dm-sec">
     <div class="wrap">
       <p class="dm-eb acc">Who it's for</p>
-      <h2 class="h2">For businesses that look smaller<br />online than they really are.</h2>
+      <h2 class="h2 nb">For businesses that look smaller <br />online than they really are.</h2>
       <div class="row-who swipe">{who.map(([ic, t, d]) => <div class="card rv"><span class="ic s"><Lc name={ic} size={18} /></span><h3>{t}</h3><p>{d}</p></div>)}</div>
+      <div class="dots" data-for="row-who" aria-hidden="true">{who.map((_, i) => <i class={i === 0 ? 'on' : ''}></i>)}</div>
     </div>
   </section>
 </div>
@@ -229,7 +236,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .h1 span{color:var(--sig)}
   :global(:root[data-theme="dark"]) .h1 span{color:#8B9CFF}
   .h2{font-size:42px;line-height:48px;letter-spacing:-.9px;font-weight:600;margin:12px 0 0}
-  .card{background:var(--bg);padding:24px;display:flex;flex-direction:column;gap:10px}
+  .card{border:0;background:var(--bg);padding:24px;display:flex;flex-direction:column;gap:10px}
   .alt .card{background:var(--bg)}
   .ic{display:inline-grid;place-items:center;width:40px;height:40px;color:var(--sig)}
   .ic.s{background:var(--sig);color:#fff}
@@ -351,7 +358,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .pp.on{background:var(--fg);color:var(--bg)}
   .sched{list-style:none;margin:14px 0 24px;padding:0;display:flex;flex-direction:column;gap:2px}
   :global(.sched li){display:grid;grid-template-columns:16px 1fr auto;gap:14px;align-items:center;background:var(--panel);padding:16px}
-  :global(.sched li)::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--tint)}
+  :global(.sched li)::before{content:"";width:10px;height:10px;background:var(--tint)}
   :global(.sched li:first-child)::before{background:var(--sig)}
   :global(.sched em){display:block;font:400 11px var(--font-mono,monospace);letter-spacing:1px;text-transform:uppercase;color:var(--lab);font-style:normal}
   :global(.sched span){font-size:14px;color:var(--mute)}:global(.sched b){font-size:20px;letter-spacing:-.4px}
@@ -377,6 +384,8 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .cf i:nth-child(3n){width:10px;height:10px;border-radius:50%}
 
   .sticky{display:none}
+  .mb,.ptabs,.dots,.logos .dup,.pb{display:none}
+  .more>summary{display:none}
   .rv{opacity:0;transform:translateY(16px);filter:blur(6px);transition:opacity .6s,transform .6s,filter .6s}
   .rv.in{opacity:1;transform:none;filter:none}
 
@@ -403,6 +412,104 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
     .sticky{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px calc(14px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(16px);box-shadow:0 -6px 20px rgba(0,0,0,.08);color:var(--fg);text-decoration:none}
     .sticky .dm-btn{margin-right:60px}.sticky b{display:block;font-size:14px}.sticky em{font-style:normal;font-size:12px;color:var(--mute)}
   }
+  @media (max-width:767px){
+    :global(nav.crumbs){display:none!important}
+    .nb br{display:none}
+    .ph .dm-body{display:none}
+    .dk{display:none}.mb{display:inline}
+    .hero{padding:32px 0 40px}
+    .h1{font-size:42px;line-height:46px}
+    .h1+.dm-intro{font-size:16px;line-height:24px;margin:0}
+    .hg{gap:28px}
+    .tc{padding:24px 16px 16px;gap:12px}
+    .tc>.dm-eb:first-of-type,.tc .dm-small{display:none}
+    .cd b{font-size:24px;line-height:28px}.cd div{padding:8px 0 6px}.cd span{font-size:9px}
+    .spots i{height:8px}.spots{gap:3px}
+    .mcta{display:flex;flex-direction:column;gap:14px;margin-top:-12px}
+    .mcta .dm-btn{width:100%;height:48px}
+    .more-l{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:500;color:var(--fg);text-decoration:none}
+    /* logo strip: one row, auto-scrolls */
+    .proof{padding:0 0 64px}
+    .lm{overflow:hidden;margin:16px -16px 0;padding:0 16px}
+    .logos{flex-wrap:nowrap;width:max-content;margin:0;gap:8px;animation:lm 26s linear infinite}
+    .logos .dup{display:flex}
+    .logos li{padding:12px 14px;font-size:14px;white-space:nowrap}
+    @keyframes lm{to{transform:translateX(calc(-50% - 4px))}}
+    /* spacing */
+    .dm-sec{padding:64px 0}
+    .h2{font-size:28px;line-height:34px;letter-spacing:-.7px}
+    .row4,.row-who,.row3{margin-top:28px}
+    .swipe{grid-auto-columns:240px}
+    .row-who.swipe{grid-auto-columns:260px}
+    .dots{display:flex;gap:6px;margin-top:18px}
+    .dots i{width:8px;height:8px;background:var(--fg);opacity:.2;transition:width .3s,opacity .3s,background .3s}
+    .dots i.on{width:20px;opacity:1;background:var(--sig)}
+    .row4 .card{padding-bottom:20px}.row4 .card>:not(.ill){padding:0 20px}.ill{height:120px}
+    /* audit: tabs that auto-advance, no pin */
+    .audit{height:auto;padding:64px 0 12px}
+    .pin{position:static;height:auto;display:block;padding-top:0;overflow:visible}
+    .ah{margin-bottom:24px}
+    .stage{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+    .rail{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;order:0}
+    .rail li{position:relative;flex-direction:column;align-items:flex-start;gap:4px;background:var(--panel);padding:8px 8px 12px;cursor:pointer;overflow:hidden}
+    .rail b{width:auto;height:auto;background:none!important;color:inherit!important;font-size:12px;place-items:start}
+    .rail span{display:block;font-size:12px;font-weight:500}.rail em{display:none}
+    .rail li.on{background:var(--soft)}
+    :global(:root[data-theme="dark"]) .rail li.on{background:#172045}
+    .rail li.on b{color:var(--sig)!important}
+    .pb{display:block;position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--sig)}
+    .rail li.on .pb{animation:pb 4.5s linear forwards}
+    .rail li.done .pb{width:100%}
+    @keyframes pb{to{width:100%}}
+    .aill{display:grid;order:1;height:150px;overflow:hidden}
+    .phone{width:110px;height:200px;margin-top:60px;padding:12px 10px}
+    .phone .l1,.phone .l2{left:46px}.phone .av{width:26px;height:26px}
+    .gr{margin-top:14px}
+    .mag{width:60px;height:60px;right:22%;top:40%}.mag::before{inset:0 12px 12px 0;border-width:5px}.mag i{height:22px;width:7px}
+    .note{left:12px;bottom:12px;font-size:11px;padding:6px 10px}
+    .stack{order:2;height:auto}
+    .sc{position:relative;inset:auto;display:none;transform:none!important;opacity:1!important;box-shadow:none;padding:20px}
+    .sc.cur{display:flex;animation:fi .4s ease}
+    .sc .st .dm-eb,.sc .pg{display:none}
+    .sc h3{font-size:32px;line-height:36px}
+    @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .cmp-sec{padding:0 0 64px}.cmp{gap:12px}.cmp .card{padding:20px}
+    /* packs: tabs, one card at a time */
+    .ptabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:24px}
+    .ptabs button{border:0;height:44px;background:var(--bg);color:var(--fg);font:500 14px/1 inherit;font-family:inherit;cursor:pointer}
+    .ptabs button.on{background:var(--fg);color:var(--bg)}
+    .row3.swipe{display:block;overflow:visible;margin:12px 0 0;padding:0}
+    .row3 .pk{display:none;padding:20px}
+    .row3 .pk.on{display:flex;width:100%;opacity:1;transform:none;filter:none}
+    .pk .sel,.pk .from{display:none}
+    .pk .pr{font-size:38px;line-height:44px}.badge{top:20px;right:20px}
+    .plan{background:none;padding:0;margin-top:20px}
+    .pl-top{display:none}
+    .pl-grid{display:flex;flex-direction:column;gap:12px}
+    .pl-grid>div{display:contents}
+    .o-l,.o-w{display:none}
+    .o-h{order:1;margin:0}.o-p{order:2;margin:0}.more{order:3}.due{order:4;margin:0}.sched{order:5;margin:0}.o-s{order:6;margin:0}
+    .more{background:var(--bg)}
+    .more>summary{display:flex;align-items:center;gap:10px;list-style:none;padding:16px;cursor:pointer;font-size:15px;color:var(--fg)}
+    .more>summary::-webkit-details-marker{display:none}
+    .more>summary :global(svg:first-child){color:var(--sig)}
+    .more>summary b{font-weight:500;flex:1}.more>summary span{font-size:13px;color:var(--mute)}
+    .more>summary :global(svg:last-child){transition:transform .2s;color:var(--mute)}
+    .more[open]>summary :global(svg:last-child){transform:rotate(180deg)}
+    .more .adds{margin:0;padding:0 8px 8px}
+    .add{background:var(--panel)}
+    .due{padding:16px}
+    .due b{font-size:30px}
+    :global(.sched li){padding:12px 14px;background:var(--bg)}
+    :global(.sched b){font-size:16px}
+    .care{margin-top:20px;padding:20px 16px}
+    .cg{gap:12px;margin-top:14px}.cg>div{align-items:center}
+    .cg .dm-small{display:none}.cg b{font-size:14px;margin:0}
+    .cg .ic.s{width:28px;height:28px}
+    .row-who h3{margin-top:14px}
+    .bfc{padding:120px 16px}
+  }
+  @media (max-width:767px) and (prefers-reduced-motion:reduce){.logos{animation:none;flex-wrap:wrap;width:auto}.logos .dup{display:none}}
   @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}.sc,.mag{transition:none}}
 </style>
 
@@ -424,7 +531,15 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   var au=document.getElementById('audit');if(au){var cards=au.querySelectorAll('.sc'),rail=au.querySelectorAll('.rail li'),note=document.getElementById('anote'),mag=au.querySelector('.mag'),hot=au.querySelectorAll('.gr i');
     var notes=['Weak point: no prices on the page','Colours and type locked','Highlights point to prices','Prices now on the home page','Live, and handed over'];var cur=-1;
     var set=function(k){if(k===cur)return;cur=k;cards.forEach(function(c,i){var d=i-k;if(d<0){c.style.transform='translateY(-40px) rotateX(18deg) scale(.96)';c.style.opacity='0';c.style.zIndex=10+i}else{c.style.transform='translateY('+(-d*14)+'px) scale('+(1-d*0.04)+')';c.style.opacity=d>3?'0':String(1-d*0.2);c.style.zIndex=10-d}});rail.forEach(function(r,i){r.classList.toggle('on',i===k)});note.textContent=notes[k];mag.style.transform='translate('+[0,-60,-20,-80,-30][k]+'px,'+[0,-40,60,20,-60][k]+'px)';hot.forEach(function(h,i){h.classList.toggle('hot',i===[4,0,2,5,1][k])})};
-    var on=function(){var r=au.getBoundingClientRect();var p=Math.min(.999,Math.max(0,-r.top/(au.offsetHeight-innerHeight)));set(Math.floor(p*5))};set(0);addEventListener('scroll',on,{passive:true});on();}
+    var mob=matchMedia('(max-width: 767px)');var timer;
+    var go=function(k){set(k);cards.forEach(function(c,i){c.classList.toggle('cur',i===k)});rail.forEach(function(r,i){r.classList.toggle('done',i<k);var pb=r.querySelector('.pb');if(pb){pb.style.animation='none';pb.offsetWidth;pb.style.animation=''}});clearTimeout(timer);if(mob.matches&&!reduce)timer=setTimeout(function(){go((k+1)%5)},4500)};
+    rail.forEach(function(r,i){r.addEventListener('click',function(){if(mob.matches)go(i)})});
+    var vis=new IntersectionObserver(function(es){if(mob.matches&&es[0].isIntersecting&&!timer)go(cur<0?0:cur)});vis.observe(au);
+    var on=function(){if(mob.matches)return;var r=au.getBoundingClientRect();var p=Math.min(.999,Math.max(0,-r.top/(au.offsetHeight-innerHeight)));set(Math.floor(p*5))};set(0);cards[0].classList.add('cur');addEventListener('scroll',on,{passive:true});on();}
+  // swipe dots
+  document.querySelectorAll('.dots[data-for]').forEach(function(d){var row=document.querySelector('.'+d.dataset.for);if(!row)return;var ds=d.querySelectorAll('i');row.addEventListener('scroll',function(){var w=row.firstElementChild.getBoundingClientRect().width+12;var k=Math.min(ds.length-1,Math.round(row.scrollLeft/w));if(row.scrollLeft+row.clientWidth>=row.scrollWidth-4)k=ds.length-1;ds.forEach(function(x,i){x.classList.toggle('on',i===k)})},{passive:true})});
+  // add-ons start closed on phones
+  var more=document.getElementById('more');if(more&&matchMedia('(max-width: 767px)').matches)more.open=false;
   // packs + plan
   var pks=document.querySelectorAll('.pk'),adds=document.querySelectorAll('.add input'),pps=document.querySelectorAll('.pp');var pack=document.querySelector('.pk.on'),plan='3';
   var upd=function(){var base=+pack.dataset.price,ex=0,names=[pack.dataset.name],ids=[];adds.forEach(function(a){if(a.checked){ex+=+a.dataset.price;ids.push(a.value);names.push(a.dataset.name)}});var tot=base+ex;
@@ -433,7 +548,9 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
     document.getElementById('sched').innerHTML=parts.map(function(p){return '<li><span><em>'+p[0]+'</em>'+p[1]+'</span><b>'+ngn(tot*p[2])+'</b></li>'}).join('');
     document.getElementById('plFirst').textContent=ngn(tot*parts[0][2]);
     document.getElementById('plBook').href='/book?service=black-friday&pack='+pack.dataset.id+'&plan='+plan+(ids.length?'&addons='+ids.join(','):'')};
-  pks.forEach(function(b){b.addEventListener('click',function(){pks.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-checked','false');x.querySelector('.sel').textContent='Choose '+x.dataset.name});b.classList.add('on');b.setAttribute('aria-checked','true');b.querySelector('.sel').textContent='Selected';pack=b;upd()})});
+  var tabs=document.querySelectorAll('.ptabs button');
+  pks.forEach(function(b){b.addEventListener('click',function(){pks.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-checked','false');x.querySelector('.sel').textContent='Choose '+x.dataset.name});b.classList.add('on');b.setAttribute('aria-checked','true');b.querySelector('.sel').textContent='Selected';pack=b;tabs.forEach(function(t){t.classList.toggle('on',t.dataset.id===b.dataset.id)});upd()})});
+  tabs.forEach(function(t){t.addEventListener('click',function(){var b=document.querySelector('.pk[data-id="'+t.dataset.id+'"]');if(b)b.click()})});
   adds.forEach(function(a){a.addEventListener('change',upd)});
   pps.forEach(function(b){b.addEventListener('click',function(){pps.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-checked','false')});b.classList.add('on');b.setAttribute('aria-checked','true');plan=b.dataset.plan;upd()})});
   if(pack)upd();
