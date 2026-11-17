@@ -13,14 +13,16 @@ interface Props {
   theme?: 'dark' | 'light';
 }
 const { title, description, image = '/og/default.png', noindex = false, jsonld = [], theme } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+// build.format 'file' makes pathname end in .html (and /index.html); the live URLs have neither (cleanUrls)
+const cleanPath = (Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/').replace(/(.)\/$/, '$1')) || '/';
+const canonical = new URL(cleanPath, Astro.site).toString();
 const og = new URL(image, Astro.site).toString();
 const org = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Wintech Studio',
   url: 'https://www.wintechstudio.com',
-  logo: 'https://www.wintechstudio.com/favicon.svg',
+  logo: 'https://www.wintechstudio.com/icon-512.png',
   founder: { '@type': 'Person', name: 'Oladele Ibraheem' },
   address: { '@type': 'PostalAddress', addressLocality: 'Lagos', addressCountry: 'NG' },
   telephone: '+234 913 407 1813',

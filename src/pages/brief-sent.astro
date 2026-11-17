@@ -7,7 +7,7 @@ import '../styles/studio.css';
 const start = Object.fromEntries(services.map(s => [s.slug, `${s.price.replace(/^from /, '').replace(/ \+ .*/, '')} · ${s.timeline}`]));
 const byName = Object.fromEntries(names.map(n => [n.name, n.slug]));
 ---
-<Page title="Brief sent · Wintech Studio" description="Your brief is on its way to the Wintech project lead, who replies within one working day." closing={false}>
+<Page title="Brief sent · Wintech Studio" description="Your brief is on its way to the Wintech project lead, who replies within one working day." closing={false} noindex>
   <div class="dm">
     <section class="dm-sec sent">
       <div class="wrap in">

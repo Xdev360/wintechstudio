@@ -13,5 +13,5 @@ export default defineConfig({
     '/tools/cost-calculator': '/pricing',
     '/tools/inbox-check': '/book',
   },
-  integrations: [sitemap({ filter: (page) => !page.includes('/archive/') })],
+  integrations: [sitemap({ filter: (page) => !page.includes('/archive/') && !page.includes('/brief-sent') && !page.includes('/404') })],
 });
