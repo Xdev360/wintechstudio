@@ -398,9 +398,10 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
     .plan{padding:20px}.cg{grid-template-columns:1fr}.care{padding:24px 20px}
     .due{flex-direction:column;align-items:stretch}.due .dm-btn{width:100%}
     .bfc{padding:140px 16px}.bfc h2{font-size:42px;line-height:46px}
-    :global(#ask .pill){bottom:96px}
+  }
+  @media (max-width:767px){
     .sticky{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px calc(14px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(16px);box-shadow:0 -6px 20px rgba(0,0,0,.08);color:var(--fg);text-decoration:none}
-    .sticky b{display:block;font-size:14px}.sticky em{font-style:normal;font-size:12px;color:var(--mute)}
+    .sticky .dm-btn{margin-right:60px}.sticky b{display:block;font-size:14px}.sticky em{font-style:normal;font-size:12px;color:var(--mute)}
   }
   @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}.sc,.mag{transition:none}}
 </style>
