@@ -17,6 +17,7 @@ const { title, description, image = '/og/default.png', noindex = false, jsonld =
 const cleanPath = (Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/').replace(/(.)\/$/, '$1')) || '/';
 const canonical = new URL(cleanPath, Astro.site).toString();
 const og = new URL(image, Astro.site).toString();
+const site = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Wintech Studio', alternateName: ['Wintech', 'wintechstudio.com'], url: 'https://www.wintechstudio.com/' };
 const org = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -43,6 +44,8 @@ const org = {
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Wintech Studio" />
@@ -56,7 +59,7 @@ const org = {
     <script src="/ui-sound.js" defer></script>
     <script src="/form-send.js" defer></script>
     <script src="/scroll-fx.js" defer></script>
-    <script type="application/ld+json" set:html={JSON.stringify([org, ...jsonld])} />
+    <script type="application/ld+json" set:html={JSON.stringify([site, org, ...jsonld])} />
   </head>
   <body>
     <slot />
