@@ -1,0 +1,235 @@
+---
+// Black Friday process illustrations: one detailed looping motion per step, drawn in CSS so it
+// follows the light and dark tokens. The scene only animates while its root has .play, so the
+// page restarts it each time the step becomes active.
+import Lc from '../ui/Lc.astro';
+interface Props { k: number; play?: boolean }
+const { k, play = false } = Astro.props;
+const tiles = Array.from({ length: 9 }, (_, i) => i);
+---
+<div class={`sv s${k}${play ? ' play' : ''}`} aria-hidden="true">
+  {k === 0 && (
+    <>
+      <div class="ph">
+        <div class="pr"><i class="av"></i><span class="st"><b></b><b></b><b></b></span></div>
+        <i class="ln w1"></i><i class="ln w2"></i>
+        <div class="hl">{[0, 1, 2, 3].map(() => <i></i>)}</div>
+        <div class="gd">{tiles.map(i => <i class={`t t${i}`}></i>)}</div>
+      </div>
+      <div class="lens"><i></i></div>
+      <div class="fn">
+        <p class="cap">Where customers drop off</p>
+        {[['Found you', 100], ['Messaged', 42], ['Paid', 9]].map(([l, v], i) => (
+          <div class="fr"><span>{l}<em>{v}%</em></span><i style={`--w:${v}%;--d:${0.6 + i * 0.45}s`}></i></div>
+        ))}
+      </div>
+      <p class="chip c0"><Lc name="search" size={13} stroke={2.4} />Weak point: no prices on the page</p>
+    </>
+  )}
+  {k === 1 && (
+    <>
+      <div class="sheet back"></div>
+      <div class="sheet">
+        <p class="cap">Brand guideline</p>
+        <svg class="mk" viewBox="0 0 64 44" width="76" height="52"><path d="M4 6 L18 38 L32 14 L46 38 L60 6" /></svg>
+        <p class="aa">Aa</p>
+        <p class="fam">Figtree · Medium, Semibold</p>
+        <i class="ln w1"></i><i class="ln w2"></i><i class="ln w3"></i>
+      </div>
+      <div class="sw">
+        {[['#3B5BFF', 'Signal'], ['var(--fg)', 'Ink'], ['#8B9CFF', 'Sky'], ['var(--tint)', 'Mist']].map(([c, n], i) => (
+          <div class="s" style={`--c:${c};--d:${0.5 + i * 0.3}s`}><i></i><span>{n}</span></div>
+        ))}
+      </div>
+      <p class="chip c1"><Lc name="check" size={13} stroke={2.6} />Colours and type locked</p>
+    </>
+  )}
+  {k === 2 && (
+    <>
+      <div class="ph">
+        <div class="pr"><i class="av b"></i><span class="st"><b></b><b></b><b></b></span></div>
+        <i class="ln w1"></i>
+        <div class="hl lab">{['Prices', 'Book', 'Reviews', 'Shop'].map((l, i) => <span style={`--d:${0.4 + i * 0.35}s`}><i></i>{l}</span>)}</div>
+        <div class="gd">{tiles.map(i => <i class={`f f${i % 3}`} style={`--d:${1.8 + i * 0.12}s`}></i>)}</div>
+      </div>
+      <div class="story"><i class="sl a"></i><i class="sl b"></i><span>Book now</span></div>
+      <p class="chip c2"><Lc name="flag" size={13} stroke={2.4} />Highlights point to prices</p>
+    </>
+  )}
+  {k === 3 && (
+    <>
+      <div class="bw">
+        <div class="bb"><i></i><i></i><i></i><span>yourbrand.com</span></div>
+        <div class="bc">
+          <div class="nv"><i class="lg"></i><i></i><i></i><i></i></div>
+          <div class="hro"><i class="hx1"></i><i class="hx2"></i><span class="btn">Book a call</span></div>
+          <div class="cards"><i></i><i></i><i></i></div>
+        </div>
+        <svg class="cur" viewBox="0 0 24 24" width="22" height="22"><path d="M4 2 L4 19 L9 14 L12.5 21 L15.5 19.5 L12 13 L19 13 Z" /></svg>
+      </div>
+      <div class="sp"><p class="cap">Speed on a phone</p><b>98</b><i></i></div>
+      <div class="gs"><p class="cap">Google</p><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
+      <p class="chip c3"><Lc name="tag" size={13} stroke={2.4} />Prices now on the home page</p>
+    </>
+  )}
+  {k === 4 && (
+    <>
+      <div class="bw sm">
+        <div class="bb"><i></i><i></i><i></i><span>yourbrand.com</span><em class="live">Live</em></div>
+        <div class="bc"><div class="hro"><i class="hx1"></i><i class="hx2"></i><span class="btn">Book a call</span></div></div>
+      </div>
+      <div class="nt">
+        {[['calendar', 'New booking', 'Today, 2:00 PM'], ['message-circle', 'New WhatsApp chat', 'About the Revamp pack'], ['bag', 'New order', 'Paid on your site']].map(([ic, t, s], i) => (
+          <div class="n" style={`--d:${0.5 + i * 0.6}s`}><span class="ni"><Lc name={ic} size={14} stroke={2.2} /></span><span><b>{t}</b><em>{s}</em></span></div>
+        ))}
+      </div>
+      <div class="ho">
+        {[['file', 'Guideline'], ['layers', 'Logo files'], ['lock', 'Logins']].map(([ic, t], i) => (
+          <div class="f" style={`--d:${2.4 + i * 0.25}s`}><Lc name={ic} size={16} stroke={2} /><span>{t}</span></div>
+        ))}
+      </div>
+    </>
+  )}
+</div>
+<style>
+  .sv{position:relative;width:360px;height:400px;--ink:var(--fg);--card:var(--bg);--soft2:var(--tint);font-family:inherit}
+  .sv *{box-sizing:border-box}
+  .cap{margin:0 0 10px;font:500 10px/1 var(--font-mono,monospace);letter-spacing:1px;text-transform:uppercase;color:var(--lab)}
+  .ln{display:block;height:7px;background:var(--soft2);margin-top:8px}
+  .w1{width:70%}.w2{width:48%}.w3{width:60%}
+  .chip{position:absolute;margin:0;display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--card);font-size:12px;font-weight:500;line-height:16px;padding:9px 12px;white-space:nowrap;opacity:0;transform:translateY(8px) scale(.96)}
+  .chip :global(svg){color:#8B9CFF}
+
+  /* phone used by audit + social */
+  .ph{position:absolute;left:18px;top:18px;width:184px;height:356px;background:var(--card);padding:16px 14px;box-shadow:0 18px 40px rgba(10,14,23,.10)}
+  .pr{display:flex;align-items:center;gap:12px}
+  .av{width:40px;height:40px;border-radius:50%;background:var(--soft2);flex:none}
+  .av.b{background:#3B5BFF}
+  .st{display:flex;gap:8px}.st b{display:block;width:22px;height:16px;background:var(--soft2)}
+  .hl{display:flex;gap:9px;margin-top:12px}
+  .hl i{display:block;width:30px;height:30px;border-radius:50%;background:var(--soft2)}
+  .hl.lab span{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:8.5px;font-weight:500;color:var(--mute)}
+  .gd{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:14px}
+  .gd i{display:block;aspect-ratio:1;background:var(--soft2)}
+
+  /* 0 · audit */
+  .s0 .lens{position:absolute;left:44px;top:200px;width:74px;height:74px;z-index:3}
+  .s0 .lens::before{content:"";position:absolute;inset:0 16px 16px 0;border-radius:50%;border:5px solid #3B5BFF;background:color-mix(in srgb,var(--card) 35%,transparent);backdrop-filter:blur(1px)}
+  .s0 .lens i{position:absolute;right:4px;bottom:0;width:9px;height:28px;background:#3B5BFF;transform:rotate(-45deg)}
+  .s0 .fn{position:absolute;right:14px;top:56px;width:158px;background:var(--card);padding:16px 14px;box-shadow:0 18px 40px rgba(10,14,23,.10)}
+  .fr{margin-top:12px}
+  .fr span{display:flex;justify-content:space-between;font-size:11px;font-weight:500;color:var(--fg);margin-bottom:6px}
+  .fr em{font-style:normal;color:var(--mute)}
+  .fr i{display:block;height:8px;width:0;background:#3B5BFF}
+  .fr:nth-child(3) i{opacity:.65}.fr:nth-child(4) i{opacity:.35}
+  .c0{right:14px;bottom:28px}
+  .s0.play .lens{animation:scan 7s cubic-bezier(.45,0,.2,1) infinite}
+  .s0.play .t4{animation:hot 7s ease infinite}
+  .s0.play .fr i{animation:grow 7s cubic-bezier(.2,.8,.2,1) infinite;animation-delay:var(--d)}
+  .s0.play .c0{animation:pop 7s cubic-bezier(.2,.8,.2,1) infinite}
+  @keyframes scan{0%,6%{transform:translate(0,0)}20%,26%{transform:translate(64px,-60px)}42%,48%{transform:translate(24px,30px)}62%,90%{transform:translate(58px,4px)}100%{transform:translate(0,0)}}
+  @keyframes hot{0%,58%{background:var(--soft2)}64%,92%{background:#3B5BFF;opacity:.55}100%{background:var(--soft2)}}
+  @keyframes grow{0%{width:0}14%,88%{width:var(--w)}100%{width:0}}
+  @keyframes pop{0%,58%{opacity:0;transform:translateY(8px) scale(.96)}64%,92%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px) scale(.96)}}
+
+  /* 1 · brand */
+  .sheet{position:absolute;left:18px;top:30px;width:178px;height:300px;background:var(--card);padding:20px;box-shadow:0 18px 40px rgba(10,14,23,.10)}
+  .sheet.back{left:40px;top:44px;opacity:.6;box-shadow:none;background:var(--soft2)}
+  .mk{display:block;margin:6px 0 4px}
+  .mk path{fill:none;stroke:#3B5BFF;stroke-width:6;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:150;stroke-dashoffset:150}
+  .aa{margin:6px 0 0;font-size:52px;line-height:56px;font-weight:600;letter-spacing:-1.5px;color:var(--fg);opacity:0}
+  .fam{margin:2px 0 6px;font-size:11px;color:var(--mute);opacity:0}
+  .sw{position:absolute;right:16px;top:40px;display:grid;grid-template-columns:repeat(2,58px);gap:10px 8px}
+  .s{display:flex;flex-direction:column;gap:6px;opacity:0;transform:scale(.6)}
+  .s i{display:block;width:58px;height:58px;background:var(--c)}
+  .s span{font-size:10px;font-weight:500;color:var(--mute)}
+  .c1{left:22px;bottom:30px}
+  .s1.play .mk path{animation:draw 7s cubic-bezier(.6,0,.2,1) infinite}
+  .s1.play .aa{animation:fadeup 7s ease infinite;animation-delay:.2s}
+  .s1.play .fam{animation:fadeup 7s ease infinite;animation-delay:.5s}
+  .s1.play .s{animation:swatch 7s cubic-bezier(.2,.9,.3,1.3) infinite;animation-delay:var(--d)}
+  .s1.play .sheet.back{animation:stack 7s ease infinite}
+  .s1.play .c1{animation:pop 7s cubic-bezier(.2,.8,.2,1) infinite}
+  @keyframes draw{0%{stroke-dashoffset:150}22%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:150}}
+  @keyframes fadeup{0%,18%{opacity:0;transform:translateY(8px)}30%,90%{opacity:1;transform:none}100%{opacity:0}}
+  @keyframes swatch{0%,20%{opacity:0;transform:scale(.6)}30%,90%{opacity:1;transform:none}100%{opacity:0;transform:scale(.6)}}
+  @keyframes stack{0%,40%{transform:translate(0,0)}55%,90%{transform:translate(14px,10px)}100%{transform:translate(0,0)}}
+
+  /* 2 · social */
+  .s2 .hl.lab i{transform:scale(.7);transition:none}
+  .f{opacity:0;transform:perspective(200px) rotateY(80deg)}
+  .f0{background:#3B5BFF!important}.f1{background:var(--soft2)}.f2{background:#8B9CFF!important}
+  .story{position:absolute;right:24px;top:54px;width:118px;height:212px;background:#3B5BFF;padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:0 18px 40px rgba(59,91,255,.25);opacity:0;transform:translateY(20px)}
+  .story .sl{display:block;height:8px;background:rgba(255,255,255,.5)}.story .a{width:80%}.story .b{width:55%}
+  .story span{margin-top:auto;background:#fff;color:#3B5BFF;font-size:11px;font-weight:600;text-align:center;padding:8px 0}
+  .c2{right:18px;bottom:40px}
+  .s2.play .hl.lab i{animation:ring 7s cubic-bezier(.2,.9,.3,1.3) infinite;animation-delay:var(--d)}
+  .s2.play .f{animation:flip 7s cubic-bezier(.2,.8,.2,1) infinite;animation-delay:var(--d)}
+  .s2.play .story{animation:storyin 7s cubic-bezier(.2,.8,.2,1) infinite}
+  .s2.play .c2{animation:pop 7s cubic-bezier(.2,.8,.2,1) infinite}
+  @keyframes ring{0%{transform:scale(.7);background:var(--soft2)}10%,90%{transform:none;background:#3B5BFF;box-shadow:0 0 0 2px var(--card),0 0 0 4px #3B5BFF}100%{transform:scale(.7);background:var(--soft2)}}
+  @keyframes flip{0%{opacity:0;transform:perspective(200px) rotateY(80deg)}8%,90%{opacity:1;transform:none}100%{opacity:0}}
+  @keyframes storyin{0%,30%{opacity:0;transform:translateY(20px)}40%,90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(20px)}}
+
+  /* 3 · website */
+  .bw{position:absolute;left:14px;top:56px;width:332px;height:212px;background:var(--card);box-shadow:0 18px 40px rgba(10,14,23,.10);overflow:hidden}
+  .bb{display:flex;align-items:center;gap:5px;height:28px;padding:0 10px;background:var(--soft2)}
+  .bb i{width:7px;height:7px;border-radius:50%;background:var(--card)}
+  .bb span{margin-left:10px;font-size:10px;color:var(--mute)}
+  .bc{padding:12px}
+  .nv{display:flex;gap:8px;align-items:center}.nv i{width:26px;height:6px;background:var(--soft2)}.nv .lg{width:18px;height:18px;background:#3B5BFF;margin-right:auto}
+  .hro{margin-top:12px;background:color-mix(in srgb,#3B5BFF 10%,var(--card));padding:12px 14px;display:flex;flex-direction:column;gap:6px;opacity:0;transform:translateY(12px)}
+  .hro .hx1{display:block;width:72%;height:12px;background:var(--fg)}.hro .hx2{display:block;width:50%;height:8px;background:var(--soft2)}
+  .btn{align-self:flex-start;margin-top:4px;background:#3B5BFF;color:#fff;font-size:10px;font-weight:600;padding:7px 10px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+  .cards i{height:28px;background:var(--soft2);opacity:0;transform:translateY(12px)}
+  .cur{position:absolute;left:260px;top:180px;z-index:3}
+  .cur path{fill:var(--fg);stroke:var(--card);stroke-width:1.5}
+  .sp{position:absolute;left:14px;bottom:14px;width:140px;background:var(--card);padding:14px;box-shadow:0 18px 40px rgba(10,14,23,.10);opacity:0}
+  .sp b{display:block;font-size:30px;line-height:34px;font-weight:600;color:var(--fg)}
+  .sp i{display:block;height:6px;margin-top:8px;background:#3B5BFF;width:0}
+  .gs{position:absolute;right:14px;bottom:14px;width:178px;background:var(--card);padding:14px;box-shadow:0 18px 40px rgba(10,14,23,.10);opacity:0}
+  .gs i{display:block;height:7px;margin-top:7px}.gs .g1{width:80%;background:#3B5BFF}.gs .g2{width:60%;background:var(--soft2)}.gs .g3{width:90%;background:var(--soft2)}
+  .c3{left:14px;top:10px}
+  .s3.play .hro{animation:build 7s cubic-bezier(.2,.8,.2,1) infinite;animation-delay:.3s}
+  .s3.play .cards i{animation:build 7s cubic-bezier(.2,.8,.2,1) infinite}
+  .s3.play .cards i:nth-child(1){animation-delay:.8s}.s3.play .cards i:nth-child(2){animation-delay:1s}.s3.play .cards i:nth-child(3){animation-delay:1.2s}
+  .s3.play .cur{animation:cursor 7s cubic-bezier(.45,0,.2,1) infinite}
+  .s3.play .btn{animation:press 7s ease infinite}
+  .s3.play .sp{animation:fade 7s ease infinite;animation-delay:2.4s}
+  .s3.play .sp i{animation:speed 7s cubic-bezier(.2,.8,.2,1) infinite;animation-delay:2.6s}
+  .s3.play .gs{animation:fade 7s ease infinite;animation-delay:3s}
+  .s3.play .c3{animation:pop2 7s cubic-bezier(.2,.8,.2,1) infinite}
+  @keyframes build{0%{opacity:0;transform:translateY(12px)}10%,86%{opacity:1;transform:none}96%,100%{opacity:0}}
+  @keyframes cursor{0%,20%{transform:translate(0,0)}36%,44%{transform:translate(-180px,-100px)}58%,100%{transform:translate(0,0)}}
+  @keyframes press{0%,38%{transform:none}41%{transform:scale(.92)}44%,100%{transform:none}}
+  @keyframes fade{0%{opacity:0;transform:translateY(8px)}8%,70%{opacity:1;transform:none}80%,100%{opacity:0}}
+  @keyframes speed{0%{width:0}14%,70%{width:96%}80%,100%{width:0}}
+  @keyframes pop2{0%,44%{opacity:0;transform:translateY(8px) scale(.96)}50%,92%{opacity:1;transform:none}100%{opacity:0}}
+
+  /* 4 · launch */
+  .bw.sm{width:150px;height:170px;top:30px}
+  .bw.sm .bb span{display:none}
+  .bw.sm .hro{opacity:1;transform:none}
+  .live{margin-left:auto;font-style:normal;font-size:9px;font-weight:600;color:#fff;background:#3B5BFF;padding:3px 7px;display:inline-flex;align-items:center;gap:4px}
+  .live::before{content:"";width:5px;height:5px;border-radius:50%;background:#fff}
+  .nt{position:absolute;right:14px;top:30px;width:184px;display:flex;flex-direction:column;gap:8px}
+  .n{display:flex;gap:10px;align-items:center;background:var(--card);padding:10px 12px;box-shadow:0 14px 30px rgba(10,14,23,.10);opacity:0;transform:translateX(24px)}
+  .ni{display:grid;place-items:center;width:28px;height:28px;background:#3B5BFF;color:#fff;flex:none}
+  .n b{display:block;font-size:11px;font-weight:600;color:var(--fg)}.n em{display:block;font-style:normal;font-size:10px;color:var(--mute)}
+  .ho{position:absolute;left:14px;right:14px;bottom:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .ho .f{display:flex;flex-direction:column;gap:10px;background:var(--card);padding:14px 12px;color:#3B5BFF;box-shadow:0 14px 30px rgba(10,14,23,.08);transform:translateY(16px)}
+  .ho .f span{font-size:11px;font-weight:500;color:var(--fg)}
+  .s4.play .live::before{animation:blink 1.4s ease infinite}
+  .s4.play .n{animation:notif 7s cubic-bezier(.2,.8,.2,1) infinite;animation-delay:var(--d)}
+  .s4.play .ho .f{animation:hand 7s cubic-bezier(.2,.8,.2,1) infinite;animation-delay:var(--d)}
+  @keyframes blink{50%{opacity:.2}}
+  @keyframes notif{0%{opacity:0;transform:translateX(24px)}8%,80%{opacity:1;transform:none}90%,100%{opacity:0}}
+  @keyframes hand{0%{opacity:0;transform:translateY(16px)}8%,58%{opacity:1;transform:none}66%,100%{opacity:0}}
+
+  @media (prefers-reduced-motion:reduce){
+    .sv *{animation:none!important}
+    .chip,.s,.aa,.fam,.f,.story,.hro,.cards i,.sp,.gs,.n,.ho .f{opacity:1!important;transform:none!important}
+    .fr i{width:var(--w)!important}.mk path{stroke-dashoffset:0!important}.sp i{width:96%!important}
+  }
+</style>

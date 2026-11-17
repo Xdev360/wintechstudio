@@ -3,6 +3,7 @@
 // No online payment: every action goes to /book?service=black-friday. No borders, no radius on this page.
 import Page from '../layouts/Page.astro';
 import Lc from '../components/ui/Lc.astro';
+import BfScene from '../components/bf/BfScene.astro';
 import Faq from '../components/ui/Faq.astro';
 import '../styles/studio.css';
 
@@ -115,7 +116,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
           <p class="dm-body">Most redesigns start with how things look. Ours start with why customers are not buying. Then every step fixes something the audit found.</p>
         </div>
         <div class="stage">
-          <ol class="rail">{steps.map(([w, t], i) => <li class={i === 0 ? 'on' : ''} data-k={i}><b>{i + 1}</b><span><em>{w}</em>{t}</span><i class="pb"></i></li>)}</ol>
+          <ol class="rail"><i class="rf" aria-hidden="true"></i>{steps.map(([w, t], i) => <li class={i === 0 ? 'on' : ''} data-k={i} tabindex="0" role="button" aria-label={`Go to step ${i + 1}: ${t}`}><b>{i + 1}</b><span><em>{w}</em>{t}</span></li>)}</ol>
           <div class="stack">
             {steps.map(([w, t, d, list], i) => (
               <article class="sc" data-i={i} style={`--i:${i}`}>
@@ -128,9 +129,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
             ))}
           </div>
           <div class="aill" aria-hidden="true">
-            <div class="phone"><i class="av"></i><i class="l1"></i><i class="l2"></i><div class="gr">{Array.from({ length: 6 }, (_, i) => <i class={i === 4 ? 'hot' : ''}></i>)}</div></div>
-            <div class="mag"><i></i></div>
-            <p class="note" id="anote">{steps[0][4]}</p>
+            {steps.map((_, i) => <div class={`scn${i === 0 ? ' on' : ''}`} data-k={i}><BfScene k={i} play={i === 0} /></div>)}
           </div>
         </div>
         <ol class="tl" id="tl">
@@ -139,6 +138,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
             <li class={`ts${i === 0 ? ' on' : ''}`}>
               <span class="node">{i + 1}</span>
               <div class="tb">
+                <div class="tsc"><BfScene k={i} /></div>
                 <p class="tw">Step {i + 1} · {w}</p>
                 <h3>{t}</h3>
                 <p>{d}</p>
@@ -230,7 +230,8 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
 <Faq items={faqs} title="Black Friday questions" ld={true} service="black-friday" />
 
 <section class="bfc">
-  <div class="cf" aria-hidden="true">{Array.from({ length: 26 }, (_, i) => <i style={`--x:${(i * 37) % 100}%;--y:${(i * 23) % 60}%;--r:${(i * 47) % 180 - 90}deg;--c:${['#3B5BFF', '#8B9CFF', '#5A6378'][i % 3]}`}></i>)}</div>
+  <div class="glow" aria-hidden="true"><span class="g g1"></span><span class="g g2"></span><span class="g g3"></span><span class="hz"></span></div>
+  <div class="cf" aria-hidden="true">{Array.from({ length: 26 }, (_, i) => <i style={`--x:${(i * 37) % 100}%;--y:${(i * 23) % 60}%;--r:${(i * 47) % 180 - 90}deg;--c:${['#3B5BFF', '#8B9CFF', '#5A6378'][i % 3]};--dl:-${((i * 1.9) % 14).toFixed(1)}s`}></i>)}</div>
   <div class="in">
     <p class="dm-eb">Black Friday · ends 27 November</p>
     <h2>20 brands.<br />Then we close.</h2>
@@ -256,7 +257,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .alt .card{background:var(--bg)}
   .ic{display:inline-grid;place-items:center;width:40px;height:40px;color:var(--sig)}
   .ic.s{background:var(--sig);color:#fff}
-  .burst{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:60}
+  .burst{position:absolute;left:0;top:0;width:100%;height:100vh;pointer-events:none;z-index:60}
 
   /* hero */
   .hero{padding:96px 0 72px;position:relative}
@@ -302,20 +303,22 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .br span i{height:26px;background:var(--tint)}
 
   /* audit pinned */
-  .audit{height:500vh;position:relative}
+  .audit{height:340vh;position:relative}
   .pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden;background:var(--bg)}
   .pin>.wrap{width:100%}
   .ah{display:grid;grid-template-columns:1fr 500px;gap:64px;align-items:end;margin-bottom:48px}
   .stage{display:grid;grid-template-columns:260px 440px minmax(0,1fr);gap:56px;align-items:center}
   .rail{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:36px;position:relative}
   .rail::before{content:"";position:absolute;left:17px;top:18px;bottom:18px;width:2px;background:var(--tint)}
-  .rail li{display:flex;gap:16px;align-items:center;position:relative;color:var(--lab);transition:color .3s}
+  .rail li{display:flex;gap:16px;align-items:center;position:relative;z-index:1;color:var(--lab);transition:color .3s;cursor:pointer;outline:0}
+  .rail li:hover{color:var(--fg)}.rail li:focus-visible b{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--sig)}
+  .rf{position:absolute;left:17px;top:18px;width:2px;height:0;background:var(--sig);z-index:0}
   .rail b{width:36px;height:36px;display:grid;place-items:center;background:var(--panel);font-size:14px;transition:background .3s,color .3s;flex:none}
   .rail em{display:block;font:400 11px var(--font-mono,monospace);letter-spacing:1px;text-transform:uppercase;font-style:normal}
   .rail span{font-size:17px;font-weight:500}
   .rail li.on{color:var(--fg)}.rail li.on b{background:var(--sig);color:#fff}.rail li.on em{color:var(--sig)}
   .stack{position:relative;height:460px}
-  .sc{position:absolute;inset:0;background:var(--panel);padding:36px;display:flex;flex-direction:column;gap:12px;transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .5s;box-shadow:0 20px 50px rgba(10,14,23,.08);transform-origin:50% 0}
+  .sc{position:absolute;inset:0;background:var(--panel);padding:36px;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 50px rgba(10,14,23,.08);transform-origin:50% 0;will-change:transform,opacity}
   .sc h3{font-size:44px;line-height:48px;letter-spacing:-1.2px;font-weight:600;margin:8px 0 0}
   .st{display:flex;justify-content:space-between;align-items:center}
   .tg{background:var(--sig);color:#fff;font:500 11px var(--font-mono,monospace);letter-spacing:1px;text-transform:uppercase;padding:6px 10px}
@@ -323,7 +326,10 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .sc li,.cmp li,.pk li{display:flex;gap:10px;align-items:center;font-size:15px;font-weight:500}
   .sc li :global(svg),.cmp li :global(svg){color:var(--sig)}
   .pg{margin-top:auto;height:6px;background:var(--bg)}.pg i{display:block;height:100%;background:var(--sig)}
-  .aill{position:relative;height:460px;background:var(--panel);display:grid;place-items:center}
+  .aill{position:relative;height:460px;background:var(--panel);overflow:hidden}
+  .scn{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transform:scale(.97);transition:opacity .45s ease,transform .6s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+  .scn.on{opacity:1;transform:none}
+  .tsc{display:none}
   .phone{width:190px;height:340px;background:var(--bg);padding:18px 16px;position:relative}
   .phone .av{display:block;width:36px;height:36px;border-radius:50%;background:var(--tint)}
   .phone .l1,.phone .l2{position:absolute;left:62px;height:7px;background:var(--tint)}.phone .l1{top:22px;width:70px}.phone .l2{top:36px;width:46px}
@@ -397,8 +403,22 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   .bfc .dm-eb{color:rgba(245,245,245,.62)}
   .bfc h2{font-size:72px;line-height:79px;letter-spacing:-1.44px;font-weight:600;margin:24px 0}
   .bfc .sub{font-size:18px;line-height:27px;color:rgba(245,245,245,.75);margin:0 0 40px}
-  .cf i{position:absolute;left:var(--x);top:var(--y);width:8px;height:16px;background:var(--c);transform:rotate(var(--r));opacity:.9}
-  .cf i:nth-child(3n){width:10px;height:10px;border-radius:50%}
+  .bfc{isolation:isolate}
+  .cf{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .cf i{position:absolute;left:var(--x);top:-20px;width:8px;height:16px;background:var(--c);opacity:.85;animation:fall var(--t,14s) linear infinite;animation-delay:var(--dl)}
+  .cf i:nth-child(3n){width:10px;height:10px}
+  .cf i:nth-child(odd){--t:18s}.cf i:nth-child(4n){--t:11s}
+  @keyframes fall{0%{transform:translate3d(0,-20px,0) rotate(var(--r))}50%{transform:translate3d(24px,50vh,0) rotate(calc(var(--r) + 180deg))}100%{transform:translate3d(-12px,110vh,0) rotate(calc(var(--r) + 360deg))}}
+  .glow{position:absolute;left:0;right:0;bottom:0;height:335px;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent,#000 45%);mask-image:linear-gradient(180deg,transparent,#000 45%)}
+  .g{position:absolute;bottom:-60%;width:70%;height:120%;border-radius:50%;will-change:transform}
+  .g1{left:-10%;background:radial-gradient(closest-side,rgba(59,91,255,.75),rgba(59,91,255,0));animation:d1 14s ease-in-out infinite alternate}
+  .g2{left:35%;background:radial-gradient(closest-side,rgba(37,77,127,.9),rgba(37,77,127,0));animation:d2 17s ease-in-out infinite alternate}
+  .g3{left:15%;width:60%;bottom:-75%;background:radial-gradient(closest-side,rgba(160,178,255,.45),rgba(160,178,255,0));animation:d3 11s ease-in-out infinite alternate}
+  .hz{position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(160,178,255,.6) 30%,rgba(255,255,255,.8) 50%,rgba(160,178,255,.6) 70%,transparent);background-size:200% 100%;animation:hz 8s linear infinite}
+  @keyframes d1{to{transform:translateX(18%) scale(1.08)}}
+  @keyframes d2{to{transform:translateX(-22%) scale(.94)}}
+  @keyframes d3{0%{transform:translateX(-10%);opacity:.7}100%{transform:translateX(30%);opacity:1}}
+  @keyframes hz{to{background-position:-200% 0}}
 
   .sticky{display:none}
   .mb,.ptabs,.dots,.logos .dup,.tl{display:none}
@@ -490,6 +510,9 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
     .ts.on .tb>.tw{color:var(--sig)}
     :global(:root[data-theme="dark"]) .ts.on .tb>.tw{color:#8B9CFF}
     .tb h3{font-size:22px;line-height:28px;letter-spacing:-.4px;font-weight:600;margin:10px 0 6px}
+    .tsc{display:block;height:228px;margin:-8px -20px 12px;overflow:hidden;position:relative}
+    .tb>.tn{display:none!important}
+    .tsc>:global(.sv){position:absolute;left:50%;top:0;transform:translateX(-50%) scale(.57);transform-origin:50% 0}
     .tb>p{font-size:15px;line-height:22px;color:var(--mute);margin:0}
     .tch{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
     .tch li{display:flex;align-items:center;gap:10px;font-size:15px;line-height:20px;font-weight:500}
@@ -564,19 +587,24 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   // confetti burst on load
   var cv=document.getElementById('burst');if(cv&&!reduce){var x=cv.getContext('2d'),W=cv.width=innerWidth,H=cv.height=innerHeight,cols=['#3B5BFF','#8B9CFF','#C9CED8','#3B5BFF'],ps=[];
     for(var i=0;i<140;i++){var a=Math.random()*Math.PI*2,sp=6+Math.random()*10;ps.push({x:W/2,y:H*0.38,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-6,w:5+Math.random()*6,h:9+Math.random()*9,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:cols[i%4],o:1})}
-    var t0=performance.now();(function f(t){x.clearRect(0,0,W,H);var alive=false;ps.forEach(function(p){p.vy+=0.28;p.vx*=0.985;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;if(t-t0>1400)p.o-=0.02;if(p.o>0&&p.y<H+40){alive=true;x.save();x.globalAlpha=Math.max(0,p.o);x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()}});if(alive)requestAnimationFrame(f);else cv.remove()})(t0);} else if(cv)cv.remove();
+    var t0=performance.now();(function f(t){x.clearRect(0,0,W,H);var alive=false;ps.forEach(function(p){p.vy=Math.min(p.vy+0.16,2.4);p.vx*=0.97;p.x+=p.vx+Math.sin((t-t0)/400+p.r)*0.6;p.y+=p.vy;p.r+=p.vr;if(t-t0>2600)p.o-=0.012;if(p.o>0&&p.y<H+40){alive=true;x.save();x.globalAlpha=Math.max(0,p.o);x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()}});if(alive)requestAnimationFrame(f);else cv.remove()})(t0);} else if(cv)cv.remove();
   // reveal
   var io=new IntersectionObserver(function(es){es.forEach(function(e,i){if(e.isIntersecting){var el=e.target;setTimeout(function(){el.classList.add('in')},(Array.prototype.indexOf.call(el.parentNode.children,el)%4)*90);io.unobserve(el)}})},{threshold:.15});
   document.querySelectorAll('.rv').forEach(function(el){reduce?el.classList.add('in'):io.observe(el)});
   // audit pinned stack
-  var au=document.getElementById('audit');if(au){var cards=au.querySelectorAll('.sc'),rail=au.querySelectorAll('.rail li'),note=document.getElementById('anote'),mag=au.querySelector('.mag'),hot=au.querySelectorAll('.gr i');
-    var notes=['Weak point: no prices on the page','Colours and type locked','Highlights point to prices','Prices now on the home page','Live, and handed over'];var cur=-1;
-    var set=function(k){if(k===cur)return;cur=k;cards.forEach(function(c,i){var d=i-k;if(d<0){c.style.transform='translateY(-40px) rotateX(18deg) scale(.96)';c.style.opacity='0';c.style.zIndex=10+i}else{c.style.transform='translateY('+(-d*14)+'px) scale('+(1-d*0.04)+')';c.style.opacity=d>3?'0':String(1-d*0.2);c.style.zIndex=10-d}});rail.forEach(function(r,i){r.classList.toggle('on',i===k)});note.textContent=notes[k];mag.style.transform='translate('+[0,-60,-20,-80,-30][k]+'px,'+[0,-40,60,20,-60][k]+'px)';hot.forEach(function(h,i){h.classList.toggle('hot',i===[4,0,2,5,1][k])})};
-    var mob=matchMedia('(max-width: 767px)');
-    var on=function(){if(mob.matches)return;var r=au.getBoundingClientRect();var p=Math.min(.999,Math.max(0,-r.top/(au.offsetHeight-innerHeight)));set(Math.floor(p*5))};set(0);addEventListener('scroll',on,{passive:true});on();}
+  var au=document.getElementById('audit');var mob=matchMedia('(max-width: 767px)');
+  if(au){var cards=au.querySelectorAll('.sc'),rail=au.querySelectorAll('.rail li'),rf=au.querySelector('.rf'),scn=au.querySelectorAll('.scn');var cur=-1,tgt=0,val=0,raf=0;
+    var set=function(k){if(k===cur)return;cur=k;rail.forEach(function(r,i){r.classList.toggle('on',i===k)});scn.forEach(function(sc,i){sc.classList.toggle('on',i===k);var sv=sc.firstElementChild;if(i===k){sv.classList.remove('play');void sv.offsetWidth;sv.classList.add('play')}else sv.classList.remove('play')})};
+    var paint=function(v){cards.forEach(function(c,i){var d=i-v;if(d<0){var e=Math.min(1,-d);c.style.transform='translateY('+(-60*e)+'px) rotateX('+(16*e)+'deg) scale('+(1-.04*e)+')';c.style.opacity=String(Math.max(0,1-e*1.6));c.style.zIndex=10+i}else{c.style.transform='translateY('+(-d*14)+'px) scale('+(1-d*0.04)+')';c.style.opacity=d>3?'0':String(1-d*0.2);c.style.zIndex=10-Math.round(d)}});
+      if(rail.length>1){var a=rail[0].offsetTop+18,z=rail[rail.length-1].offsetTop+18;rf.style.top=a+'px';rf.style.height=((z-a)*v/4)+'px'}set(Math.min(4,Math.round(v)))};
+    var loop=function(){val+=(tgt-val)*0.16;if(Math.abs(tgt-val)<0.002)val=tgt;paint(val);raf=val===tgt?0:requestAnimationFrame(loop)};
+    var range=function(){return au.offsetHeight-innerHeight};
+    var on=function(){if(mob.matches)return;var p=Math.min(1,Math.max(0,-au.getBoundingClientRect().top/range()));tgt=p*4.6-0.3;tgt=Math.min(4,Math.max(0,tgt));if(reduce){val=tgt;paint(Math.round(val));return}if(!raf)raf=requestAnimationFrame(loop)};
+    rail.forEach(function(r,i){var go=function(){var y=au.getBoundingClientRect().top+scrollY+range()*((i+0.3)/4.6)+1;scrollTo({top:y,behavior:reduce?'auto':'smooth'})};r.addEventListener('click',go);r.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+    paint(0);addEventListener('scroll',on,{passive:true});addEventListener('resize',on);on();}
   // phone timeline: line fills to the middle of the screen, steps light up as they pass it
   var tl=document.getElementById('tl');if(tl){var fill=tl.querySelector('.fill'),ts=tl.querySelectorAll('.ts');
-    var tlu=function(){if(!mob.matches)return;var r=tl.getBoundingClientRect(),mid=innerHeight*0.55;var h=Math.max(0,Math.min(r.height-40,mid-r.top-20));fill.style.height=h+'px';ts.forEach(function(t,i){t.classList.toggle('on',i===0||t.getBoundingClientRect().top+20<=mid)})};
+    var tlu=function(){if(!mob.matches)return;var r=tl.getBoundingClientRect(),mid=innerHeight*0.55;var h=Math.max(0,Math.min(r.height-40,mid-r.top-20));fill.style.height=h+'px';ts.forEach(function(t,i){var r2=t.getBoundingClientRect();var o=i===0||r2.top+20<=mid;t.classList.toggle('on',o);var sv=t.querySelector('.sv');if(sv){var vis=r2.bottom>0&&r2.top<innerHeight;if(vis&&!sv.classList.contains('play'))sv.classList.add('play');else if(!vis)sv.classList.remove('play')}})};
     addEventListener('scroll',tlu,{passive:true});addEventListener('resize',tlu);tlu();}
   // sticky bar shows only when no other Book a call is on screen
   var st=document.querySelector('.sticky');if(st&&'IntersectionObserver' in window){var seen=new Set();var so=new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?seen.add(e.target):seen.delete(e.target)});st.classList.toggle('show',seen.size===0)},{threshold:0});['.hero','#packs .plan','.bfc'].forEach(function(q){var el=document.querySelector(q);if(el)so.observe(el)})}
