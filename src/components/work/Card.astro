@@ -5,11 +5,11 @@
 import type { Case } from '../../data/cases';
 import Icon from '../Icon.astro';
 import CardMedia from './CardMedia.astro';
-interface Props { c: Case; eager?: boolean; ratio?: string; filters?: boolean }
-const { c, eager = false, ratio = '4 / 3', filters = false } = Astro.props;
+interface Props { c: Case; eager?: boolean; ratio?: string; filters?: boolean; made?: Record<string, string[]> }
+const { c, eager = false, ratio = '4 / 3', filters = false, made } = Astro.props;
 const tagCls = c.tag === 'Our product' ? 'own' : c.tag === 'Concept' ? 'concept' : 'client';
 ---
-<a class="wk" href={`/work/${c.slug}`} data-cats={filters ? c.filters.join(',') : undefined} aria-label={`${c.name} case study: ${c.cardLine}`}>
+<a class="wk" href={`/work/${c.slug}`} data-cats={filters ? (made ? Object.keys(made) : c.filters).join(',') : undefined} data-made={made ? JSON.stringify(made) : undefined} aria-label={`${c.name} case study: ${c.cardLine}`}>
   <span class="cv" style={`aspect-ratio:${ratio}`}><CardMedia c={c} eager={eager} class="fillm" /></span>
   <span class="mt">
     <span class="cl">{c.name}</span>
@@ -20,10 +20,17 @@ const tagCls = c.tag === 'Our product' ? 'own' : c.tag === 'Concept' ? 'concept'
     <span class="tt">{c.cardLine}</span>
     <span class="ar" aria-hidden="true"><Icon name="arrow-right" size={14} /></span>
   </span>
+  {made && <span class="wmade" hidden><span class="ml"></span><span class="mc"></span></span>}
 </a>
 <style>
   .wk{display:flex;flex-direction:column;padding:8px;border:1px solid var(--wk-line,rgba(10,14,23,.10));background:var(--wk-bg,#fff);color:inherit;text-decoration:none;transition:border-color .25s}
   .wk[hidden]{display:none}
+  .wmade{display:flex;flex-direction:column;gap:8px;padding:4px 12px 12px}
+  .wmade[hidden]{display:none}
+  .ml{font-size:12px;line-height:16px;letter-spacing:.6px;text-transform:uppercase;opacity:.62}
+  .mc{display:flex;flex-wrap:wrap;gap:6px}
+  .mc :global(i){font-style:normal;font-size:13px;line-height:19.5px;padding:3px 10px;background:var(--wk-tint,rgba(10,14,23,.06))}
+  .mc :global(i:first-child){background:#3B5BFF;color:#fff}
   .wk:hover,.wk:focus-visible{border-color:var(--wk-line2,rgba(10,14,23,.2))}
   .cv{position:relative;display:block}
   .cv > :global(.fillm){position:absolute;inset:0}

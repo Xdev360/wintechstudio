@@ -4,9 +4,11 @@
 // Motion pieces section is left out until the videos exist (data kept in cases.ts as motionPieces).
 import Page from '../../layouts/Page.astro';
 import Card from '../../components/work/Card.astro';
-import { cases, workOrder } from '../../data/cases';
+import { cases, workOrder, filterOrder, madeIn } from '../../data/cases';
 const list = workOrder.map(s => cases.find(c => c.slug === s)!);
-const filters = ['All', 'Branding', 'Apps', 'Websites', 'Motion'].filter(f => f === 'All' || list.some(c => c.filters.includes(f)));
+const made = new Map(list.map(c => [c.slug, madeIn(c)]));
+const count = (f: string) => list.filter(c => made.get(c.slug)![f]).length;
+const filters = ['All', ...filterOrder.filter(f => count(f) > 0)];
 const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Work from Wintech Studio', hasPart: list.map(c => ({ '@type': 'CreativeWork', name: c.name, url: `https://www.wintechstudio.com/work/${c.slug}` })) };
 ---
 <Page title="Work · Wintech Studio" description="Case studies from Wintech Studio in Lagos: client work, our own products and concepts, from Mylo to Tobel Pearls. Every card says which, and what we made." crumbs={[['Work', '/work']]} jsonld={[ld]}>
@@ -16,13 +18,13 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
       <h1>Work from the studio, for businesses starting, adding tech and refreshing</h1>
       <p class="sb">Client work, our own products and concepts. Every card says which, and what we made.</p>
       <div class="chips" role="toolbar" aria-label="Filter work">
-        {filters.map((f, k) => <button type="button" class:list={['chip', { on: k === 0 }]} data-f={f} aria-pressed={k === 0 ? 'true' : 'false'}>{f}</button>)}
+        {filters.map((f, k) => <button type="button" class:list={['chip', { on: k === 0 }]} data-f={f} aria-pressed={k === 0 ? 'true' : 'false'}>{f}<span class="ct">{f === 'All' ? list.length : count(f)}</span></button>)}
       </div>
     </section>
 
     <section class="gd" aria-label="Case studies">
       <div class="grid" id="w-cards">
-        {list.map((c, k) => <Card c={c} eager={k < 2} filters />)}
+        {list.map((c, k) => <Card c={c} eager={k < 2} filters made={made.get(c.slug)} />)}
         <div class="yours" id="w-yours">
           <p class="lb">Next case study</p>
           <h2>Your project could be next.</h2>
@@ -39,10 +41,28 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
   const btns = [...document.querySelectorAll<HTMLButtonElement>('.chips .chip')];
   const cards = [...document.querySelectorAll<HTMLElement>('#w-cards [data-cats]')];
   const none = document.getElementById('w-none')!;
+  const grid = document.getElementById('w-cards')!;
   const apply = (cur: string) => {
     let shown = 0;
-    cards.forEach(c => { const ok = cur === 'All' || (c.dataset.cats || '').split(',').includes(cur); c.hidden = !ok; if (ok) shown++; });
+    // strongest examples first: most work made in that category, ties keep the usual order
+    const ranked = cards.map((c, i) => { const m = JSON.parse(c.dataset.made || '{}'); return { c, i, m, n: cur === 'All' ? 0 : (m[cur] || []).length }; })
+      .sort((a, b) => b.n - a.n || a.i - b.i);
+    ranked.forEach(({ c, m }, pos) => {
+      const ok = cur === 'All' || !!m[cur];
+      c.hidden = !ok; c.style.order = String(pos);
+      const md = c.querySelector<HTMLElement>('.wmade');
+      if (md) {
+        md.hidden = !ok || cur === 'All';
+        if (ok && cur !== 'All') {
+          md.querySelector('.ml')!.textContent = cur + ' we made';
+          md.querySelector('.mc')!.innerHTML = m[cur].map((x: string) => '<i>' + x + '</i>').join('');
+        }
+      }
+      if (ok) shown++;
+    });
+    const y = document.getElementById('w-yours'); if (y) y.style.order = '99';
     none.hidden = shown > 0;
+    if (cur !== 'All' && grid.getBoundingClientRect().top < 0) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   btns.forEach(b => b.addEventListener('click', () => {
     btns.forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', String(x === b)); });
@@ -62,6 +82,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
   .chips{display:flex;gap:8px;padding:4px 0;justify-content:center;flex-wrap:wrap}
   .chip{height:40px;padding:0 16px;font:500 14px/21px var(--font);color:var(--wk-fg);background:var(--wk-bg);border:1px solid var(--wk-line2);border-radius:2px;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s}
   .chip:hover{border-color:var(--wk-fg)}
+  .ct{margin-left:6px;font-size:12px;opacity:.55;font-variant-numeric:tabular-nums}
   .chip.on{background:var(--wk-fg);border-color:var(--wk-fg);color:var(--wk-bg)}
 
   .gd{padding-bottom:128px}

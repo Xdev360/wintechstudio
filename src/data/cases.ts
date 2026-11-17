@@ -202,6 +202,17 @@ export const cases: Case[] = [
 ];
 
 // Work index order (W1 · Work grid).
+// Filter categories come from what was actually made (did), so a project only shows under a filter
+// when the case study has that work in it. Order inside each list follows the case's did list.
+const CAT: Record<string, string[]> = {
+  Branding: ['Brand identity', 'Brand strategy', 'Identity system', 'Brand guideline', 'Tone of voice', 'Character design', 'Illustration', 'Packaging', 'Stationery', 'Fleet and signage', 'Social', 'Social content'],
+  Apps: ['Mobile app', 'Web app', 'Desktop app', 'Admin panel', 'UX/UI design', 'Product strategy', 'Product planning', 'Product audit', 'Data visualisation'],
+  Websites: ['Website', 'Waitlist site', 'Pitch page', 'Front-end'],
+  Motion: ['Motion'],
+};
+export const filterOrder = ['Branding', 'Apps', 'Websites', 'Motion'];
+export const madeIn = (c: Case) => Object.fromEntries(filterOrder.map(f => [f, c.did.filter(d => CAT[f].includes(d))]).filter(([, v]) => v.length)) as Record<string, string[]>;
+
 export const workOrder = ['mylo', 'virtual-trades', 'virelle', 'manzeelatur-ridho', 'tobel-pearls', 'lets-hang', 'cardiorisk'];
 
 // PXDX masonry tiles, cropped from grid-<slug>.webp into public/images/cases/tiles/. Three columns (352, 544, 352).
