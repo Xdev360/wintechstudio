@@ -4,12 +4,15 @@ import Lc from '../../components/ui/Lc.astro';
 import '../../components/search/search.css';
 // Layout from Figma I1 (Insights). Only pages that exist are listed.
 const posts = [
+  { href: '/guides/website-cost-nigeria', cat: 'Pricing', min: '7 min read', t: 'How much does a website cost in Nigeria in 2026?', d: 'Free templates, custom builds from ₦900,000, online stores, and the yearly costs nobody mentions.' },
+  { href: '/guides/choose-a-web-designer-in-lagos', cat: 'Hiring', min: '6 min', t: 'How to choose a web designer in Lagos' },
+  { href: '/guides/website-or-instagram', cat: 'Growth', min: '5 min', t: 'Do I need a website if I sell on Instagram?' },
   { href: '/guides/paystack-payments-on-your-website', cat: 'Payments', min: '6 min read', t: 'How to take Paystack payments on your website in Nigeria', d: 'Open an account, verify the business, add checkout and test before you go live. Card, bank transfer and USSD.' },
   { href: '/compare/custom-website-vs-wintech-templates', cat: 'Compare', min: '4 min', t: 'Custom website or Wintech Templates: which one fits?' },
   { href: '/industries/salons', cat: 'Industries', min: '4 min', t: 'Websites and AI for salons in Lagos' },
   { href: '/glossary', cat: 'Glossary', min: '3 min', t: 'Website and AI words, in plain English' },
 ];
-const icons: Record<string, string> = { Payments: 'banknote', Compare: 'layout', Industries: 'scissors', Glossary: 'book' };
+const icons: Record<string, string> = { Pricing: 'receipt', Hiring: 'users', Growth: 'trend', Payments: 'banknote', Compare: 'layout', Industries: 'scissors', Glossary: 'book' };
 const cats = ['All', ...new Set(posts.map(p => p.cat))];
 const [lead, ...rest] = posts;
 ---

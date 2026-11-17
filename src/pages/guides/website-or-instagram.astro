@@ -1,0 +1,79 @@
+---
+import Page from '../../layouts/Page.astro';
+import SFaq from '../../components/search/SFaq.astro';
+import SRelated from '../../components/search/SRelated.astro';
+import '../../components/search/search.css';
+const title = "Do I need a website if I sell on Instagram?";
+const steps: [string, string][] = [];
+const toc = [["short", "Short answer"], ["signs", "Signs you have outgrown Instagram alone"], ["first", "What to put on your website first"], ["together", "Use both together"], ["questions", "Questions"]];
+const faqs: [string, string][] = [["Is a free template enough?", "For many small businesses, yes, to start. Wintech Templates can have you live the same day."], ["Will a website get me customers on its own?", "Not by itself. It turns the attention you already get into sales, and it helps people find you on Google."], ["Can my website take payment in naira?", "Yes. With Paystack, customers pay by card, bank transfer or USSD in naira."]];
+const ld = [{"@context": "https://schema.org", "@type": "Article", "headline": "Do I need a website if I sell on Instagram?", "description": "Instagram finds you customers. A website closes the sale: prices, checkout, bookings and Google. When a Nigerian business should add a website, and what to put on it first.", "datePublished": "2026-11-17", "dateModified": "2026-11-17", "author": {"@type": "Person", "name": "Oladele Ibraheem"}, "publisher": {"@type": "Organization", "name": "Wintech Studio", "logo": {"@type": "ImageObject", "url": "https://www.wintechstudio.com/icon-512.png"}}, "mainEntityOfPage": "https://www.wintechstudio.com/guides/website-or-instagram"}];
+---
+<Page title={`${title} · Wintech Studio`} description="Instagram finds you customers. A website closes the sale: prices, checkout, bookings and Google. When a Nigerian business should add a website, and what to put on it first." crumbs={[['Guides', '/guides'], ["Growth", '/guides/website-or-instagram']]} jsonld={ld} closing={false}>
+  <div class="dm">
+  <section class="dm-top art">
+    <div class="wrap ag">
+      <article>
+        <div class="dm-head"><p class="dm-eb">Guide · Growth</p><h1 class="dm-h1 sm">{title}</h1>
+        <p class="meta"><span>Updated 17 Nov 2026</span><i>·</i><span>5 min read</span><i>·</i><b>By Oladele Ibraheem</b></p></div>
+        <div class="dm-short" id="short"><p class="dm-eb">Short answer</p><p>Instagram is where people discover you. A website is where they decide and pay. If customers keep asking for prices in your DMs, you lose orders at night, or people search your name on Google and find nothing, it is time for a website.</p></div>
+        <h2 id="signs">Signs you have outgrown Instagram alone</h2>
+        <Fragment set:html={`<ul><li>You answer the same questions about prices and delivery every day.</li><li>Orders come in at night and wait until morning.</li><li>Customers ask for an account number and you lose them while they decide.</li><li>People search your business on Google and find another company.</li><li>A big client asks for your website before they will pay you.</li></ul>`} />
+        <h2 id="first">What to put on your website first</h2>
+        <Fragment set:html={`<p>Start small and useful: your prices, a way to pay or book (Paystack checkout or a booking page), delivery areas and fees, reviews, and a WhatsApp button for questions. Then link it from your Instagram bio so every post sends people somewhere they can buy.</p>`} />
+        <h2 id="together">Use both together</h2>
+        <Fragment set:html={`<p>Keep posting on Instagram. Point your bio and highlights to the website, so discovery happens on Instagram and the sale happens on your site, any time of day.</p>`} />
+      </article>
+      <aside class="dm-sticky">
+        <nav class="dm-toc toc" aria-label="On this page"><p class="dm-eb">On this page</p>{toc.map(([h, t]) => <a href={`#${h}`} data-to={h}>{t}</a>)}</nav>
+        <div class="cta"><h3>Ready to turn followers into orders?</h3><p>Start free with a template, or book a call and we will build it around how you sell.</p><a class="dm-btn p mw" href="/book">Book a call</a></div>
+      </aside>
+    </div>
+  </section>
+  </div>
+  <SFaq items={faqs} />
+  <SRelated items={[["Payments", "Take Paystack payments on your website", "/guides/paystack-payments-on-your-website"], ["Pricing", "How much does a website cost in Nigeria?", "/guides/website-cost-nigeria"], ["Templates", "Start free with Wintech Templates", "/templates"]]} />
+</Page>
+<script is:inline>
+(function(){var links=document.querySelectorAll('.toc a');if(!('IntersectionObserver'in window))return;var on=function(id){links.forEach(function(a){a.classList.toggle('on',a.dataset.to===id)})};
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)on(e.target.id)})},{rootMargin:'-30% 0px -60% 0px'});
+  links.forEach(function(a){var t=document.getElementById(a.dataset.to);if(t)io.observe(t)});on('short')})();
+</script>
+<style>
+  .art{padding-bottom:128px}
+  .ag{display:grid;grid-template-columns:minmax(0,720px) 320px;justify-content:space-between;gap:64px;align-items:start}
+  article{display:flex;flex-direction:column}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;font-size:14px;line-height:21px;color:var(--mute)}
+  .meta i{font-style:normal;color:var(--lab)}.meta b{font-weight:500;color:var(--fg)}
+  .dm-short{margin-top:40px}
+  .dm-short,h2{scroll-margin-top:110px}
+  h2{margin:48px 0 12px;font-size:24px;line-height:31.2px;letter-spacing:-.24px}
+  article>p{font-size:16px;line-height:26px;color:var(--mute)}
+  .steps{list-style:none;margin:0;padding:0;border-top:1px solid var(--hl)}
+  .steps li{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--hl)}
+  .num{flex:none;width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--hl);font-size:13px;font-weight:600}
+  .steps h3{font-size:16px;line-height:24px;font-weight:600;margin-top:2px}
+  .steps p{font-size:16px;line-height:24px;color:var(--mute)}
+  aside{display:flex;flex-direction:column;gap:32px;padding-top:8px}
+  .toc{gap:0}.toc .dm-eb{padding:0 0 8px 16px}
+  .cta{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:24px;background:var(--panel)}
+  .cta h3{font-size:20px;line-height:26px;letter-spacing:-.2px}
+  .cta p{font-size:14px;line-height:21px;color:var(--mute)}
+  @media (max-width:1023px){
+    .art{padding-bottom:64px}
+    .ag{grid-template-columns:1fr;gap:32px}
+    .dm-short{margin-top:24px}
+    h2{margin:32px 0 8px;font-size:20px;line-height:26px}
+    article>p{font-size:15px;line-height:24px}
+    .steps p{font-size:15px;line-height:22px}
+    .toc{display:none}
+    .cta{padding:20px 16px}
+  }
+</style>
+<style>
+  article :global(p){font-size:16px;line-height:26px;color:var(--mute);margin:0 0 14px}
+  article :global(p b),article :global(li b){color:var(--fg);font-weight:600}
+  article :global(ul){margin:0 0 14px;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+  article :global(li){font-size:16px;line-height:26px;color:var(--mute)}
+  article :global(a){color:var(--sig)}
+</style>

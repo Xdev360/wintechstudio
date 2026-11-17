@@ -20,8 +20,12 @@ const og = new URL(image, Astro.site).toString();
 const site = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Wintech Studio', alternateName: ['Wintech', 'wintechstudio.com'], url: 'https://www.wintechstudio.com/' };
 const org = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': ['Organization', 'ProfessionalService'],
   name: 'Wintech Studio',
+  description: 'Brand identity, websites and online stores, AI assistants, automation, apps and motion for businesses, from one studio in Lagos, Nigeria.',
+  image: 'https://www.wintechstudio.com/og/default.png',
+  areaServed: [{ '@type': 'City', name: 'Lagos' }, { '@type': 'City', name: 'Abuja' }, { '@type': 'Country', name: 'Nigeria' }],
+  knowsAbout: ['Brand identity', 'Website design', 'E-commerce', 'AI assistants', 'Business automation', 'App development', 'Motion design'],
   url: 'https://www.wintechstudio.com',
   logo: 'https://www.wintechstudio.com/icon-512.png',
   founder: { '@type': 'Person', name: 'Oladele Ibraheem' },

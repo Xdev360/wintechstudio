@@ -23,8 +23,16 @@ const faqs: [string, string][] = [
   ['Who owns the work?', 'You do. Accounts are in your name from day one, and every file, asset and line of code is yours on the final payment.'],
 ];
 const svcLd = { '@context': 'https://schema.org', '@type': 'Service', name, serviceType: name, provider: { '@type': 'Organization', name: 'Wintech Studio', url: 'https://www.wintechstudio.com' }, areaServed: ['Nigeria', 'Worldwide'], description: s.intro };
+const seoTitles: Record<string, string> = {
+  brand: 'Brand identity and logo design in Lagos',
+  websites: 'Website design and online stores in Lagos, Nigeria',
+  'ai-assistant': 'AI assistant for your business website',
+  apps: 'App and MVP development in Lagos',
+  automation: 'Business automation for Nigerian businesses',
+  motion: 'Motion design and brand films in Lagos',
+};
 ---
-<Page title={`${name} · Wintech Studio`} description={s.intro} crumbs={[['Services', '/services'], [name, `/services/${s.slug}`]]} jsonld={[svcLd]}>
+<Page title={`${seoTitles[s.slug] ?? name} · Wintech Studio`} description={s.intro} crumbs={[['Services', '/services'], [name, `/services/${s.slug}`]]} jsonld={[svcLd]}>
   <div class="dm svc">
     <section class="dm-top hero">
       <div class="wrap hg">

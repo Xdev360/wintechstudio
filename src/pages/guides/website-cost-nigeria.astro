@@ -1,0 +1,84 @@
+---
+import Page from '../../layouts/Page.astro';
+import SFaq from '../../components/search/SFaq.astro';
+import SRelated from '../../components/search/SRelated.astro';
+import '../../components/search/search.css';
+const title = "How much does a website cost in Nigeria in 2026?";
+const steps: [string, string][] = [];
+const toc = [["short", "Short answer"], ["drives", "What changes the price"], ["options", "Three ways to get a website"], ["running", "The yearly costs to plan for"], ["ask", "Questions to ask before you pay anyone"], ["questions", "Questions"]];
+const faqs: [string, string][] = [["Is a cheap website a bad idea?", "Not always. A template is fine to start. The risk is a cheap custom site that is slow, hard to edit and owned by someone else."], ["Can I pay in parts?", "At Wintech Studio, yes. Larger builds are split into payments tied to milestones."], ["Do I pay in naira or dollars?", "Either. Prices are shown in both, and Nigerian clients pay in naira."], ["How long does a website take?", "A template can go live the same day. A custom website usually takes two to six weeks, depending on pages and content."]];
+const ld = [{"@context": "https://schema.org", "@type": "Article", "headline": "How much does a website cost in Nigeria in 2026?", "description": "What a business website costs in Nigeria in 2026: free templates, custom builds from \u20a6900,000, online stores, and the yearly costs nobody mentions.", "datePublished": "2026-11-17", "dateModified": "2026-11-17", "author": {"@type": "Person", "name": "Oladele Ibraheem"}, "publisher": {"@type": "Organization", "name": "Wintech Studio", "logo": {"@type": "ImageObject", "url": "https://www.wintechstudio.com/icon-512.png"}}, "mainEntityOfPage": "https://www.wintechstudio.com/guides/website-cost-nigeria"}];
+---
+<Page title={`${title} · Wintech Studio`} description="What a business website costs in Nigeria in 2026: free templates, custom builds from \u20a6900,000, online stores, and the yearly costs nobody mentions." crumbs={[['Guides', '/guides'], ["Pricing", '/guides/website-cost-nigeria']]} jsonld={ld} closing={false}>
+  <div class="dm">
+  <section class="dm-top art">
+    <div class="wrap ag">
+      <article>
+        <div class="dm-head"><p class="dm-eb">Guide · Pricing</p><h1 class="dm-h1 sm">{title}</h1>
+        <p class="meta"><span>Updated 17 Nov 2026</span><i>·</i><span>7 min read</span><i>·</i><b>By Oladele Ibraheem</b></p></div>
+        <div class="dm-short" id="short"><p class="dm-eb">Short answer</p><p>A simple website can cost nothing on a template. A custom website built around your business starts from ₦900,000 ($1,200) at Wintech Studio. Online stores, booking and a new brand add to that. On top of the build, budget for a yearly domain, hosting and payment fees per sale.</p></div>
+        <h2 id="drives">What changes the price</h2>
+        <Fragment set:html={`<p>Five things decide most of the cost:</p>`} />
+        <Fragment set:html={`<ul><li><b>Number of pages.</b> A one page site costs less than a five page site with services, about and contact.</li><li><b>Selling online.</b> A store with products, cart, Paystack checkout and delivery fees is more work than a brochure site.</li><li><b>Bookings.</b> A booking page with deposits and reminders adds to the build.</li><li><b>Your brand.</b> If you need a logo, colours and a guideline first, that is a separate piece of work.</li><li><b>Content.</b> Writing the words and getting good photos takes time. If you bring them, the build is faster.</li></ul>`} />
+        <h2 id="options">Three ways to get a website</h2>
+        <Fragment set:html={`<p><b>1. A free template.</b> Wintech Templates lets you pick a design, describe your business in your own words and go live the same day at yourname.wintechstudio.com. Good when you need to be online this week.</p>`} />
+        <Fragment set:html={`<p><b>2. A custom website.</b> Designed and built around how your business sells, fast on Nigerian mobile data and set up to be found on Google. At Wintech Studio this starts from ₦900,000 ($1,200).</p>`} />
+        <Fragment set:html={`<p><b>3. Brand and website together.</b> When the business has outgrown its logo, we rebuild the brand first, then the website on top of it. From $2,500.</p>`} />
+        <h2 id="running">The yearly costs to plan for</h2>
+        <Fragment set:html={`<p>A website is not only the build. Plan for a <b>domain</b> (your .com or .com.ng, paid every year), <b>hosting</b>, <b>payment fees</b> charged by Paystack on each sale, and <b>maintenance</b> for updates and fixes. Ask any designer to list these before you pay.</p>`} />
+        <h2 id="ask">Questions to ask before you pay anyone</h2>
+        <Fragment set:html={`<ul><li>Will I own the domain and the website, with the logins in my name?</li><li>How fast does it load on a phone on 4G?</li><li>Will it show up on Google, and what have you done to make that happen?</li><li>What happens if something breaks after launch?</li><li>Can I see two sites you built that are live today?</li></ul>`} />
+      </article>
+      <aside class="dm-sticky">
+        <nav class="dm-toc toc" aria-label="On this page"><p class="dm-eb">On this page</p>{toc.map(([h, t]) => <a href={`#${h}`} data-to={h}>{t}</a>)}</nav>
+        <div class="cta"><h3>Want an exact price for your business?</h3><p>Book a 25 minute call. We look at what you sell and tell you what you need, and what you do not.</p><a class="dm-btn p mw" href="/book">Book a call</a></div>
+      </aside>
+    </div>
+  </section>
+  </div>
+  <SFaq items={faqs} />
+  <SRelated items={[["Compare", "Custom website or Wintech Templates", "/compare/custom-website-vs-wintech-templates"], ["Guide", "How to choose a web designer in Lagos", "/guides/choose-a-web-designer-in-lagos"], ["Payments", "Take Paystack payments on your website", "/guides/paystack-payments-on-your-website"]]} />
+</Page>
+<script is:inline>
+(function(){var links=document.querySelectorAll('.toc a');if(!('IntersectionObserver'in window))return;var on=function(id){links.forEach(function(a){a.classList.toggle('on',a.dataset.to===id)})};
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)on(e.target.id)})},{rootMargin:'-30% 0px -60% 0px'});
+  links.forEach(function(a){var t=document.getElementById(a.dataset.to);if(t)io.observe(t)});on('short')})();
+</script>
+<style>
+  .art{padding-bottom:128px}
+  .ag{display:grid;grid-template-columns:minmax(0,720px) 320px;justify-content:space-between;gap:64px;align-items:start}
+  article{display:flex;flex-direction:column}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;font-size:14px;line-height:21px;color:var(--mute)}
+  .meta i{font-style:normal;color:var(--lab)}.meta b{font-weight:500;color:var(--fg)}
+  .dm-short{margin-top:40px}
+  .dm-short,h2{scroll-margin-top:110px}
+  h2{margin:48px 0 12px;font-size:24px;line-height:31.2px;letter-spacing:-.24px}
+  article>p{font-size:16px;line-height:26px;color:var(--mute)}
+  .steps{list-style:none;margin:0;padding:0;border-top:1px solid var(--hl)}
+  .steps li{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--hl)}
+  .num{flex:none;width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--hl);font-size:13px;font-weight:600}
+  .steps h3{font-size:16px;line-height:24px;font-weight:600;margin-top:2px}
+  .steps p{font-size:16px;line-height:24px;color:var(--mute)}
+  aside{display:flex;flex-direction:column;gap:32px;padding-top:8px}
+  .toc{gap:0}.toc .dm-eb{padding:0 0 8px 16px}
+  .cta{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:24px;background:var(--panel)}
+  .cta h3{font-size:20px;line-height:26px;letter-spacing:-.2px}
+  .cta p{font-size:14px;line-height:21px;color:var(--mute)}
+  @media (max-width:1023px){
+    .art{padding-bottom:64px}
+    .ag{grid-template-columns:1fr;gap:32px}
+    .dm-short{margin-top:24px}
+    h2{margin:32px 0 8px;font-size:20px;line-height:26px}
+    article>p{font-size:15px;line-height:24px}
+    .steps p{font-size:15px;line-height:22px}
+    .toc{display:none}
+    .cta{padding:20px 16px}
+  }
+</style>
+<style>
+  article :global(p){font-size:16px;line-height:26px;color:var(--mute);margin:0 0 14px}
+  article :global(p b),article :global(li b){color:var(--fg);font-weight:600}
+  article :global(ul){margin:0 0 14px;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+  article :global(li){font-size:16px;line-height:26px;color:var(--mute)}
+  article :global(a){color:var(--sig)}
+</style>
