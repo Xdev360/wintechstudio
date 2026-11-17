@@ -7,7 +7,7 @@ import Faq from '../components/ui/Faq.astro';
 import '../styles/studio.css';
 
 const ENDS = '2026-11-27T23:59:00+01:00';
-const TOTAL = 20, TAKEN = 5; // update TAKEN as calls are booked and confirmed
+const TOTAL = 20, TAKEN = 0; // update TAKEN as calls are booked and confirmed
 const LEFT = TOTAL - TAKEN;
 const book = '/book?service=black-friday';
 
@@ -66,8 +66,8 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
         <div class="cd" id="cd" data-ends={ENDS}>
           {['Days', 'Hrs', 'Min', 'Sec'].map(l => <div><b data-u={l}>00</b><span>{l}</span></div>)}
         </div>
-        <p class="dm-eb">{LEFT} of {TOTAL} spots left</p>
-        <div class="spots" aria-label={`${LEFT} of ${TOTAL} spots left`}>{Array.from({ length: TOTAL }, (_, i) => <i class={i < TAKEN ? 'on' : ''}></i>)}</div>
+        <p class="dm-eb">{LEFT === TOTAL ? `All ${TOTAL} spots open` : `${LEFT} of ${TOTAL} spots left`}</p>
+        <div class="spots" aria-label={`${LEFT} of ${TOTAL} spots left`}>{Array.from({ length: TOTAL }, (_, i) => <i class={i < LEFT ? 'on' : ''}></i>)}</div>
         <p class="dm-small">Audit first. Brand, social page and website. Launch in January.</p>
         <a class="dm-btn p w" href={book}>Book a call</a>
       </div>
@@ -217,7 +217,7 @@ const ld = [{ '@context': 'https://schema.org', '@type': 'Offer', name: 'Wintech
   </div>
 </section>
 
-<a class="sticky" href={book}><span><b>{LEFT} of {TOTAL} spots left</b><em>Ends 27 Nov</em></span><span class="dm-btn p sm">Book a call</span></a>
+<a class="sticky" href={book}><span><b>{LEFT === TOTAL ? `All ${TOTAL} spots open` : `${LEFT} of ${TOTAL} spots left`}</b><em>Ends 27 Nov</em></span><span class="dm-btn p sm">Book a call</span></a>
 </Page>
 
 <style>
