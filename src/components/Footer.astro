@@ -15,7 +15,7 @@ const ais: [string, string, string][] = [
 const cols: { h: string; links: [string, string, boolean?][] }[] = [
   { h: 'Services', links: [['/services#starting', 'Starting something'], ['/services#adding-tech', 'Adding tech to my business'], ['/services#refresh', 'Refreshing my brand'], ...services.map(s => [`/services/${s.slug}`, s.name] as [string, string]), ['/services', 'All services']] },
   { h: 'Work', links: [['/work', 'Case studies'], ['/work/mylo', 'Mylo'], ['/work/virelle', 'Virelle Wellness'], ['/work/tobel-pearls', 'Tobel Pearls'], ['/work/manzeelatur-ridho', 'Manzeelatur Ridho'], ['/work/lets-hang', "Let's Hang"]] },
-  { h: 'Studio', links: [['/about', 'About'], ['/how-we-work', 'How we work'], ['/faq', 'FAQ'], ['/join-the-bench', 'Join the bench'], ['/pricing', 'Pricing'], ['/partners', 'Partners'], ['/contact', 'Contact'], ['', 'Templates (soon)']] },
+  { h: 'Studio', links: [['/about', 'About'], ['/how-we-work', 'How we work'], ['/guides', 'Guides'], ['/faq', 'FAQ'], ['/join-the-bench', 'Join the bench'], ['/pricing', 'Pricing'], ['/partners', 'Partners'], ['/contact', 'Contact'], ['', 'Templates (soon)']] },
 ];
 const clocks: [string, string][] = [['Lagos', 'Africa/Lagos'], ['London', 'Europe/London']];
 ---
